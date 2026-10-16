@@ -415,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.53)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.54)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -1629,7 +1629,7 @@ async function loadPdf0(file,handle,cached){
     const base=await SV.strokes(doc),pm=PM=await prevMarks(doc);P_prev=Object.assign(loadCats(file.name.replace(/\.pdf$/i,'')),pm);
     P={name:file.name.replace(/\.pdf$/i,''),bytes,doc,handle,problems:A.problems,base:new Set(base.map(s=>s.sig)),baseStrokes:base,lastMod:file.lastModified,keyFound:A.keyFound,prev:P_prev};
     P.fname=file.name;P.origRef=origRef;P.generic=!!A.generic;P.scan=!!A.scan;P.ranges=A.ranges||null;P.lazy=!!A.lazy;P.solKeys=A.solKeys||null;P.solRange=A.solRange||null;P.lazyDone=A.lazyDone||[];P.solColor=!!A.solColor;
-    if(P.lazy&&P.scan&&P.problems.some(p=>p.q>=100000))P.problems=xiClean(P.problems);
+    if(P.lazy&&P.scan&&P.problems.some(p=>p.q>=100000)){P.problems=xiClean(P.problems);P.xi=1;P.ebs=1}
     if(P.lazy&&P.scan){const st=P.problems.filter(p=>(p.lv||0)<3);if(st.length){const pg=new Set(st.map(p=>p.page));P.problems=P.problems.filter(p=>!st.includes(p));P.lazyDone=P.lazyDone.filter(x=>!pg.has(x));if(window.NJPROF)console.log('PROF relazy',pg.size)}}   // 예전 버전에서 읽은 쪽(자이스토리 'A32'·EBS 번호를 몰랐음)은 처음 볼 때 다시 읽는다
     P.extInk=!Object.keys(pm).length&&!(cached&&(cached.inkAsked||cached.work))?base.length:0;P.inkKeep=!!(cached&&cached.inkKeep);P.pages=doc.numPages;P.tries=loadTries(P.name);showInfo();
     $('#start').disabled=false;recentSave();
@@ -2843,7 +2843,7 @@ function memInk(){const out=[];for(const pg of PV.pages){for(const s of pg.saved
    삼성 노트 등에서 필기를 PDF에 '그림 층'으로 합쳐 내보내면 잉크 주석이 아니라 투명 그림이 된다.
    쪽마다 그 투명 그림을 찾아 잉크 부분을 가늘게(뼈대) 만들고 선으로 따라가 획으로 바꾼다 → 같은 채점 방식으로 채점 */
 const RINK={};   // 쪽 → 획 목록 (P가 바뀌면 비움)
-function rinkAll(){if(!P||!P.rink)return [];const o=[];for(const k in P.rink)for(const s of P.rink[k])if(!s.skip)o.push(s);return o}
+function rinkAll(){if(!P||!P.rink||P.xi)return [];const o=[];for(const k in P.rink)for(const s of P.rink[k])if(!s.skip)o.push(s);return o}
 /* 다른 앱이 필기를 PDF 내용(벡터 선)으로 합쳐 저장한 경우: 페이지 글자·그림을 다 그린 뒤에 그려진, 손글씨 모양의 선을 필기로 본다
    (굿노트·노타빌리티·삼성노트 등). 선으로 그은 필기는 그대로, 테두리를 칠한 필기(만년필 펜)는 가운데 선을 따라 획으로 만든다 */
 function vinkOps(ol,page,pi){const O=PDFJS.OPS,F=ol.fnArray,A=ol.argsArray,mul=(m,n)=>[m[0]*n[0]+m[2]*n[1],m[1]*n[0]+m[3]*n[1],m[0]*n[2]+m[2]*n[3],m[1]*n[2]+m[3]*n[3],m[0]*n[4]+m[2]*n[5]+m[4],m[1]*n[4]+m[3]*n[5]+m[5]];
@@ -2948,7 +2948,7 @@ async function rinkPage0(doc,pi,page){const OPS=PDFJS.OPS,ol=await page.getOpera
 async function rinkScan(pages,onStep){if(!P)return 0;const P0=P;P0.rink=P0.rink||{};let found=0,k=0;
   for(const pi of pages){if(P!==P0)return found;k++;while(PV.busy||LZ.n>0)await new Promise(r=>setTimeout(r,700));if(P0.rink[pi]!==undefined){if(P0.rink[pi].length)found++;continue}try{P0.rink[pi]=await rinkPage(P0.doc,pi)}catch(e){console.error(e);P0.rink[pi]=[]}if(P0.rink[pi].length)found++;onStep&&onStep(k,pages.length,found);await new Promise(r=>setTimeout(r,30))}
   return found}
-async function rinkBackground(){if(!P||!P.bytes)return;const P0=P;
+async function rinkBackground(){if(!P||!P.bytes)return;const P0=P;if(P0.xi||(P0.problems||[]).some(p=>p.q>=100000))return;   // 자이스토리: 책 속 반투명 그림(QR 등)이 필기로 읽힘 → 다른 기기 필기 찾기 안 함
   // 투명 그림(/SMask)이 아예 없는 PDF는 건너뜀
   let meta=null;try{meta=await libMeta(P0.name)}catch(e){}if(meta&&meta.rinkNone===P0.bytes.length)return;
   const all=[];for(let i=1;i<=P0.doc.numPages;i++)all.push(i);
@@ -3095,7 +3095,7 @@ async function pvGrade(){
   }catch(e){console.error(e);fb('bad','저장하거나 채점하지 못했습니다: '+e.message)}
   finally{PV.busy=false;$('#pvGrade').disabled=false;if(S&&S.frozen){PV.review=true;const b=$('#pvGrade');b.textContent=ungraded().length?'채점하기':'이어서 풀기';b.classList.add('resume');$('#pvPause').hidden=true}pvStatus();pvSum()}}
 /* 스스로 채점: 정답 그림을 보고 학생이 ○/／를 고른다 (서술형·여러 소문항 등 자동으로 못 읽는 문항) */
-function selfPending(){if(!S)return [];return Object.values(S.state).filter(x=>x.status==='check'||(x.retry&&x.retry.self&&!x.retry.ans)).sort((a,b)=>a.q-b.q)}
+function selfPending(){if(!S)return [];return Object.values(S.state).filter(x=>P&&P.problems.some(p=>p.q===x.q)&&x.status==='check'||(x.retry&&x.retry.self&&!x.retry.ans)).sort((a,b)=>a.q-b.q)}
 let SS=null;
 async function selfSheet(onDone){const L=selfPending();if(!L.length){if(onDone)onDone();return}SS={L,i:0,onDone,n:0};$('#selfSheet').hidden=false;ssShow()}
 /* 소문제 (1)(2)…: 정답 글에서 개수를 센다. 소문제마다 ○/／를 고르고, 모두 맞아야 그 문항이 ○ */
