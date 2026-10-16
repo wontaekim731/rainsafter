@@ -415,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.57)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.58)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -1796,9 +1796,10 @@ const LZ={q:Promise.resolve(),m:{},n:0};
     if(fix.length){fix.forEach(p=>p.chTried=1);const qk=P0.solKeys&&Object.keys(P0.solKeys).length>=10;const A=await SCAN.analyze(P0.doc,{from:pg,to:pg,T:TPL,noSol:true,keep:true,thorough:true,footer:false,colorLabs:qk&&!!P0.solColor});
       // 다시 읽은 결과가 더 나으면(번호를 더 많이 찾음) 그 쪽 문항을 통째로 바꾼다: 영역·보기 자리 모두 새로 (정답은 빠른 정답 그대로)
       const old=P0.problems.filter(p=>p.page===pg);
-      let NA=A.problems;if(P0.xi){NA=NA.filter(p=>p.q>=100000);NA=xiClean(P0.problems.filter(p=>p.page!==pg).concat(NA)).filter(p=>p.page===pg)}
+      let NA=A.problems;if(P0.xi){NA=NA.filter(p=>p.q>=100000);NA=xiClean(P0.problems.filter(p=>p.page!==pg&&(p.lv||0)>=LZV).concat(NA)).filter(p=>p.page===pg)}   // 다른 쪽의 예전 읽기 결과는 믿지 않는다
       const pend=q=>({text:'✓',kind:'self',ebs:P0.ebs||P0.xi?1:undefined,xi:P0.xi&&q>=100000?1:undefined});
-      if((P0.xi||P0.ebs)&&NA.length){P0.problems=P0.problems.filter(p=>p.page!==pg||NA.some(n=>n.q===p.q));for(const n of NA){const o=P0.problems.find(x=>x.q===n.q);n.key=o&&o.key&&o.key.ebsT?o.key:pend(n.q);n.chTried=1;n.lv=LZV;if(o){const i=P0.problems.indexOf(o);P0.problems[i]=n}else P0.problems.push(n)}P0.problems.sort((a,b)=>a.q-b.q)}   // 번호마다 정답이 따로라: 새로 읽은 번호·영역으로 통째로 바꾸고 정답은 채점할 때 다시 찾는다
+      if((P0.xi||P0.ebs)&&NA.length){P0.problems=P0.problems.filter(p=>p.page===pg?NA.some(n=>n.q===p.q):!((p.lv||0)<LZV&&NA.some(n=>n.q===p.q)));   // 같은 번호를 예전에 다른 쪽에서 잘못 읽은 것은 지운다 (그 쪽은 볼 때 다시 읽음)
+      for(const n of NA){const o=P0.problems.find(x=>x.q===n.q);n.key=o&&o.key&&o.key.ebsT?o.key:pend(n.q);n.chTried=1;n.lv=LZV;if(o){const i=P0.problems.indexOf(o);P0.problems[i]=n}else P0.problems.push(n)}P0.problems.sort((a,b)=>a.q-b.q)}   // 번호마다 정답이 따로라: 새로 읽은 번호·영역으로 통째로 바꾸고 정답은 채점할 때 다시 찾는다
       else if(A.problems.length>=old.length&&old.every(o=>A.problems.some(n=>n.q===o.q))){for(const n of A.problems){const o=P0.problems.find(x=>x.q===n.q);const k=(P0.solKeys&&P0.solKeys[n.q])||(o&&o.key)||n.key||pend(n.q);n.key=k;n.chTried=1;n.lv=LZV;if(o){const i=P0.problems.indexOf(o);P0.problems[i]=n}else P0.problems.push(n)}P0.problems.sort((a,b)=>a.q-b.q)}
       else for(const p of fix){const n=A.problems.find(x=>x.q===p.q);if(n&&n.choices&&n.choices.length)p.choices=n.choices}
       for(const p of P0.problems)if(p.page===pg)p.lv=LZV;
@@ -1809,7 +1810,7 @@ const LZ={q:Promise.resolve(),m:{},n:0};
      const dup=q=>P0.problems.some(x=>x.q===q&&x.page!==pg);
      L.forEach((p,i)=>{if(!dup(p.q))return;const pv=L[i-1],nx=L[i+1],want=pv?pv.q+1:nx?nx.q-1:null;if(want&&want>0&&!dup(want)&&!L.some(z=>z.q===want)&&(!pv||want>pv.q)&&(!nx||want<nx.q)){p.q=want;p.key=null}})}   // 046을 044로 잘못 읽은 것 등
     if(A.ebs)P0.ebs=1;if(A.xi&&!P0.xi){P0.xi=1;P0.problems=P0.problems.filter(p=>p.q>=100000)}   // EBS 교재: 단원·코너마다 번호가 01부터 다시 시작해서 빠른 정답의 번호와 바로 맞출 수 없다 → 정답 대조 전까지 직접 채점
-    for(const p of A.problems){if(P0.problems.some(x=>x.q===p.q))continue;if(P0.xi&&p.q<100000)continue;p.chTried=1;p.lv=LZV;const k=!P0.ebs&&P0.solKeys&&P0.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k;if(!p.key||P0.ebs)p.key={text:'✓',kind:'self',ebs:P0.ebs?1:undefined,xi:P0.xi&&p.q>=100000?1:undefined};P0.problems.push(p)}
+    for(const p of A.problems){if(P0.xi&&p.q<100000)continue;if((P0.xi||P0.ebs)&&P0.problems.some(x=>x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV))P0.problems=P0.problems.filter(x=>!(x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV));if(P0.problems.some(x=>x.q===p.q))continue;p.chTried=1;p.lv=LZV;const k=!P0.ebs&&P0.solKeys&&P0.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k;if(!p.key||P0.ebs)p.key={text:'✓',kind:'self',ebs:P0.ebs?1:undefined,xi:P0.xi&&p.q>=100000?1:undefined};P0.problems.push(p)}
     if(P0.xi)P0.problems=xiClean(P0.problems);P0.problems.sort((a,b)=>a.q-b.q);if(window.NJPROF)console.log('PROF lazy',pg,Math.round(performance.now()-T0));if(P===P0)await recentSave()}).catch(e=>console.error(e)).finally(()=>{delete LZ.m[key];LZ.n--});
   LZ.m[key]=pr;return pr}
 let LZ_T=0;function lazySoon(pg,ms){if(!S||!P||!P.lazy)return;clearTimeout(LZ_T);LZ_T=setTimeout(()=>lazyOne(pg),ms||300)}
