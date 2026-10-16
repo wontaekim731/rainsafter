@@ -290,6 +290,7 @@ body:has(#vPdf:not([hidden])) .appbar{display:none}
 .chip.today{background:var(--bad-soft);color:var(--omr)}.chip.fin{background:var(--ok-soft);color:var(--ok)}
 #nSheet,#noteSh{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(15,23,42,.35)}#noteSh[hidden]{display:none}
 #noteSh .sh{background:var(--paper);width:min(620px,100%);max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 18px 24px;display:flex;flex-direction:column;gap:12px}
+  .skipChip{color:#2563eb;font-weight:650;white-space:nowrap}
 #pvPenDot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#1d4ed8;vertical-align:middle;margin-left:2px}
 #pvPenPop{position:fixed;z-index:90;background:var(--paper,#fff);border-radius:14px;padding:10px;box-shadow:0 12px 30px rgba(28,36,51,.2),0 0 0 1px var(--line,#e5e7eb);display:flex;flex-direction:column;gap:10px}
 #pvPenPop .ppRow{display:flex;gap:8px;align-items:center}#pvPenPop .ppC{width:36px;height:36px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #cbd5e1}#pvPenPop .ppC.on{box-shadow:0 0 0 3px #f59e0b}
@@ -412,7 +413,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.46)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.47)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -2195,6 +2196,9 @@ async function markList(state){const L=[];
     const pr=st.pr||p._pr;if(pr&&p._lab===undefined&&p.key&&p.key.kind==='nparts')p._lab=await subLabels(p);const lab=p._lab&&pr&&p._lab.length===pr.length?p._lab:null,bx=lab||p._gs;if(pr&&bx&&pr.length===bx.length&&!pr.every(v=>v===true)){pr.forEach((v,i)=>{if(v!==true&&v!==false)return;const B=bx[i];if(!B)return;const sx=(B.x0+B.x1)/2,sy=(B.y0+B.y1)/2,rx=lab?Math.max(7,(B.x1-B.x0)/2+3):Math.max(6,(B.x1-B.x0)/2+4),ry=lab?Math.max(6,(B.y1-B.y0)/2+2.5):Math.max(6,(B.y1-B.y0)/2+3),sp=[];
       if(v){for(let j=0;j<=28;j++){const t=j/28*Math.PI*2;sp.push(sx+rx*Math.cos(t),sy+ry*Math.sin(t))}}else sp.push(sx+rx*0.9,sy+ry*1.05,sx-rx*0.9,sy-ry*1.05);
       L.push({q:st.q,page:p.page,lists:[sp],col:[0.86,0.12,0.15],w:1.8,tag:'p'+(i+1),pend:false})})}}
+  // 중간에 안 푼 문항: 번호 옆에 파란 체크(✓) — 풀면 다음 채점 때 지워진다
+  if(S&&state===S.state)for(const q of skippedQs()){const p=P.problems.find(x=>x.q===q);if(!p)continue;const ls=p.ls||20,cx=p.lx+ls*0.6,cy=p.ly+ls*0.35,r=Math.min(15,Math.max(10,ls*1.1));
+    L.push({q,page:p.page,lists:[[cx-r*0.9,cy,cx-r*0.2,cy-r*0.8,cx+r*1.1,cy+r*0.9]],col:[0.15,0.39,0.92],w:2.4,tag:'K',pend:false,skip:1})}
   return L}
 /* PDF 파일에 쓰기: 새 필기 추가 · 지운 필기 빼기 · 채점 표시 바꾸기를 한 번에 (파일을 한 번만 열고 한 번만 저장) */
 async function pdfWrite(job){const {PDFDocument,PDFName,PDFString,PDFDict}=PDFLib;const T0=performance.now();
@@ -2242,9 +2246,9 @@ function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.cr
   draw();sh.hidden=false}
 async function writeMarks(state){state=state||(S&&S.state)||{};
   if(!P.handle||!window.PDFLib)return '이 방식으로 연 PDF에는 채점 표시를 넣을 수 없습니다.';
-  try{const L=await markList(state),qs=Object.keys(state);
+  try{const L=await markList(state),sk=L.filter(m=>m.skip).map(m=>m.q),qs=[...new Set(Object.keys(state).map(Number).concat(sk,(S&&S.skipMk)||[]))];if(S&&state===S.state)S.skipMk=sk;   // 체크 표시도 새로 그리고, 이제 푼 문항의 체크는 지운다
     if(PV.pages&&PV.pages.length&&!$('#vPdf').hidden){   // 앱 화면: 표시는 바로 그리고, 파일에는 뒤에서 쓴다
-      const qq=new Set(qs.map(Number));for(const pg of PV.pages){pg.marks=pg.marks.filter(m=>!(m.q!=null&&qq.has(m.q)));for(const m of L)if(m.page===pg.n)for(const l of m.lists){const pts=[];for(let i=0;i+1<l.length;i+=2)pts.push({x:l[i],y:l[i+1]});pg.marks.push({q:m.q,pts,pend:m.pend})}if(pg.live)pvDraw(pg)}
+      const qq=new Set(qs.map(Number));for(const pg of PV.pages){pg.marks=pg.marks.filter(m=>!(m.q!=null&&qq.has(m.q)));for(const m of L)if(m.page===pg.n)for(const l of m.lists){const pts=[];for(let i=0;i+1<l.length;i+=2)pts.push({x:l[i],y:l[i+1]});pg.marks.push({q:m.q,pts,pend:m.pend,skip:m.skip})}if(pg.live)pvDraw(pg)}
       pvPersist({marks:{L,qs}});return true}
     let perm=await P.handle.queryPermission({mode:'readwrite'});if(perm!=='granted'){try{perm=await P.handle.requestPermission({mode:'readwrite'})}catch(e){}}
     if(perm!=='granted')return 'PDF에 쓰기 권한이 없어 ○ / 표시를 넣지 못했습니다. 학습을 끝내고 PDF를 다시 고른 뒤, 편집 허용 창에서 [허용]을 눌러 주세요.';
@@ -2314,7 +2318,7 @@ function procNotes(R,M){const out=[],Q=M.Q,qs=Object.values(Q);if(!qs.length)ret
   qs.filter(x=>res(x.q)==='X'&&x.dwell<Math.max(40000,med*0.5)).forEach(x=>out.push({k:'fast',t:`${QN(x.q)}번은 ${fmtT(x.dwell)} 만에 답을 냈는데 틀렸어요 → 계산 실수·문제 잘못 읽기 의심`}));
   // 5) 순서
   const jumps=M.order.filter((q,i)=>i&&q<M.order[i-1]).length;if(jumps)out.push({k:'order',t:`번호 순서대로 풀지 않은 곳이 ${jumps}번 있어요 (풀이 순서: ${M.order.slice(0,14).join('→')}${M.order.length>14?'…':''})`});
-  const sk=skippedQs(R);if(sk.length)out.push({k:'skip',t:`손도 대지 않고 넘어간 문항 ${sk.length}개: ${sk.map(q=>q+'번').join(', ')}`});
+  const sk=skippedQs(R);if(sk.length)out.push({k:'skip',t:`손도 대지 않고 넘어간 문항 ${sk.length}개: ${sk.map(q=>QN(q)+'번').join(', ')}`});
   const tot=M.T||1;out.push({k:'pace',t:`실제로 펜을 움직인 시간 ${fmtT(M.ink)} / 측정 시간 ${fmtT(tot)} (${Math.round(M.ink/tot*100)}%) · 문항당 평균 ${fmtT(qs.reduce((s,x)=>s+x.dwell,0)/qs.length)}`});
   return out}
 // 타임라인 그림 (SVG 문자열, 리포트 파일에도 그대로 씀)
@@ -2657,14 +2661,14 @@ async function pvLoadInk(){   // 파일에 저장된 필기(학생)와 채점 �
   for(const pg of PV.pages){const an=await (await doc.getPage(pg.n)).getAnnotations();pg.saved=[];pg.marks=[];
     for(const a of an){if(a.subtype!=='Ink'||!a.inkLists)continue;const mine=((a.titleObj&&a.titleObj.str)||a.title||'')==='NJMATH-GRADE';
       for(const L of a.inkLists){const pts=[];if(L.length&&typeof L[0]==='object')for(const p of L)pts.push({x:p.x,y:p.y});else for(let i=0;i+1<L.length;i+=2)pts.push({x:L[i],y:L[i+1]});
-        const cs=(a.contentsObj&&a.contentsObj.str)||a.contents||'',pend=mine&&/^NJ:\d+:P$/.test(cs),mq=mine?(/^NJ:(\d+):/.exec(cs)||[])[1]:null;(mine?pg.marks:pg.saved).push({id:a.id,pts,pend,q:mq!=null?+mq:null,c:!mine&&a.color&&a.color.length===3?'#'+[...a.color].map(v=>v.toString(16).padStart(2,'0')).join(''):undefined,w:!mine&&a.borderStyle&&a.borderStyle.width?a.borderStyle.width/1.3:undefined})}}
+        const cs=(a.contentsObj&&a.contentsObj.str)||a.contents||'',pend=mine&&/^NJ:\d+:P$/.test(cs),mq=mine?(/^NJ:(\d+):/.exec(cs)||[])[1]:null;(mine?pg.marks:pg.saved).push({id:a.id,pts,pend,skip:mine&&/^NJ:\d+:K$/.test(cs),q:mq!=null?+mq:null,c:!mine&&a.color&&a.color.length===3?'#'+[...a.color].map(v=>v.toString(16).padStart(2,'0')).join(''):undefined,w:!mine&&a.borderStyle&&a.borderStyle.width?a.borderStyle.width/1.3:undefined})}}
     pvDraw(pg)}
 }
 function pvDraw(pg){if(!pg.live)return;const g=pg.g,k=pg.k,H=pg.H,d=pg.d||window.devicePixelRatio||1;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,pg.ink.width,pg.ink.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';
   const line=(pts,css)=>{g.beginPath();pts.forEach((p,i)=>{const x=css?p.x:(p.x-(pg.ox||0))*k,y=css?p.y:(H-p.y)*k;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke()};
   for(const s of pg.saved)if(!pg.del.has(s.id)){g.strokeStyle=s.c||'#1d4ed8';g.lineWidth=2*(s.w||1);line(s.pts,false)}
   for(const s of pg.fresh.concat(pg.cur?[pg.cur]:[])){g.strokeStyle=s.c||'#1d4ed8';for(let i=1;i<s.length;i++){g.lineWidth=(1.3+1.6*(s[i].p||0.5))*(s.w||1);g.beginPath();g.moveTo(s[i-1].x,s[i-1].y);g.lineTo(s[i].x,s[i].y);g.stroke()}}
-  g.lineWidth=2.6;for(const s of pg.marks){g.strokeStyle=s.pend?'#d97706':'#dc2626';line(s.pts,false)}}
+  g.lineWidth=2.6;for(const s of pg.marks){g.strokeStyle=s.skip?'#2563eb':s.pend?'#d97706':'#dc2626';line(s.pts,false)}}
 /* 마지막에 보던 쪽: 문제집(원본·풀이 사본 공통)마다 기억했다가 다시 열면 그 쪽부터 */
 const posKey=n=>'njm:pos:'+bookOf(n);
 const posGet=n=>{try{return JSON.parse(localStorage.getItem(posKey(n))||'null')}catch(e){return null}};
@@ -3090,7 +3094,7 @@ async function ssClose(){const s=SS;SS=null;$('#selfSheet').hidden=true;if(!s)re
     fb(w?'bad':'ok',`스스로 채점 ${s.n}문항 반영 · ○${o}${t?` △${t}`:''} ／${w}`);
     try{await writeMarks()}catch(e){console.error(e)}pvSum()}
   if(s.onDone)s.onDone()}
-function pvSum(){try{ghBtn()}catch(e){}{const r=$('#pvRep');if(r)r.onclick=()=>rpOpen()}{const f=$('#pvFix');if(f){f.hidden=!S;f.textContent='✏️ 직접 채점';f.onclick=()=>fixSheet()}}{const b=$('#pvSelf');if(b){const n=S?selfPending().length:0;b.hidden=!n;b.textContent=`❓ 확인할 문항 ${n}`;b.onclick=()=>{if(!SS)selfSheet()}}}$('#pvFb').textContent=$('#fb').textContent;$('#pvFb').className=$('#fb').className;$('#pvSum').innerHTML=$('#sum').innerHTML;$('#pvClock').textContent=$('#clock').textContent}
+function pvSum(){try{ghBtn()}catch(e){}{const r=$('#pvRep');if(r)r.onclick=()=>rpOpen()}{const f=$('#pvFix');if(f){f.hidden=!S;f.textContent='✏️ 직접 채점';f.onclick=()=>fixSheet()}}{const b=$('#pvSelf');if(b){const n=S?selfPending().length:0;b.hidden=!n;b.textContent=`❓ 확인할 문항 ${n}`;b.onclick=()=>{if(!SS)selfSheet()}}}$('#pvFb').textContent=$('#fb').textContent;$('#pvFb').className=$('#fb').className;$('#pvSum').innerHTML=$('#sum').innerHTML;{const sk=S&&S.ink&&S.ink.length?skippedQs():[];if(sk.length)$('#pvSum').insertAdjacentHTML('beforeend',` <span class="skipChip">✓ 안 푼 문제 ${sk.length} (${sk.slice(0,8).map(q=>QN(q)).join(', ')}${sk.length>8?'…':''})</span>`)}$('#pvClock').textContent=$('#clock').textContent}
 async function pvEnd(){if(PV.busy||SS)return;try{ghClose();rpClose()}catch(e){}pvPosTick();if(S&&selfPending().length&&!PV.endAsk){PV.endAsk=1;return selfSheet(()=>pvEnd())}PV.endAsk=0;try{PV.busy=true;pvStatus();await pvSave()}catch(e){console.error(e)}PV.busy=false;
   $('#vPdf').hidden=true;document.querySelector('.wrap').style.maxWidth='';end()}
 /* 확대·축소: 버튼, 두 손가락 벌리기/모으기, Ctrl+휠(트랙패드) */
