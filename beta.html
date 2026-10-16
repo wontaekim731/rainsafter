@@ -415,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.58)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.59)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -1788,7 +1788,7 @@ async function scanLazyInit(file,handle,bytes,doc,solKeys,solRange,replace,colr)
   showInfo();$('#start').disabled=false;await recentSave()}
 /* 처음 푸는 쪽의 문제 번호 읽기: 학생이 그 쪽에 쓰기 시작하면 뒤에서 미리 읽어 둔다 → 채점 버튼을 누를 때는 이미 끝나 있다 */
 const LZ={q:Promise.resolve(),m:{},n:0};
-/* LZV 4: 자이스토리·EBS 쪽은 새 규칙으로 통째로 다시 읽는다 (예전 버전에서 번호를 밀려 읽은 쪽 바로잡기) */ const LZV=4;function lazyOne(pg){const P0=P;if(!P0||!P0.scan||!P0.lazy||!window.SCAN)return Promise.resolve();const key=P0.name+'#'+pg;
+/* LZV 4: 자이스토리·EBS 쪽은 새 규칙으로 통째로 다시 읽는다 (예전 버전에서 번호를 밀려 읽은 쪽 바로잡기) */ const LZV=4;function lazyOne(pg){const P0=P;if(!P0||!P0.scan||!(P0.lazy||P0.xi||P0.ebs)||!window.SCAN)return Promise.resolve();   /* 자이스토리·EBS는 처음에 통째로 읽었어도 예전 버전 결과면 다시 읽는다 */const key=P0.name+'#'+pg;
   // 객관식인데 보기 자리를 못 찾은 문항(예전 버전에서 읽음, 보기 하나가 가려짐)은 그 쪽을 한 번 다시 읽어 보기 자리만 채운다
   const fix=P0.problems.filter(p=>p.page===pg&&((!(p.choices&&p.choices.length)&&!p.chTried&&p.key&&p.key.kind==='circled')||(p.lv||0)<(P0.xi||P0.ebs?LZV:3)));
   if(!fix.length&&((P0.lazyDone||[]).includes(pg)||P0.problems.some(p=>p.page===pg)))return Promise.resolve();if(LZ.m[key])return LZ.m[key];
@@ -1813,7 +1813,7 @@ const LZ={q:Promise.resolve(),m:{},n:0};
     for(const p of A.problems){if(P0.xi&&p.q<100000)continue;if((P0.xi||P0.ebs)&&P0.problems.some(x=>x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV))P0.problems=P0.problems.filter(x=>!(x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV));if(P0.problems.some(x=>x.q===p.q))continue;p.chTried=1;p.lv=LZV;const k=!P0.ebs&&P0.solKeys&&P0.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k;if(!p.key||P0.ebs)p.key={text:'✓',kind:'self',ebs:P0.ebs?1:undefined,xi:P0.xi&&p.q>=100000?1:undefined};P0.problems.push(p)}
     if(P0.xi)P0.problems=xiClean(P0.problems);P0.problems.sort((a,b)=>a.q-b.q);if(window.NJPROF)console.log('PROF lazy',pg,Math.round(performance.now()-T0));if(P===P0)await recentSave()}).catch(e=>console.error(e)).finally(()=>{delete LZ.m[key];LZ.n--});
   LZ.m[key]=pr;return pr}
-let LZ_T=0;function lazySoon(pg,ms){if(!S||!P||!P.lazy)return;clearTimeout(LZ_T);LZ_T=setTimeout(()=>lazyOne(pg),ms||300)}
+let LZ_T=0;function lazySoon(pg,ms){if(!S||!P||!(P.lazy||P.xi||P.ebs))return;clearTimeout(LZ_T);LZ_T=setTimeout(()=>lazyOne(pg),ms||300)}
 async function lazyRead(pages){await Promise.all(pages.map(pg=>lazyOne(pg)))}
 function showInfo(){
   if(P.scan&&P.lazy){const nk=Object.keys(P.solKeys||{}).length,sr=P.solRange;
