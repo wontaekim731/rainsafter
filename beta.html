@@ -415,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.56)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.57)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -1788,15 +1788,18 @@ async function scanLazyInit(file,handle,bytes,doc,solKeys,solRange,replace,colr)
   showInfo();$('#start').disabled=false;await recentSave()}
 /* 처음 푸는 쪽의 문제 번호 읽기: 학생이 그 쪽에 쓰기 시작하면 뒤에서 미리 읽어 둔다 → 채점 버튼을 누를 때는 이미 끝나 있다 */
 const LZ={q:Promise.resolve(),m:{},n:0};
-const LZV=3;function lazyOne(pg){const P0=P;if(!P0||!P0.scan||!P0.lazy||!window.SCAN)return Promise.resolve();const key=P0.name+'#'+pg;
+/* LZV 4: 자이스토리·EBS 쪽은 새 규칙으로 통째로 다시 읽는다 (예전 버전에서 번호를 밀려 읽은 쪽 바로잡기) */ const LZV=4;function lazyOne(pg){const P0=P;if(!P0||!P0.scan||!P0.lazy||!window.SCAN)return Promise.resolve();const key=P0.name+'#'+pg;
   // 객관식인데 보기 자리를 못 찾은 문항(예전 버전에서 읽음, 보기 하나가 가려짐)은 그 쪽을 한 번 다시 읽어 보기 자리만 채운다
-  const fix=P0.problems.filter(p=>p.page===pg&&((!(p.choices&&p.choices.length)&&!p.chTried&&p.key&&p.key.kind==='circled')||(p.lv||0)<LZV));
+  const fix=P0.problems.filter(p=>p.page===pg&&((!(p.choices&&p.choices.length)&&!p.chTried&&p.key&&p.key.kind==='circled')||(p.lv||0)<(P0.xi||P0.ebs?LZV:3)));
   if(!fix.length&&((P0.lazyDone||[]).includes(pg)||P0.problems.some(p=>p.page===pg)))return Promise.resolve();if(LZ.m[key])return LZ.m[key];
   LZ.n++;const pr=LZ.q=LZ.q.then(async()=>{if(P!==P0)return;const T0=performance.now();if(window.NJPROF)console.log('PROF lzstart',pg,fix.length);
     if(fix.length){fix.forEach(p=>p.chTried=1);const qk=P0.solKeys&&Object.keys(P0.solKeys).length>=10;const A=await SCAN.analyze(P0.doc,{from:pg,to:pg,T:TPL,noSol:true,keep:true,thorough:true,footer:false,colorLabs:qk&&!!P0.solColor});
       // 다시 읽은 결과가 더 나으면(번호를 더 많이 찾음) 그 쪽 문항을 통째로 바꾼다: 영역·보기 자리 모두 새로 (정답은 빠른 정답 그대로)
       const old=P0.problems.filter(p=>p.page===pg);
-      if(A.problems.length>=old.length&&old.every(o=>A.problems.some(n=>n.q===o.q))){for(const n of A.problems){const o=P0.problems.find(x=>x.q===n.q);const k=(P0.solKeys&&P0.solKeys[n.q])||(o&&o.key)||n.key||{text:'✓',kind:'self'};n.key=k;n.chTried=1;n.lv=LZV;if(o){const i=P0.problems.indexOf(o);P0.problems[i]=n}else P0.problems.push(n)}P0.problems.sort((a,b)=>a.q-b.q)}
+      let NA=A.problems;if(P0.xi){NA=NA.filter(p=>p.q>=100000);NA=xiClean(P0.problems.filter(p=>p.page!==pg).concat(NA)).filter(p=>p.page===pg)}
+      const pend=q=>({text:'✓',kind:'self',ebs:P0.ebs||P0.xi?1:undefined,xi:P0.xi&&q>=100000?1:undefined});
+      if((P0.xi||P0.ebs)&&NA.length){P0.problems=P0.problems.filter(p=>p.page!==pg||NA.some(n=>n.q===p.q));for(const n of NA){const o=P0.problems.find(x=>x.q===n.q);n.key=o&&o.key&&o.key.ebsT?o.key:pend(n.q);n.chTried=1;n.lv=LZV;if(o){const i=P0.problems.indexOf(o);P0.problems[i]=n}else P0.problems.push(n)}P0.problems.sort((a,b)=>a.q-b.q)}   // 번호마다 정답이 따로라: 새로 읽은 번호·영역으로 통째로 바꾸고 정답은 채점할 때 다시 찾는다
+      else if(A.problems.length>=old.length&&old.every(o=>A.problems.some(n=>n.q===o.q))){for(const n of A.problems){const o=P0.problems.find(x=>x.q===n.q);const k=(P0.solKeys&&P0.solKeys[n.q])||(o&&o.key)||n.key||pend(n.q);n.key=k;n.chTried=1;n.lv=LZV;if(o){const i=P0.problems.indexOf(o);P0.problems[i]=n}else P0.problems.push(n)}P0.problems.sort((a,b)=>a.q-b.q)}
       else for(const p of fix){const n=A.problems.find(x=>x.q===p.q);if(n&&n.choices&&n.choices.length)p.choices=n.choices}
       for(const p of P0.problems)if(p.page===pg)p.lv=LZV;
       if(P===P0)await recentSave();return}
@@ -2699,8 +2702,8 @@ function pvDraw(pg){if(!pg.live)return;const g=pg.g,k=pg.k,H=pg.H,d=pg.d||window
   for(const s of pg.saved)if(!pg.del.has(s.id)){g.strokeStyle=s.c||'#1d4ed8';g.lineWidth=2*(s.w||1);line(s.pts,false)}
   for(const s of pg.fresh.concat(pg.cur?[pg.cur]:[])){g.strokeStyle=s.c||'#1d4ed8';for(let i=1;i<s.length;i++){g.lineWidth=(1.3+1.6*(s[i].p||0.5))*(s.w||1);g.beginPath();g.moveTo(s[i-1].x,s[i-1].y);g.lineTo(s[i].x,s[i].y);g.stroke()}}
   for(const s of pg.marks){if(s.skip){g.save();g.globalAlpha=0.42;g.strokeStyle='#facc15';g.lineCap='butt';g.lineWidth=(s.w||14)*k;line(s.pts,false);g.restore();continue}g.lineWidth=2.6;g.strokeStyle=s.pend?'#d97706':'#dc2626';line(s.pts,false)}
-  if(PV.sel&&PV.sel.pg===pg&&!(PV.sel.h.f&&!pg.fresh.includes(PV.sel.h.f))){const b=selBox(pg,PV.sel.h),m=8;g.save();g.setLineDash([6,5]);g.strokeStyle='#0ea5e9';g.lineWidth=1.5;g.strokeRect(b.x0-m,b.y0-m,b.x1-b.x0+2*m,b.y1-b.y0+2*m);g.setLineDash([]);const H=selHandles(b);g.beginPath();g.moveTo(H.rot.x,b.y0-m);g.lineTo(H.rot.x,H.rot.y+9);g.stroke();
-    g.fillStyle='#fff';g.lineWidth=2;g.beginPath();g.arc(H.rot.x,H.rot.y,9,0,7);g.fill();g.stroke();g.beginPath();g.arc(H.rot.x,H.rot.y,4.5,-0.3,4.4);g.stroke();   // 돌리기 손잡이
+  if(PV.sel&&PV.sel.pg===pg&&!(PV.sel.h.f&&!pg.fresh.includes(PV.sel.h.f))){const b=selBox(pg,PV.sel.h),m=8;g.save();g.setLineDash([6,5]);g.strokeStyle='#0ea5e9';g.lineWidth=1.5;g.strokeRect(b.x0-m,b.y0-m,b.x1-b.x0+2*m,b.y1-b.y0+2*m);g.setLineDash([]);const H=selHandles(b);g.fillStyle='#fff';g.lineWidth=2;if(!selRound(PV.sel.h)){g.beginPath();g.moveTo(H.rot.x,b.y0-m);g.lineTo(H.rot.x,H.rot.y+9);g.stroke();
+    g.beginPath();g.arc(H.rot.x,H.rot.y,9,0,7);g.fill();g.stroke();g.beginPath();g.arc(H.rot.x,H.rot.y,4.5,-0.3,4.4);g.stroke()}   // 돌리기 손잡이
     g.fillRect(H.size.x-8,H.size.y-8,16,16);g.strokeRect(H.size.x-8,H.size.y-8,16,16);g.beginPath();g.moveTo(H.size.x-4,H.size.y-4);g.lineTo(H.size.x+4,H.size.y+4);g.stroke();g.restore()}}   // 크기 손잡이
 /* 마지막에 보던 쪽: 문제집(원본·풀이 사본 공통)마다 기억했다가 다시 열면 그 쪽부터 */
 const posKey=n=>'njm:pos:'+bookOf(n);
@@ -2849,9 +2852,10 @@ function pvFind(pg,p,r){let best=null,bd=r||22;
   for(const o of pg.saved){if(pg.del.has(o.id))continue;for(const q of o.pts){const d=Math.hypot((q.x-(pg.ox||0))*pg.k-p.x,(pg.H-q.y)*pg.k-p.y);if(d<bd){bd=d;best={o}}}}return best}
 function pvTake(pg,h){if(!h)return null;if(h.f)return h.f;const o=h.o,st=o.pts.map(q=>({x:(q.x-(pg.ox||0))*pg.k,y:(pg.H-q.y)*pg.k,p:0.5}));st.c=o.c;st.w=o.w;st.t=Date.now();st.moved=1;pg.fresh.push(st);pg.del.add(o.id);PV.undo.push({pg,kind:'del',id:o.id});PV.undo.push({pg,kind:'add',s:st});h.f=st;delete h.o;return st}
 /* 선택한 도형: 가운데를 끌면 옮기기, 위 동그라미는 돌리기, 오른쪽 아래 네모는 크기 바꾸기 */
+function selRound(h){if(!(h&&h.f&&h.f.snapped==='ell'))return false;let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const q of h.f){x0=Math.min(x0,q.x);y0=Math.min(y0,q.y);x1=Math.max(x1,q.x);y1=Math.max(y1,q.y)}const w=x1-x0,hh=y1-y0;return Math.abs(w-hh)<Math.max(w,hh)*0.06}   // 원은 돌려도 똑같아서 돌리기 손잡이를 안 보인다
 function selHandles(b){const m=8;return {rot:{x:(b.x0+b.x1)/2,y:b.y0-m-30},size:{x:b.x1+m,y:b.y1+m}}}
 function selHandle(pg,p){const S0=PV.sel;if(!S0||S0.pg!==pg)return null;if(S0.h.f&&!pg.fresh.includes(S0.h.f)){PV.sel=null;return null}const H=selHandles(selBox(pg,S0.h)),r=24;
-  if(Math.hypot(p.x-H.rot.x,p.y-H.rot.y)<r)return 'rot';if(Math.hypot(p.x-H.size.x,p.y-H.size.y)<r)return 'size';return null}
+  if(!selRound(S0.h)&&Math.hypot(p.x-H.rot.x,p.y-H.rot.y)<r)return 'rot';if(Math.hypot(p.x-H.size.x,p.y-H.size.y)<r)return 'size';return null}
 function selGrab(pg,p){const hd=selHandle(pg,p);if(!hd&&!selIn(pg,p))return null;const st=pvTake(pg,PV.sel.h);if(!st)return null;
   if(!hd)return {s:st,x:p.x,y:p.y,dx:0,dy:0};const b=selBox(pg,{f:st});return {s:st,kind:hd,o:st.map(q=>({x:q.x,y:q.y})),cx:(b.x0+b.x1)/2,cy:(b.y0+b.y1)/2,ax:b.x0,ay:b.y0,p0:p}}
 function selTf(m,p){const o=m.o,s=m.s;
