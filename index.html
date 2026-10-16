@@ -415,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.61</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.61)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.64</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.64)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -459,7 +459,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.61</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.64</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" style="font-size:18px;padding:6px 12px;line-height:1" title="나가기 (저장하고 닫기)" aria-label="나가기">✕</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1815,9 +1815,15 @@ const LZ={q:Promise.resolve(),m:{},n:0};
   LZ.m[key]=pr;return pr}
 let LZ_T=0;function lazySoon(pg,ms){if(!S||!P||!(P.lazy||P.xi||P.ebs))return;clearTimeout(LZ_T);LZ_T=setTimeout(()=>lazyOne(pg),ms||300)}
 async function lazyRead(pages){await Promise.all(pages.map(pg=>lazyOne(pg)))}
+async function countXi(P0){P0._xiCounting=1;try{const sr=P0.solRange,by={};let cur=null,etc=0;
+  for(let pi=sr[0];pi<=sr[1];pi++){const R=await xiPage(pi);for(const x of R.items){if(x.box){cur=x.L||'?';continue}if(!cur)continue;if(cur==='?')etc++;else by[cur]=(by[cur]||0)+1}}
+  const n=Object.values(by).reduce((a,b)=>a+b,0);{P0.xiCount=Object.keys(by).length>=2?{n,by,etc}:{n:0};if(P===P0){try{showInfo()}catch(e){}try{await recentSave()}catch(e){}}}}catch(e){console.error(e)}finally{P0._xiCounting=0}}
 function showInfo(){
-  if(P.scan&&P.lazy){const nk=Object.keys(P.solKeys||{}).length,sr=P.solRange;
-    $('#pdfInfo').innerHTML=`<b>${esc(P.fname)}</b><br>${nk?`<b style="color:var(--ok)">✓ 정답 ${nk}개</b>`:'정답은 풀 때 읽어요'}`+
+  if(P.scan&&P.lazy){const nk=Object.keys(P.solKeys||{}).length,sr=P.solRange,xc=P.xiCount;
+    if(!xc&&sr&&sr[1]&&!P._xiCounting)countXi(P);   // 자이스토리: 빠른 정답 표의 칸 수 = 문항 수 (단원 A, B, …마다 01부터)
+    const isX=xc&&xc.n,line=!xc&&P._xiCounting?'문항·정답 수 세는 중… (몇 초)':isX||(P.xi&&!xc)?(isX?`문항 ${xc.n.toLocaleString()}개 · <b style="color:var(--ok)">✓ 정답 ${xc.n.toLocaleString()}개</b><br><span class="muted" style="font-size:13px">${Object.entries(xc.by).map(([k,v])=>k+' '+v).join(' · ')}${xc.etc?` · 기타 ${xc.etc}`:''}</span>`:'문항·정답 수 세는 중…')
+      :nk?`문항 약 ${nk.toLocaleString()}개 · <b style="color:var(--ok)">✓ 정답 ${nk.toLocaleString()}개</b> <span class="muted" style="font-size:13px">(빠른 정답 기준)</span>`:'정답은 풀 때 읽어요';
+    $('#pdfInfo').innerHTML=`<b>${esc(P.fname)}</b><br>${line}`+
       (START_OPEN&&!S?`<div class="row" style="justify-content:flex-start;margin-top:8px"><button class="btn mid" id="addOk" type="button">${PEND_START?'풀기 시작':'확인'}</button></div>`:'');
     const ok=$('#addOk');if(ok)ok.onclick=addDone;return}
   if(P.scan){const pr=P.problems,auto=pr.filter(p=>p.key&&p.key.kind!=='self').length,self=pr.filter(p=>isSelf(p)).length,mc=pr.filter(p=>p.choices.length===5||p.parts).length,rg=(P.ranges||[]).map(r=>r[0]===r[1]?r[0]+'쪽':r[0]+'–'+r[1]+'쪽').join(', ');
@@ -2261,6 +2267,13 @@ function pvPersist(job){   // 아직 시작 안 한 저장이 있으면 거기�
   PVQ.wait=job;PVQ.n++;try{pvStatus()}catch(e){}
   const run=async()=>{if(PVQ.wait===job)PVQ.wait=null;try{await pdfWrite(job);BK.un=BK.un.filter(u=>!(job.add||[]).includes(u));bkWrite()}catch(e){console.error(e);fb('bad','필기를 파일에 저장하지 못했어요. 다시 [채점하기]를 눌러 주세요. ('+(e.message||e)+')')}finally{PVQ.n--;try{pvStatus()}catch(e){}}};PVQ.p=PVQ.p.then(()=>new Promise(r=>setTimeout(r,600))).then(run);return PVQ.p}
 /* 선생님이 채점 고치기: 앱이 잘못 읽은 문항을 ○ 또는 ／로 바로잡는다. ○로 고치면 그 문항의 오답 기록도 지운다 */
+/* 이 쪽 문항 다시 읽기: 번호를 못 찾았거나 잘못 잡은 쪽을 손으로 다시 읽힌다 (예전 결과는 버리고 새로) */
+async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;const pg=c.pg,P0=P;
+  for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
+  fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
+  try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.64 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
   const draw=()=>{const c=pvCurPage(),pgs=c?[c.pg,c.pg+1]:[],qs=new Set(Object.values(S.state).filter(x=>x.status==='done'&&x.ok!=null).map(x=>x.q));P.problems.filter(p=>pgs.includes(p.page)).forEach(p=>qs.add(p.q));
@@ -2430,11 +2443,12 @@ async function tagOf(p){P.tc=P.tc||{};if(!P.tc[p.page])P.tc[p.page]=(await (awai
   const m=/\|\s*(.+?)\s*\|\s*정답률\s*(\d+)\s*%/.exec(s);return m?{topic:m[1].trim(),rate:+m[2]}:{topic:(/\|\s*([^|]+?)\s*\|/.exec(s)||[])[1]||'',rate:null}}
 async function contentBox(p){          // 문항 영역에서 아래쪽 빈 풀이 칸을 잘라낸 상자 (PDF 좌표)
   const sc=1.5;P.rc=P.rc||{};if(!P.rc[p.page])P.rc[p.page]=await SV.renderGray(await P.doc.getPage(p.page),sc);
-  const R=P.rc[p.page],H=R.vp.height/sc,X0=Math.ceil((p.x0+6)*sc),X1=Math.floor((p.x1-6)*sc),Yt=Math.max(0,Math.floor((H-p.y1)*sc)),Yb=Math.min(R.h,Math.ceil((H-p.y0-26)*sc));
+  const R=P.rc[p.page],vb=R.vp.viewBox||[0,0,0,R.vp.height/sc],ox=vb[0],H=vb[3],X0=Math.ceil((p.x0-ox+6)*sc),X1=Math.floor((p.x1-ox-6)*sc),Yt=Math.max(0,Math.floor((H-p.y1)*sc)),Yb=Math.min(R.h,Math.ceil((H-p.y0-26)*sc));   // 자르기 상자(CropBox)가 0에서 시작하지 않는 PDF(자이스토리): 쪽 왼쪽·위 여백만큼 옮겨서 본다
+  
   let last=Yt;for(let y=Yt;y<Yb;y++){let n=0;for(let x=X0;x<X1;x++)if(R.gray[y*R.w+x]<200)n++;if(n>0&&n<(X1-X0)*0.8)last=y}
   return {left:p.x0,right:p.x1,bottom:Math.max(p.y0,H-last/sc-8),top:p.y1+3};
 }
-function thumbOf(p,box){const sc=1.5,R=P.rc[p.page],H=R.vp.height/sc,x=box.left*sc,y=(H-box.top)*sc,w=(box.right-box.left)*sc,h=(box.top-box.bottom)*sc,c=document.createElement('canvas');c.width=Math.round(w);c.height=Math.round(h);c.getContext('2d').drawImage(R.c,x,y,w,h,0,0,c.width,c.height);return c.toDataURL('image/jpeg',0.8)}
+function thumbOf(p,box){const sc=1.5,R=P.rc[p.page],vb=R.vp.viewBox||[0,0,0,R.vp.height/sc],H=vb[3],x=(box.left-vb[0])*sc,y=(H-box.top)*sc,w=(box.right-box.left)*sc,h=(box.top-box.bottom)*sc,c=document.createElement('canvas');c.width=Math.round(w);c.height=Math.round(h);c.getContext('2d').drawImage(R.c,x,y,w,h,0,0,c.width,c.height);return c.toDataURL('image/jpeg',0.8)}
 /* --- 자동 오답 진단 --- */
 function diagnose(p,x,tSec,medSec,tag){
   const r=tag.rate,obj=p.choices.length===5,f=v=>v>=60?`${Math.floor(v/60)}분 ${Math.round(v%60)}초`:`${Math.round(v)}초`;const why=[];let s;
@@ -3179,7 +3193,7 @@ async function ssClose(){const s=SS;SS=null;$('#selfSheet').hidden=true;if(!s)re
     fb(w?'bad':'ok',`스스로 채점 ${s.n}문항 반영 · ○${o}${t?` △${t}`:''} ／${w}`);
     try{await writeMarks()}catch(e){console.error(e)}pvSum()}
   if(s.onDone)s.onDone()}
-function pvSum(){try{ghBtn()}catch(e){}{const r=$('#pvRep');if(r)r.onclick=()=>rpOpen()}{const f=$('#pvFix');if(f){f.hidden=!S;f.textContent='✏️ 직접 채점';f.onclick=()=>fixSheet()}}{const b=$('#pvSelf');if(b){const n=S?selfPending().length:0;b.hidden=!n;b.textContent=`❓ 확인 ${n}`;b.title='스스로 확인할 문항';b.onclick=()=>{if(!SS)selfSheet()}}}$('#pvFb').textContent=$('#fb').textContent;$('#pvFb').className=$('#fb').className;$('#pvSum').innerHTML=$('#sum').innerHTML;{const sk=S&&S.ink&&S.ink.length?skippedQs():[];if(sk.length)$('#pvSum').insertAdjacentHTML('beforeend',` <span class="skipChip">안 푼 문제 ${sk.length} (${sk.slice(0,8).map(q=>QN(q)).join(', ')}${sk.length>8?'…':''})</span>`)}$('#pvClock').textContent=$('#clock').textContent}
+function pvSum(){try{ghBtn()}catch(e){}{const r=$('#pvRep');if(r)r.onclick=()=>rpOpen()}{const f=$('#pvFix');if(f){f.hidden=!S;f.textContent='✏️ 직접 채점';f.onclick=()=>fixSheet()}}{const b=$('#pvReread');if(b){b.hidden=!(S&&P);b.onclick=()=>pvReread()}}{const b=$('#pvSelf');if(b){const n=S?selfPending().length:0;b.hidden=!n;b.textContent=`❓ 확인 ${n}`;b.title='스스로 확인할 문항';b.onclick=()=>{if(!SS)selfSheet()}}}$('#pvFb').textContent=$('#fb').textContent;$('#pvFb').className=$('#fb').className;$('#pvSum').innerHTML=$('#sum').innerHTML;{const sk=S&&S.ink&&S.ink.length?skippedQs():[];if(sk.length)$('#pvSum').insertAdjacentHTML('beforeend',` <span class="skipChip">안 푼 문제 ${sk.length} (${sk.slice(0,8).map(q=>QN(q)).join(', ')}${sk.length>8?'…':''})</span>`)}$('#pvClock').textContent=$('#clock').textContent}
 async function pvEnd(){if(PV.busy||SS)return;try{ghClose();rpClose()}catch(e){}pvPosTick();if(S&&selfPending().length&&!PV.endAsk){PV.endAsk=1;return selfSheet(()=>pvEnd())}PV.endAsk=0;try{PV.busy=true;pvStatus();await pvSave()}catch(e){console.error(e)}PV.busy=false;
   $('#vPdf').hidden=true;document.querySelector('.wrap').style.maxWidth='';end()}
 /* 확대·축소: 버튼, 두 손가락 벌리기/모으기, Ctrl+휠(트랙패드) */
@@ -3372,6 +3386,12 @@ const dayKey=t=>{const d=new Date(t);return `${d.getFullYear()}-${String(d.getMo
 const dayLabel=k=>{const d=new Date(k+'T00:00:00');return `${d.getMonth()+1}월 ${d.getDate()}일 (${'일월화수목금토'[d.getDay()]})`};
 let LOGQ=Promise.resolve();
 function logWrongs(){LOGQ=LOGQ.then(logWrongsNow).catch(e=>console.error(e));return LOGQ}
+/* 예전 버전이 자이스토리 같은 PDF(자르기 상자가 0에서 시작 안 함)에서 오답 그림을 옆으로 밀려 잘랐다: 함께 보관한 문항 PDF(이건 맞게 잘림)로 그림을 한 번 다시 만든다 */
+async function fixThumbs(){try{if(localStorage.getItem('njTh2'))return}catch(e){}if(!PDFJS)return;
+  const re=async x=>{if(!x||x.th2||!x.pdf)return false;let d=null;try{d=await PDFJS.getDocument({data:new Uint8Array(x.pdf).slice()}).promise;const pg=await d.getPage(1),vp=pg.getViewport({scale:1.5}),c=document.createElement('canvas');c.width=Math.round(vp.width);c.height=Math.round(vp.height);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);await pg.render({canvasContext:g,viewport:vp}).promise;x.thumb=c.toDataURL('image/jpeg',0.8);x.th2=1;c.width=c.height=0;return true}catch(e){console.error(e);return false}finally{if(d)d.destroy().catch(()=>{})}};
+  let n=0;for(const w of await wrAll())if(await re(w)){await wrPut(w);n++}for(const it of await dbAll())if(await re(it)){await dbPut(it);n++}
+  try{localStorage.setItem('njTh2','1')}catch(e){}if(window.NJPROF)console.log('PROF fixThumbs',n);if(n){try{if(!$('#vAna').hidden)renderAnaTab()}catch(e){}}}
+setTimeout(()=>{fixThumbs().catch(e=>console.error(e))},6000);
 async function logWrongsNow(){   // 지금 학습에서 틀린(고친·여전히 모름 포함) 문항을 기록. 문제 그림도 같이 보관해서 나중에 오답노트에 바로 담을 수 있게
   if(!P||P.task)return;const R=S||LAST;if(!R)return;
   const list=Object.values(R.state).filter(x=>{const c=catOf(x);return c&&c!=='O'});if(!list.length)return;
@@ -3382,7 +3402,7 @@ async function logWrongsNow(){   // 지금 학습에서 틀린(고친·여전히
       const box=await contentBox(p),one=await PDFLib.PDFDocument.create(),[emb]=await one.embedPages([src.getPage(p.page-1)],[box]),bw=box.right-box.left,bh=box.top-box.bottom;
       one.addPage([bw,bh]).drawPage(emb,{x:0,y:0,width:bw,height:bh});
       const tag=await tagOf(p),t=TM.T[p.q]!=null?TM.T[p.q]/1000:null,dg=diagnose(p,x,t,med,tag);
-      w={id,src:P.name,q:p.q,day:dayKey(Date.now()),at:Date.now(),topic:tag.topic,rate:tag.rate,key:p.key,keyShow:showKey(p),keyImg:(isSelf(p)||isMulti(p))?await keyImg(p):'',w:bw,h:bh,pdf:await one.save(),thumb:thumbOf(p,box),
+      w={id,src:P.name,q:p.q,day:dayKey(Date.now()),at:Date.now(),topic:tag.topic,rate:tag.rate,key:p.key,keyShow:showKey(p),keyImg:(isSelf(p)||isMulti(p))?await keyImg(p):'',w:bw,h:bh,pdf:await one.save(),thumb:thumbOf(p,box),th2:1,
         choices:p.choices.map(c=>({n:c.n,x:c.x-box.left,y:c.y-box.bottom,s:c.s})),ans:x.earlier?'':fmt(p,x.ans),t,auto:dg.s,reason:dg.s,why:dg.why}}
     if(!x.pw&&p.key&&p.key.kind==='nparts'&&x.ans&&x.ans!=='✗'){const A=String(x.ans).split('|');x.pw=p.key.nums.map((v,i)=>v!=null&&A[i]!==v?i+1:null).filter(Boolean)}
     w.cat=c;if(x.pw&&x.pw.length)w.pw=x.pw;w.tries=Math.max(w.tries||1,x.wrongs||1);w.retry=x.retry&&x.retry.ans?fmt(p,x.retry.ans):(w.retry||'');w.upd=Date.now();
@@ -3390,7 +3410,7 @@ async function logWrongsNow(){   // 지금 학습에서 틀린(고친·여전히
     await wrPut(w)}
   if(!$('#vAna').hidden)renderAnaTab();
 }
-function itemFromWrong(w){return {id:w.id,src:w.src,q:w.q,topic:w.topic,rate:w.rate,key:w.key,keyShow:w.keyShow,keyImg:w.keyImg||'',w:w.w,h:w.h,pdf:w.pdf,thumb:w.thumb,choices:w.choices,
+function itemFromWrong(w){return {id:w.id,src:w.src,q:w.q,topic:w.topic,rate:w.rate,key:w.key,keyShow:w.keyShow,keyImg:w.keyImg||'',w:w.w,h:w.h,pdf:w.pdf,thumb:w.thumb,th2:w.th2,choices:w.choices,
   added:Date.now(),first:{ans:w.ans,t:w.t},cat:w.cat,reason:w.reason,auto:w.auto,hist:[],stage:0,done:false,due:today0()+DAY}}
 async function noteAddFromWrongs(ids){let n=0;for(const id of ids){if(await dbGet(id))continue;const w=await wrGet(id);if(!w)continue;const it=itemFromWrong(w);if(w.pw)it.pw=w.pw;await dbPut(it);n++}badge();return n}
 let ANAF='all';
