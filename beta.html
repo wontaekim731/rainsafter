@@ -291,6 +291,8 @@ body:has(#vPdf:not([hidden])) .appbar{display:none}
 #nSheet,#noteSh{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(15,23,42,.35)}#noteSh[hidden]{display:none}
 #noteSh .sh{background:var(--paper);width:min(620px,100%);max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 18px 24px;display:flex;flex-direction:column;gap:12px}
   .skipChip{color:#2563eb;font-weight:650;white-space:nowrap}
+@media (max-width:1000px){#pvZoom #pvZ{display:none}#pvZoom button{padding:6px 10px}.pvBar{gap:6px!important}}
+.pvMoreW{position:relative}.pvMoreM{position:absolute;right:0;top:calc(100% + 6px);z-index:40;display:flex;flex-direction:column;align-items:stretch;gap:4px;min-width:170px;padding:8px;border-radius:14px;background:var(--paper,#fff);box-shadow:0 12px 30px rgba(28,36,51,.2),0 0 0 1px var(--line,#e5e7eb)}.pvMoreM[hidden]{display:none}.pvMoreM .btn{justify-content:flex-start;text-align:left;font-size:15px;padding:10px 12px;width:100%}.pvMoreM .btn[hidden]{display:none}#pvMoreB{font-size:20px;padding:6px 14px;line-height:1}
 #pvPenDot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#1d4ed8;vertical-align:middle;margin-left:2px}
 #pvPenPop{position:fixed;z-index:90;background:var(--paper,#fff);border-radius:14px;padding:10px;box-shadow:0 12px 30px rgba(28,36,51,.2),0 0 0 1px var(--line,#e5e7eb);display:flex;flex-direction:column;gap:10px}
 #pvPenPop .ppRow{display:flex;gap:8px;align-items:center}#pvPenPop .ppC{width:36px;height:36px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #cbd5e1}#pvPenPop .ppC.on{box-shadow:0 0 0 3px #f59e0b}
@@ -413,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.48)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.49)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -452,13 +454,13 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
   </section>
   <section id="vPdf" hidden>
     <div class="pvBar">
-      <b class="clock" id="pvClock" style="font-size:22px">0:00:00</b>
+      <b class="clock" id="pvClock" style="font-size:18px">0:00:00</b>
       <div id="pvTools" class="qzTools"><button type="button" data-t="pen" class="on" title="한 번 더 누르면 색·굵기">✎ 펜 <i id="pvPenDot"></i> ▾</button><button type="button" data-t="erase">지우개</button><button type="button" data-t="move" title="그린 선·도형을 펜으로 끌어서 옮기기">✥ 이동</button><button type="button" data-t="undo">↶</button></div>
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
-      <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button><button class="btn quiet" id="pvHint" type="button" hidden style="padding:9px 14px;font-size:15px">💡 힌트</button><button class="btn quiet" id="pvRep" type="button" style="padding:9px 12px;font-size:14px" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet" id="pvFix" type="button" hidden style="padding:9px 14px;font-size:15px">채점 고치기</button>
-      <button class="btn quiet tOnly" id="pvPause" type="button" style="font-size:13px;padding:7px 10px">일시정지</button>
-      <button class="btn quiet tOnly" id="pvExport" type="button" style="font-size:13px;padding:7px 10px">내보내기</button><button class="btn quiet" id="pvEnd" type="button" style="font-size:13px;padding:7px 10px">나가기</button>
+      <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button></div></div>
+      <button class="btn quiet" id="pvEnd" type="button" style="font-size:18px;padding:6px 12px;line-height:1" title="나가기 (저장하고 닫기)" aria-label="나가기">✕</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
     <div id="pdfPages"></div>
@@ -3066,7 +3068,7 @@ async function pvGrade(){
     if(saved||PV.forceGrade||pend||selfPending().some(x=>x.status==='check'&&!x.self)){PV.forceGrade=false;await gradeFile(null,false,{all:memInk()})}else fb('nk','새로 쓴 필기가 없습니다. 틀린 문제를 고친 뒤 다시 누르세요.');
     if(selfPending().length)setTimeout(()=>selfSheet(),50);
   }catch(e){console.error(e);fb('bad','저장하거나 채점하지 못했습니다: '+e.message)}
-  finally{PV.busy=false;$('#pvGrade').disabled=false;if(S&&S.frozen){PV.review=true;const b=$('#pvGrade');b.textContent=ungraded().length?'채점하기':'이어서 학습하기';b.classList.add('resume');$('#pvPause').hidden=true}pvStatus();pvSum()}}
+  finally{PV.busy=false;$('#pvGrade').disabled=false;if(S&&S.frozen){PV.review=true;const b=$('#pvGrade');b.textContent=ungraded().length?'채점하기':'이어서 풀기';b.classList.add('resume');$('#pvPause').hidden=true}pvStatus();pvSum()}}
 /* 스스로 채점: 정답 그림을 보고 학생이 ○/／를 고른다 (서술형·여러 소문항 등 자동으로 못 읽는 문항) */
 function selfPending(){if(!S)return [];return Object.values(S.state).filter(x=>x.status==='check'||(x.retry&&x.retry.self&&!x.retry.ans)).sort((a,b)=>a.q-b.q)}
 let SS=null;
@@ -3107,7 +3109,7 @@ async function ssClose(){const s=SS;SS=null;$('#selfSheet').hidden=true;if(!s)re
     fb(w?'bad':'ok',`스스로 채점 ${s.n}문항 반영 · ○${o}${t?` △${t}`:''} ／${w}`);
     try{await writeMarks()}catch(e){console.error(e)}pvSum()}
   if(s.onDone)s.onDone()}
-function pvSum(){try{ghBtn()}catch(e){}{const r=$('#pvRep');if(r)r.onclick=()=>rpOpen()}{const f=$('#pvFix');if(f){f.hidden=!S;f.textContent='✏️ 직접 채점';f.onclick=()=>fixSheet()}}{const b=$('#pvSelf');if(b){const n=S?selfPending().length:0;b.hidden=!n;b.textContent=`❓ 확인할 문항 ${n}`;b.onclick=()=>{if(!SS)selfSheet()}}}$('#pvFb').textContent=$('#fb').textContent;$('#pvFb').className=$('#fb').className;$('#pvSum').innerHTML=$('#sum').innerHTML;{const sk=S&&S.ink&&S.ink.length?skippedQs():[];if(sk.length)$('#pvSum').insertAdjacentHTML('beforeend',` <span class="skipChip">✓ 안 푼 문제 ${sk.length} (${sk.slice(0,8).map(q=>QN(q)).join(', ')}${sk.length>8?'…':''})</span>`)}$('#pvClock').textContent=$('#clock').textContent}
+function pvSum(){try{ghBtn()}catch(e){}{const r=$('#pvRep');if(r)r.onclick=()=>rpOpen()}{const f=$('#pvFix');if(f){f.hidden=!S;f.textContent='✏️ 직접 채점';f.onclick=()=>fixSheet()}}{const b=$('#pvSelf');if(b){const n=S?selfPending().length:0;b.hidden=!n;b.textContent=`❓ 확인 ${n}`;b.title='스스로 확인할 문항';b.onclick=()=>{if(!SS)selfSheet()}}}$('#pvFb').textContent=$('#fb').textContent;$('#pvFb').className=$('#fb').className;$('#pvSum').innerHTML=$('#sum').innerHTML;{const sk=S&&S.ink&&S.ink.length?skippedQs():[];if(sk.length)$('#pvSum').insertAdjacentHTML('beforeend',` <span class="skipChip">✓ 안 푼 문제 ${sk.length} (${sk.slice(0,8).map(q=>QN(q)).join(', ')}${sk.length>8?'…':''})</span>`)}$('#pvClock').textContent=$('#clock').textContent}
 async function pvEnd(){if(PV.busy||SS)return;try{ghClose();rpClose()}catch(e){}pvPosTick();if(S&&selfPending().length&&!PV.endAsk){PV.endAsk=1;return selfSheet(()=>pvEnd())}PV.endAsk=0;try{PV.busy=true;pvStatus();await pvSave()}catch(e){console.error(e)}PV.busy=false;
   $('#vPdf').hidden=true;document.querySelector('.wrap').style.maxWidth='';end()}
 /* 확대·축소: 버튼, 두 손가락 벌리기/모으기, Ctrl+휠(트랙패드) */
@@ -3137,7 +3139,7 @@ function penPop(){let pp=$('#pvPenPop');if(pp){pp.remove();return}const b=docume
   const r=b.getBoundingClientRect();pp.style.left=Math.max(8,r.left)+'px';pp.style.top=(r.bottom+6)+'px';document.body.appendChild(pp);
   pp.querySelectorAll('[data-c]').forEach(x=>x.onclick=()=>{PV.color=x.dataset.c;penSave();pp.remove()});pp.querySelectorAll('[data-w]').forEach(x=>x.onclick=()=>{PV.width=+x.dataset.w;penSave();pp.remove()});pp.querySelector('[data-snap]').onchange=e=>{SNAP_ON=e.target.checked;try{localStorage.setItem('njSnap',SNAP_ON?'1':'0')}catch(er){}};
   setTimeout(()=>{const off=e=>{if(!pp.contains(e.target)&&!b.contains(e.target)){pp.remove();document.removeEventListener('pointerdown',off,true)}};document.addEventListener('pointerdown',off,true)},0)}
-function pvTools(){penSave();document.querySelectorAll('#pvZoom [data-z]').forEach(b=>b.onclick=()=>pvZoom((PV.z||1)*(b.dataset.z==='+'?1.25:0.8)));const zr=$('#pvZ');if(zr)zr.onclick=()=>pvZoom(1);document.querySelectorAll('#pvTools [data-t]').forEach(b=>b.onclick=()=>{const t=b.dataset.t;if(t==='undo')return pvUndo();if(t==='pen'&&PV.tool!=='erase')return penPop();PV.tool=t;document.querySelectorAll('#pvTools [data-t="pen"],#pvTools [data-t="erase"],#pvTools [data-t="move"]').forEach(x=>x.classList.toggle('on',x.dataset.t===t))});
+function pvTools(){penSave();{const mb=$('#pvMoreB'),mm=$('#pvMoreM');if(mb&&mm&&!mb._b){mb._b=1;mb.onclick=e=>{e.stopPropagation();mm.hidden=!mm.hidden};mm.addEventListener('click',()=>{setTimeout(()=>{mm.hidden=true},0)});document.addEventListener('pointerdown',e=>{if(!mm.hidden&&!mm.contains(e.target)&&e.target!==mb)mm.hidden=true},true)}}document.querySelectorAll('#pvZoom [data-z]').forEach(b=>b.onclick=()=>pvZoom((PV.z||1)*(b.dataset.z==='+'?1.25:0.8)));const zr=$('#pvZ');if(zr)zr.onclick=()=>pvZoom(1);document.querySelectorAll('#pvTools [data-t]').forEach(b=>b.onclick=()=>{const t=b.dataset.t;if(t==='undo')return pvUndo();if(t==='pen'&&PV.tool!=='erase')return penPop();PV.tool=t;document.querySelectorAll('#pvTools [data-t="pen"],#pvTools [data-t="erase"],#pvTools [data-t="move"]').forEach(x=>x.classList.toggle('on',x.dataset.t===t))});
   $('#pvGrade').onclick=pvGrade;$('#pvExport').onclick=async()=>{PV.busy=true;pvStatus();try{await pvSave()}finally{PV.busy=false;pvStatus()}exportPdf()};$('#pvEnd').onclick=pvEnd;$('#pvPause').onclick=()=>{pause();$('#pvPause').textContent=S&&S.paused?'계속하기':'일시정지'};
   setInterval(()=>{if(S&&!$('#vPdf').hidden)pvSum()},1000);
   window.addEventListener('beforeunload',e=>{if(!$('#vPdf').hidden&&(PVQ.n||PV.pages.some(p=>p.fresh.length||p.del.size))){e.preventDefault();e.returnValue=''}})}
