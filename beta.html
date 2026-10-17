@@ -415,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.72</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.72)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.73</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.73)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -459,7 +459,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.72</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.73</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" style="font-size:14px;font-weight:700;padding:6px 12px;line-height:1;display:inline-flex;align-items:center;gap:6px" title="나가기 (저장하고 닫기)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8"/><path d="M10 12h10"/><path d="M17 8l4 4-4 4"/><circle cx="11.5" cy="12" r="0.1"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1571,8 +1571,20 @@ const hm=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);
 const split=r=>{r=(r||'').trim();return r?r.split(r.includes(',')?',':/\s+/).map(x=>x.trim()):[]};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+/* 진단 기록: 학생 기기(아이패드 등)에서 무엇이 왜 안 되는지 그대로 받아 보기 위해. ⋯ 메뉴·여는 화면의 [진단 정보 복사] */
+const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
+window.addEventListener('error',e=>dlog('err',(e.message||'')+' @'+(e.lineno||'')));window.addEventListener('unhandledrejection',e=>dlog('rej',String(e.reason&&(e.reason.message||e.reason)||'')));
+function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
+  return ['러닝메이트 진단 v42.73',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+    'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
+    '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
+    ...DG.L.map(x=>x.join(' '))].join('\n')}
+async function diagCopy(btn){const t=diagText();let ok=false;try{await navigator.clipboard.writeText(t);ok=true}catch(e){}
+  if(ok){if(btn){const o=btn.textContent;btn.textContent='✓ 복사했어요 (카톡 등에 붙여 넣어 보내 주세요)';setTimeout(()=>btn.textContent=o,3000)}return}
+  let d=$('#diagBox');if(!d){d=document.createElement('div');d.id='diagBox';d.style.cssText='position:fixed;inset:10% 5%;z-index:200;background:#fff;border-radius:14px;padding:12px;box-shadow:0 10px 40px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:8px';d.innerHTML='<b>진단 정보 — 전체 선택해서 복사해 주세요</b><textarea style="flex:1;font-size:11px"></textarea><button class="btn" type="button">닫기</button>';document.body.appendChild(d);d.querySelector('button').onclick=()=>d.remove()}d.querySelector('textarea').value=t;d.querySelector('textarea').select()}
+window.diagCopy=diagCopy;window.dlog=dlog;
 /* PDF 해석 일꾼이 기기에서 안 뜨면(일부 사파리 등) 예전처럼 화면 쪽에서 해석하도록 되돌린다: 문제집이 아예 안 열리는 것보다 낫다 */
-window.PDFW_OK=(async()=>{if(!PDFJS)return false;let w=null;try{w=new PDFJS.PDFWorker();await Promise.race([w.promise,new Promise((_,no)=>setTimeout(()=>no(new Error('timeout')),7000))]);return true}catch(e){console.error('pdf worker',e);
+window.PDFW_OK=(async()=>{if(!PDFJS)return false;let w=null;try{w=new PDFJS.PDFWorker();await Promise.race([w.promise,new Promise((_,no)=>setTimeout(()=>no(new Error('timeout')),7000))]);DG.wk='ok';return true}catch(e){console.error('pdf worker',e);DG.wk='실패→화면쪽('+(e&&e.message)+')';
   await new Promise(r=>{const sc=document.createElement('script');sc.src=PDFJS.GlobalWorkerOptions.workerSrc;sc.onload=sc.onerror=r;document.head.appendChild(sc)});return false}finally{try{w&&w.destroy()}catch(e){}}})();
 const FS=typeof window.showOpenFilePicker==='function';
 let P=null,P_prev={},PM={};   // PM: 파일에 실제로 그려져 있는 채점 표시 (문항→O/X/T/S)
@@ -1611,7 +1623,7 @@ async function loadPdf0(file,handle,cached){
   try{
     let bytes=new Uint8Array(await file.arrayBuffer());
     if(pdfEnc(bytes)){$('#pdfInfo').textContent='편집 금지 보안이 걸린 PDF예요. 필기를 저장할 수 있게 보안을 푸는 중… (처음 한 번, 수십 초)';try{bytes=await pdfDecrypt(bytes);if(handle&&handle.kind==='lib'){const r=await libMeta(handle.name);if(r){r.bytes=bytes;r.dec=1;await libPut(r)}}}catch(e){console.error(e);$('#err').textContent=e.message}}
-    await window.PDFW_OK;const doc=await PDFJS.getDocument({data:bytes.slice()}).promise;
+    dlog('open',(file&&file.name||'')+' '+Math.round(bytes.length/1e6)+'MB');await window.PDFW_OK;const doc=await PDFJS.getDocument({data:bytes.slice()}).promise;dlog('doc',doc.numPages+'쪽')
     let task=null,book=null;try{const md=await doc.getMetadata(),cu=(md&&md.info&&md.info.Custom)||{};const js=v=>v==null?null:JSON.parse(typeof v==='string'?v:(v.name||String(v)));task=js(cu.NJTask);book=js(cu.NJBook)}catch(e){}   // 큰 PDF를 통째로 다시 읽지 않고 정보만
     if(!task&&book&&book.problems&&!(cached&&cached.problems&&cached.pages===doc.numPages))cached={pages:doc.numPages,problems:book.problems,keyFound:true,scan:true,ranges:book.ranges};
     if(task){const base=await SV.strokes(doc),probs=task.items.map(t=>({q:t.n,page:t.page,x0:t.x0,x1:t.x1,y0:t.y0,y1:t.y1,lx:t.lx,ly:t.ly,choices:t.choices,key:t.key,itemId:t.id}));
@@ -2280,7 +2292,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.72 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.73 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -2721,10 +2733,11 @@ async function pvLoadInk(){   // 파일에 저장된 필기(학생)와 채점 �
     pvDraw(pg)}
 }
 /* 쓰는 중에는 새로 그은 조각만 덧그린다 (전체를 지우고 다시 그리면 필기가 많을수록 펜이 늦게 따라옴) */
-function pvSeg(pg,from){if(!pg.live||!pg.cur)return;const g=pg.g,d=pg.d||window.devicePixelRatio||1,s=pg.cur;g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';g.strokeStyle=s.c||'#1d4ed8';
+function pvSeg(pg,from){if(!pg.live||!pg.cur)return;if(!pg.ink.width){pvDraw(pg);return}const g=pg.g,d=pg.d||window.devicePixelRatio||1,s=pg.cur;g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';g.strokeStyle=s.c||'#1d4ed8';
   for(let i=Math.max(1,from);i<s.length;i++){g.lineWidth=(1.3+1.6*(s[i].p||0.5))*(s.w||1);g.beginPath();g.moveTo(s[i-1].x,s[i-1].y);g.lineTo(s[i].x,s[i].y);g.stroke()}}
 function pvDrawSoon(pg){if(pg._raf)return;pg._raf=requestAnimationFrame(()=>{pg._raf=0;pvDraw(pg)})}
-function pvDraw(pg){if(!pg.live)return;const g=pg.g,k=pg.k,H=pg.H,d=pg.d||window.devicePixelRatio||1;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,pg.ink.width,pg.ink.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';
+function pvInk(pg){if(pg.ink.width)return true;const W=Math.round(pg.cw*pg.d),H=Math.round(pg.h*pg.d);if(!W||!H)return false;pg.ink.width=W;pg.ink.height=H;pg.g=pg.ink.getContext('2d');if(pg.ink.width!==W)dlog('inkFail',pg.n);return true}
+function pvDraw(pg){if(!pg.live)return;if(!pg.ink.width){if(!(pg.saved.length||pg.marks.length||pg.fresh.length||pg.cur||(PV.sel&&PV.sel.pg===pg)))return;if(!pvInk(pg))return}const g=pg.g,k=pg.k,H=pg.H,d=pg.d||window.devicePixelRatio||1;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,pg.ink.width,pg.ink.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';
   const line=(pts,css)=>{g.beginPath();pts.forEach((p,i)=>{const x=css?p.x:(p.x-(pg.ox||0))*k,y=css?p.y:(H-p.y)*k;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke()};
   for(const s of pg.saved)if(!pg.del.has(s.id)){g.strokeStyle=s.c||'#1d4ed8';g.lineWidth=2*(s.w||1);line(s.pts,false)}
   for(const s of pg.fresh.concat(pg.cur?[pg.cur]:[])){g.strokeStyle=s.c||'#1d4ed8';for(let i=1;i<s.length;i++){g.lineWidth=(1.3+1.6*(s[i].p||0.5))*(s.w||1);g.beginPath();g.moveTo(s[i-1].x,s[i-1].y);g.lineTo(s[i].x,s[i].y);g.stroke()}}
@@ -2759,27 +2772,28 @@ async function pvOpen(){
   const doc=P.doc,cw=Math.min(box.clientWidth||900,980),dpr=window.devicePixelRatio||1;
   // 아이패드는 그림 메모리가 작다: 화면 근처 쪽만 그림을 만들고, 멀어진 쪽은 비운다
   PV.cw0=cw;const Z=PV.z||1,zw=Math.round(cw*Z);
-  for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),v1=page.getViewport({scale:1}),k=zw/v1.width,h=Math.round(v1.height*k);
+  dlog('pvOpen',doc.numPages);for(let n=1;n<=doc.numPages;n++){if(n===2||n%50===0)dlog('getPage',n);const page=await doc.getPage(n),v1=page.getViewport({scale:1}),k=zw/v1.width,h=Math.round(v1.height*k);
     const wrap=document.createElement('div');wrap.className='pvPage';wrap.style.height=h+'px';wrap.style.width=zw+'px';
     const c=document.createElement('canvas'),ink=document.createElement('canvas');c.width=c.height=ink.width=ink.height=0;
     for(const x of [c,ink]){x.style.width=zw+'px';x.style.height=h+'px'}ink.className='pvInk';wrap.append(c,ink);box.appendChild(wrap);
     const pg={n,k,H:v1.height+(page.view[1]||0),ox:page.view[0]||0,v1w:v1.width,v1h:v1.height,cw:zw,h,c,ink,g:null,saved:[],marks:[],fresh:[],del:new Set(),cur:null,live:false,page,wrap};PV.pages.push(pg);pvBind(pg)}
   const show=pg=>{if(pg.live||$('#vPdf').hidden)return;   // 화면을 닫은 뒤에는 그리지 않는다 (예전엔 나갈 때 전체 쪽을 한꺼번에 그리려다 몇 초씩 멈춤)
-    pg.live=true;pg.d=pvD(pg);const W=Math.round(pg.cw*pg.d),Hh=Math.round(pg.h*pg.d);pg.c.width=pg.ink.width=W;pg.c.height=pg.ink.height=Hh;pg.g=pg.ink.getContext('2d');
+    pg.live=true;pg.d=pvD(pg);const W=Math.round(pg.cw*pg.d),Hh=Math.round(pg.h*pg.d);pg.c.width=W;pg.c.height=Hh;pg.ink.width=pg.ink.height=0;   // 필기 캔버스는 필기가 있을 때만 만든다 (아이패드 캔버스 메모리 절반)
+      if(pg.c.width!==W)dlog('canvasFail',pg.n+' '+W+'x'+Hh);
       const g=pg.c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,W,Hh);PV.rq.add(pg);pvDraw(pg);budget(pg);pump()},
      /* 쪽 그리기는 한 번에 한 쪽씩, 화면 가운데에 가까운 쪽부터, 손가락으로 넘기는 동안은 잠깐 미룬다 (여러 쪽을 동시에 그리면 아이패드에서 넘기기가 끊김) */
      pump=()=>{if(PV.rbusy||$('#vPdf').hidden)return;if(performance.now()-(PV.panT||0)<160){clearTimeout(PV.pumpT);PV.pumpT=setTimeout(pump,170);return}
        const mid=innerHeight/2;let best=null,bd=1e12;for(const p of PV.rq){if(!p.live){PV.rq.delete(p);continue}const r=p.wrap.getBoundingClientRect(),d=Math.abs(r.top+r.height/2-mid);if(d<bd){bd=d;best=p}}if(!best)return;
        PV.rq.delete(best);PV.rbusy=1;const rt=best.page.render({canvasContext:best.c.getContext('2d'),viewport:best.page.getViewport({scale:best.k*best.d}),annotationMode:0});best.rt=rt;
-       rt.promise.catch(()=>{}).finally(()=>{if(best.rt===rt)best.rt=null;PV.rbusy=0;setTimeout(pump,0)})},
+       rt.promise.catch(e=>{if(!/cancel/i.test(e&&e.name||''))dlog('renderErr',best.n+' '+(e&&e.message))}).finally(()=>{if(best.rt===rt)best.rt=null;PV.rbusy=0;setTimeout(pump,0)})},
      /* 확대·축소: 지금 그림은 CSS로 늘어난 채 그대로 두고(깜빡임 없음), 새 크기 그림을 따로 다 그린 뒤 같은 순간에 바꿔 끼운다. 임시 복사본은 만들지 않는다 (아이패드 캔버스 메모리 한도) */
      rezoom=pg=>{const d=pvD(pg),W=Math.round(pg.cw*d),Hh=Math.round(pg.h*d);if(pg.rt){try{pg.rt.cancel()}catch(e){}pg.rt=null}
-       pg.d=d;pg.ink.width=W;pg.ink.height=Hh;pg.g=pg.ink.getContext('2d');pvDraw(pg);
+       pg.d=d;pg.ink.width=pg.ink.height=0;pvDraw(pg);
        const off=document.createElement('canvas');off.width=W;off.height=Hh;const og=off.getContext('2d');og.fillStyle='#fff';og.fillRect(0,0,W,Hh);
        const rt=pg.page.render({canvasContext:og,viewport:pg.page.getViewport({scale:pg.k*d}),annotationMode:0});pg.rt=rt;
        rt.promise.then(()=>{if(pg.rt===rt&&pg.live){pg.c.width=W;pg.c.height=Hh;pg.c.getContext('2d').drawImage(off,0,0)}}).catch(()=>{}).finally(()=>{off.width=off.height=0;if(pg.rt===rt)pg.rt=null})},
      budget=keep=>{   // 아이패드 사파리는 캔버스 메모리가 넘치면 쪽이 하얗게·잘려 보인다: 살아 있는 쪽의 화소 합을 제한하고 먼 쪽부터 내린다
-       const L=PV.pages.filter(p=>p.live),px=p=>p.c.width*p.c.height*2;let tot=L.reduce((a,p)=>a+px(p),0);if(tot<=3.2e7)return;const mid=innerHeight/2;
+       const L=PV.pages.filter(p=>p.live),px=p=>p.c.width*p.c.height+p.ink.width*p.ink.height;let tot=L.reduce((a,p)=>a+px(p),0);if(tot<=3.2e7)return;const mid=innerHeight/2;
        L.sort((a,b)=>Math.abs(b.wrap.getBoundingClientRect().top+b.wrap.offsetHeight/2-mid)-Math.abs(a.wrap.getBoundingClientRect().top+a.wrap.offsetHeight/2-mid));
        for(const p of L){if(tot<=3.2e7)break;if(p===keep||p.cur)continue;const r=p.wrap.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)continue;tot-=px(p);hide(p,true)}},
     hide=(pg,force)=>{if(!pg.live||(pg.cur&&!force))return;pg.live=false;PV.rq.delete(pg);if(pg.rt){try{pg.rt.cancel()}catch(e){}pg.rt=null}pg.c.width=pg.c.height=pg.ink.width=pg.ink.height=0;if(P&&P.doc)P.doc.getPage(pg.n).then(pgFree).catch(()=>{})};
@@ -3370,8 +3384,8 @@ async function quickReread(name){const r=await libGet(name);if(!r)return;START_O
 async function moreScan(name){const r=await libGet(name);if(!r)return;START_OPEN=true;$('#vStart').classList.remove('collapsed');$('#vRecent').hidden=true;window.scrollTo(0,0);
   await loadPdf(new File([r.bytes],name+'.pdf',{lastModified:r.mod}),vHandle(name),r);if(P&&P.name===name&&P.scan)scanOffer({name:P.fname,lastModified:P.lastMod},P.handle,P.bytes,P.doc,true)}
 /* 문제집을 여는 동안 뒤 화면(문제집 목록·추가 칸)이 보이지 않게 덮는다 */
-function opening(on,name){let o=$('#openCover');if(!o){o=document.createElement('div');o.id='openCover';o.innerHTML='<div class="ocIn"><div class="ocSpin"></div><b id="ocT"></b><span class="muted" id="ocS">큰 문제집은 몇 초 걸려요</span></div>';document.body.appendChild(o)}
-  clearInterval(o._i);if(on){$('#ocT').textContent='📖 '+(name||'문제집')+' 여는 중…';$('#ocS').textContent='큰 문제집은 몇 초 걸려요';o.hidden=false;clearTimeout(o._t);o._t=setTimeout(()=>{o.hidden=true;clearInterval(o._i)},60000);
+function opening(on,name){let o=$('#openCover');if(!o){o=document.createElement('div');o.id='openCover';o.innerHTML='<div class="ocIn"><div class="ocSpin"></div><b id="ocT"></b><span class="muted" id="ocS">큰 문제집은 몇 초 걸려요</span><button class="btn quiet" id="ocDiag" type="button" hidden onclick="diagCopy(this)" style="margin-top:10px">📋 진단 정보 복사 (오래 걸리면 눌러 보내 주세요)</button></div>';document.body.appendChild(o)}
+  clearInterval(o._i);clearTimeout(o._d);$('#ocDiag').hidden=true;if(on){o._d=setTimeout(()=>{$('#ocDiag').hidden=false;dlog('slowOpen',name||'')},20000);$('#ocT').textContent='📖 '+(name||'문제집')+' 여는 중…';$('#ocS').textContent='큰 문제집은 몇 초 걸려요';o.hidden=false;clearTimeout(o._t);o._t=setTimeout(()=>{o.hidden=true;clearInterval(o._i)},60000);
     o._i=setInterval(()=>{const t=($('#pdfInfo')&&$('#pdfInfo').textContent||'').replace(/\s+/g,' ').trim();if(t)$('#ocS').textContent=t.slice(0,80)},500)}else{o.hidden=true;clearTimeout(o._t)}}   // 오래 걸리면 진행 상황을 보여 준다
 async function openRecent(name){if(PVQ.n){const b=$('#saveBadge');if(b)b.textContent='💾 앞 문제집 저장이 끝나면 열어요…';await PVQ.p}   // 방금 나간 책의 저장이 끝난 뒤에 연다
   const r=await libGet(name);if(!r)return;opening(true,name.replace(/\s*\(풀이[^)]*\)\s*$/,''));$('#vRecent').hidden=true;START_OPEN=true;$('#vStart').classList.remove('collapsed');window.scrollTo(0,0);
