@@ -415,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.69</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.69)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.71</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.71)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -459,7 +459,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.69</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.71</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" style="font-size:14px;font-weight:700;padding:6px 12px;line-height:1;display:inline-flex;align-items:center;gap:6px" title="나가기 (저장하고 닫기)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8"/><path d="M10 12h10"/><path d="M17 8l4 4-4 4"/><circle cx="11.5" cy="12" r="0.1"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1571,6 +1571,9 @@ const hm=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);
 const split=r=>{r=(r||'').trim();return r?r.split(r.includes(',')?',':/\s+/).map(x=>x.trim()):[]};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+/* PDF 해석 일꾼이 기기에서 안 뜨면(일부 사파리 등) 예전처럼 화면 쪽에서 해석하도록 되돌린다: 문제집이 아예 안 열리는 것보다 낫다 */
+window.PDFW_OK=(async()=>{if(!PDFJS)return false;let w=null;try{w=new PDFJS.PDFWorker();await Promise.race([w.promise,new Promise((_,no)=>setTimeout(()=>no(new Error('timeout')),7000))]);return true}catch(e){console.error('pdf worker',e);
+  await new Promise(r=>{const sc=document.createElement('script');sc.src=PDFJS.GlobalWorkerOptions.workerSrc;sc.onload=sc.onerror=r;document.head.appendChild(sc)});return false}finally{try{w&&w.destroy()}catch(e){}}})();
 const FS=typeof window.showOpenFilePicker==='function';
 let P=null,P_prev={},PM={};   // PM: 파일에 실제로 그려져 있는 채점 표시 (문항→O/X/T/S)
    // 고른 PDF: {name, handle, problems:[{q,page,x0,y0,x1,y1,choices,key}], base: 처음부터 있던 필기}
@@ -1608,7 +1611,7 @@ async function loadPdf0(file,handle,cached){
   try{
     let bytes=new Uint8Array(await file.arrayBuffer());
     if(pdfEnc(bytes)){$('#pdfInfo').textContent='편집 금지 보안이 걸린 PDF예요. 필기를 저장할 수 있게 보안을 푸는 중… (처음 한 번, 수십 초)';try{bytes=await pdfDecrypt(bytes);if(handle&&handle.kind==='lib'){const r=await libMeta(handle.name);if(r){r.bytes=bytes;r.dec=1;await libPut(r)}}}catch(e){console.error(e);$('#err').textContent=e.message}}
-    const doc=await PDFJS.getDocument({data:bytes.slice()}).promise;
+    await window.PDFW_OK;const doc=await PDFJS.getDocument({data:bytes.slice()}).promise;
     let task=null,book=null;try{const md=await doc.getMetadata(),cu=(md&&md.info&&md.info.Custom)||{};const js=v=>v==null?null:JSON.parse(typeof v==='string'?v:(v.name||String(v)));task=js(cu.NJTask);book=js(cu.NJBook)}catch(e){}   // 큰 PDF를 통째로 다시 읽지 않고 정보만
     if(!task&&book&&book.problems&&!(cached&&cached.problems&&cached.pages===doc.numPages))cached={pages:doc.numPages,problems:book.problems,keyFound:true,scan:true,ranges:book.ranges};
     if(task){const base=await SV.strokes(doc),probs=task.items.map(t=>({q:t.n,page:t.page,x0:t.x0,x1:t.x1,y0:t.y0,y1:t.y1,lx:t.lx,ly:t.ly,choices:t.choices,key:t.key,itemId:t.id}));
@@ -2249,9 +2252,14 @@ async function pdfJob(src,job){const {PDFDocument,PDFName,PDFString,PDFDict}=PDF
     pages[m.page-1].node.addAnnot(ctx.register(ctx.obj({Type:'Annot',Subtype:'Ink',Rect:rect,InkList:m.lists,C:m.col,BS:{W:m.w},...(m.alpha?{CA:m.alpha}:{}),F:4,T:PDFString.of('NJMATH-GRADE'),NM:PDFString.of('NJ-'+m.q),Contents:PDFString.of('NJ:'+m.q+':'+m.tag),AP:{N:ap}})))}
     const out=await pdf.save({useObjectStreams:false});return {out,made}}
 let PDFW=null;function pdfWorker(){if(PDFW!==null)return PDFW;try{const lib=document.getElementById('pdflibSrc').textContent;
-  const code=lib+'\n'+penRGB.toString()+'\n'+pdfDate.toString()+'\n'+pdfJob.toString()+'\nself.onmessage=async e=>{try{const r=await pdfJob(e.data.src,e.data.job);self.postMessage({ok:1,out:r.out,made:r.made},[r.out.buffer])}catch(er){self.postMessage({err:String(er&&er.message||er)})}}';
+  const code=lib+'\n'+penRGB.toString()+'\n'+pdfDate.toString()+'\n'+pdfJob.toString()+'\n'+pdfClips.toString()+'\nself.onmessage=async e=>{try{if(e.data.kind===\'clip\'){const L=await pdfClips(e.data.src,e.data.items);self.postMessage({ok:1,pdfs:L},L.map(x=>x.buffer));return}const r=await pdfJob(e.data.src,e.data.job);self.postMessage({ok:1,out:r.out,made:r.made},[r.out.buffer])}catch(er){self.postMessage({err:String(er&&er.message||er)})}}';
   PDFW=new Worker(URL.createObjectURL(new Blob([code],{type:'text/javascript'})))}catch(e){console.error(e);PDFW=false}return PDFW}
-function pdfJobOff(src,job){const w=pdfWorker();if(!w)return pdfJob(src,job);return new Promise((res,rej)=>{w.onmessage=e=>e.data.err?rej(new Error(e.data.err)):res(e.data);w.onerror=e=>{PDFW=false;rej(new Error(e.message||'worker'))};w.postMessage({src,job},[src.buffer])})}
+/* 오답 문항 한 칸만 잘라 작은 PDF로: 큰 책(200MB)을 화면 쪽에서 통째로 읽으면 채점 뒤 몇 초씩 멈춰서 따로 일하는 곳에서 */
+async function pdfClips(src,items){const {PDFDocument}=PDFLib;const doc=await PDFDocument.load(src,{ignoreEncryption:true}),out=[];
+  for(const it of items){const b=it.box,one=await PDFDocument.create(),[emb]=await one.embedPages([doc.getPage(it.page-1)],[b]),bw=b.right-b.left,bh=b.top-b.bottom;one.addPage([bw,bh]).drawPage(emb,{x:0,y:0,width:bw,height:bh});out.push(await one.save())}return out}
+let WQ=Promise.resolve();const wq=f=>{const p=WQ.then(f,f);WQ=p.catch(()=>{});return p};   // 저장·오답 자르기가 같은 일꾼을 번갈아 쓰지 않게 차례로
+function pdfClipsOff(src,items){const w=pdfWorker();if(!w)return pdfClips(src,items);return wq(()=>new Promise((res,rej)=>{w.onmessage=e=>e.data.err?rej(new Error(e.data.err)):res(e.data.pdfs);w.onerror=e=>{PDFW=false;rej(new Error(e.message||'worker'))};w.postMessage({kind:'clip',src,items},[src.buffer])}))}
+function pdfJobOff(src,job){const w=pdfWorker();if(!w)return pdfJob(src,job);return wq(()=>new Promise((res,rej)=>{w.onmessage=e=>e.data.err?rej(new Error(e.data.err)):res(e.data);w.onerror=e=>{PDFW=false;rej(new Error(e.message||'worker'))};w.postMessage({src,job},[src.buffer])}))}
 async function pdfWrite(job){const T0=performance.now(),PP=job.P0||P;   // 나간 뒤에 저장이 이어져도 그 문제집 파일에 쓴다
   let src=PP.handle.getBytes?await PP.handle.getBytes():new Uint8Array(await (await PP.handle.getFile()).arrayBuffer());if(pdfEnc(src)){src=await pdfDecrypt(src)}   // 보안 걸린 파일: 풀고 저장
   const lite={del:job.del,marks:job.marks,add:(job.add||[]).map(a=>({pg:a.pg,flat:a.flat,c:a.c,w:a.w,t:a.t,gone:!!(a.o&&a.o.gone)}))};
@@ -2272,7 +2280,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.69 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.71 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -2747,7 +2755,7 @@ function pvPgEdit(){const b=$('#pvPg'),N=PV.pages.length,c=pvCurPage();const w=d
   const done=go=>{const v=Math.round(+inp.value);w.replaceWith(b);if(go&&v>=1&&v<=N)pvGo(v,0);pvPosTick()};
   w.querySelector('button').onclick=()=>done(true);inp.onkeydown=e=>{if(e.key==='Enter')done(true);if(e.key==='Escape')done(false)};inp.onblur=()=>setTimeout(()=>{if(w.isConnected)done(false)},200)}
 async function pvOpen(){
-  (PV.obs||[]).forEach(o=>o.disconnect());PV.pages=[];PV.undo=[];const box=$('#pdfPages');box.innerHTML='';$('#vPdf').hidden=false;document.querySelector('.wrap').style.maxWidth='1000px';
+  (PV.obs||[]).forEach(o=>o.disconnect());PV.pages=[];PV.rq=new Set();PV.rbusy=0;PV.undo=[];const box=$('#pdfPages');box.innerHTML='';$('#vPdf').hidden=false;document.querySelector('.wrap').style.maxWidth='1000px';
   const doc=P.doc,cw=Math.min(box.clientWidth||900,980),dpr=window.devicePixelRatio||1;
   // 아이패드는 그림 메모리가 작다: 화면 근처 쪽만 그림을 만들고, 멀어진 쪽은 비운다
   PV.cw0=cw;const Z=PV.z||1,zw=Math.round(cw*Z);
@@ -2758,7 +2766,12 @@ async function pvOpen(){
     const pg={n,k,H:v1.height+(page.view[1]||0),ox:page.view[0]||0,v1w:v1.width,v1h:v1.height,cw:zw,h,c,ink,g:null,saved:[],marks:[],fresh:[],del:new Set(),cur:null,live:false,page,wrap};PV.pages.push(pg);pvBind(pg)}
   const show=pg=>{if(pg.live||$('#vPdf').hidden)return;   // 화면을 닫은 뒤에는 그리지 않는다 (예전엔 나갈 때 전체 쪽을 한꺼번에 그리려다 몇 초씩 멈춤)
     pg.live=true;pg.d=Math.min(dpr,Math.sqrt(9e6/(pg.cw*pg.h)));const W=Math.round(pg.cw*pg.d),Hh=Math.round(pg.h*pg.d);pg.c.width=pg.ink.width=W;pg.c.height=pg.ink.height=Hh;pg.g=pg.ink.getContext('2d');
-      const g=pg.c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,W,Hh);pg.rt=pg.page.render({canvasContext:g,viewport:pg.page.getViewport({scale:pg.k*pg.d}),annotationMode:0});pg.rt.promise.catch(()=>{});pvDraw(pg);budget(pg)},
+      const g=pg.c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,W,Hh);PV.rq.add(pg);pvDraw(pg);budget(pg);pump()},
+     /* 쪽 그리기는 한 번에 한 쪽씩, 화면 가운데에 가까운 쪽부터, 손가락으로 넘기는 동안은 잠깐 미룬다 (여러 쪽을 동시에 그리면 아이패드에서 넘기기가 끊김) */
+     pump=()=>{if(PV.rbusy||$('#vPdf').hidden)return;if(performance.now()-(PV.panT||0)<160){clearTimeout(PV.pumpT);PV.pumpT=setTimeout(pump,170);return}
+       const mid=innerHeight/2;let best=null,bd=1e12;for(const p of PV.rq){if(!p.live){PV.rq.delete(p);continue}const r=p.wrap.getBoundingClientRect(),d=Math.abs(r.top+r.height/2-mid);if(d<bd){bd=d;best=p}}if(!best)return;
+       PV.rq.delete(best);PV.rbusy=1;const rt=best.page.render({canvasContext:best.c.getContext('2d'),viewport:best.page.getViewport({scale:best.k*best.d}),annotationMode:0});best.rt=rt;
+       rt.promise.catch(()=>{}).finally(()=>{if(best.rt===rt)best.rt=null;PV.rbusy=0;setTimeout(pump,0)})},
      rezoom=pg=>{const d=Math.min(dpr,Math.sqrt(9e6/(pg.cw*pg.h))),W=Math.round(pg.cw*d),Hh=Math.round(pg.h*d);if(pg.rt){try{pg.rt.cancel()}catch(e){}pg.rt=null}
        const old=document.createElement('canvas');old.width=pg.c.width;old.height=pg.c.height;if(old.width)old.getContext('2d').drawImage(pg.c,0,0);
        pg.d=d;pg.c.width=pg.ink.width=W;pg.c.height=pg.ink.height=Hh;pg.g=pg.ink.getContext('2d');const g=pg.c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,W,Hh);if(old.width)g.drawImage(old,0,0,W,Hh);old.width=old.height=0;pvDraw(pg);
@@ -2769,7 +2782,7 @@ async function pvOpen(){
        const L=PV.pages.filter(p=>p.live),px=p=>p.c.width*p.c.height*2;let tot=L.reduce((a,p)=>a+px(p),0);if(tot<=3.2e7)return;const mid=innerHeight/2;
        L.sort((a,b)=>Math.abs(b.wrap.getBoundingClientRect().top+b.wrap.offsetHeight/2-mid)-Math.abs(a.wrap.getBoundingClientRect().top+a.wrap.offsetHeight/2-mid));
        for(const p of L){if(tot<=3.2e7)break;if(p===keep||p.cur)continue;const r=p.wrap.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)continue;tot-=px(p);hide(p,true)}},
-    hide=(pg,force)=>{if(!pg.live||(pg.cur&&!force))return;pg.live=false;if(pg.rt){try{pg.rt.cancel()}catch(e){}pg.rt=null}pg.c.width=pg.c.height=pg.ink.width=pg.ink.height=0;if(P&&P.doc)P.doc.getPage(pg.n).then(pgFree).catch(()=>{})};
+    hide=(pg,force)=>{if(!pg.live||(pg.cur&&!force))return;pg.live=false;PV.rq.delete(pg);if(pg.rt){try{pg.rt.cancel()}catch(e){}pg.rt=null}pg.c.width=pg.c.height=pg.ink.width=pg.ink.height=0;if(P&&P.doc)P.doc.getPage(pg.n).then(pgFree).catch(()=>{})};
   const near=new IntersectionObserver(es=>{for(const e of es){const pg=PV.pages.find(p=>p.wrap===e.target);if(pg&&e.isIntersecting)show(pg)}},{rootMargin:'900px 0px'});
   const far=new IntersectionObserver(es=>{for(const e of es){const pg=PV.pages.find(p=>p.wrap===e.target);if(pg&&!e.isIntersecting)hide(pg)}},{rootMargin:'2600px 0px'});
   PV.pages.forEach(pg=>{near.observe(pg.wrap);far.observe(pg.wrap)});PV.obs=[near,far];
@@ -2854,7 +2867,7 @@ function pvBind(pg){const c=pg.ink;let holdT=null;
   const pos=e=>{const r=c.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top,p:e.pointerType==='pen'?(e.pressure||0.5):0.5}};
   let pan=null;
   c.addEventListener('pointerdown',e=>{const fing=e.pointerType==='touch'&&(PV.penSeen||!FINGER_INK);   // 손가락 = 화면 넘기기 (손가락 쓰기를 켠 경우만 예외)
-    const NS=document.body.classList.contains('nscroll');if(e.pointerType==='touch'&&PV.penSeen&&(PV.pages.some(p=>p.cur&&!p.curTouch)||Date.now()-(PV.penT||0)<500||Math.max(e.width||0,e.height||0)>56))return;   // 손바닥은 선택·화면 넘기기 모두 무시
+    const NS=document.body.classList.contains('nscroll');if(e.pointerType==='touch'&&PV.penSeen&&(PV.pages.some(p=>p.cur&&!p.curTouch)||Date.now()-(PV.penT||0)<400))return;   // 손바닥은 선택·화면 넘기기 모두 무시
     if(fing&&(!S||PV.busy)){cancelAnimationFrame(PV.inert);if(!NS)try{c.setPointerCapture(e.pointerId)}catch(er){}pan={x:e.clientX,y:e.clientY,t0:Date.now(),mv:0,vy:0,vx:0,tl:performance.now()};return}
     if(!S||PV.busy)return;if(e.pointerType==='pen'&&!PV.penSeen){PV.penSeen=true;pvTA()}if(PV.review&&!fing)pvResume();
     if(fing){cancelAnimationFrame(PV.inert);const p0=pos(e);const gm=!PV.pinch&&selGrab(pg,p0);if(gm){c.setPointerCapture(e.pointerId);e.preventDefault();pg.mv=gm;return}if(!NS)try{c.setPointerCapture(e.pointerId)}catch(er){}pan={x:e.clientX,y:e.clientY,tx:p0.x,ty:p0.y,t0:Date.now(),mv:0,vx:0,vy:0,tl:performance.now()};return}   // 펜을 쓰는 중이면 손가락은 화면 넘기기 (선택한 도형 위에서는 옮기기)
@@ -2866,19 +2879,19 @@ function pvBind(pg){const c=pg.ink;let holdT=null;
   c.addEventListener('pointermove',e=>{if(pg.mv&&pg.mv.kind){e.preventDefault();selTf(pg.mv,pos(e));pvDrawSoon(pg);return}
     if(pg.mv){e.preventDefault();const q=pos(e),ddx=q.x-pg.mv.x,ddy=q.y-pg.mv.y;for(const z of pg.mv.s){z.x+=ddx;z.y+=ddy}pg.mv.x=q.x;pg.mv.y=q.y;pg.mv.dx+=ddx;pg.mv.dy+=ddy;pvDrawSoon(pg);return}
     if(pan&&document.body.classList.contains('nscroll')){pan.mv+=Math.abs(pan.y-e.clientY)+Math.abs(pan.x-e.clientX);pan.x=e.clientX;pan.y=e.clientY;return}
-    if(pan){const dy=pan.y-e.clientY,dx=pan.x-e.clientX,now=performance.now(),dt=Math.max(1,now-pan.tl);pan.mv+=Math.abs(dy)+Math.abs(dx);pan.vy=0.7*pan.vy+0.3*(dy/dt);pan.vx=0.7*pan.vx+0.3*(dx/dt);pan.tl=now;PV.pd=PV.pd||{x:0,y:0};PV.pd.x+=dx;PV.pd.y+=dy;if(!PV.prf)PV.prf=requestAnimationFrame(()=>{PV.prf=0;const d=PV.pd;PV.pd={x:0,y:0};window.scrollBy(0,d.y);const bx=$('#pdfPages');if(bx&&d.x)bx.scrollLeft+=d.x});pan.x=e.clientX;pan.y=e.clientY;e.preventDefault();return}
+    if(pan){const dy=pan.y-e.clientY,dx=pan.x-e.clientX,now=performance.now(),dt=Math.max(1,now-pan.tl);pan.mv+=Math.abs(dy)+Math.abs(dx);pan.vy=0.7*pan.vy+0.3*(dy/dt);pan.vx=0.7*pan.vx+0.3*(dx/dt);pan.tl=now;PV.panT=now;PV.pd=PV.pd||{x:0,y:0};PV.pd.x+=dx;PV.pd.y+=dy;if(!PV.prf)PV.prf=requestAnimationFrame(()=>{PV.prf=0;const d=PV.pd;PV.pd={x:0,y:0};window.scrollBy(0,d.y);const bx=$('#pdfPages');if(bx&&d.x)bx.scrollLeft+=d.x});pan.x=e.clientX;pan.y=e.clientY;e.preventDefault();return}
     if(pg.erasing&&e.buttons){pvErase(pg,pos(e));return}if(!pg.cur)return;e.preventDefault();if(e.pointerType==='pen')PV.penT=Date.now();if(pg.cur.snapped)return;const n0=pg.cur.length,l0=pg.cur[n0-1];for(const v of (e.getCoalescedEvents?e.getCoalescedEvents():[e]))pg.cur.push(pos(v));const l1=pg.cur[pg.cur.length-1];if(!anc||Math.hypot(l1.x-anc.x,l1.y-anc.y)>6)armHold();pvSeg(pg,n0)});
   const up=()=>{if(pg.mv&&pg.mv.kind){const m=pg.mv;pg.mv=null;const af=m.s.map(q=>({x:q.x,y:q.y}));if(af.some((q,i)=>Math.abs(q.x-m.o[i].x)+Math.abs(q.y-m.o[i].y)>0.5)){PV.undo.push({pg,kind:'tf',s:m.s,before:m.o});PV.dirty=true;pvStatus();pvDirty()}PV.sel={pg,h:{f:m.s}};pvDraw(pg);return}
     if(pg.mv){const m=pg.mv;pg.mv=null;if(Math.hypot(m.dx,m.dy)>1){PV.undo.push({pg,kind:'move',s:m.s,dx:m.dx,dy:m.dy});PV.dirty=true;pvStatus();pvDirty()}PV.sel={pg,h:{f:m.s}};pvDraw(pg);return}clearTimeout(holdT);
     if(pan&&pan.tx!=null&&pan.mv<10&&Date.now()-pan.t0<350){const h=pvFind(pg,{x:pan.tx,y:pan.ty},22);selSet(pg,h)}   // 손가락으로 톡: 그 획 선택 (빈 곳이면 선택 풀기)
-    if(pan&&pan.mv>=10&&performance.now()-pan.tl<80&&!document.body.classList.contains('nscroll')){let vy=pan.vy,vx=pan.vx;const bx=$('#pdfPages');const step=()=>{vy*=0.95;vx*=0.95;if(Math.abs(vy)<0.02&&Math.abs(vx)<0.02)return;window.scrollBy(0,vy*16);if(bx)bx.scrollLeft+=vx*16;PV.inert=requestAnimationFrame(step)};PV.inert=requestAnimationFrame(step)}   // 손을 떼도 조금 더 미끄러지게
+    if(pan&&pan.mv>=10&&performance.now()-pan.tl<80&&!document.body.classList.contains('nscroll')){let vy=pan.vy,vx=pan.vx;const bx=$('#pdfPages');const step=()=>{PV.panT=performance.now();vy*=0.95;vx*=0.95;if(Math.abs(vy)<0.02&&Math.abs(vx)<0.02)return;window.scrollBy(0,vy*16);if(bx)bx.scrollLeft+=vx*16;PV.inert=requestAnimationFrame(step)};PV.inert=requestAnimationFrame(step)}   // 손을 떼도 조금 더 미끄러지게
     pan=null;pg.erasing=false;if(pg.cur){pg.cur.t=pg.t;try{penLog(pg,pg.cur,pg.t,Date.now())}catch(e){}pg.fresh.push(pg.cur);PV.undo.push({pg,kind:'add',s:pg.cur});if(pg.cur.snapped)PV.sel={pg,h:{f:pg.cur}};pg.cur=null;PV.dirty=true;pvDraw(pg);pvStatus();pvDirty()}};   // 펴진 도형은 바로 선택됨
   const pen0=e=>e&&e.pointerType==='touch'&&(pg.cur&&!pg.curTouch);   // 펜으로 쓰는 중 손바닥(터치)이 떨어져도 펜 획을 끝내지 않는다
   c.addEventListener('pointerup',e=>{if(!pen0(e))up()});c.addEventListener('pointercancel',e=>{if(pen0(e))return;pan=null;up()});c.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse'&&!pen0(e))up()});   // 브라우저가 스크롤을 시작하면 cancel: 톡(선택)으로 보지 않는다
   /* 애플 펜슬은 절대 화면을 넘기지 않게, 선택한 도형을 잡은 손가락·두 손가락(확대)도 기본 스크롤을 막는다 */
   c.addEventListener('touchstart',e=>{if(!document.body.classList.contains('nscroll'))return;const t=e.changedTouches[0];if(!t)return;
     if(t.touchType==='stylus'||e.touches.length>=2){e.preventDefault();return}
-    if(PV.pages.some(p=>p.cur&&!p.curTouch)||Date.now()-(PV.penT||0)<500||Math.max(t.radiusX||0,t.radiusY||0)>28){e.preventDefault();PV.palm=1;return}   // 손바닥: 펜으로 쓰는 중·막 뗀 직후·넓게 닿은 터치는 화면을 움직이지 않는다
+    if(PV.pages.some(p=>p.cur&&!p.curTouch)||Date.now()-(PV.penT||0)<400){e.preventDefault();PV.palm=1;return}   // 손바닥: 펜으로 쓰는 중·막 뗀 직후·넓게 닿은 터치는 화면을 움직이지 않는다
     if(S&&!PV.busy){const r=c.getBoundingClientRect(),p={x:t.clientX-r.left,y:t.clientY-r.top};if(selHandle(pg,p)||selIn(pg,p))e.preventDefault()}},{passive:false});
   c.addEventListener('touchmove',e=>{if(!document.body.classList.contains('nscroll'))return;if(e.touches.length>=2||(e.touches[0]&&e.touches[0].touchType==='stylus')||pg.mv)e.preventDefault()},{passive:false});
 }
@@ -3421,16 +3434,16 @@ async function fixThumbs(){try{if(localStorage.getItem('njTh2'))return}catch(e){
   try{localStorage.setItem('njTh2','1')}catch(e){}if(window.NJPROF)console.log('PROF fixThumbs',n);if(n){try{if(!$('#vAna').hidden)renderAnaTab()}catch(e){}}}
 setTimeout(()=>{fixThumbs().catch(e=>console.error(e))},6000);
 async function logWrongsNow(){   // 지금 학습에서 틀린(고친·여전히 모름 포함) 문항을 기록. 문제 그림도 같이 보관해서 나중에 오답노트에 바로 담을 수 있게
-  if(!P||P.task)return;const R=S||LAST;if(!R)return;
+  if(!P||P.task)return;const R=S||LAST;if(!R)return;const P0=P;
   const list=Object.values(R.state).filter(x=>{const c=catOf(x);return c&&c!=='O'});if(!list.length)return;
-  let src=null,TM=null,med=null;
-  for(const x of list){const p=P.problems.find(z=>z.q===x.q);if(!p)continue;const id=P.name+'#'+x.q,c=catOf(x);let w=await wrGet(id);
-    if(!w){if(!src)src=await PDFLib.PDFDocument.load(P.bytes.slice(),{ignoreEncryption:true});
+  let TM=null,med=null;const need=[];
+  for(const x of list){const p=P0.problems.find(z=>z.q===x.q);if(!p)continue;const id=P0.name+'#'+x.q;if(!(await wrGet(id)))need.push({x,p,id,box:await contentBox(p)})}
+  let pdfs=[];if(need.length){const items=need.map(n=>({page:n.p.page,box:n.box}));try{pdfs=await pdfClipsOff(P0.bytes.slice(),items)}catch(e){console.error(e);pdfs=await pdfClips(P0.bytes.slice(),items)}}
+  for(const x of list){const p=P0.problems.find(z=>z.q===x.q);if(!p)continue;const id=P0.name+'#'+x.q,c=catOf(x);let w=await wrGet(id);
+    if(!w){const k=need.findIndex(n=>n.id===id);if(k<0||!pdfs[k])continue;const box=need[k].box,bw=box.right-box.left,bh=box.top-box.bottom;
       if(!TM){TM=perQ(R);const vals=Object.values(TM.T).map(v=>v/1000).sort((a,b)=>a-b);med=vals.length>=2?vals[vals.length>>1]:null}
-      const box=await contentBox(p),one=await PDFLib.PDFDocument.create(),[emb]=await one.embedPages([src.getPage(p.page-1)],[box]),bw=box.right-box.left,bh=box.top-box.bottom;
-      one.addPage([bw,bh]).drawPage(emb,{x:0,y:0,width:bw,height:bh});
       const tag=await tagOf(p),t=TM.T[p.q]!=null?TM.T[p.q]/1000:null,dg=diagnose(p,x,t,med,tag);
-      w={id,src:P.name,q:p.q,day:dayKey(Date.now()),at:Date.now(),topic:tag.topic,rate:tag.rate,key:p.key,keyShow:showKey(p),keyImg:(isSelf(p)||isMulti(p))?await keyImg(p):'',w:bw,h:bh,pdf:await one.save(),thumb:thumbOf(p,box),th2:1,
+      w={id,src:P0.name,q:p.q,day:dayKey(Date.now()),at:Date.now(),topic:tag.topic,rate:tag.rate,key:p.key,keyShow:showKey(p),keyImg:(isSelf(p)||isMulti(p))?await keyImg(p):'',w:bw,h:bh,pdf:pdfs[k],thumb:thumbOf(p,box),th2:1,
         choices:p.choices.map(c=>({n:c.n,x:c.x-box.left,y:c.y-box.bottom,s:c.s})),ans:x.earlier?'':fmt(p,x.ans),t,auto:dg.s,reason:dg.s,why:dg.why}}
     if(!x.pw&&p.key&&p.key.kind==='nparts'&&x.ans&&x.ans!=='✗'){const A=String(x.ans).split('|');x.pw=p.key.nums.map((v,i)=>v!=null&&A[i]!==v?i+1:null).filter(Boolean)}
     w.cat=c;if(x.pw&&x.pw.length)w.pw=x.pw;w.tries=Math.max(w.tries||1,x.wrongs||1);w.retry=x.retry&&x.retry.ans?fmt(p,x.retry.ans):(w.retry||'');w.upd=Date.now();
