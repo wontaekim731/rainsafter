@@ -252,7 +252,7 @@ body:has(#vPdf:not([hidden])) .appbar{display:none}
 .seg{border-radius:14px}
 #vQuiz{border-radius:20px}
 
-#pdfPages{display:block;overflow-x:auto;overflow-y:visible;transform-origin:0 0;padding-bottom:4px}
+#pdfPages{display:block;overflow-x:auto;overflow-y:visible;transform-origin:0 0;padding-bottom:4px;touch-action:none}
 #pdfPages .pvPage{margin:0 auto 10px;flex:none}
 .pvZoom{display:flex;align-items:center;gap:2px;background:var(--bg);border-radius:12px;padding:3px}
 .pvZoom button{font:inherit;font-weight:700;border:0;background:transparent;color:var(--ink);min-width:40px;min-height:40px;border-radius:9px;cursor:pointer;font-size:18px}
@@ -415,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.71</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.71)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.72</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.72)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -459,7 +459,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.71</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.72</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" style="font-size:14px;font-weight:700;padding:6px 12px;line-height:1;display:inline-flex;align-items:center;gap:6px" title="나가기 (저장하고 닫기)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8"/><path d="M10 12h10"/><path d="M17 8l4 4-4 4"/><circle cx="11.5" cy="12" r="0.1"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -2280,7 +2280,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.71 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.72 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -2765,19 +2765,19 @@ async function pvOpen(){
     for(const x of [c,ink]){x.style.width=zw+'px';x.style.height=h+'px'}ink.className='pvInk';wrap.append(c,ink);box.appendChild(wrap);
     const pg={n,k,H:v1.height+(page.view[1]||0),ox:page.view[0]||0,v1w:v1.width,v1h:v1.height,cw:zw,h,c,ink,g:null,saved:[],marks:[],fresh:[],del:new Set(),cur:null,live:false,page,wrap};PV.pages.push(pg);pvBind(pg)}
   const show=pg=>{if(pg.live||$('#vPdf').hidden)return;   // 화면을 닫은 뒤에는 그리지 않는다 (예전엔 나갈 때 전체 쪽을 한꺼번에 그리려다 몇 초씩 멈춤)
-    pg.live=true;pg.d=Math.min(dpr,Math.sqrt(9e6/(pg.cw*pg.h)));const W=Math.round(pg.cw*pg.d),Hh=Math.round(pg.h*pg.d);pg.c.width=pg.ink.width=W;pg.c.height=pg.ink.height=Hh;pg.g=pg.ink.getContext('2d');
+    pg.live=true;pg.d=pvD(pg);const W=Math.round(pg.cw*pg.d),Hh=Math.round(pg.h*pg.d);pg.c.width=pg.ink.width=W;pg.c.height=pg.ink.height=Hh;pg.g=pg.ink.getContext('2d');
       const g=pg.c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,W,Hh);PV.rq.add(pg);pvDraw(pg);budget(pg);pump()},
      /* 쪽 그리기는 한 번에 한 쪽씩, 화면 가운데에 가까운 쪽부터, 손가락으로 넘기는 동안은 잠깐 미룬다 (여러 쪽을 동시에 그리면 아이패드에서 넘기기가 끊김) */
      pump=()=>{if(PV.rbusy||$('#vPdf').hidden)return;if(performance.now()-(PV.panT||0)<160){clearTimeout(PV.pumpT);PV.pumpT=setTimeout(pump,170);return}
        const mid=innerHeight/2;let best=null,bd=1e12;for(const p of PV.rq){if(!p.live){PV.rq.delete(p);continue}const r=p.wrap.getBoundingClientRect(),d=Math.abs(r.top+r.height/2-mid);if(d<bd){bd=d;best=p}}if(!best)return;
        PV.rq.delete(best);PV.rbusy=1;const rt=best.page.render({canvasContext:best.c.getContext('2d'),viewport:best.page.getViewport({scale:best.k*best.d}),annotationMode:0});best.rt=rt;
        rt.promise.catch(()=>{}).finally(()=>{if(best.rt===rt)best.rt=null;PV.rbusy=0;setTimeout(pump,0)})},
-     rezoom=pg=>{const d=Math.min(dpr,Math.sqrt(9e6/(pg.cw*pg.h))),W=Math.round(pg.cw*d),Hh=Math.round(pg.h*d);if(pg.rt){try{pg.rt.cancel()}catch(e){}pg.rt=null}
-       const old=document.createElement('canvas');old.width=pg.c.width;old.height=pg.c.height;if(old.width)old.getContext('2d').drawImage(pg.c,0,0);
-       pg.d=d;pg.c.width=pg.ink.width=W;pg.c.height=pg.ink.height=Hh;pg.g=pg.ink.getContext('2d');const g=pg.c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,W,Hh);if(old.width)g.drawImage(old,0,0,W,Hh);old.width=old.height=0;pvDraw(pg);
+     /* 확대·축소: 지금 그림은 CSS로 늘어난 채 그대로 두고(깜빡임 없음), 새 크기 그림을 따로 다 그린 뒤 같은 순간에 바꿔 끼운다. 임시 복사본은 만들지 않는다 (아이패드 캔버스 메모리 한도) */
+     rezoom=pg=>{const d=pvD(pg),W=Math.round(pg.cw*d),Hh=Math.round(pg.h*d);if(pg.rt){try{pg.rt.cancel()}catch(e){}pg.rt=null}
+       pg.d=d;pg.ink.width=W;pg.ink.height=Hh;pg.g=pg.ink.getContext('2d');pvDraw(pg);
        const off=document.createElement('canvas');off.width=W;off.height=Hh;const og=off.getContext('2d');og.fillStyle='#fff';og.fillRect(0,0,W,Hh);
        const rt=pg.page.render({canvasContext:og,viewport:pg.page.getViewport({scale:pg.k*d}),annotationMode:0});pg.rt=rt;
-       rt.promise.then(()=>{if(pg.rt===rt&&pg.live&&pg.c.width===W)g.drawImage(off,0,0)}).catch(()=>{}).finally(()=>{off.width=off.height=0;if(pg.rt===rt)pg.rt=null})},
+       rt.promise.then(()=>{if(pg.rt===rt&&pg.live){pg.c.width=W;pg.c.height=Hh;pg.c.getContext('2d').drawImage(off,0,0)}}).catch(()=>{}).finally(()=>{off.width=off.height=0;if(pg.rt===rt)pg.rt=null})},
      budget=keep=>{   // 아이패드 사파리는 캔버스 메모리가 넘치면 쪽이 하얗게·잘려 보인다: 살아 있는 쪽의 화소 합을 제한하고 먼 쪽부터 내린다
        const L=PV.pages.filter(p=>p.live),px=p=>p.c.width*p.c.height*2;let tot=L.reduce((a,p)=>a+px(p),0);if(tot<=3.2e7)return;const mid=innerHeight/2;
        L.sort((a,b)=>Math.abs(b.wrap.getBoundingClientRect().top+b.wrap.offsetHeight/2-mid)-Math.abs(a.wrap.getBoundingClientRect().top+a.wrap.offsetHeight/2-mid));
@@ -2857,6 +2857,9 @@ function niceTri(T){let V=T.map(q=>({x:q.x,y:q.y}));const len=(a,b)=>Math.hypot(
 function shapePts(f){const out=[],add=(a,b)=>{const d=Math.hypot(b.x-a.x,b.y-a.y),m=Math.max(1,Math.ceil(d/3));for(let i=0;i<m;i++)out.push({x:a.x+(b.x-a.x)*i/m,y:a.y+(b.y-a.y)*i/m,p:0.5})};
   if(f.k==='ell'){const m=Math.max(24,Math.ceil(Math.PI*(f.rx+f.ry)/3));for(let i=0;i<=m;i++){const t=i/m*Math.PI*2;out.push({x:f.cx+f.rx*Math.cos(t),y:f.cy+f.ry*Math.sin(t),p:0.5})}return out}
   const V=f.V;for(let i=0;i+1<V.length;i++)add(V[i],V[i+1]);if(f.closed)add(V[V.length-1],V[0]);const e=f.closed?V[0]:V[V.length-1];out.push({x:e.x,y:e.y,p:0.5});return out}
+/* 쪽 그림 해상도: 아이패드 사파리는 캔버스 메모리가 작아 크게 확대하면 쪽이 하얗게 깜빡인다 → 캔버스 하나를 400만 화소까지로 */
+const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+function pvD(pg){const dpr=window.devicePixelRatio||1;return Math.min(dpr,Math.sqrt((IOS?4e6:9e6)/(pg.cw*pg.h)))}
 let FINGER_INK=false;try{FINGER_INK=localStorage.getItem('njFinger')==='1'}catch(e){}
 /* 손가락 화면 넘기기는 브라우저 기본 스크롤에 맡긴다 (그리는 중에도 부드럽게, 관성도 기기 그대로). 손가락으로 쓰기를 켰고 펜을 아직 안 쓴 경우만 손가락이 그린다 */
 function pvTA(){document.body.classList.remove('nscroll')}   /* 기본 스크롤(touch-action:pan)은 아이패드 사파리에서 애플 펜슬까지 화면 넘기기로 잡아 버려서 끔: 손가락 넘기기는 앱이 직접 (한 프레임에 한 번씩 모아서) */
