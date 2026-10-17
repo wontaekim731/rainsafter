@@ -415,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.68</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.68)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.69</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.69)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -459,7 +459,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.68</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.69</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" style="font-size:14px;font-weight:700;padding:6px 12px;line-height:1;display:inline-flex;align-items:center;gap:6px" title="나가기 (저장하고 닫기)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8"/><path d="M10 12h10"/><path d="M17 8l4 4-4 4"/><circle cx="11.5" cy="12" r="0.1"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -2272,7 +2272,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.68 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.69 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -2623,7 +2623,7 @@ function inkRedraw(){const {c,g}=INK;if(!g)return;const d=INK.dpr||window.device
     if(s.length===1){g.beginPath();g.arc(s[0].x,s[0].y,1.5,0,7);g.fillStyle='#1d4ed8';g.fill()}}
   if(INK.mark){g.strokeStyle='#dc2626';g.lineWidth=3;g.beginPath();if(INK.mark==='o')g.ellipse(36,30,30,25,0,0,7);else{g.moveTo(54,8);g.lineTo(14,56)}g.stroke()}}
 function inkErase(x,y){const r=10,n=INK.strokes.length;INK.strokes=INK.strokes.filter(s=>!s.some(p=>Math.hypot(p.x-x,p.y-y)<r));if(INK.strokes.length!==n)inkRedraw()}
-function inkInit(){const c=$('#qzInk');INK.c=c;INK.g=c.getContext('2d',{desynchronized:true});
+function inkInit(){const c=$('#qzInk');INK.c=c;INK.g=c.getContext('2d');
   const pos=e=>{const r=c.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top,p:e.pointerType==='pen'?(e.pressure||0.5):0.5}};
   const T=new Map();let pin=null;
   c.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&INK.cur&&INK.curPen){e.preventDefault();return}   // 펜으로 쓰는 중 손바닥이 닿아도 무시
@@ -2757,7 +2757,7 @@ async function pvOpen(){
     for(const x of [c,ink]){x.style.width=zw+'px';x.style.height=h+'px'}ink.className='pvInk';wrap.append(c,ink);box.appendChild(wrap);
     const pg={n,k,H:v1.height+(page.view[1]||0),ox:page.view[0]||0,v1w:v1.width,v1h:v1.height,cw:zw,h,c,ink,g:null,saved:[],marks:[],fresh:[],del:new Set(),cur:null,live:false,page,wrap};PV.pages.push(pg);pvBind(pg)}
   const show=pg=>{if(pg.live||$('#vPdf').hidden)return;   // 화면을 닫은 뒤에는 그리지 않는다 (예전엔 나갈 때 전체 쪽을 한꺼번에 그리려다 몇 초씩 멈춤)
-    pg.live=true;pg.d=Math.min(dpr,Math.sqrt(9e6/(pg.cw*pg.h)));const W=Math.round(pg.cw*pg.d),Hh=Math.round(pg.h*pg.d);pg.c.width=pg.ink.width=W;pg.c.height=pg.ink.height=Hh;pg.g=pg.ink.getContext('2d',{desynchronized:true});
+    pg.live=true;pg.d=Math.min(dpr,Math.sqrt(9e6/(pg.cw*pg.h)));const W=Math.round(pg.cw*pg.d),Hh=Math.round(pg.h*pg.d);pg.c.width=pg.ink.width=W;pg.c.height=pg.ink.height=Hh;pg.g=pg.ink.getContext('2d');
       const g=pg.c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,W,Hh);pg.rt=pg.page.render({canvasContext:g,viewport:pg.page.getViewport({scale:pg.k*pg.d}),annotationMode:0});pg.rt.promise.catch(()=>{});pvDraw(pg);budget(pg)},
      rezoom=pg=>{const d=Math.min(dpr,Math.sqrt(9e6/(pg.cw*pg.h))),W=Math.round(pg.cw*d),Hh=Math.round(pg.h*d);if(pg.rt){try{pg.rt.cancel()}catch(e){}pg.rt=null}
        const old=document.createElement('canvas');old.width=pg.c.width;old.height=pg.c.height;if(old.width)old.getContext('2d').drawImage(pg.c,0,0);
