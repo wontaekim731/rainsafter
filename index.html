@@ -415,7 +415,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.73</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.73)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.74</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.74)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -459,7 +459,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.73</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.74</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" style="font-size:14px;font-weight:700;padding:6px 12px;line-height:1;display:inline-flex;align-items:center;gap:6px" title="나가기 (저장하고 닫기)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8"/><path d="M10 12h10"/><path d="M17 8l4 4-4 4"/><circle cx="11.5" cy="12" r="0.1"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1575,7 +1575,7 @@ const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https:
 const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
 window.addEventListener('error',e=>dlog('err',(e.message||'')+' @'+(e.lineno||'')));window.addEventListener('unhandledrejection',e=>dlog('rej',String(e.reason&&(e.reason.message||e.reason)||'')));
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v42.73',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v42.74',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     ...DG.L.map(x=>x.join(' '))].join('\n')}
@@ -1608,7 +1608,7 @@ async function findOrig(doc,fname){try{const N=doc.numPages,base=String(fname||'
     await pg.render({canvasContext:g,viewport:vp,annotationMode:0}).promise;const D=g.getImageData(0,0,c.width,c.height).data,W=c.width,H=c.height,v0=new Float32Array(W*H),v=new Float32Array(W*H);for(let i=0;i<v0.length;i++)v0[i]=255-(D[i*4]*0.3+D[i*4+1]*0.59+D[i*4+2]*0.11);for(let y=0;y<H;y++)for(let x=0;x<W;x++){let t=0,n=0;for(let yy=Math.max(0,y-2);yy<=Math.min(H-1,y+2);yy++)for(let xx=Math.max(0,x-2);xx<=Math.min(W-1,x+2);xx++){t+=v0[yy*W+xx];n++}v[y*W+x]=t/n}const o={v,w:W,h:H};c.width=c.height=0;return o};
   const corr=(a,b)=>{if(a.w!==b.w||a.h!==b.h)return 0;let ma=0,mb=0;const n=a.v.length;for(let i=0;i<n;i++){ma+=a.v[i];mb+=b.v[i]}ma/=n;mb/=n;let sab=0,saa=0,sbb=0;for(let i=0;i<n;i++){const x=a.v[i]-ma,y=b.v[i]-mb;sab+=x*y;saa+=x*x;sbb+=y*y}return sab/Math.sqrt(saa*sbb||1)};
   const t0=await txt(doc),v0=(await doc.getPage(1)).view;let A0=null;const sc=[];
-  for(const r of L.slice(0,10)){const full=await libGet(r.name);if(!full||!full.bytes)continue;const d2=await PDFJS.getDocument({data:full.bytes.slice()}).promise;
+  for(const r of L.slice(0,10)){const full=await libGet(r.name);if(!full||!full.bytes||full.bytes instanceof Blob)continue;const d2=await PDFJS.getDocument({data:full.bytes.slice()}).promise;
     try{const v2=(await d2.getPage(1)).view;if(Math.abs((v2[2]-v2[0])-(v0[2]-v0[0]))>3||Math.abs((v2[3]-v2[1])-(v0[3]-v0[1]))>3)continue;
       if(t0.length>=20){const t2=await txt(d2);if(t2===t0)sc.push({r,c:1})}else{if(!A0)A0=await img(doc);let c=corr(A0,await img(d2));if(c>=0.8&&N>=2)c=Math.min(c,corr(await img(doc,2),await img(d2,2)));sc.push({r,c:c>=0.8?Math.min(1,c+0.1):c})}}finally{try{d2.destroy()}catch(e){}}}
   sc.sort((a,b)=>b.c-a.c);if(window.NJPROF)console.log('PROF ext orig',sc.map(x=>x.r.name+':'+x.c.toFixed(3)).join(' '));
@@ -1621,9 +1621,10 @@ async function loadPdf0(file,handle,cached){
   if(!PDFJS){$('#pdfInfo').innerHTML='<span class="err">PDF 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.</span>';return}
   $('#pdfInfo').textContent='시험지를 읽는 중입니다…';
   try{
-    let bytes=new Uint8Array(await file.arrayBuffer());
-    if(pdfEnc(bytes)){$('#pdfInfo').textContent='편집 금지 보안이 걸린 PDF예요. 필기를 저장할 수 있게 보안을 푸는 중… (처음 한 번, 수십 초)';try{bytes=await pdfDecrypt(bytes);if(handle&&handle.kind==='lib'){const r=await libMeta(handle.name);if(r){r.bytes=bytes;r.dec=1;await libPut(r)}}}catch(e){console.error(e);$('#err').textContent=e.message}}
-    dlog('open',(file&&file.name||'')+' '+Math.round(bytes.length/1e6)+'MB');await window.PDFW_OK;const doc=await PDFJS.getDocument({data:bytes.slice()}).promise;dlog('doc',doc.numPages+'쪽')
+    const big=!!(cached&&cached.bytes instanceof Blob);   // 큰 책: 파일을 통째로 읽지 않고 보는 쪽만 조금씩 (아이패드 메모리)
+    let bytes=big?null:new Uint8Array(await file.arrayBuffer());
+    if(bytes&&pdfEnc(bytes)){$('#pdfInfo').textContent='편집 금지 보안이 걸린 PDF예요. 필기를 저장할 수 있게 보안을 푸는 중… (처음 한 번, 수십 초)';try{bytes=await pdfDecrypt(bytes);if(handle&&handle.kind==='lib'){const r=await libMeta(handle.name);if(r){r.bytes=bytes;r.dec=1;await libPut(r)}}}catch(e){console.error(e);$('#err').textContent=e.message}}
+    dlog('open',(file&&file.name||'')+' '+Math.round(file.size/1e6)+'MB'+(big?' big':''));await window.PDFW_OK;const doc=big?await pdfOpenBlob(file):await PDFJS.getDocument({data:bytes.slice()}).promise;dlog('doc',doc.numPages+'쪽')
     let task=null,book=null;try{const md=await doc.getMetadata(),cu=(md&&md.info&&md.info.Custom)||{};const js=v=>v==null?null:JSON.parse(typeof v==='string'?v:(v.name||String(v)));task=js(cu.NJTask);book=js(cu.NJBook)}catch(e){}   // 큰 PDF를 통째로 다시 읽지 않고 정보만
     if(!task&&book&&book.problems&&!(cached&&cached.problems&&cached.pages===doc.numPages))cached={pages:doc.numPages,problems:book.problems,keyFound:true,scan:true,ranges:book.ranges};
     if(task){const base=await SV.strokes(doc),probs=task.items.map(t=>({q:t.n,page:t.page,x0:t.x0,x1:t.x1,y0:t.y0,y1:t.y1,lx:t.lx,ly:t.ly,choices:t.choices,key:t.key,itemId:t.id}));
@@ -1640,12 +1641,12 @@ async function loadPdf0(file,handle,cached){
     if(!A.problems.length&&!A.lazy){if(window.SCAN){scanOffer(file,handle,bytes,doc,false,!(await isScanned(doc)));return}
       $('#pdfInfo').innerHTML='<span class="err">문항 번호(01, 02 … 또는 1. 2. …)를 찾지 못했습니다.</span>';return}
     if(A.keyFound&&!A.scan&&A.problems.some(p=>p.key&&p.key.img&&p.key.img.ax0!=null&&!p.key.vf)){try{await verifyKeys(doc,A.problems,(i,n)=>{$('#pdfInfo').innerHTML=progHTML(n?i/n*100:0,'정답표 확인 중',`${i}/${n}문항`)})}catch(e){console.error(e)}}
-    const base=await SV.strokes(doc),pm=PM=await prevMarks(doc);P_prev=Object.assign(loadCats(file.name.replace(/\.pdf$/i,'')),pm);
+    const base=big?await sideBase(file.name.replace(/\.pdf$/i,'')):await SV.strokes(doc),pm=PM=big?{}:await prevMarks(doc);P_prev=Object.assign(loadCats(file.name.replace(/\.pdf$/i,'')),pm);
     P={name:file.name.replace(/\.pdf$/i,''),bytes,doc,handle,problems:A.problems,base:new Set(base.map(s=>s.sig)),baseStrokes:base,lastMod:file.lastModified,keyFound:A.keyFound,prev:P_prev};
     P.fname=file.name;P.origRef=origRef;P.generic=!!A.generic;P.scan=!!A.scan;P.ranges=A.ranges||null;P.lazy=!!A.lazy;P.solKeys=A.solKeys||null;P.solRange=A.solRange||null;P.lazyDone=A.lazyDone||[];P.solColor=!!A.solColor;
     if(P.lazy&&P.scan&&P.problems.some(p=>p.q>=100000)){P.problems=xiClean(P.problems);P.xi=1;P.ebs=1}
     if(P.lazy&&P.scan){const st=P.problems.filter(p=>(p.lv||0)<3);if(st.length){const pg=new Set(st.map(p=>p.page));P.problems=P.problems.filter(p=>!st.includes(p));P.lazyDone=P.lazyDone.filter(x=>!pg.has(x));if(window.NJPROF)console.log('PROF relazy',pg.size)}}   // 예전 버전에서 읽은 쪽(자이스토리 'A32'·EBS 번호를 몰랐음)은 처음 볼 때 다시 읽는다
-    P.extInk=!Object.keys(pm).length&&!(cached&&(cached.inkAsked||cached.work))?base.length:0;P.inkKeep=!!(cached&&cached.inkKeep);P.pages=doc.numPages;P.tries=loadTries(P.name);showInfo();
+    P.extInk=!big&&!Object.keys(pm).length&&!(cached&&(cached.inkAsked||cached.work))?base.length:0;P.inkKeep=!!(cached&&cached.inkKeep);P.pages=doc.numPages;P.tries=loadTries(P.name);showInfo();
     $('#start').disabled=false;recentSave();
   }catch(e){console.error(e);$('#pdfInfo').innerHTML='<span class="err">이 PDF를 열 수 없습니다.</span>'}
 }
@@ -1795,7 +1796,7 @@ async function scanRun(file,handle,bytes,doc,from,to,mode){if(SCANNING)return;fr
 }
 const keyMiss=()=>P&&!P.scan&&!P.task?P.problems.filter(p=>!(p.key&&p.key.text)).length:0;
 async function scanLazyInit(file,handle,bytes,doc,solKeys,solRange,replace,colr){const name=(file.name||'').replace(/\.pdf$/i,'')||P.name;
-  const old=P&&P.name===name?P:null,base=await SV.strokes(doc);P_prev=Object.assign(loadCats(name),PM=await prevMarks(doc));
+  const old=P&&P.name===name?P:null,base=bytes?await SV.strokes(doc):await sideBase(name);P_prev=Object.assign(loadCats(name),PM=bytes?await prevMarks(doc):{});
   const sk=replace?Object.assign({},solKeys||{}):Object.assign({},old&&old.solKeys||{},solKeys||{});
   P={name,bytes,doc,handle,problems:old?old.problems:[],base:new Set(base.map(s=>s.sig)),baseStrokes:base,lastMod:file.lastModified,keyFound:true,prev:P_prev};
   for(const p of P.problems){const k=sk[p.q];if(replace&&p.fromKey!==false)p.key=k||{text:'✓',kind:'self'};else if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k}
@@ -2272,7 +2273,26 @@ async function pdfClips(src,items){const {PDFDocument}=PDFLib;const doc=await PD
 let WQ=Promise.resolve();const wq=f=>{const p=WQ.then(f,f);WQ=p.catch(()=>{});return p};   // 저장·오답 자르기가 같은 일꾼을 번갈아 쓰지 않게 차례로
 function pdfClipsOff(src,items){const w=pdfWorker();if(!w)return pdfClips(src,items);return wq(()=>new Promise((res,rej)=>{w.onmessage=e=>e.data.err?rej(new Error(e.data.err)):res(e.data.pdfs);w.onerror=e=>{PDFW=false;rej(new Error(e.message||'worker'))};w.postMessage({kind:'clip',src,items},[src.buffer])}))}
 function pdfJobOff(src,job){const w=pdfWorker();if(!w)return pdfJob(src,job);return wq(()=>new Promise((res,rej)=>{w.onmessage=e=>e.data.err?rej(new Error(e.data.err)):res(e.data);w.onerror=e=>{PDFW=false;rej(new Error(e.message||'worker'))};w.postMessage({src,job},[src.buffer])}))}
+/* ===== 큰 책(30MB 넘음) 모드: 파일은 기기 저장소에 그대로 두고 보는 쪽만 조금씩 읽는다. 필기·채점 표시는 PDF가 아니라 'ink' 저장소에 =====
+   아이패드(특히 메모리 2~3GB)에서 200MB 책을 통째로 메모리에 올리면 사파리가 탭을 꺼 버린다 */
+const BIGB=30e6;
+async function pdfOpenBlob(b){const n=Math.min(b.size,1<<20),init=new Uint8Array(await b.slice(0,n).arrayBuffer()),tr=new PDFJS.PDFDataRangeTransport(b.size,init);
+  tr.requestDataRange=(s,e)=>{b.slice(s,e).arrayBuffer().then(ab=>tr.onDataRange(s,new Uint8Array(ab))).catch(er=>dlog('rangeErr',String(er&&er.message||er)))};
+  return PDFJS.getDocument({range:tr,length:b.size,rangeChunkSize:262144,disableAutoFetch:true,disableStream:true}).promise}
+function inkTx(mode,fn){return db().then(d=>new Promise((ok,no)=>{const t=d.transaction('ink',mode),st=t.objectStore('ink');let out;const r=fn(st);if(r)r.onsuccess=()=>{out=r.result};t.oncomplete=()=>ok(out);t.onerror=()=>no(t.error);t.onabort=()=>no(t.error||new Error('저장 공간 부족 또는 저장 취소'))}))}
+const sideGet=n=>inkTx('readonly',st=>st.get(n)),sidePut=o=>inkTx('readwrite',st=>{st.put(o)}),sideDel=n=>inkTx('readwrite',st=>{st.delete(n)});
+async function sideBase(name){const rec=await sideGet(name).catch(()=>null);return rec?(rec.strokes||[]).map(s=>strokeOf(s.pg,flatPts(s.flat))):[]}
+async function sideWrite(job,PP){const rec=(await sideGet(PP.name))||{name:PP.name,strokes:[],marks:{},seq:0};
+  const dl=new Set((job.del||[]).map(d=>d.pg+':'+d.id));rec.strokes=rec.strokes.filter(s=>!dl.has(s.pg+':'+s.id));
+  for(const a of job.add||[]){if(a.o&&a.o.gone)continue;const id='s'+(++rec.seq);rec.strokes.push({id,pg:a.pg,flat:a.flat,c:a.c,w:a.w,t:a.t});if(a.o)a.o.id=id}
+  if(job.marks){for(const q of job.marks.qs)delete rec.marks[+q];for(const m of job.marks.L)(rec.marks[m.q]=rec.marks[m.q]||[]).push(m)}
+  rec.at=Date.now();await sidePut(rec);if(window.NJPROF)console.log('PROF side',rec.strokes.length)}
+async function clipImg(P0,it){const b=it.box,page=await P0.doc.getPage(it.page),vp=page.getViewport({scale:2.2}),a=vp.convertToViewportPoint(b.left,b.top),c2=vp.convertToViewportPoint(b.right,b.bottom),c=document.createElement('canvas');
+  c.width=Math.max(2,Math.round(c2[0]-a[0]));c.height=Math.max(2,Math.round(c2[1]-a[1]));const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);await page.render({canvasContext:g,viewport:vp,transform:[1,0,0,1,-a[0],-a[1]],annotationMode:0}).promise;
+  const jb=await new Promise(r=>c.toBlob(r,'image/jpeg',0.88));c.width=c.height=0;const one=await PDFLib.PDFDocument.create(),img=await one.embedJpg(new Uint8Array(await jb.arrayBuffer())),bw=b.right-b.left,bh=b.top-b.bottom;
+  one.addPage([bw,bh]).drawImage(img,{x:0,y:0,width:bw,height:bh});return await one.save()}
 async function pdfWrite(job){const T0=performance.now(),PP=job.P0||P;   // 나간 뒤에 저장이 이어져도 그 문제집 파일에 쓴다
+  if(!PP.bytes)return sideWrite(job,PP);   // 큰 책: PDF 전체를 다시 쓰지 않고 필기·표시만 따로 저장
   let src=PP.handle.getBytes?await PP.handle.getBytes():new Uint8Array(await (await PP.handle.getFile()).arrayBuffer());if(pdfEnc(src)){src=await pdfDecrypt(src)}   // 보안 걸린 파일: 풀고 저장
   const lite={del:job.del,marks:job.marks,add:(job.add||[]).map(a=>({pg:a.pg,flat:a.flat,c:a.c,w:a.w,t:a.t,gone:!!(a.o&&a.o.gone)}))};
   if(src.byteOffset||src.byteLength!==src.buffer.byteLength)src=src.slice();
@@ -2292,7 +2312,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.73 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.74 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -2448,7 +2468,7 @@ const today0=()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()};
 const ymd=t=>{const d=new Date(t);return `${d.getMonth()+1}/${d.getDate()}`};
 /* --- 저장소 (이 기기의 브라우저) --- */
 let _db=null;
-function db(){if(_db)return _db;_db=new Promise((ok,no)=>{const r=indexedDB.open('njmath',6);r.onupgradeneeded=()=>{const d=r.result;for(const [n,k] of [['items','id'],['recent','name'],['docs','name'],['wrongs','id'],['plan','key'],['sessions','id'],['blobs','name']])if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:k})};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});return _db}
+function db(){if(_db)return _db;_db=new Promise((ok,no)=>{const r=indexedDB.open('njmath',7);r.onupgradeneeded=()=>{const d=r.result;for(const [n,k] of [['items','id'],['recent','name'],['docs','name'],['wrongs','id'],['plan','key'],['sessions','id'],['blobs','name'],['ink','name']])if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:k})};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});return _db}
 async function dbAll(){const d=await db();return new Promise((ok,no)=>{const r=d.transaction('items').objectStore('items').getAll();r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
 async function dbGet(id){const d=await db();return new Promise((ok,no)=>{const r=d.transaction('items').objectStore('items').get(id);r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
 async function dbPut(it){const d=await db();return new Promise((ok,no)=>{const t=d.transaction('items','readwrite');t.objectStore('items').put(it);t.oncomplete=()=>ok();t.onerror=()=>no(t.error)})}
@@ -2725,6 +2745,10 @@ function quitQuiz(){QZ=null;$('#vQuiz').classList.remove('end');$('#vQuiz').hidd
 const PV={pages:[],tool:'pen',penSeen:false,dirty:false,busy:false,undo:[]};
 function pdfDate(t){return 'D:'+new Date(t).toISOString().replace(/[-:T]/g,'').slice(0,14)+'Z'}
 async function pvLoadInk(){   // 파일에 저장된 필기(학생)와 채점 표시(앱)를 읽어 쪽마다 그린다 (방금 연 파일 그대로라 다시 열지 않는다)
+  if(!P.bytes){const rec=await sideGet(P.name);for(const pg of PV.pages){pg.saved=[];pg.marks=[]}   // 큰 책: 필기·표시는 PDF 밖(기기 저장소)에
+    if(rec){for(const s of rec.strokes||[]){const pg=PV.pages[s.pg-1];if(pg)pg.saved.push({id:s.id,pts:flatPts(s.flat),c:s.c,w:s.w})}
+      for(const q in rec.marks||{})for(const m of rec.marks[q]){const pg=PV.pages[m.page-1];if(!pg)continue;for(const l of m.lists){const pts=[];for(let i=0;i+1<l.length;i+=2)pts.push({x:l[i],y:l[i+1]});pg.marks.push({q:m.q,pts,pend:m.pend,skip:m.skip,w:m.w})}}}
+    for(const pg of PV.pages)if(pg.live)pvDraw(pg);dlog('sideInk',rec?(rec.strokes||[]).length:0);return}
   const doc=P.doc;
   for(const pg of PV.pages){const an=await (await doc.getPage(pg.n)).getAnnotations();pg.saved=[];pg.marks=[];
     for(const a of an){if(a.subtype!=='Ink'||!a.inkLists)continue;const mine=((a.titleObj&&a.titleObj.str)||a.title||'')==='NJMATH-GRADE';
@@ -3018,7 +3042,7 @@ function skelStrokes(m,W,H,toPdf,pi,tag){const out=[];
           const loop=B.slice(bi).concat(B.slice(0,bi+1)),AA=rev?A.slice().reverse():A,P2=AA.concat(loop),s=strokeOf(pi,P2);s.sig=tag+s.sig;s.raster=1;out.splice(Math.max(a,b),1);out.splice(Math.min(a,b),1,s);done2=false;break}}}if(done2)break}}
   return out}
 /* 통째로 그림이 된 PDF(필기까지 한 장의 사진): 라이브러리의 원본 쪽과 겹쳐 보고, 원본에 없는 진한 점만 필기로 본다 */
-async function diffInk(page,pi){if(!P||!P.origRef)return null;if(!P.origDoc){const r=await libGet(P.origRef);if(!r||!r.bytes)return null;P.origDoc=await PDFJS.getDocument({data:r.bytes.slice()}).promise}
+async function diffInk(page,pi){if(!P||!P.origRef)return null;if(!P.origDoc){const r=await libGet(P.origRef);if(!r||!r.bytes)return null;P.origDoc=r.bytes instanceof Blob?await pdfOpenBlob(r.bytes):await PDFJS.getDocument({data:r.bytes.slice()}).promise}
   const op=await P.origDoc.getPage(pi),SC=2,rend=async pg=>{const vp=pg.getViewport({scale:SC}),c=document.createElement('canvas');c.width=Math.round(vp.width);c.height=Math.round(vp.height);const g=c.getContext('2d',{willReadFrequently:true});g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);await pg.render({canvasContext:g,viewport:vp,annotationMode:0}).promise;
     const D=g.getImageData(0,0,c.width,c.height).data,gr=new Uint8Array(c.width*c.height),ch=new Uint8Array(c.width*c.height);for(let i=0,j=0;j<gr.length;i+=4,j++){gr[j]=(D[i]*77+D[i+1]*150+D[i+2]*29)>>8;ch[j]=Math.max(D[i],D[i+1],D[i+2])-Math.min(D[i],D[i+1],D[i+2])}const o={gr,ch,W:c.width,H:c.height};c.width=c.height=0;return o};
   const N=await rend(page),O=await rend(op);if(N.W!==O.W||N.H!==O.H)return null;const W=N.W,H=N.H;
@@ -3089,7 +3113,7 @@ function bkWrite(){const k=bkKey();if(!k)return;try{const pages={},slot=n=>pages
   if(Object.keys(pages).length)localStorage.setItem(k,JSON.stringify({t:Date.now(),pages}));else localStorage.removeItem(k)}catch(e){console.error(e)}}
 function pvDirty(){bkWrite();clearTimeout(BK.t);BK.t=setTimeout(()=>pvAuto().catch(e=>console.error(e)),20000)}
 async function pvAuto(){if(!P||!P.handle||PV.busy||SS||$('#vPdf').hidden||PV.pages.some(p=>p.cur))return;
-  let big=false;try{big=(P.doc&&(await P.doc.getDownloadInfo()).length||0)>40e6}catch(e){}if(big)return;   // 큰 책(자이스토리 200MB 등)은 저장할 때마다 파일 전체를 다시 쓰느라 메모리가 모자람 → 백업만 하고 [채점하기]·[끝내기] 때 저장
+  let big=false;if(P.bytes){try{big=(P.doc&&(await P.doc.getDownloadInfo()).length||0)>40e6}catch(e){}}if(big)return;   // 따로 저장하는 큰 책은 가볍게 자동 저장   // 큰 책(자이스토리 200MB 등)은 저장할 때마다 파일 전체를 다시 쓰느라 메모리가 모자람 → 백업만 하고 [채점하기]·[끝내기] 때 저장
   const job=pvCommit();if(job){pvPersist(job);bkWrite()}}
 function bkRestore(){const k=bkKey();if(!k)return;let d=null;try{d=JSON.parse(localStorage.getItem(k)||'null')}catch(e){}if(!d||!d.pages)return;let n=0;
   for(const key in d.pages){const pg=PV.pages.find(p=>p.n===+key);if(!pg)continue;const it=d.pages[key];
@@ -3294,14 +3318,14 @@ const metaOf=o=>{const m=Object.assign({},o);delete m.bytes;m.hasBlob=1;return m
 async function libMigrate(r){if(r&&r.bytes){await blobTx('readwrite',st=>{st.put({name:r.name,bytes:r.bytes})});await libTx('readwrite',st=>{st.put(metaOf(r))})}return r}
 const libMeta=async n=>{const r=await libTx('readonly',st=>st.get(n));if(r&&r.bytes){await libMigrate(r);delete r.bytes}return r};
 const libGet=async n=>{const r=await libTx('readonly',st=>st.get(n));if(!r)return r;if(r.bytes){await libMigrate(r);BREF.set(r,r.bytes);return r}
-  const b=await blobTx('readonly',st=>st.get(n));if(b){r.bytes=b.bytes;BREF.set(r,b.bytes)}return r};
+  let b=await blobTx('readonly',st=>st.get(n));if(!b&&r.blobRef)b=await blobTx('readonly',st=>st.get(r.blobRef));if(b){r.bytes=b.bytes;BREF.set(r,b.bytes)}return r};   // 풀이 사본이 큰 책 원본 파일을 같이 쓰는 경우(blobRef)
 const libAll=async()=>{const L=await libTx('readonly',st=>st.getAll());for(const r of L)if(r.bytes){await libMigrate(r);delete r.bytes}return L};
 const libPut=async o=>{if(o.bytes&&BREF.get(o)!==o.bytes){await blobTx('readwrite',st=>{st.put({name:o.name,bytes:o.bytes})});BREF.set(o,o.bytes)}await libTx('readwrite',st=>{st.put(metaOf(o))})};
-const libDel=async n=>{await libTx('readwrite',st=>{st.delete(n)});try{await blobTx('readwrite',st=>{st.delete(n)})}catch(e){}};
+const libDel=async n=>{await libTx('readwrite',st=>{st.delete(n)});try{await libTx('readwrite',st=>{st.delete(n)})}catch(e){}try{const L=await libTx('readonly',st=>st.getAll());if(!L.some(x=>x.blobRef===n))await blobTx('readwrite',st=>{st.delete(n)})}catch(e){}try{await sideDel(n)}catch(e){}};
 function vHandle(name){   // 파일 핸들처럼 쓰는 앱 저장소 문서
   return {name,kind:'lib',queryPermission:async()=>'granted',requestPermission:async()=>'granted',
     getFile:async()=>{const r=await libGet(name);return new File([r.bytes],name+'.pdf',{type:'application/pdf',lastModified:r.mod})},
-    getBytes:async()=>(await libGet(name)).bytes,getMod:async()=>{const r=await libMeta(name);return r?r.mod:0},   // 큰 책: File로 한 번 더 복사하지 않게
+    getBytes:async()=>{const b=(await libGet(name)).bytes;return b instanceof Blob?new Uint8Array(await b.arrayBuffer()):b},getMod:async()=>{const r=await libMeta(name);return r?r.mod:0},   // 큰 책: File로 한 번 더 복사하지 않게
     createWritable:async()=>{const parts=[];return {write:async d=>{parts.push(d)},close:async()=>{const bytes=parts.length===1&&parts[0] instanceof Uint8Array?parts[0]:new Uint8Array(await new Blob(parts).arrayBuffer()),r=await libMeta(name);parts.length=0;
       r.bytes=bytes;r.mod=Math.max(Date.now(),(r.mod||0)+1);r.at=Date.now();await libPut(r)}}}}}
 let START_OPEN=false,ADDMODE='one',PEND_START=false;
@@ -3311,7 +3335,7 @@ function addDone(){if(P&&keyMiss()&&P.handle&&P.handle.kind==='lib')libGet(P.nam
 async function importPdf(f){START_OPEN=true;$('#vStart').classList.remove('collapsed');$('#addPick').hidden=true;$('#addStep').hidden=false;$('#pick').parentNode.hidden=true;$('#addStepT').textContent='';
   let name=f.name.replace(/\.pdf$/i,'');const ex=await libMeta(name);
   if(ex&&ex.size0!==f.size){let i=2;while(await libMeta(`${name} (${i})`))i++;name=`${name} (${i})`}   // 같은 이름의 다른 파일
-  if(!ex||ex.name!==name||ex.size0!==f.size){const bytes=new Uint8Array(await f.arrayBuffer());await libPut({name,bytes,size0:f.size,mod:Date.now(),at:Date.now(),orig:true})}
+  if(!ex||ex.name!==name||ex.size0!==f.size){const big=f.size>BIGB,bytes=big?f:new Uint8Array(await f.arrayBuffer());dlog('import',name+' '+Math.round(f.size/1e6)+'MB'+(big?' big':''));await libPut({name,bytes,size0:f.size,mod:Date.now(),at:Date.now(),orig:true,big:big?1:undefined})}   // 큰 책: 파일을 메모리에 올리지 않고 그대로 저장
   const r=await libGet(name);await loadPdf(new File([r.bytes],name+'.pdf',{lastModified:r.mod}),vHandle(name),r);if(P)P.orig=!!r.orig;
   $('#addPick').hidden=true;$('#addStep').hidden=false;$('#addStepT').textContent=ADDMODE==='two'?'① 문제 PDF ✓ → ② 답지 PDF':'';
   if(P&&P.name===name&&!$('#start').disabled&&!$('#scGo')&&!P.extInk&&(P.scan||P.task||(ADDMODE!=='two'&&!keyMiss()))){START_OPEN=false;renderRecent()}
@@ -3394,7 +3418,7 @@ let FRESH=false;
 async function latestCopy(orig){try{const o=await libMeta(orig),L=(await libAll()).filter(r=>!r.orig&&r.from===orig&&!r.done&&!r.task&&(!o||!r.size0||r.size0===o.size0)).sort((a,b)=>b.at-a.at);return L[0]||null}catch(e){return null}}
 async function makeWorkCopy(orig){   // 원본은 깨끗하게 두고, 학생 풀이는 '원본 (풀이 10-02)' 이름의 사본에 저장
   const r=await libGet(orig),d=new Date(),base=`${orig} (풀이 ${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')})`;let nm=base,i=2;while(await libMeta(nm))nm=`${base} ${i++}`;
-  const c=Object.assign({},r,{name:nm,orig:false,work:true,from:orig,mod:Date.now(),at:Date.now()});if(!c.pages&&P&&P.name===orig&&P.doc)c.pages=P.doc.numPages;if(!c.problems&&P&&P.name===orig)c.problems=P.problems;await libPut(c);return c}   // 쪽 수가 없으면 읽어 둔 문항 정보를 못 쓰고 처음부터 다시 읽음
+  const c=Object.assign({},r,{name:nm,orig:false,work:true,from:orig,mod:Date.now(),at:Date.now()});if(r.bytes instanceof Blob){c.blobRef=r.blobRef||orig;BREF.set(c,c.bytes)}/* 큰 책: 사본은 원본 파일을 같이 쓰고 필기만 따로 */if(!c.pages&&P&&P.name===orig&&P.doc)c.pages=P.doc.numPages;if(!c.problems&&P&&P.name===orig)c.problems=P.problems;await libPut(c);return c}   // 쪽 수가 없으면 읽어 둔 문항 정보를 못 쓰고 처음부터 다시 읽음
 /* 기기: 안내 문구를 기기에 맞춘다 */
 const DEV=(()=>{const u=navigator.userAgent||'';if(/iPad/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return 'ipad';if(/iPhone/.test(u))return 'iphone';if(/Android/.test(u))return 'android';if(/Windows/.test(u))return 'win';return 'pc'})();
 const DEVN={ipad:'아이패드',iphone:'아이폰',android:'갤럭시탭',win:'이 컴퓨터(서피스)',pc:'이 컴퓨터'}[DEV];
@@ -3455,7 +3479,7 @@ async function logWrongsNow(){   // 지금 학습에서 틀린(고친·여전히
   const list=Object.values(R.state).filter(x=>{const c=catOf(x);return c&&c!=='O'});if(!list.length)return;
   let TM=null,med=null;const need=[];
   for(const x of list){const p=P0.problems.find(z=>z.q===x.q);if(!p)continue;const id=P0.name+'#'+x.q;if(!(await wrGet(id)))need.push({x,p,id,box:await contentBox(p)})}
-  let pdfs=[];if(need.length){const items=need.map(n=>({page:n.p.page,box:n.box}));try{pdfs=await pdfClipsOff(P0.bytes.slice(),items)}catch(e){console.error(e);pdfs=await pdfClips(P0.bytes.slice(),items)}}
+  let pdfs=[];if(need.length){const items=need.map(n=>({page:n.p.page,box:n.box}));if(!P0.bytes){for(const it of items)pdfs.push(await clipImg(P0,it))}else{try{pdfs=await pdfClipsOff(P0.bytes.slice(),items)}catch(e){console.error(e);pdfs=await pdfClips(P0.bytes.slice(),items)}}}
   for(const x of list){const p=P0.problems.find(z=>z.q===x.q);if(!p)continue;const id=P0.name+'#'+x.q,c=catOf(x);let w=await wrGet(id);
     if(!w){const k=need.findIndex(n=>n.id===id);if(k<0||!pdfs[k])continue;const box=need[k].box,bw=box.right-box.left,bh=box.top-box.bottom;
       if(!TM){TM=perQ(R);const vals=Object.values(TM.T).map(v=>v/1000).sort((a,b)=>a-b);med=vals.length>=2?vals[vals.length>>1]:null}
