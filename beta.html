@@ -416,7 +416,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.86</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.86)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.87</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.87)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -460,7 +460,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.86</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.87</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" style="font-size:14px;font-weight:700;padding:6px 12px;line-height:1;display:inline-flex;align-items:center;gap:6px" title="나가기 (저장하고 닫기)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8"/><path d="M10 12h10"/><path d="M17 8l4 4-4 4"/><circle cx="11.5" cy="12" r="0.1"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -993,7 +993,7 @@ const chain=toks=>{const n=toks.length,len=new Array(n).fill(1),prv=new Array(n)
 // one word "0021:3" -> label 0021 + word "3"
 const splitLab=w=>{const m=/^([0-9OoIl|]{4})([:;.,]*)(.*)$/.exec(w.t||'');if(!m)return [w];const q=num4(m[1]);if(q==null)return [w];const n=(w.t||'').length,cut=w.x0+(w.x1-w.x0)*4/n,out=[Object.assign({},w,{t:m[1],q,x1:cut})];if(m[3])out.push(Object.assign({},w,{t:m[3],x0:w.x0+(w.x1-w.x0)*(4+m[2].length)/n}));return out};
 SCAN.seqLabs=async(wk,B,ws,bodyH,o)=>{const W=B.w,H=B.h,SC=B.c.width/(B.w||1)*2||2;
-  const body=ws.filter(x=>x.y1<bodyH&&x.y0>H*0.03&&String(x.t).trim());if(body.length<6)return [];
+  const body=ws.filter(x=>!x.bin&&x.y1<bodyH&&x.y0>H*0.03&&String(x.t).trim());   /* 진하게 한 그림으로 읽은 글자는 쓰지 않는다 (보기 숫자가 번호로 섞임) */if(body.length<6)return [];
   const two=body.filter(x=>x.x0>W*0.52).length>body.length*0.2&&body.filter(x=>x.x1<W*0.48).length>body.length*0.2;
   const colOf=x=>two&&x.x0>=W*0.5?1:0,marg=[0,1].map(c=>{const xs=body.filter(x=>colOf(x)===c&&x.y1-x.y0>=8).map(x=>x.x0).sort((a,b)=>a-b);return xs.length?xs[Math.floor(xs.length*0.04)]:null});
   const hs=body.map(x=>x.y1-x.y0).sort((a,b)=>a-b),hMed=hs[hs.length>>1];
@@ -1015,7 +1015,7 @@ SCAN.seqLabs=async(wk,B,ws,bodyH,o)=>{const W=B.w,H=B.h,SC=B.c.width/(B.w||1)*2|
   const m=cand.length,st=[];for(let i=0;i<m;i++){const l=cand[i],opts=[];if(l.r.length&&+l.r>0)opts.push(+l.r);
       for(let k=0;k<i;k++)for(const s of st[k])for(const d of [1,2,3]){const v=s.v+d;if(!opts.includes(v)&&fit(v,l.r))opts.push(v)}
       if(o&&o.prevLast)for(const d of [1,2]){const v=o.prevLast+d;if(!opts.includes(v)&&fit(v,l.r))opts.push(v)}
-      st.push(opts.map(v=>{const f=fit(v,l.r);if(!f)return null;let b={sc:(f===2?2:0.6)+(o&&o.prevLast&&v===o.prevLast+1?0.5:0),pv:null};for(let k=0;k<i;k++)for(const s of st[k]){const d=v-s.v;if(d>=1&&d<=3){const sc=s.sc+(f===2?2:0.6)-0.7*(d-1);if(sc>b.sc)b={sc,pv:s}}}return {v,i,sc:b.sc,pv:b.pv}}).filter(Boolean))}
+      st.push(opts.map(v=>{const f=fit(v,l.r);if(!f)return null;if(o&&o.nextFirst>2&&v>=o.nextFirst)return null;   /* 다음 쪽 첫 번호보다 크면 안 됨 */let b={sc:(f===2?2:0.6)+(o&&o.prevLast&&v===o.prevLast+1?0.5:0),pv:null};for(let k=0;k<i;k++)for(const s of st[k]){const d=v-s.v;if(d>=1&&d<=3){const sc=s.sc+(f===2?2:0.6)-0.7*(d-1);if(sc>b.sc)b={sc,pv:s}}}return {v,i,sc:b.sc,pv:b.pv}}).filter(Boolean))}
   let top=null;for(const a of st)for(const s of a)if(!top||s.sc>top.sc)top=s;const out=[];for(let s=top;s;s=s.pv){const l=cand[s.i];l.n=s.v;l.disp=s.v;out.unshift(l)}
   if(out.length>=3){const hs=out.map(l=>l.y1-l.y0).sort((a,b)=>a-b),m=hs[hs.length>>1];SCAN._seqH=SCAN._seqH?SCAN._seqH*0.7+m*0.3:m}return out};
 SCAN.analyze=async(doc,o)=>{o=o||{};const SC=2,FS=4,from=Math.max(1,o.from||1),to=Math.min(doc.numPages,o.to||doc.numPages);
@@ -1028,7 +1028,7 @@ SCAN.analyze=async(doc,o)=>{o=o||{};const SC=2,FS=4,from=Math.max(1,o.from||1),t
     const page=await doc.getPage(pi),B=await SCAN.render(page,SC,0,1),W=B.w,H=B.h,bodyH=H*0.895;
     // 1) 문항 번호: 처음 몇 쪽은 쪽 전체를 읽고, 번호가 왼쪽에만 있으면 그 뒤로는 왼쪽 띠만 읽는다 (빠르게)
     // 번호 자리(단마다 왼쪽 띠)를 알게 되면 그 띠만 읽는다 → 쪽당 몇 배 빠름. 띠에서 못 찾은 쪽만 전체를 읽는다
-    const full=async()=>{if(o.thorough){const BC=SCAN.bin(B,215),w2=await SCAN.worker2().catch(()=>null);try{if(w2){const [a,b]=await Promise.all([SCAN.words(wk,B.c,null,11),SCAN.words(w2,BC,null,11)]);return a.concat(b)}return (await SCAN.words(wk,B.c,null,11)).concat(await SCAN.words(wk,BC,null,11))}finally{BC.width=BC.height=0}}return await SCAN.words(wk,B.c,null,11)};let ws=[];
+    const full=async()=>{if(o.thorough){const BC=SCAN.bin(B,215),w2=await SCAN.worker2().catch(()=>null);try{if(w2){const [a,b]=await Promise.all([SCAN.words(wk,B.c,null,11),SCAN.words(w2,BC,null,11)]);b.forEach(w=>w.bin=1);return a.concat(b)}const a=await SCAN.words(wk,B.c,null,11),b=await SCAN.words(wk,BC,null,11);b.forEach(w=>w.bin=1);return a.concat(b)}finally{BC.width=BC.height=0}}return await SCAN.words(wk,B.c,null,11)};let ws=[];
     if(strips){ws=await SCAN.stripWords(wk,B,strips,bodyH);
       const lastQ=lastGood,fits=x=>{const n=num4(x.t);return n!=null&&x.y1-x.y0>=SC*7&&(solMode||!lastQ||(n>lastQ-3&&n<=lastQ+25))};
       if(!ws.some(fits)){const wf=await full(),nw=wf.filter(fits);ws=wf;   // 띠에서 이어지는 번호를 못 찾으면 쪽 전체를 읽고, 새 번호 자리는 띠에 더한다
@@ -1038,7 +1038,7 @@ SCAN.analyze=async(doc,o)=>{o=o||{};const SC=2,FS=4,from=Math.max(1,o.from||1),t
     /* 어느 책에나: 3~4자리 번호를 못 찾으면, 단 왼쪽 끝에 줄 맞춰 놓인 숫자(01, 02, …)를 번호로 본다. 번호가 단원·STEP마다 01부터 다시 시작해도 되도록
        q는 쪽·순서로 만든 고유 번호, 화면에 보이는 번호는 disp */
     if(labs.length>=3&&!SEQU)NUMU=true;
-    if((o.seq===true||(!NUMU&&(labs.length<=2||SEQU)))&&!o.colorLabs&&o.seq!==false){const g=await SCAN.seqLabs(wk,B,ws,bodyH);if((g.length>=2&&g.length>labs.length)||(SEQU&&g.length)){SEQU=true;g.forEach(l=>{l.q=3000000+pi*100+Math.min(99,l.disp);l.n=2});labs=g}}
+    if((o.seq===true||(!NUMU&&(labs.length<=2||SEQU)))&&!o.colorLabs&&o.seq!==false){const g=await SCAN.seqLabs(wk,B,ws,bodyH,{prevLast:o.prevLast,nextFirst:o.nextFirst});if((g.length>=2&&g.length>labs.length)||(SEQU&&g.length)){SEQU=true;g.forEach(l=>{l.q=3000000+pi*100+Math.min(99,l.disp);l.n=2});labs=g}}
     if(o.colorLabs&&root.SCAN.colorOf)labs=labs.filter(l=>root.SCAN.colorOf(B,l)>22);   if(root.QDBG)root.QDBG.push({pi,raw:ws.filter(x=>num4(x.t)!=null).map(x=>x.t+'@'+Math.round(x.x0)+','+Math.round(x.y0)+'h'+Math.round(x.y1-x.y0)+'c'+Math.round(root.SCAN.colorOf?root.SCAN.colorOf(B,x):0)),labs:labs.map(l=>l.q+'@'+Math.round(l.x0)+','+Math.round(l.y0))});   // 이 책은 문제 번호가 색 글씨: 검은 글씨 숫자(이름·쪽 번호 등)는 번호가 아님
     // 색 번호 놓친 것 찾기: 번호 세로줄마다 번호 높이의 색 글씨 덩어리가 있는데 번호로 못 읽은 자리를 숫자만 허용해 다시 읽는다 (071 등)
     if(o.colorLabs&&labs.length){const org=labs.slice(),ro=l=>(l.x0>W*0.42?1e6:0)+l.y0,hs=labs.map(l=>l.y1-l.y0).sort((a,b)=>a-b),h=hs[hs.length>>1],cols=[],md=labs.map(l=>l.n).sort((a,b)=>a-b)[labs.length>>1];
@@ -1617,7 +1617,7 @@ const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https:
 const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
 window.addEventListener('error',e=>dlog('err',(e.message||'')+' @'+(e.lineno||'')));window.addEventListener('unhandledrejection',e=>dlog('rej',String(e.reason&&(e.reason.message||e.reason)||'')));
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v42.86',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v42.87',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -1826,6 +1826,11 @@ SECQ.extract=async(doc,pi,SC)=>{SC=SC||4;const page=await doc.getPage(pi),B=awai
   const labs=cand.filter(c=>cols.some(x=>Math.abs(x-c.x0)<14*u));
   let split=W/2,gbest=0;for(let i=1;i<cols.length;i++){const g=cols[i]-cols[i-1],m=(cols[i]+cols[i-1])/2;if(m>W*0.3&&m<W*0.7&&g>gbest){gbest=g;split=cols[i]-8*u}}for(const l of labs)l.col=l.x0<split?0:1;
   for(const l of labs){let t='';try{t=await SCAN.ocrBox(wk,B,l.x0-4*u,l.y0-4*u,l.x0+l.h*1.35,l.y1+4*u,'0123456789')}catch(e){}t=String(t||'').replace(/\s+/g,'');l.ok=/^\d{2}/.test(t)&&+t.slice(0,2)===l.n}
+  /* 놓친 번호 찾기: 번호 줄(행)마다 번호 열 자리가 비어 있으면 그 자리를 숫자로만 다시 읽는다 */
+  {const hh=labs.length?labs.map(l=>l.h).sort((a,b)=>a-b)[labs.length>>1]:0,rows=[];for(const l of labs.filter(l=>l.ok)){const cy=(l.y0+l.y1)/2,r=rows.find(r=>Math.abs(r.cy-cy)<hh*0.6&&r.col===l.col);if(r)r.ls.push(l);else rows.push({cy,col:l.col,ls:[l]})}
+   for(const r of rows){const xs2=cols.filter(x=>(r.col?x>=split:x<split)&&!labs.some(l=>Math.abs(l.x0-x)<14*u&&Math.abs((l.y0+l.y1)/2-r.cy)<hh*0.6));
+     for(const x of xs2){let t='';try{t=await SCAN.ocrBox(wk,B,x-4*u,r.cy-hh*0.5-4*u,x+hh*1.35,r.cy+hh*0.5+4*u,'0123456789')}catch(e){}t=String(t||'').replace(/\s+/g,'');if(!/^\d{2}$/.test(t))continue;const n=+t;if(n<1||n>80)continue;
+       labs.push({n,x0:x,y0:r.cy-hh/2,y1:r.cy+hh/2,h:hh,col:r.col,ok:true,inf:true})}}}
   const heads=[];for(const w of kws){if(!/쪽/.test(w.t))continue;const h=w.y1-w.y0;let t='';try{t=await SCAN.ocrBox(wk,B,w.x0-h*5.5,w.y0-h*0.15,w.x0+2,w.y1+h*0.15,'0123456789~-')}catch(e){}const r=SECQ.rng(t);heads.push({col:w.x0<W/2?0:1,y:w.y1,a:r&&r[0],b:r&&r[1]})}
   for(const l of labs){if(!l.ok)continue;const col=l.col,nx=cols.filter(x=>x>l.x0+20*u)[0],ax0=l.x0+l.h*1.45,ax1=Math.min(nx?nx-6*u:(col?W*0.97:split-6*u),ax0+l.h*9),ay0=l.y0-l.h*0.7,ay1=l.y1+l.h*0.7;{const cy=(l.y0+l.y1)/2,nr=labs.filter(m=>m!==l&&m.col===col&&m.x0>l.x0+20*u&&Math.abs((m.y0+m.y1)/2-cy)<l.h*0.6).map(m=>m.x0).sort((a,b)=>a-b)[0];l.cx1=nr?nr-6*u:(col?W*0.97:split-6*u)}l.pic=SECQ.crop(B,l.x0-4*u,l.y0-l.h*0.9,l.cx1,l.y1+l.h*0.9);   /* 그림은 같은 줄 다음 번호 앞까지 (긴 답도 잘리지 않게) */
       const iw=Math.max(1,Math.round(ax1-ax0)),ih=Math.max(1,Math.round(ay1-ay0)),im=B.g.getImageData(Math.round(ax0),Math.round(ay0),iw,ih),dk=(x,y)=>{const i=(y*iw+x)*4;return Math.min(im.data[i],im.data[i+1],im.data[i+2])<140};
@@ -1838,8 +1843,8 @@ SECQ.extract=async(doc,pi,SC)=>{SC=SC||4;const page=await doc.getPage(pi),B=awai
       if(c&&!rest){const oc=await SECQ.ocrIn(wk,B,c);l.v='CIRC';l.cv={v:c.v.map(x=>Math.round(x*100)/100),tp:c.tp,oc}}
       else if((by1-by0)/l.h<1.45){let t1='',t2='',t3='';const X0=ax0+gx0-4,X1=ax0+bx1+4,Y0=ay0+by0-6,Y1=ay0+by1+6;try{t1=await SCAN.ocrBox(wk,B,X0,Y0,X1,Y1,'0123456789-');t2=await SCAN.ocrBox(wk,B,X0,Y0,X1,Y1,'');t3=await SCAN.ocrBox(kw,B,X0,Y0,X1,Y1,'')}catch(e){}
         t1=String(t1||'').replace(/\s+/g,'');t2=String(t2||'').replace(/\s+/g,'').replace(/[—–−]/g,'-');t3=String(t3||'').replace(/\s+/g,'').replace(/[—–−]/g,'-');const wd=(bx1-gx0)/l.h;if(/^-?\d{1,4}$/.test(t1)&&t1===t2&&t2===t3&&wd<t1.length*0.75+0.4)l.v=t1}}
-  return {SC,heads,labs:labs.map(l=>({n:l.n,col:l.col,x0:Math.round(l.x0),y0:Math.round(l.y0),y1:Math.round(l.y1),h:l.h,ok:l.ok,v:l.v,cv:l.cv,cx1:l.cx1&&Math.round(l.cx1),pic:l.pic}))}}finally{B.c.width=B.c.height=0;try{page.cleanup()}catch(e){}}};
-SECQ.cacheKey=(fp,pi)=>'njSQ1:'+fp+':'+pi;
+  return {SC,heads,labs:labs.map(l=>({inf:l.inf?1:undefined,n:l.n,col:l.col,x0:Math.round(l.x0),y0:Math.round(l.y0),y1:Math.round(l.y1),h:l.h,ok:l.ok,v:l.v,cv:l.cv,cx1:l.cx1&&Math.round(l.cx1),pic:l.pic}))}}finally{B.c.width=B.c.height=0;try{page.cleanup()}catch(e){}}};
+SECQ.cacheKey=(fp,pi)=>'njSQ2:'+fp+':'+pi;
 /* 정답 칸 그림 (직접 채점할 때 보여 줄 작은 흑백 그림) */
 SECQ.crop=(B,x0,y0,x1,y1)=>{try{x0=Math.max(0,Math.round(x0));y0=Math.max(0,Math.round(y0));x1=Math.min(B.w,Math.round(x1));y1=Math.min(B.h,Math.round(y1));const w=x1-x0,h=y1-y0;if(w<8||h<8)return null;const z=Math.min(1,64/h),c=document.createElement('canvas');c.width=Math.round(w*z);c.height=Math.round(h*z);const g=c.getContext('2d');g.filter='grayscale(1)';g.drawImage(B.c,x0,y0,w,h,0,0,c.width,c.height);const u=c.toDataURL('image/jpeg',0.7);c.width=c.height=0;return u}catch(e){return null}};
 SECQ.repic=async(doc,pi,ex)=>{const SC=ex.SC||4,u=SC/2.5,page=await doc.getPage(pi),B=await SCAN.render(page,SC,0,1);try{for(const l of ex.labs)if(l.ok&&l.cx1&&!l.pic)l.pic=SECQ.crop(B,l.x0-4*u,l.y0-l.h*0.9,l.cx1,l.y1+l.h*0.9)}finally{B.c.width=B.c.height=0;try{page.cleanup()}catch(e){}}};
@@ -1854,6 +1859,7 @@ SECQ.page=async(doc,pi,ctx,SC)=>{if(window.NJPROF)console.log('PROF secq page',p
     let cur=ctx.last||null,prevN=cur?cur.maxN:0;
     for(let i=0;i<L.length;i++){const l=L[i];const hd=HS.filter(h=>h.y<l.y0).pop();const hdNew=hd&&(!cur||cur.head!==hd);
       if(!cur||(l.n<prevN&&l.n<=2)||(hdNew&&l.n<=2)){const h2=hdNew?hd:null;cur={head:h2,a:h2&&h2.a,b:h2&&h2.b,keys:{},maxN:0,pi};secs.push(cur)}
+      if(l.inf&&!(l.n===prevN+1||(L[i+1]&&L[i+1].n===l.n+1&&l.n>prevN)))continue;   /* 다시 읽어 찾은 번호는 앞뒤 번호와 이어질 때만 */
       if(l.n>prevN+3&&!(L[i+1]&&L[i+1].n===l.n+1))continue;
       prevN=l.n;cur.maxN=Math.max(cur.maxN,l.n);if(cur.keys[l.n])continue;if(!l.ok)continue;
       if(l.v==='CIRC'&&l.cv){ctx.circ.push({v:l.cv.v,tp:l.cv.tp,oc:l.cv.oc,sec:cur,n:l.n})}
@@ -1886,7 +1892,8 @@ SECQ.run=async(doc,o)=>{o=o||{};const N=doc.numPages,wk=SCAN._wk||await SCAN.wor
       for(let k=0;k<two.length&&start==null;k++){if(cs[k]>=20&&await tryPage(two[k]))start=two[k]}}
     if(start!=null){for(let p=start-1;p>=1&&!(o.stop&&o.stop());p--){tell(`${p}쪽 읽는 중`);const c0=ctx.secs.length;const ok=await tryPage(p);if(!ok)break;const moved=ctx.secs.splice(c0);ctx.secs.unshift(...moved);break}   /* 바로 앞쪽에도 빠른 정답이 있으면 (뒤에서 찾은 경우) */
       for(let p=start+1;p<=N&&!(o.stop&&o.stop());p++){tell(`${p}쪽 읽는 중`);if(!await tryPage(p))break}}}
-  tell('동그라미 정답 확인 중…');SECQ.settle(ctx);const secs=SECQ.fill(ctx.secs||[]).map(s=>{const k={};for(const n in s.keys){const v=SECQ.key(s.keys[n]);if(v)k[n]=v}return {a:s.a,b:s.b,g:s.guess?1:0,n:Object.keys(s.keys).length,k,p:s.pics||{}}});
+  tell('동그라미 정답 확인 중…');SECQ.settle(ctx);const secs=SECQ.fill(ctx.secs||[]).map(s=>{const k={};for(const n in s.keys){const v=SECQ.key(s.keys[n]);if(v)k[n]=v}const ns=Object.keys(s.keys).map(Number).sort((a,b)=>a-b);let m=0;for(const v of ns){if(v-m>4)break;m=v}   /* 문항 수: 번호가 크게 건너뛰기 전까지의 마지막 번호 (동떨어진 잡음 번호 제외) */
+    return {a:s.a,b:s.b,g:s.guess?1:0,n:ns.length,m,k,p:s.pics||{}}});
   read.sort((a,b)=>a-b);return {secs,pages:read}};
 /* 문제(쪽·번호) → 그 쪽이 들어 있는 STEP의 같은 번호 정답 */
 /* 인쇄된 쪽 번호: 쪽 아래 여백의 바깥쪽 끝 숫자 (오른쪽 쪽은 맨 오른쪽, 왼쪽 쪽은 맨 왼쪽 — '01 함수의 극한 7'에서 01이 아니라 7) */
@@ -1901,6 +1908,7 @@ async function seqOffset(P0,force){const A=P0.seqAns;if(!A||(A.off!=null&&A.offV
   const cnt={};c.forEach(d=>cnt[d]=(cnt[d]||0)+1);const best=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0];
   if(best!=null&&cnt[best]>=2){A.off=+best;A.offV=2}else if(A.off==null)A.off=0;dlog('seqOff',A.off+' ['+c.join(',')+']')}
 /* 이 책이 '01부터 다시 시작하는 번호' 책인지: 이미 읽은 문제로 판단 (모르면 undefined → 쪽마다 스스로 판단) */
+function seqNb(P0,pg){const d=k=>(P0.problems||[]).filter(p=>p.page===pg+k&&p.q>=3000000&&p.q<4000000&&p.disp).map(p=>p.disp);const a=d(-1),b=d(1);return {prevLast:a.length?Math.max(...a):undefined,nextFirst:b.length?Math.min(...b):undefined}}   /* 앞뒤 쪽에서 읽은 번호: 이 쪽 번호는 그 사이 */
 function seqHint(P0){const ps=P0&&P0.problems||[];if(P0&&P0.seqAns||ps.some(p=>p.q>=3000000&&p.q<4000000))return true;if(ps.some(p=>p.q<3000000))return false;return undefined}
 /* 쪽 번호 차이(PDF 쪽 − 인쇄된 쪽): 읽은 문제들이 STEP 범위·번호와 가장 잘 맞는 차이를 고른다 (쪽 번호 글자 인식이 틀려도) */
 function seqFitOff(P0){const A=P0.seqAns,ps=P0.problems.filter(p=>p.q>=3000000&&p.q<4000000&&p.disp);if(!A||ps.length<12||A.offV===2)return;const sc=d=>{let s=0;for(const p of ps){const pp=p.page-d,sec=A.secs.find(x=>x.a!=null&&pp>=x.a&&pp<=x.b);if(sec&&p.disp<=(sec.n||99)+1)s+=sec.k[p.disp]||(sec.p&&sec.p[p.disp])?2:1}return s};
@@ -1978,10 +1986,10 @@ async function scanLazyInit(file,handle,bytes,doc,solKeys,solRange,replace,colr)
 const LZ={q:Promise.resolve(),m:{},n:0};
 /* LZV 4: 자이스토리·EBS 쪽은 새 규칙으로 통째로 다시 읽는다 (예전 버전에서 번호를 밀려 읽은 쪽 바로잡기) */ const LZV=4;function lazyOne(pg){const P0=P;if(!P0||!P0.scan||!(P0.lazy||P0.xi||P0.ebs)||!window.SCAN)return Promise.resolve();   /* 자이스토리·EBS는 처음에 통째로 읽었어도 예전 버전 결과면 다시 읽는다 */const key=P0.name+'#'+pg;
   // 객관식인데 보기 자리를 못 찾은 문항(예전 버전에서 읽음, 보기 하나가 가려짐)은 그 쪽을 한 번 다시 읽어 보기 자리만 채운다
-  const fix=P0.problems.filter(p=>p.page===pg&&((!(p.choices&&p.choices.length)&&!p.chTried&&p.key&&p.key.kind==='circled')||(p.lv||0)<(P0.xi||P0.ebs?LZV:(p.q>=3000000&&p.q<4000000?5:3))));
+  const fix=P0.problems.filter(p=>p.page===pg&&((!(p.choices&&p.choices.length)&&!p.chTried&&p.key&&p.key.kind==='circled')||(p.lv||0)<(P0.xi||P0.ebs?LZV:(p.q>=3000000&&p.q<4000000?6:3))));
   if(!fix.length&&((P0.lazyDone||[]).includes(pg)||P0.problems.some(p=>p.page===pg)))return Promise.resolve();if(LZ.m[key])return LZ.m[key];
   LZ.n++;const pr=LZ.q=LZ.q.then(async()=>{if(P!==P0)return;const T0=performance.now();if(window.NJPROF)console.log('PROF lzstart',pg,fix.length);
-    if(fix.length){fix.forEach(p=>p.chTried=1);const qk=P0.solKeys&&Object.keys(P0.solKeys).length>=10;const A=await SCAN.analyze(P0.doc,{from:pg,to:pg,T:TPL,noSol:true,keep:true,thorough:true,footer:false,colorLabs:qk&&!!P0.solColor,seq:seqHint(P0),keepSeqH:true});
+    if(fix.length){fix.forEach(p=>p.chTried=1);const qk=P0.solKeys&&Object.keys(P0.solKeys).length>=10;const A=await SCAN.analyze(P0.doc,{from:pg,to:pg,T:TPL,noSol:true,keep:true,thorough:true,footer:false,colorLabs:qk&&!!P0.solColor,seq:seqHint(P0),keepSeqH:true,...seqNb(P0,pg)});
       // 다시 읽은 결과가 더 나으면(번호를 더 많이 찾음) 그 쪽 문항을 통째로 바꾼다: 영역·보기 자리 모두 새로 (정답은 빠른 정답 그대로)
       const old=P0.problems.filter(p=>p.page===pg);
       let NA=A.problems;if(P0.xi){NA=NA.filter(p=>p.q>=100000);NA=xiClean(P0.problems.filter(p=>p.page!==pg&&(p.lv||0)>=LZV).concat(NA)).filter(p=>p.page===pg)}   // 다른 쪽의 예전 읽기 결과는 믿지 않는다
@@ -1993,12 +2001,12 @@ const LZ={q:Promise.resolve(),m:{},n:0};
       for(const p of P0.problems)if(p.page===pg)p.lv=LZV;
       if(P===P0)await recentSave();return}
     if((P0.lazyDone||[]).includes(pg))return;
-    const qk=P0.solKeys&&Object.keys(P0.solKeys).length>=10;const A=await SCAN.analyze(P0.doc,{from:pg,to:pg,T:TPL,noSol:true,keep:true,thorough:true,footer:!qk,colorLabs:qk&&!!P0.solColor,seq:seqHint(P0),keepSeqH:true});(P0.lazyDone=P0.lazyDone||[]).push(pg);
+    const qk=P0.solKeys&&Object.keys(P0.solKeys).length>=10;const A=await SCAN.analyze(P0.doc,{from:pg,to:pg,T:TPL,noSol:true,keep:true,thorough:true,footer:!qk,colorLabs:qk&&!!P0.solColor,seq:seqHint(P0),keepSeqH:true,...seqNb(P0,pg)});(P0.lazyDone=P0.lazyDone||[]).push(pg);
     {const L=A.problems.filter(p=>p.page===pg),mid=L.length?(Math.min(...L.map(p=>p.x0))+Math.max(...L.map(p=>p.x1)))/2:0;L.sort((a,b)=>((a.x0>mid-5)-(b.x0>mid-5))||b.y1-a.y1);   // 읽기 순서
      const dup=q=>P0.problems.some(x=>x.q===q&&x.page!==pg);
      L.forEach((p,i)=>{if(!dup(p.q))return;const pv=L[i-1],nx=L[i+1],want=pv?pv.q+1:nx?nx.q-1:null;if(want&&want>0&&!dup(want)&&!L.some(z=>z.q===want)&&(!pv||want>pv.q)&&(!nx||want<nx.q)){p.q=want;p.key=null}})}   // 046을 044로 잘못 읽은 것 등
     if(A.ebs)P0.ebs=1;if(A.xi&&!P0.xi){P0.xi=1;P0.problems=P0.problems.filter(p=>p.q>=100000)}   // EBS 교재: 단원·코너마다 번호가 01부터 다시 시작해서 빠른 정답의 번호와 바로 맞출 수 없다 → 정답 대조 전까지 직접 채점
-    for(const p of A.problems){if(P0.xi&&p.q<100000)continue;if((P0.xi||P0.ebs)&&P0.problems.some(x=>x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV))P0.problems=P0.problems.filter(x=>!(x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV));if(P0.problems.some(x=>x.q===p.q))continue;p.chTried=1;p.lv=p.q>=3000000&&p.q<4000000?5:LZV;const k=!P0.ebs&&P0.solKeys&&P0.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k;if(!p.key||P0.ebs)p.key={text:'✓',kind:'self',ebs:P0.ebs?1:undefined,xi:P0.xi&&p.q>=100000?1:undefined};P0.problems.push(p)}
+    for(const p of A.problems){if(P0.xi&&p.q<100000)continue;if((P0.xi||P0.ebs)&&P0.problems.some(x=>x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV))P0.problems=P0.problems.filter(x=>!(x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV));if(P0.problems.some(x=>x.q===p.q))continue;p.chTried=1;p.lv=p.q>=3000000&&p.q<4000000?6:LZV;const k=!P0.ebs&&P0.solKeys&&P0.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k;if(!p.key||P0.ebs)p.key={text:'✓',kind:'self',ebs:P0.ebs?1:undefined,xi:P0.xi&&p.q>=100000?1:undefined};P0.problems.push(p)}
     if(P0.xi)P0.problems=xiClean(P0.problems);if(P0.seqAns&&P0.seqAns.offV!==2){try{await seqOffset(P0,true)}catch(e){}}if(P0.seqAns)seqApply(P0);P0.problems.sort((a,b)=>a.q-b.q);if(window.NJPROF)console.log('PROF lazy',pg,Math.round(performance.now()-T0));if(P===P0)await recentSave()}).catch(e=>console.error(e)).finally(()=>{delete LZ.m[key];LZ.n--});
   LZ.m[key]=pr;return pr}
 let LZ_T=0;function lazySoon(pg,ms){if(!S||!P||!(P.lazy||P.xi||P.ebs))return;clearTimeout(LZ_T);LZ_T=setTimeout(()=>lazyOne(pg),ms||300)}
@@ -2009,8 +2017,8 @@ async function countXi(P0){P0._xiCounting=1;try{const sr=P0.solRange,by={};let c
 function showInfo(){
   if(P.scan&&P.lazy){const nk=Object.keys(P.solKeys||{}).length,sr=P.solRange,xc=P.xiCount;
     if(!xc&&sr&&sr[1]&&!P._xiCounting&&!P.seqAns&&!SEQ_SOON)countXi(P);   // 자이스토리: 빠른 정답 표의 칸 수 = 문항 수 (단원 A, B, …마다 01부터)
-    const SQ=P.seqAns&&P.seqAns.secs,sqN=SQ?SQ.reduce((a,x)=>a+(x.n||0),0):0,sqK=SQ?SQ.reduce((a,x)=>a+(x.a!=null?Object.keys(x.k).length:0),0):0;
-    const isX=xc&&xc.n,line=SQ?`문항 약 ${sqN.toLocaleString()}개 · <b style="color:var(--ok)">✓ 자동 채점 정답 ${sqK.toLocaleString()}개</b><br><span class="muted" style="font-size:13px">단원·STEP ${SQ.length}개 · 분수·식 답은 학생이 직접 채점</span>`:!xc&&P._xiCounting?'문항·정답 수 세는 중… (몇 초)':isX||(P.xi&&!xc)?(isX?`문항 ${xc.n.toLocaleString()}개 · <b style="color:var(--ok)">✓ 정답 ${xc.n.toLocaleString()}개</b><br><span class="muted" style="font-size:13px">${Object.entries(xc.by).map(([k,v])=>k+' '+v).join(' · ')}${xc.etc?` · 기타 ${xc.etc}`:''}</span>`:'문항·정답 수 세는 중…')
+    const SQ=P.seqAns&&P.seqAns.secs,sqN=SQ?SQ.reduce((a,x)=>a+Math.max(x.m||0,x.n||0),0):0,sqK=SQ?SQ.reduce((a,x)=>a+(x.a!=null?Object.keys(x.k).length:0),0):0;
+    const isX=xc&&xc.n,line=SQ?`문항 ${sqN.toLocaleString()}개 · <b style="color:var(--ok)">✓ 자동 채점 ${sqK.toLocaleString()}개</b> · 직접 채점 ${Math.max(0,sqN-sqK).toLocaleString()}개<br><span class="muted" style="font-size:13px">단원·STEP ${SQ.length}개 · 분수·식 답과 못 읽은 칸은 정답 그림을 보고 학생이 직접 채점</span>`:!xc&&P._xiCounting?'문항·정답 수 세는 중… (몇 초)':isX||(P.xi&&!xc)?(isX?`문항 ${xc.n.toLocaleString()}개 · <b style="color:var(--ok)">✓ 정답 ${xc.n.toLocaleString()}개</b><br><span class="muted" style="font-size:13px">${Object.entries(xc.by).map(([k,v])=>k+' '+v).join(' · ')}${xc.etc?` · 기타 ${xc.etc}`:''}</span>`:'문항·정답 수 세는 중…')
       :nk?`문항 약 ${nk.toLocaleString()}개 · <b style="color:var(--ok)">✓ 정답 ${nk.toLocaleString()}개</b> <span class="muted" style="font-size:13px">(빠른 정답 기준)</span>`:'정답은 풀 때 읽어요';
     $('#pdfInfo').innerHTML=`<b>${esc(P.fname)}</b><br>${line}`+
       (START_OPEN&&!S?`<div class="row" style="justify-content:flex-start;margin-top:8px"><button class="btn mid" id="addOk" type="button">${PEND_START?'풀기 시작':'확인'}</button></div>`:'');
@@ -2485,7 +2493,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.86 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.87 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
