@@ -396,6 +396,7 @@ body:not(.teacher) .hOld{display:none!important}
 body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;margin-left:4px}body.beta [data-nobeta],body.beta #dGoAna{display:none!important}body.beta #tabs,body.beta #pvHint,body.beta #tchBtn,body.beta #hHell{display:none!important}
 #betaBar{background:var(--warn-soft);border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.6;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
 #betaBar b{font-size:15px}
+#addSheet{position:fixed;inset:0;z-index:90;background:rgba(15,23,42,.45);display:flex;align-items:flex-start;justify-content:center;padding:6vh 16px;overflow:auto}#addSheet[hidden]{display:none}.asIn{background:var(--paper);color:var(--ink);border-radius:18px;padding:20px;width:100%;max-width:560px;box-shadow:0 10px 40px rgba(0,0,0,.25)}.asSlots{display:flex;flex-direction:column;gap:8px;margin-top:10px;width:100%}.asSlot{text-align:left;justify-content:flex-start;width:100%}.asSlot.ok{border-color:var(--ok);color:var(--ok)}
 </style>
 <style>.term{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px;display:flex;flex-direction:column;gap:6px;background:var(--paper)}.term.over{opacity:.7}
 .termHd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.termN{font-size:17px}.termP{font-size:22px;font-weight:800}
@@ -415,7 +416,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.83</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.83)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.84</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.84)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -459,7 +460,7 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.83</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.84</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" style="font-size:14px;font-weight:700;padding:6px 12px;line-height:1;display:inline-flex;align-items:center;gap:6px" title="나가기 (저장하고 닫기)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8"/><path d="M10 12h10"/><path d="M17 8l4 4-4 4"/><circle cx="11.5" cy="12" r="0.1"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -467,6 +468,17 @@ body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;mar
     <div id="pvToast" hidden></div>
     <div id="selfSheet" hidden><div class="ssIn"><div class="ssHead"><b>스스로 채점</b><span class="muted" id="ssProg"></span></div><div id="ssBody"></div></div></div>
   </section>
+<div id="addSheet" hidden><div class="asIn">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">문제집 추가</h2><button type="button" class="btn quiet" id="asClose">닫기</button></div>
+  <div id="asMain" class="addPick" style="margin-top:12px">
+    <button type="button" class="addOpt" id="asOne"><b style="font-size:18px">📘 한 번에 넣기</b><span class="muted" style="font-size:14px">문제와 빠른 정답(답지)이 한 PDF 안에 있어요</span></button>
+    <div class="addOpt" id="asTwo" style="cursor:default"><b style="font-size:18px">📗 문제 + 📄 정답 따로 넣기</b><span class="muted" style="font-size:14px">문제 PDF와 답지 PDF가 따로 있어요</span>
+      <div class="asSlots"><button type="button" class="btn quiet asSlot" id="asQ">① 문제 PDF 고르기</button><button type="button" class="btn quiet asSlot" id="asA">② 답지 PDF 고르기</button></div>
+      <div class="row" style="justify-content:flex-start;margin-top:8px;gap:8px"><button type="button" class="btn mid" id="asGo" disabled>넣기</button><button type="button" class="linkDel" id="asNoKey">답지 없이 문제만 넣기</button></div></div>
+  </div>
+  <div id="asDup" hidden style="margin-top:14px"></div>
+  <input type="file" id="asQIn" accept="application/pdf" hidden><input type="file" id="asAIn" accept="application/pdf" hidden>
+</div></div>
   <!-- before -->
   <section class="card" id="vRecent" hidden><div id="betaBar" hidden></div><div style="display:flex;justify-content:space-between;align-items:center"><h2>내 문제집</h2><button class="btn mid" type="button" id="addBtn" style="padding:9px 14px;font-size:14px">＋ 문제집 추가</button></div><div id="howBox"></div><div id="recentList"></div></section>
   <section class="card" id="vStart">
@@ -1605,7 +1617,7 @@ const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https:
 const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
 window.addEventListener('error',e=>dlog('err',(e.message||'')+' @'+(e.lineno||'')));window.addEventListener('unhandledrejection',e=>dlog('rej',String(e.reason&&(e.reason.message||e.reason)||'')));
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v42.83',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v42.84',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     ...DG.L.map(x=>x.join(' '))].join('\n')}
@@ -1756,7 +1768,10 @@ let SCANNING=null;
 /* 문제집·답지를 읽는 동안에는 화면이 저절로 꺼지지 않게 (아이패드 자동 잠금 → 읽기 멈춤 방지). 지원하지 않는 기기는 그냥 넘어간다 */
 const WAKE={l:null,busy:false};setInterval(async()=>{const want=!!SCANNING&&document.visibilityState==='visible';try{if(want&&!WAKE.l&&!WAKE.busy&&navigator.wakeLock){WAKE.busy=true;WAKE.l=await navigator.wakeLock.request('screen');WAKE.l.addEventListener('release',()=>{WAKE.l=null});dlog('wake','on')}
   else if(!want&&WAKE.l){const l=WAKE.l;WAKE.l=null;await l.release();dlog('wake','off')}}catch(e){dlog('wakeErr',e&&e.message)}finally{WAKE.busy=false}},1500);
+async function ansPend(file,handle,bytes,doc,textPdf,a){$('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div style="margin-top:6px">📄 답지 「${esc(a.name)}」에서 빠른 정답 읽는 중… <span class="muted" style="font-size:13px">(처음 한 번만 · 화면을 켜 두세요)</span></div><div id="qkMsg" style="font-size:14px;margin-top:6px"></div>`;
+  await quickFile(file,handle,bytes,doc,textPdf,a);const ok=P&&P.doc===doc&&(P.seqAns||Object.keys(P.solKeys||{}).length>=10);if(!ok&&!SCANNING)quickMiss(file,handle,bytes,doc,textPdf,`답지 「${a.name}」에서 빠른 정답 표를 찾지 못했어요. 아래에서 다른 방법을 골라 주세요.`)}
 function scanOffer(file,handle,bytes,doc,more,textPdf){const N=doc.numPages,done=more&&P&&P.ranges?P.ranges:[];
+  if(!more&&PEND_ANS){const a=PEND_ANS;PEND_ANS=null;return ansPend(file,handle,bytes,doc,textPdf,a)}   /* 답지를 따로 골랐으면 책 안에서 찾지 않고 바로 답지를 읽는다 */
   if(!more)return quickFind(file,handle,bytes,doc,textPdf);
   if(more==='sol'){const g=N>60?Math.round(N*0.54):1;
     $('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><br><div class="addPick" style="margin-top:6px"><div class="addOpt" style="cursor:default"><b>📘 책 뒤 해설 쪽에서 정답 읽기</b>
@@ -1880,7 +1895,7 @@ function seqApply(P0){const A=P0&&P0.seqAns;if(!A)return 0;seqFitOff(P0);let n=0
 async function seqTry(file,handle,bytes,doc,ansDoc,o,kind,msgEl){if(SCANNING)return false;SCANNING={stop:false};const t0=Date.now();let A=null;
   try{A=await SECQ.run(ansDoc,Object.assign({},o,{stop:()=>SCANNING&&SCANNING.stop,step:(msg,np,nk)=>{const el=msgEl||$('#scProg');if(el)el.innerHTML=`${esc(msg)}${nk?` · <b style="color:var(--ok)">번호 ${nk}개</b>`:''} <span class="muted">(${Math.round((Date.now()-t0)/1000)}초)</span>`}}))}catch(e){console.error(e);dlog('seqErr',e&&e.message)}finally{SCANNING=null}
   if(!A||!A.secs.length||A.secs.reduce((a,s)=>a+Object.keys(s.k).length,0)<10)return false;dlog('seqAns',A.secs.length+' secs '+A.pages.join(','));
-  const pg=A.pages;await scanLazyInit(file,handle,bytes,doc,{},[pg[0],pg[pg.length-1],kind]);P.seqAns={secs:A.secs,off:kind==='q'?0:null};
+  const pg=A.pages;SEQ_SOON=A;try{await scanLazyInit(file,handle,bytes,doc,{},[pg[0],pg[pg.length-1],kind])}finally{SEQ_SOON=null}P.seqAns={secs:A.secs,off:kind==='q'?0:null};
   try{await seqOffset(P)}catch(e){}seqApply(P);showInfo();await recentSave();return true}
 async function quickFind(file,handle,bytes,doc,textPdf,pages,replace){if(SCANNING)return;const N=doc.numPages;SCANNING={stop:false};const stQ=SCANNING;
   $('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div id="scProg" style="font-size:14px;margin-top:8px"></div><button class="linkDel" id="scStop" type="button">그만</button>${pages?'':`<button type="button" class="addOpt" id="scSkip" style="margin-top:10px"><b>📄 빠른 정답(답지) 파일이 따로 있어요</b><br><span class="muted" style="font-size:13px">책 안에서 찾기를 건너뛰고 답지 파일을 넣어요</span></button>`}`;
@@ -1978,7 +1993,7 @@ async function countXi(P0){P0._xiCounting=1;try{const sr=P0.solRange,by={};let c
   const n=Object.values(by).reduce((a,b)=>a+b,0);{P0.xiCount=Object.keys(by).length>=2?{n,by,etc}:{n:0};if(P===P0){try{showInfo()}catch(e){}try{await recentSave()}catch(e){}}}}catch(e){console.error(e)}finally{P0._xiCounting=0}}
 function showInfo(){
   if(P.scan&&P.lazy){const nk=Object.keys(P.solKeys||{}).length,sr=P.solRange,xc=P.xiCount;
-    if(!xc&&sr&&sr[1]&&!P._xiCounting&&!P.seqAns)countXi(P);   // 자이스토리: 빠른 정답 표의 칸 수 = 문항 수 (단원 A, B, …마다 01부터)
+    if(!xc&&sr&&sr[1]&&!P._xiCounting&&!P.seqAns&&!SEQ_SOON)countXi(P);   // 자이스토리: 빠른 정답 표의 칸 수 = 문항 수 (단원 A, B, …마다 01부터)
     const SQ=P.seqAns&&P.seqAns.secs,sqN=SQ?SQ.reduce((a,x)=>a+(x.n||0),0):0,sqK=SQ?SQ.reduce((a,x)=>a+(x.a!=null?Object.keys(x.k).length:0),0):0;
     const isX=xc&&xc.n,line=SQ?`문항 약 ${sqN.toLocaleString()}개 · <b style="color:var(--ok)">✓ 자동 채점 정답 ${sqK.toLocaleString()}개</b><br><span class="muted" style="font-size:13px">단원·STEP ${SQ.length}개 · 분수·식 답은 학생이 직접 채점</span>`:!xc&&P._xiCounting?'문항·정답 수 세는 중… (몇 초)':isX||(P.xi&&!xc)?(isX?`문항 ${xc.n.toLocaleString()}개 · <b style="color:var(--ok)">✓ 정답 ${xc.n.toLocaleString()}개</b><br><span class="muted" style="font-size:13px">${Object.entries(xc.by).map(([k,v])=>k+' '+v).join(' · ')}${xc.etc?` · 기타 ${xc.etc}`:''}</span>`:'문항·정답 수 세는 중…')
       :nk?`문항 약 ${nk.toLocaleString()}개 · <b style="color:var(--ok)">✓ 정답 ${nk.toLocaleString()}개</b> <span class="muted" style="font-size:13px">(빠른 정답 기준)</span>`:'정답은 풀 때 읽어요';
@@ -2027,7 +2042,7 @@ function showKey(p){const k=p.key;if(!k||!k.text)return '?';if(k.kind==='nparts'
 function keyOf(p){return p.key&&p.key.text||''}
 $('#pick').onclick=()=>$('#pickIn').click();$('#addBtn').onclick=addOpen;document.querySelectorAll('#addPick [data-mode]').forEach(b=>b.onclick=()=>addMode(b.dataset.mode));
 $('#solIn').addEventListener('change',e=>{const f=e.target.files[0];if(f)loadSolution(f);e.target.value=''});
-$('#pickIn').addEventListener('change',e=>{const f=e.target.files[0];if(f)importPdf(f).catch(er=>{console.error(er);$('#pdfInfo').innerHTML='<span class="err">문제집을 추가하지 못했습니다.</span>'});e.target.value=''});
+$('#pickIn').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(f)asDupCheck(f,()=>importPdf(f).catch(er=>{console.error(er);$('#pdfInfo').innerHTML='<span class="err">문제집을 추가하지 못했습니다.</span>'}))});
 
 /* ---------- 학습 시작 / 떠 있는 창 ---------- */
 let GRADE_EXISTING=false;
@@ -2455,7 +2470,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.83 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.84 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -3487,14 +3502,34 @@ function vHandle(name){   // 파일 핸들처럼 쓰는 앱 저장소 문서
     createWritable:async()=>{const parts=[];return {write:async d=>{parts.push(d)},close:async()=>{const bytes=parts.length===1&&parts[0] instanceof Uint8Array?parts[0]:new Uint8Array(await new Blob(parts).arrayBuffer()),r=await libMeta(name);parts.length=0;
       r.bytes=bytes;r.mod=Math.max(Date.now(),(r.mod||0)+1);r.at=Date.now();await libPut(r)}}}}}
 let START_OPEN=false,ADDMODE='one',PEND_START=false;
-function addOpen(){START_OPEN=true;PEND_START=false;const v=$('#vStart');v.classList.remove('collapsed');$('#addPick').hidden=false;$('#addStep').hidden=true;$('#pdfInfo').textContent='';v.scrollIntoView({behavior:'smooth',block:'start'})}
+/* 문제집 추가 창: [한 번에 넣기] / [문제 + 정답 따로 넣기]. 이미 있는 문제집이면 먼저 알려 준다 */
+let PEND_ANS=null,SEQ_SOON=null;const AS={q:null,a:null};
+function asOpen(){AS.q=AS.a=null;$('#asQ').textContent='① 문제 PDF 고르기';$('#asA').textContent='② 답지 PDF 고르기';$('#asQ').classList.remove('ok');$('#asA').classList.remove('ok');$('#asGo').disabled=true;$('#asMain').hidden=false;$('#asDup').hidden=true;$('#addSheet').hidden=false}
+function asClose(){$('#addSheet').hidden=true}
+async function asDupCheck(f,go){const name=f.name.replace(/\.pdf$/i,''),ex=await libMeta(name).catch(()=>null);if(!ex||ex.size0!==f.size)return go();
+  $('#addSheet').hidden=false;$('#asMain').hidden=true;const d=$('#asDup');d.hidden=false;
+  d.innerHTML=`<div class="addOpt" style="cursor:default;border-color:var(--warn,#d97706)"><b style="font-size:17px">이미 있는 문제집이에요</b><span>「${esc(name)}」은(는) 내 문제집에 이미 있어요.${ex.n?` (문항 ${ex.n}개)`:''}</span></div>
+    <div class="addPick" style="margin-top:10px"><button type="button" class="btn mid" id="asDupOpen">📖 그 문제집 열기</button><button type="button" class="btn quiet" id="asDupAgain">그래도 다시 넣기 (정답 다시 읽기)</button><button type="button" class="linkDel" id="asDupNo">취소</button></div>`;
+  $('#asDupOpen').onclick=()=>{asClose();PEND_ANS=null;openRecent(name).catch(e=>console.error(e))};$('#asDupAgain').onclick=()=>{asClose();go()};$('#asDupNo').onclick=()=>{PEND_ANS=null;asOpen()}}
+$('#asClose').onclick=asClose;$('#addSheet').addEventListener('click',e=>{if(e.target.id==='addSheet')asClose()});
+$('#asOne').onclick=()=>{asClose();PEND_ANS=null;addOpenOld();addMode('one')};
+$('#asQ').onclick=()=>$('#asQIn').click();$('#asA').onclick=()=>$('#asAIn').click();
+const asSet=(k,f)=>{AS[k]=f;const b=$(k==='q'?'#asQ':'#asA');b.textContent=(k==='q'?'① 문제: ':'② 답지: ')+f.name;b.classList.add('ok');$('#asGo').disabled=!(AS.q&&AS.a)};
+$('#asQIn').addEventListener('change',e=>{const f=e.target.files[0];if(f)asSet('q',f);e.target.value=''});$('#asAIn').addEventListener('change',e=>{const f=e.target.files[0];if(f)asSet('a',f);e.target.value=''});
+const asRun=(q,a)=>{asClose();addOpenOld();ADDMODE=a?'two':'one';PEND_ANS=a||null;$('#addPick').hidden=true;$('#addStep').hidden=false;importPdf(q).catch(er=>{console.error(er);$('#pdfInfo').innerHTML='<span class="err">문제집을 추가하지 못했습니다.</span>'})};
+$('#asGo').onclick=()=>{const q=AS.q,a=AS.a;if(!q||!a)return;asDupCheck(q,()=>asRun(q,a))};
+$('#asNoKey').onclick=()=>{if(AS.q)asDupCheck(AS.q,()=>asRun(AS.q,null));else{$('#asQ').click()}};
+
+function addOpen(){return asOpen()}
+function addOpenOld(){START_OPEN=true;PEND_START=false;const v=$('#vStart');v.classList.remove('collapsed');$('#addPick').hidden=false;$('#addStep').hidden=true;$('#pdfInfo').textContent='';v.scrollIntoView({behavior:'smooth',block:'start'})}
 function addMode(m){ADDMODE=m;$('#addPick').hidden=true;$('#addStep').hidden=false;$('#addStepT').textContent=m==='two'?'① 문제 PDF 고르기 → ② 답지 PDF 고르기':'문제집(PDF) 고르기';$('#pick').parentNode.hidden=false;$('#pickIn').click()}
 function addDone(){if(P&&keyMiss()&&P.handle&&P.handle.kind==='lib')libGet(P.name).then(r=>{if(r){r.keySkip=true;libPut(r)}}).catch(()=>{});START_OPEN=false;$('#addPick').hidden=false;$('#addStep').hidden=true;renderRecent();window.scrollTo(0,0);if(PEND_START){PEND_START=false;start()}}   // 아래 '문제집 추가' 칸: 가져오는 중·스캔 읽기 때만 보이고, 평소엔 목록 위 [＋ 문제집 추가] 버튼만
 async function importPdf(f){START_OPEN=true;$('#vStart').classList.remove('collapsed');$('#addPick').hidden=true;$('#addStep').hidden=false;$('#pick').parentNode.hidden=true;$('#addStepT').textContent='';
   let name=f.name.replace(/\.pdf$/i,'');const ex=await libMeta(name);
   if(ex&&ex.size0!==f.size){let i=2;while(await libMeta(`${name} (${i})`))i++;name=`${name} (${i})`}   // 같은 이름의 다른 파일
   if(!ex||ex.name!==name||ex.size0!==f.size){const big=f.size>BIGB,bytes=big?f:new Uint8Array(await f.arrayBuffer());dlog('import',name+' '+Math.round(f.size/1e6)+'MB'+(big?' big':''));await libPut({name,bytes,size0:f.size,mod:Date.now(),at:Date.now(),orig:true,big:big?1:undefined})}   // 큰 책: 파일을 메모리에 올리지 않고 그대로 저장
-  const r=await libGet(name);await loadPdf(new File([r.bytes],name+'.pdf',{lastModified:r.mod}),vHandle(name),r);if(P)P.orig=!!r.orig;
+  const r=await libGet(name),F0=new File([r.bytes],name+'.pdf',{lastModified:r.mod});await loadPdf(F0,vHandle(name),r);if(P)P.orig=!!r.orig;
+  if(PEND_ANS&&P&&P.name===name){const a=PEND_ANS;PEND_ANS=null;try{if(P.scan)await ansPend(F0,P.handle,P.bytes,P.doc,false,a);else await loadSolution(a)}catch(e){console.error(e)}}   /* 이미 읽어 둔 책(그래도 다시 넣기)이나 글자 PDF */
   $('#addPick').hidden=true;$('#addStep').hidden=false;$('#addStepT').textContent=ADDMODE==='two'?'① 문제 PDF ✓ → ② 답지 PDF':'';
   if(P&&P.name===name&&!$('#start').disabled&&!$('#scGo')&&!P.extInk&&(P.scan||P.task||(ADDMODE!=='two'&&!keyMiss()))){START_OPEN=false;renderRecent()}
 }
