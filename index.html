@@ -419,7 +419,7 @@ html,body,#pdfPages{overflow-anchor:none}
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.93</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.93)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v42.94</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v42.94)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -463,7 +463,7 @@ html,body,#pdfPages{overflow-anchor:none}
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.93</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v42.94</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" style="font-size:14px;font-weight:700;padding:6px 12px;line-height:1;display:inline-flex;align-items:center;gap:6px" title="나가기 (저장하고 닫기)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8"/><path d="M10 12h10"/><path d="M17 8l4 4-4 4"/><circle cx="11.5" cy="12" r="0.1"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1638,7 +1638,7 @@ const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https:
 const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
 window.addEventListener('error',e=>dlog('err',(e.message||'')+' @'+(e.lineno||'')));window.addEventListener('unhandledrejection',e=>dlog('rej',String(e.reason&&(e.reason.message||e.reason)||'')));
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v42.93',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v42.94',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -2442,17 +2442,17 @@ async function gradeFile(file,auto,mem){
       const pv=P.prev&&P.prev[p.q];
       if(!st&&(pv==='X'||pv==='S')){                                        // 예전 학습에서 틀린 문항을 다시 푼 것
         const r=await readA(p,all);if(r.how==='none')continue;const sk=isSelf(p)||r.how==='self'||(isMulti(p)&&!(r.ans&&r.sure!==false));if(!r.ans&&!sk)continue;const res=sk?null:k?SV.same(r.ans,k):null;
-        S.state[p.q]={q:p.q,ans:'',ok:false,status:'done',at,crop:await cropUrl(doc,p,IK),short:shortOf(p),earlier:true,wrongs:((P.tries&&P.tries[p.q])||1)+(res===false?1:0),retry:{ans:sk?'':r.ans,ok:res,sure:r.sure!==false,self:sk}};re++;if(res)reOk++;continue}
+        S.state[p.q]={q:p.q,ans:'',ok:false,status:'done',at,crop:await cropUrl(doc,p,IK),short:shortOf(p),earlier:true,wrongs:((P.tries&&P.tries[p.q])||1)+(res===false?1:0),retry:{ans:sk?'':r.ans,ok:res,sure:r.sure!==false,self:sk}};histEvt(p.q,res);re++;if(res)reOk++;continue}
       if(!st&&(pv==='O'||pv==='T')){                                        // 예전에 맞힌 문항을 다시 고쳐 씀: 새 답으로 다시 채점 (틀리면 ／, 못 읽으면 묻기)
         if(!fresh.some(s=>inReg(s,p)))continue;const r=await readA(p,all);if(r.how==='none')continue;const sk=isSelf(p)||r.how==='self'||(isMulti(p)&&!(r.ans&&r.sure!==false));
         const base0={q:p.q,ans:'',ok:true,status:'done',at,crop:await cropUrl(doc,p,IK),short:shortOf(p),earlier:true,wrongs:0};
         if(sk||!r.ans||r.sure===false){S.state[p.q]=Object.assign(base0,{retry:{ans:'',ok:null,self:true}});re++;continue}
-        const res=k?SV.same(r.ans,k):null;S.state[p.q]=Object.assign(base0,{retry:{ans:r.ans,ok:res,sure:true}});if(res===false){S.state[p.q].wrongs=1;re++}continue}
+        const res=k?SV.same(r.ans,k):null;S.state[p.q]=Object.assign(base0,{retry:{ans:r.ans,ok:res,sure:true}});histEvt(p.q,res);if(res===false){S.state[p.q].wrongs=1;re++}continue}
       if(!st){                                                              // 처음 채점
         const r=await readA(p,ug?cur:all);if(r.how==='none')continue;if(!r.ans&&smallInk(all.filter(s=>inReg(s,p)))){if(window.NJPROF)console.log('PROF stray',p.q);continue}   // 답으로 읽히지 않는 짧은 낙서뿐이면 안 푼 문제
         const sk=isSelf(p)||r.how==='self'||(isMulti(p)&&!(r.ans&&r.sure!==false));
         const sure=!sk&&!!r.ans&&r.sure!==false&&!(k.includes(',')&&!(p.key&&p.key.kind==='syms'));const res=sure&&k?SV.same(r.ans,k):null;
-        S.state[p.q]={q:p.q,ans:sk?'':r.ans,ok:res,status:sure?'done':'check',at,crop:await cropUrl(doc,p,IK),short:shortOf(p),wrongs:res===false?1:0,self:sk};nw++;
+        S.state[p.q]={q:p.q,ans:sk?'':r.ans,ok:res,status:sure?'done':'check',at,crop:await cropUrl(doc,p,IK),short:shortOf(p),wrongs:res===false?1:0,self:sk};nw++;if(sure)histEvt(p.q,res);
         if(!sure)chk++;else if(res===true)ok++;else if(res===false)bad++;
       }else if(st.status==='done'){                                         // 다시 푼 것: 새 획만 본다
         // 고친 답: 소문제 문항은 지금 남아 있는 필기 전체로 다시 읽는다 (한 소문제만 고쳐도 되게). 채점 창의 '내 풀이' 그림도 새로 찍는다
@@ -2461,13 +2461,13 @@ async function gradeFile(file,auto,mem){
         let r=np||erased?await readA(p,all):await readA(p,fresh);if(!np&&!(r.ans&&r.sure!==false)){const r2=await readA(p,all);if(r2.ans)r=r2}if(window.NJPROF)console.log('PROF redo',p.q,JSON.stringify(r),fresh.filter(s=>inReg(s,p)).length,erased);if(r.how==='none'&&!erased)continue;const sk=isSelf(p)||r.how==='self'||(isMulti(p)&&!(r.ans&&r.sure!==false));
         if(sk){st.retry={ans:'',ok:null,self:true};st.crop=await cropUrl(doc,p,IK);re++;continue}
         if(!r.ans)continue;const res=k?SV.same(r.ans,k):null;st.crop=await cropUrl(doc,p,IK);
-        st.retry={ans:r.ans,ok:res,sure:r.sure!==false};if(st.ok===false&&res===false)st.wrongs=(st.wrongs||1)+1;re++;if(res)reOk++;   // 틀린 횟수
+        st.retry={ans:r.ans,ok:res,sure:r.sure!==false};histEvt(p.q,res);if(st.ok===false&&res===false)st.wrongs=(st.wrongs||1)+1;re++;if(res)reOk++;   // 틀린 횟수
       }else if(!st.self){                                                   // 확인 필요였던 문항에 필기 추가
-        const r=await readA(p,all);if(r.ans&&r.sure!==false&&!(k.includes(',')&&!(p.key&&p.key.kind==='syms'))){st.ans=r.ans;st.ok=k?SV.same(r.ans,k):null;st.status='done';st.crop=await cropUrl(doc,p,IK);if(st.ok)ok++;else if(st.ok===false)bad++}
+        const r=await readA(p,all);if(r.ans&&r.sure!==false&&!(k.includes(',')&&!(p.key&&p.key.kind==='syms'))){st.ans=r.ans;st.ok=k?SV.same(r.ans,k):null;st.status='done';st.crop=await cropUrl(doc,p,IK);histEvt(p.q,st.ok);if(st.ok)ok++;else if(st.ok===false)bad++}
       }
     }
     for(const p of P.problems){const x=S.state[p.q];if(x)x.sigs=all.filter(s=>inReg(s,p)).map(s=>s.sig)}
-    for(const s of all)S.seen.add(s.sig);S.ink=all;setTimeout(logWrongs,0);
+    for(const s of all)S.seen.add(s.sig);S.ink=all;setTimeout(logWrongs,0);setTimeout(pvBadgeAll,0);
     const parts=[];if(nw)parts.push(`새로 ${nw}문항`);if(ok)parts.push(`정답 ${ok}`);if(bad)parts.push(`오답 ${bad}`);if(chk)parts.push(`확인 필요 ${chk}`);if(re){const rs=Object.values(S.state).filter(x=>x.retry&&x.retry.self&&!x.retry.ans).length;if(reOk)parts.push(`고침 △ ${reOk}`);if(re-reOk-rs>0)parts.push(`여전히 틀림 ${re-reOk-rs}`)}{const sp=selfPending().length;if(sp)parts.push(`스스로 채점 ${sp}`)}
     fb((nw||re||clr.length)?'ok':'nk',(nw||re)?'':clr.length?`답을 지운 ${clr.length}문항은 채점 표시를 지웠어요`:'새로 쓴 답이 없어요');chips();
     if(nw||re||ok||bad||clr.length){const w=await writeMarks(clr.length?Object.assign({},S.state,Object.fromEntries(clr.map(q=>[q,{q,status:'none'}]))):undefined),n=$('#markNote');n.className=w===true?'okn':'badn';n.textContent=w===true?'PDF에 ○ / 표시 완료 → PDF 화면에서 F5':w?w:''}
@@ -2479,13 +2479,12 @@ const shortOf=p=>!(p.choices.length===5||(p.key&&p.key.kind==='circled'));
 const catOf=x=>!x||x.status!=='done'||x.ok==null?null:x.ok?(x.retry&&x.retry.ans&&x.retry.ok===false?'S':'O'):x.retry&&x.retry.ans?(x.retry.ok===true?'T':x.retry.ok===false?'S':'X'):'X';
 const CATN={O:'정답',T:'고친 문제',S:'여전히 모름',X:'틀림'},CATM={O:'○',T:'△',S:'／',X:'／'};
 async function prevMarks(doc){const m={};for(let pi=1;pi<=doc.numPages;pi++){for(const a of await (await doc.getPage(pi)).getAnnotations()){const c=(a.contentsObj&&a.contentsObj.str)||a.contents||'',r=/^NJ:(\d+):([OXTS])$/.exec(c);if(r)m[+r[1]]=r[2]}}return m}
-function saveCats(){histSave();try{if(!P||!S)return;const k='njm:'+P.name,o=JSON.parse(localStorage.getItem(k)||'{}'),t=JSON.parse(localStorage.getItem('njt:'+P.name)||'{}');for(const x of Object.values(S.state)){const c=catOf(x);if(c)o[x.q]=c;if(x.wrongs)t[x.q]=x.wrongs}localStorage.setItem(k,JSON.stringify(o));localStorage.setItem('njt:'+P.name,JSON.stringify(t))}catch(e){}}
+function saveCats(){try{if(!P||!S)return;const k='njm:'+P.name,o=JSON.parse(localStorage.getItem(k)||'{}'),t=JSON.parse(localStorage.getItem('njt:'+P.name)||'{}');for(const x of Object.values(S.state)){const c=catOf(x);if(c)o[x.q]=c;if(x.wrongs)t[x.q]=x.wrongs}localStorage.setItem(k,JSON.stringify(o));localStorage.setItem('njt:'+P.name,JSON.stringify(t))}catch(e){}}
 /* 도전 기록: 문제마다 채점할 때마다 맞음/틀림을 남긴다 (원본·풀이본을 합쳐 한 책으로). 몇 번째 도전인지, 몇 번째에 맞혔는지 보여 준다 */
 const histKey=n=>'njh:'+String(n||'').replace(/\s*\(풀이[^)]*\)\s*$/,'');
-function histLoad(n){try{return JSON.parse(localStorage.getItem(histKey(n))||'{}')}catch(e){return {}}}
-function histSave(){try{if(!P||!S)return;const H=histLoad(P.name);let ch=0;for(const x of Object.values(S.state)){if(!x||x.status!=='done'||x.none)continue;let ok;const rt=x.retry&&x.retry.ans!=null&&x.retry.ans!==''&&x.retry.ok!=null,ev=[];if(x.earlier){if(!rt)continue;ev.push([S.wall,!!x.retry.ok])}else{if(x.ok==null)continue;ev.push([S.wall,!!x.ok]);if(rt)ev.push([S.wall+'r',!!x.retry.ok])}   /* 같은 학습 안에서 다시 푼 것(고친 답)도 한 번의 도전 */
-    const L=H[x.q]=H[x.q]||[];for(const [sid,ok] of ev){const e=L.find(a=>a.s===sid);if(e){if(e.ok!==ok){e.ok=ok;ch++}}else{L.push({s:sid,ok,t:Date.now()});ch++}}}
-  if(ch){localStorage.setItem(histKey(P.name),JSON.stringify(H));pvBadgeAll()}}catch(e){console.error(e)}}
+const HC={};function histLoad(n){const k=histKey(n);if(HC[k])return HC[k];try{return HC[k]=JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return {}}}   /* 오답 목록에서 여러 번 읽어도 빠르게 */
+function histEvt(q,ok){try{if(!P||!S||ok==null)return;delete HC[histKey(P.name)];const H=histLoad(P.name);(H[q]=H[q]||[]).push({s:S.wall,ok:!!ok,t:Date.now()});localStorage.setItem(histKey(P.name),JSON.stringify(H))}catch(e){}}   /* 새 필기로 채점할 때마다 한 번의 도전 */
+function histSave(){}
 function histOf(q){const L=(P&&histLoad(P.name)[q])||[],k=L.findIndex(a=>a.ok);return {n:L.length,first:k<0?null:k+1}}
 function pvBadge(pg){try{if(!P||!pg||!pg.wrap)return;pg.wrap.querySelectorAll('.tryB').forEach(e=>e.remove());const H=histLoad(P.name);
   for(const p of P.problems){if(p.page!==pg.n)continue;const L=H[p.q];if(!L||!L.length)continue;const k=L.findIndex(a=>a.ok),x=(p.lx-(pg.ox||0))*pg.k,y=(pg.H-p.ly)*pg.k,b=document.createElement('div');b.className='tryB '+(k<0?'no':'ok');
@@ -2623,7 +2622,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.93 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v42.94 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -3586,7 +3585,7 @@ function ssNone(x){if(!S||!SS)return;delete S.state[x.q];(S.clrMk=S.clrMk||[]).p
 function ssSet(x,p,good){const k=keyOf(p)||'✓';
   if(x.status==='check'){x.ans=good?k:'✗';x.status='done';x.ok=good;x.wrongs=good?0:1;x.manual=!good}
   else{x.retry.ans=good?k:'✗';x.retry.ok=good;x.retry.sure=true;if(!good){x.wrongs=(x.wrongs||1)+1;x.manual=true}}
-  SS.n++;SS.np=0;chips();if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()}
+  histEvt(x.q,good);setTimeout(pvBadgeAll,0);SS.n++;SS.np=0;chips();if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()}
 async function ssClose(){const s=SS;SS=null;$('#selfSheet').hidden=true;if(!s)return;try{pvSum()}catch(e){}
   if(s.n){setTimeout(logWrongs,0);const v=Object.values(S.state),o=v.filter(x=>catOf(x)==='O').length,t=v.filter(x=>catOf(x)==='T').length,w=v.filter(x=>['X','S'].includes(catOf(x))).length;
     fb(w?'bad':'ok',`스스로 채점 ${s.n}문항 반영 · ○${o}${t?` △${t}`:''} ／${w}`);
@@ -4172,11 +4171,15 @@ async function renderAnaTab(){
 const AL={all:'all',star:'open',open:{},by:'book'};
 function bookOf(src){return String(src||'').replace(/\s*\((?:풀이|과제)[^)]*\)(?:\s*\d+)?\s*$/,'').trim()||'(이름 없음)'}
 const pwTag=x=>x&&x.pw&&x.pw.length?` <span class="chip today">${x.pw.map(i=>'('+i+')').join('')} 틀림</span>`:'';
-const wCat=w=>w.cat==='T'?'<span class="chip" style="color:var(--warn)">△ 고침</span>':w.pw&&w.pw.length?`<span class="chip today">${w.pw.map(i=>'('+i+')').join('')} 틀림</span>`:w.cat==='S'?'<span class="chip today">모름</span>':'<span class="chip today">틀림</span>';
+/* 오답 단계: 도전 기록으로 — 틀린 뒤 한 번이라도 맞히면 '도전해서 맞춤', 두 번 넘게 틀리고 아직 못 맞히면 '다시 틀림', 한 번만 틀렸으면 '아직 다시 안 풂' */
+function wHist(w){try{return (histLoad(w.src)[w.q])||[]}catch(e){return []}}
+function wStage(w){const L=wHist(w);if(L.length){const i=L.findIndex(a=>!a.ok);if(i>=0&&L.slice(i+1).some(a=>a.ok))return 'T';if(L.filter(a=>!a.ok).length>=2)return 'S';if(i>=0)return 'X'}return w.cat==='T'?'T':w.cat==='S'?'S':'X'}
+const wCat=w=>{const st=wStage(w),L=wHist(w),k=L.findIndex(a=>a.ok);if(st==='T')return `<span class="chip" style="color:var(--ok)">✓ 도전해서 맞춤${k>=0?` · ${k+1}번째`:''}</span>`;if(st==='S')return `<span class="chip today">✗ 다시 틀림${L.length?` · 도전 ${L.length}회`:''}</span>`;return wCatOld(w)};
+const wCatOld=w=>w.cat==='T'?'<span class="chip" style="color:var(--warn)">△ 고침</span>':w.pw&&w.pw.length?`<span class="chip today">${w.pw.map(i=>'('+i+')').join('')} 틀림</span>`:w.cat==='S'?'<span class="chip today">모름</span>':'<span class="chip today">틀림</span>';
 function anaList(W,items,inNote){const box=$('#aList'),star=ANAV==='star',rec=w=>!inNote.has(w.id)&&((w.tries||1)>=2||w.cat==='S');
   const isToday=i=>!i.done&&i.due!=null&&i.due<=today0();
-  const F=star?{open:i=>!i.done,today:isToday,fin:i=>i.done,all:()=>true}:{all:()=>true,rec,X:w=>w.cat==='X',S:w=>w.cat==='S',T:w=>w.cat==='T'};
-  const LAB=star?{open:'남은 오답',today:'오늘 풀 것',fin:'완료',all:'전체'}:{all:'전체',rec:'☆ 담기 추천',X:'틀림',S:'여전히 모름',T:'고친 문제'};
+  const F=star?{open:i=>!i.done,today:isToday,fin:i=>i.done,all:()=>true}:{all:()=>true,rec,X:w=>wStage(w)==='X',T:w=>wStage(w)==='T',S:w=>wStage(w)==='S'};
+  const LAB=star?{open:'남은 오답',today:'오늘 풀 것',fin:'완료',all:'전체'}:{all:'전체',rec:'☆ 담기 추천',X:'아직 다시 안 풂',T:'도전해서 맞춘 문제',S:'도전해서 다시 틀린 문제'};
   const src0=star?items:W,hid=new Set(LS.get('anaHide',[])),bk={};for(const x of src0){const k=bookOf(x.src);(bk[k]=bk[k]||{n:0,at:0}).n++;bk[k].at=Math.max(bk[k].at,(star?x.added:x.at)||0)}
   const bks=Object.keys(bk).sort((a,b)=>bk[b].at-bk[a].at),vis=bks.filter(k=>!hid.has(k));if(ANAB==null||(ANAB!=='all'&&!bk[ANAB]))ANAB=vis.length>1?vis[0]:'all';
   const src=src0.filter(x=>ANAB==='all'?!hid.has(bookOf(x.src)):bookOf(x.src)===ANAB),cnt={};for(const k in F)cnt[k]=src.filter(F[k]).length;
