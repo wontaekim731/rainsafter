@@ -168,9 +168,9 @@ body.pip #sum,body.pip #markNote,body.pip #rec{display:none}body.pip{min-width:0
 .fInk{touch-action:pan-y}
 #pvTools{display:none!important}
 /* 왼쪽 막대에 모든 메뉴: 위쪽은 상태 한 줄만 남기고 문제집 화면을 넓게 */
-body:has(#vPdf:not([hidden])){padding:0 2px 40px 14px}body:has(#vPdf:not([hidden])) .wrap{max-width:none!important}
+body:has(#vPdf:not([hidden])){padding:0 2px 40px 14px;touch-action:pan-x pan-y}html:has(#vPdf:not([hidden])){touch-action:pan-x pan-y}body:has(#vPdf:not([hidden])) .wrap{max-width:none!important}
 #vPdf .pvBar{position:static;padding:2px 8px 2px 60px;margin-bottom:4px;border:0;background:transparent;min-height:0}#vPdf #pvClock{display:none}
-.pvRail{left:0!important}.pvRail .rlIn{padding:4px;gap:4px;border-radius:0 14px 14px 0;border-left:0}
+.pvRail{left:0}.pvRail .rlIn{padding:4px;gap:4px;border-radius:0 14px 14px 0;border-left:0}
 .pvRail .rlIn button[data-r],.pvRail .rlF{width:46px!important;height:40px!important}
 .pvRail .rlIn>.btn,.pvRail .rlIn .pvMoreW>.btn,.pvRail .rlIn .pvPgBtn,.pvRail .rlIn .pvZoom button{width:46px;min-height:36px;padding:2px 1px!important;font-size:11px!important;line-height:1.15!important;border-radius:10px;white-space:normal;word-break:keep-all;display:flex;align-items:center;justify-content:center;text-align:center;gap:0!important;flex-direction:column}
 .pvRail .rlIn .pvZoom{display:flex;flex-direction:column;gap:3px;background:transparent;padding:0}.pvRail .rlIn .pvZoom button{font-size:16px!important}
@@ -451,7 +451,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v43.04</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v43.04)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v43.05</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v43.05)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -498,7 +498,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn quiet" id="pvFocus" type="button" title="문제를 하나씩 크게 보고, 아래 연습장에 풀이 정리" style="padding:9px 12px;font-size:15px">🎯 집중</button><button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v43.04</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v43.05</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" style="font-size:14px;font-weight:700;padding:6px 12px;line-height:1;display:inline-flex;align-items:center;gap:6px" title="나가기 (저장하고 닫기)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8"/><path d="M10 12h10"/><path d="M17 8l4 4-4 4"/><circle cx="11.5" cy="12" r="0.1"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1673,7 +1673,7 @@ const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https:
 const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
 window.addEventListener('error',e=>dlog('err',(e.message||'')+' @'+(e.lineno||'')));window.addEventListener('unhandledrejection',e=>dlog('rej',String(e.reason&&(e.reason.message||e.reason)||'')));
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v43.04',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v43.05',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -2543,9 +2543,9 @@ function qtRail(){const R=$('#pvRail');if(!R)return;const all=!S?0:S.paused?S.pa
   {const I=R.querySelector('.rlIn');I.appendChild(document.createElement('hr'));for(const id of ['pvPg','pvZoom','pvGrade','pvSolBtn','pvSelf']){const x=$('#'+id);if(x)I.appendChild(x)}const mw=document.querySelector('.pvMoreW');if(mw)I.appendChild(mw);const en=$('#pvEnd');if(en){en.style.cssText='';I.appendChild(en)}for(const x of I.querySelectorAll('.btn'))x.style.removeProperty('padding'),x.style.removeProperty('font-size')}   /* 위쪽 막대의 메뉴를 모두 왼쪽 막대로 옮긴다 (기능은 그대로) */
   $('#rlFold').onclick=()=>{R.classList.toggle('fold');try{localStorage.setItem('njRail',R.classList.contains('fold')?'0':'1')}catch(e){}};
   R.querySelectorAll('button[data-r]').forEach(b=>b.onclick=e=>{e.stopPropagation();const o=document.querySelector('#pvTools [data-t="'+b.dataset.r+'"]');if(o)o.click();setTimeout(qtRail,0)});
-  setInterval(()=>{try{if($('#vPdf').hidden||!S||!P)return;qtLoad();
+  setInterval(()=>{try{if($('#vPdf').hidden||!P)return;qtLoad();
     if(FOC.on&&FOC.p)QT.q=FOC.p.q;else if(Date.now()-QT.at>15000){const p=qtScreen();if(p&&p.q!==QT.q){QT.q=p.q}}   /* 집중 모드: 보고 있는 문제에만 시간이 쌓인다 */   /* 최근 15초 안에 쓴 문제가 없으면 화면 가운데 문제 */
-    const run=!S.paused&&!S.frozen&&document.visibilityState==='visible'&&Date.now()-LASTACT<5*60e3;
+    const run=!(S&&S.paused)&&(FOC.on||(S&&!S.frozen))&&document.visibilityState==='visible'&&Date.now()-LASTACT<5*60e3;   /* 집중 모드는 채점한 뒤(전체 시계가 멈춘 뒤)에도 문제별 시간을 잰다 */
     if(QT.q!==QT.lq){QT.lq=QT.q;QT.vis=0}   /* 문제가 바뀌면 이 문제 시계는 0부터 (누적 시간은 따로 저장) */
     if(run&&FOC.on&&QT.q!=null){QT.m[QT.q]=(QT.m[QT.q]||0)+1;QT.vis=(QT.vis||0)+1;QT.dirty++;if(QT.dirty>=5)qtSave()}   /* 문항별 시간은 집중 모드에서만 잰다 */
     qtRail();if(FOC.on&&FOC.p)$('#fQt').textContent='⏱ '+mmss(QT.vis||0);$('#pvClock').textContent=$('#clock').textContent}catch(e){}},1000);
@@ -2623,11 +2623,12 @@ function fBind(el,kind){const pos=e=>{const r=el.getBoundingClientRect();return 
     const r=el.getBoundingClientRect();liveDraw(D.s.slice(0,inkTail(D.s,1)).map(q=>({x:r.left+q.x,y:r.top+q.y})),kind==='n'?2.2*(D.s.w||1):2*(D.s.w||1)*FOC.zf/FOC.pg.k,D.s.c)});
   const up=e=>{const D=FOC.draw;if(!D||D.el!==el||(D.id!=null&&e&&e.pointerId!==D.id))return;FOC.draw=null;setTimeout(liveClear,0);
     if(D.er){if(kind==='p'){for(let i=D.n0;i<PV.undo.length;i++)FOC.und.push({k:'pg'})}return}
-    const s=D.s;{const k=inkTail(s);if(k<s.length)s.length=k}if(kind==='p'){const pg=FOC.pg,o=s.map(q=>Object.assign(fToPage(pg,q.x,q.y),{p:q.p}));o.c=s.c;o.w=s.w;o.t=Date.now();pg.fresh.push(o);PV.undo.push({pg,kind:'add',s:o});FOC.und.push({k:'pg'});PV.dirty=true;pvStatus();pvDirty();pvDraw(pg);fDraw()}
-    else{const W=FOC.SW,n=FOC.note,o={p:s.map(q=>[+(q.x/W).toFixed(4),+(q.y/W).toFixed(4)]),c:s.c,w:s.w};n.s.push(o);FOC.und.push({k:'note',op:'add',s:o});n.dirty=1;
-      let my=0;for(const q of s)my=Math.max(my,q.y);if(my>parseFloat($('#fNote').style.height)-220){n.h=(parseFloat($('#fNote').style.height)+600)/W;fNoteSize()}else fNoteDraw();fNoteSave()}
-    QT.at=Date.now()};
+    const s=D.s;{const k=inkTail(s);if(k<s.length)s.length=k}fCommit(kind,s)};
   el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up)}
+function fCommit(kind,s){if(!FOC.on||!s.length)return;if(kind==='p'){const pg=FOC.pg,o=s.map(q=>Object.assign(fToPage(pg,q.x,q.y),{p:q.p}));o.c=s.c;o.w=s.w;o.t=Date.now();pg.fresh.push(o);PV.undo.push({pg,kind:'add',s:o});FOC.und.push({k:'pg'});PV.dirty=true;pvStatus();pvDirty();pvDraw(pg);fDraw()}
+  else{const W=FOC.SW,n=FOC.note;if(!n)return;const o={p:s.map(q=>[+(q.x/W).toFixed(4),+(q.y/W).toFixed(4)]),c:s.c,w:s.w};n.s.push(o);FOC.und.push({k:'note',op:'add',s:o});n.dirty=1;
+    let my=0;for(const q of s)my=Math.max(my,q.y);if(my>parseFloat($('#fNote').style.height)-220){n.h=(parseFloat($('#fNote').style.height)+600)/W;fNoteSize()}else fNoteDraw();fNoteSave()}
+  QT.at=Date.now()}
 function fErase(kind,p){if(kind==='p'){const pg=FOC.pg,q=fToPage(pg,p.x,p.y);pvErase(pg,q);fDraw();return}
   const n=FOC.note,W=FOC.SW,r=10;let hit=false;n.s=n.s.filter(s=>{if(s.p.some(q=>Math.hypot(q[0]*W-p.x,q[1]*W-p.y)<r)){FOC.und.push({k:'note',op:'erase',s});hit=true;return false}return true});if(hit){n.dirty=1;fNoteDraw();fNoteSave()}}
 (()=>{const b=$('#pvFocus');if(!b)return;b.onclick=()=>FOC.on?fClose():fOpen();$('#rlFocus').onclick=e=>{e.stopPropagation();FOC.on?fClose():fOpen()};$('#fExit').onclick=()=>fClose();$('#fPrev').onclick=()=>fGo(-1);$('#fNext').onclick=()=>fGo(1);
@@ -2767,7 +2768,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v43.04 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v43.05 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -3226,10 +3227,28 @@ function inkCurve(g,s,from,done){const n=s.length;if(n<2){if(n===1&&done){g.line
 /* 펜슬 첫 부분 살리기: 아이패드는 손가락 넘기기를 허용한 화면에서 펜이 닿은 뒤 조금 움직여야 펜 신호(pointerdown)를 보낸다.
    그동안의 위치는 터치 신호(stylus)에 남아 있으므로, 펜 신호보다 먼저 온 점들을 획 앞에 붙인다 */
 const STY={pts:[]};
-document.addEventListener('touchstart',e=>{const t=[...e.changedTouches].find(t=>t.touchType==='stylus');if(t)STY.pts=[{cx:t.clientX,cy:t.clientY,f:t.force||0,ts:e.timeStamp}]},{capture:true,passive:true});
-for(const ev of ['touchend','touchcancel'])document.addEventListener(ev,e=>{if([...e.changedTouches].some(t=>t.touchType==='stylus'))STY.pts=[]},{capture:true,passive:true});   /* 지난 획의 점이 다음 획에 붙지 않게 */
+document.addEventListener('touchstart',e=>{const t=[...e.changedTouches].find(t=>t.touchType==='stylus');if(t){STY.pts=[{cx:t.clientX,cy:t.clientY,f:t.force||0,ts:e.timeStamp}];STY.t0=e.timeStamp}},{capture:true,passive:true});
+/* 펜 신호가 아예 안 오거나(첫 터치) 중간에 끊기면(pointercancel), 터치 기록으로 획을 대신 만든다 */
+STY.down=-1e9;STY.cancel=-1e9;
+document.addEventListener('pointerdown',e=>{if(e.pointerType==='pen')STY.down=e.timeStamp},true);
+document.addEventListener('pointercancel',e=>{if(e.pointerType==='pen')STY.cancel=e.timeStamp},true);
+document.addEventListener('touchmove',e=>{if(!STY.pts.length||STY.down>=STY.t0-150)return;const t=[...e.touches].find(t=>t.touchType==='stylus');if(!t)return;const v=$('#vPdf');if(!v||v.hidden||PV.tool==='erase')return;liveDraw(STY.pts.map(q=>({x:q.cx,y:q.cy})),2*(PV.width||1)*styScale(STY.pts[0].cx,STY.pts[0].cy),PV.color)},{capture:true,passive:true});
+function styTarget(x,y){const inR=(el,pad)=>{if(!el)return null;const r=el.getBoundingClientRect();return x>=r.left-(pad||0)&&x<=r.right&&y>=r.top&&y<=r.bottom?r:null};
+  if(FOC.on){if(inR($('#fProb')))return {k:'p',r:$('#fPi').getBoundingClientRect()};if(inR($('#fNote')))return {k:'n',r:$('#fNi').getBoundingClientRect()};return null}
+  for(const g of PV.pages||[]){if(!g.live)continue;const r=inR(g.ink.width?g.ink:g.c);if(r)return {k:'v',pg:g,r,z:r.width/(g.cw||r.width)||1}}return null}
+function styScale(x,y){const t=styTarget(x,y);if(!t)return 1;if(t.k==='v')return t.z;if(t.k==='p')return FOC.zf/FOC.pg.k;return 1.1}
+document.addEventListener('touchend',e=>{if(![...e.changedTouches].some(t=>t.touchType==='stylus'))return;const L=STY.pts.slice(),t0=STY.t0;STY.pts=[];
+  const gotDown=STY.down>=t0-150,cut=STY.cancel>=t0-150;if((gotDown&&!cut)||L.length<2)return;const v=$('#vPdf');if(!v||v.hidden||!S&&!FOC.on||PV.busy)return;
+  const tg=styTarget(L[0].cx,L[0].cy);setTimeout(liveClear,0);if(!tg)return;dlog('styFB',(gotDown?'cut ':'nodown ')+L.length);
+  if(cut){/* 끊겨서 앞부분만 저장된 획은 지우고 전체로 바꾼다 */const u=PV.undo[PV.undo.length-1];if(tg.k==='v'&&u&&u.kind==='add'&&u.pg===tg.pg){tg.pg.fresh=tg.pg.fresh.filter(x=>x!==u.s);PV.undo.pop()}
+    else if(tg.k==='p'&&u&&u.kind==='add'&&u.pg===FOC.pg){FOC.pg.fresh=FOC.pg.fresh.filter(x=>x!==u.s);PV.undo.pop();FOC.und.pop()}
+    else if(tg.k==='n'&&FOC.note){const z=FOC.und[FOC.und.length-1];if(z&&z.k==='note'&&z.op==='add'){FOC.note.s=FOC.note.s.filter(x=>x!==z.s);FOC.und.pop()}}}
+  const er=PV.tool==='erase';
+  if(tg.k==='v'){const pg=tg.pg,pts=L.map(q=>({x:(q.cx-tg.r.left)/tg.z,y:(q.cy-tg.r.top)/tg.z,p:q.f||0.5}));if(er){for(const q of pts)pvErase(pg,q);return}const k=inkTail(pts);pts.length=k;pts.c=PV.color;pts.w=PV.width;pts.t=Date.now();pg.fresh.push(pts);PV.undo.push({pg,kind:'add',s:pts});PV.dirty=true;pvDraw(pg);pvStatus();pvDirty();try{qtPen(pg,pts)}catch(er2){}return}
+  const pts=L.map(q=>({x:q.cx-tg.r.left,y:q.cy-tg.r.top,p:q.f||0.5}));if(er){for(const q of pts)fErase(tg.k,q);return}pts.length=inkTail(pts);pts.c=PV.color;pts.w=PV.width;fCommit(tg.k,pts)},{capture:true,passive:true});
+document.addEventListener('touchcancel',e=>{if([...e.changedTouches].some(t=>t.touchType==='stylus'))STY.pts=[]},{capture:true,passive:true});   /* 지난 획의 점이 다음 획에 붙지 않게 */
 document.addEventListener('touchmove',e=>{const t=[...e.changedTouches].find(t=>t.touchType==='stylus');if(t&&STY.pts.length&&STY.pts.length<400)STY.pts.push({cx:t.clientX,cy:t.clientY,f:t.force||0,ts:e.timeStamp})},{capture:true,passive:true});
-function styPre(e,map){const L=STY.pts;STY.pts=[];if(!L.length||e.timeStamp-L[0].ts>600)return [];const o=[];for(const q of L){if(q.ts>=e.timeStamp-1)break;const m=map(q.cx,q.cy);o.push({x:m.x,y:m.y,p:q.f||0.3})}
+function styPre(e,map){const L=STY.pts;if(!L.length||e.timeStamp-L[0].ts>600)return [];const o=[];for(const q of L){if(q.ts>=e.timeStamp-1)break;const m=map(q.cx,q.cy);o.push({x:m.x,y:m.y,p:q.f||0.3})}
   if(o.length){const l=o[o.length-1],d=map(e.clientX,e.clientY);if(Math.hypot(l.x-d.x,l.y-d.y)<0.5)o.pop()}return o}
 function inkTail(s,live){const n=s.length;if(n<4)return n;let mx=0;for(const q of s)if(q.p>mx)mx=q.p;if(mx<0.05)return n;const thr=live?0.02:Math.max(0.04,mx*0.3);let k=n;while(k>2&&k>n*0.6&&!(s[k-1].p>=thr))k--;return k}
 const LIVE={c:null,g:null,d:1,on:false};
@@ -3240,6 +3259,11 @@ function liveClear(){if(!LIVE.on||!LIVE.c)return;LIVE.on=false;LIVE.g.setTransfo
 const liveBusy=()=>(typeof FOC!=='undefined'&&FOC.draw&&!FOC.draw.er)||(PV.pages||[]).some(p=>p.cur&&!p.cur.snapped);
 function pvLive(pg){const s=pg.cur;if(!s||s.snapped){liveClear();return}const r=pg.c.getBoundingClientRect(),z=r.width/(pg.cw||r.width)||1;liveDraw(s.slice(0,inkTail(s,1)).map(q=>({x:r.left+q.x*z,y:r.top+q.y*z})),inkW(s,0)*z,s.c)}
 for(const ev of ['pointerup','pointercancel'])document.addEventListener(ev,()=>setTimeout(()=>{if(!liveBusy())liveClear()},0),true);
+/* 사파리 페이지 확대 막기: 문제집 밖(왼쪽 막대·여백)에서 두 손가락을 벌리면 사파리가 페이지 전체를 확대해 왼쪽 막대가 화면 밖으로 사라진다. 확대는 앱이 쪽 안에서만 한다 */
+for(const ev of ['gesturestart','gesturechange'])document.addEventListener(ev,e=>{const v=$('#vPdf');if(v&&!v.hidden)e.preventDefault()},{passive:false});
+document.addEventListener('touchmove',e=>{const v=$('#vPdf');if(v&&!v.hidden&&e.touches.length>1&&!(e.target.closest&&e.target.closest('#pdfPages,#solB')))e.preventDefault()},{passive:false});
+/* 그래도 사파리가 확대된 상태면 왼쪽 막대를 보이는 화면 안으로 옮긴다 */
+if(window.visualViewport){const vv=visualViewport,fix=()=>{const R=$('#pvRail');if(!R)return;if(vv.scale>1.02){R.style.transformOrigin='0 50%';R.style.left=vv.offsetLeft+'px';R.style.top=(vv.offsetTop+vv.height/2)+'px';R.style.transform='translateY(-50%) scale('+(1/vv.scale)+')'}else{R.style.left='';R.style.top='';R.style.transform='';R.style.transformOrigin=''}};vv.addEventListener('resize',fix);vv.addEventListener('scroll',fix)}
 /* 필기 화면에서 길게 누르면 뜨는 글자 선택·복사 메뉴 막기 */
 for(const ev of ['selectstart','contextmenu'])document.addEventListener(ev,e=>{const v=$('#vPdf');if(v&&!v.hidden&&!/INPUT|TEXTAREA/.test((e.target&&e.target.tagName)||''))e.preventDefault()},true);
 function pvSeg(pg,from){if(!pg.live||!pg.cur)return;if(!pg.ink.width){pvDraw(pg);return}const g=pg.g,d=pg.di||pg.d||window.devicePixelRatio||1,s=pg.cur;g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';g.strokeStyle=s.c||'#1d4ed8';
@@ -3276,7 +3300,7 @@ function pvPgEdit(){const b=$('#pvPg'),N=PV.pages.length,c=pvCurPage();const w=d
   w.innerHTML=`<input type="number" inputmode="numeric" min="1" max="${N}" value="${c?c.pg:1}" aria-label="이동할 쪽"><button class="pvPgBtn" type="button">이동</button>`;b.replaceWith(w);const inp=w.querySelector('input');inp.focus();inp.select();
   const done=go=>{const v=Math.round(+inp.value);w.replaceWith(b);if(go&&v>=1&&v<=N)pvGo(v,0);pvPosTick()};
   w.querySelector('button').onclick=()=>done(true);inp.onkeydown=e=>{if(e.key==='Enter')done(true);if(e.key==='Escape')done(false)};inp.onblur=()=>setTimeout(()=>{if(w.isConnected)done(false)},200)}
-async function pvOpen(){
+async function pvOpen(){try{liveCv()}catch(e){}
   (PV.obs||[]).forEach(o=>o.disconnect());PV.pages=[];PV.rq=new Set();PV.rbusy=0;if(PV.th)for(const c of PV.th.values())c.width=0;PV.th=new Map();PV.undo=[];const box=$('#pdfPages');box.innerHTML='';$('#vPdf').hidden=false;document.querySelector('.wrap').style.maxWidth='1000px';
   const doc=P.doc,cw=Math.min(box.clientWidth||900,1400),dpr=window.devicePixelRatio||1;
   // 아이패드는 그림 메모리가 작다: 화면 근처 쪽만 그림을 만들고, 멀어진 쪽은 비운다
