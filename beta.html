@@ -451,7 +451,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v43.07</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v43.07)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v43.08</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v43.08)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -498,7 +498,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn quiet" id="pvFocus" type="button" title="문제를 하나씩 크게 보고, 아래 연습장에 풀이 정리" style="padding:9px 12px;font-size:15px">🎯 집중</button><button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v43.07</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v43.08</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" title="나가기 (저장하고 문제집 목록으로)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5"/><path d="M11 5l-7 7 7 7"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1673,7 +1673,7 @@ const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https:
 const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
 window.addEventListener('error',e=>dlog('err',(e.message||'')+' @'+(e.lineno||'')));window.addEventListener('unhandledrejection',e=>dlog('rej',String(e.reason&&(e.reason.message||e.reason)||'')));
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v43.07',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v43.08',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -2630,13 +2630,15 @@ function fHold(){clearTimeout(FOC.holdT);const D=FOC.draw;if(!SNAP_ON||!D||D.er|
   FOC.holdT=setTimeout(()=>{if(FOC.draw!==D||D.s.snapped)return;const z=D.s[D.s.length-1];if(Math.hypot(z.x-a.x,z.y-a.y)>7)return;const f=shapeFit(D.s);if(!f)return;const np=shapePts(f),c=D.s.c,w=D.s.w;D.s.length=0;for(const q of np)D.s.push(q);D.s.c=c;D.s.w=w;D.s.snapped=f.k;
     const r=D.el.getBoundingClientRect(),kind=D.el.id==='fNi'?'n':'p';liveDraw(D.s.map(q=>({x:r.left+q.x,y:r.top+q.y})),kind==='n'?2.2*(w||1):2*(w||1)*FOC.zf/FOC.pg.k,c)},500)}
 function fCommit(kind,s){if(!FOC.on||!s.length)return;if(kind==='p'){const pg=FOC.pg,o=s.map(q=>Object.assign(fToPage(pg,q.x,q.y),{p:q.p}));o.c=s.c;o.w=s.w;o.t=Date.now();if(s.snapped)o.snapped=s.snapped;pg.fresh.push(o);PV.undo.push({pg,kind:'add',s:o});FOC.und.push({k:'pg'});PV.dirty=true;pvStatus();pvDirty();pvDraw(pg);fDraw()}
-  else{const W=FOC.SW,n=FOC.note;if(!n)return;const o={p:s.map(q=>[+(q.x/W).toFixed(4),+(q.y/W).toFixed(4)]),c:s.c,w:s.w};n.s.push(o);FOC.und.push({k:'note',op:'add',s:o});n.dirty=1;
+  else{const W=FOC.SW,n=FOC.note;if(!n)return;const o={p:s.map(q=>[+(q.x/W).toFixed(4),+(q.y/W).toFixed(4)]),c:s.c,w:s.w,t:Date.now()};n.s.push(o);FOC.und.push({k:'note',op:'add',s:o});n.dirty=1;
     let my=0;for(const q of s)my=Math.max(my,q.y);if(my>parseFloat($('#fNote').style.height)-220){n.h=(parseFloat($('#fNote').style.height)+600)/W;fNoteSize()}else fNoteDraw();fNoteSave()}
   QT.at=Date.now()}
 function fErase(kind,p){if(kind==='p'){const pg=FOC.pg,q=fToPage(pg,p.x,p.y);pvErase(pg,q);fDraw();return}
   const n=FOC.note,W=FOC.SW,r=10;let hit=false;n.s=n.s.filter(s=>{if(s.p.some(q=>Math.hypot(q[0]*W-p.x,q[1]*W-p.y)<r)){FOC.und.push({k:'note',op:'erase',s});hit=true;return false}return true});if(hit){n.dirty=1;fNoteDraw();fNoteSave()}}
+(()=>{const fs=$('#fScroll');if(fs){fs.addEventListener('touchstart',e=>{const t=e.changedTouches[0];if(!t)return;if(t.touchType==='stylus'||FOC.draw||(PV.penSeen&&((t.radiusX||0)>=30||(t.radiusY||0)>=30))){e.preventDefault()}},{passive:false});fs.addEventListener('touchmove',e=>{if(FOC.draw||[...e.touches].some(t=>t.touchType==='stylus'))e.preventDefault()},{passive:false})}})();
 (()=>{const b=$('#pvFocus');if(!b)return;b.onclick=()=>FOC.on?fClose():fOpen();$('#rlFocus').onclick=e=>{e.stopPropagation();FOC.on?fClose():fOpen()};$('#fExit').onclick=()=>fClose();$('#fPrev').onclick=()=>fGo(-1);$('#fNext').onclick=()=>fGo(1);
-  $('#fSol').onclick=fSolToggle;$('#fGrade').onclick=()=>{const g=$('#pvGrade');if(g)g.click()};$('#fMore').onclick=()=>{if(FOC.full)FOC.ext+=60;FOC.full=true;fRender()};fBind($('#fPi'),'p');fBind($('#fNi'),'n');
+  $('#fSol').onclick=fSolToggle;$('#fGrade').onclick=async()=>{if(PV.busy)return;const b=$('#fGrade');b.disabled=true;b.textContent='채점 중…';try{if(PV.review)pvResume();await pvGrade()}catch(e){console.error(e)}finally{b.disabled=false;b.textContent='✓ 채점'}
+  const t=($('#pvSum')||{}).textContent||'';pvToast(t&&!/채점 전/.test(t)?esc(t.slice(0,80)):'채점할 새 답이 없어요 · 답은 문제 칸에 써 주세요');fDraw()};   /* 집중 모드: 한 번 누르면 바로 채점하고 결과를 알려 준다 */$('#fMore').onclick=()=>{if(FOC.full)FOC.ext+=60;FOC.full=true;fRender()};fBind($('#fPi'),'p');fBind($('#fNi'),'n');
   document.addEventListener('keydown',e=>{if(!FOC.on||/INPUT|TEXTAREA/.test((e.target||{}).tagName||''))return;if(e.key==='ArrowRight')fGo(1);else if(e.key==='ArrowLeft')fGo(-1)});
   addEventListener('resize',()=>{if(FOC.on){fTop();fRender().then(()=>fNoteSize())}});addEventListener('pagehide',()=>fNoteSave(true))})();
 function pvBadgeAll(){for(const pg of (typeof PV!=='undefined'&&PV.pages)||[])if(pg.live)pvBadge(pg)}
@@ -2772,7 +2774,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v43.07 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v43.08 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -3231,7 +3233,7 @@ function inkCurve(g,s,from,done){const n=s.length;if(n<2){if(n===1&&done){g.line
 /* 펜슬 첫 부분 살리기: 아이패드는 손가락 넘기기를 허용한 화면에서 펜이 닿은 뒤 조금 움직여야 펜 신호(pointerdown)를 보낸다.
    그동안의 위치는 터치 신호(stylus)에 남아 있으므로, 펜 신호보다 먼저 온 점들을 획 앞에 붙인다 */
 const STY={pts:[]};
-document.addEventListener('touchstart',e=>{const t=[...e.changedTouches].find(t=>t.touchType==='stylus');if(t){STY.pts=[{cx:t.clientX,cy:t.clientY,f:t.force||0,ts:e.timeStamp}];STY.t0=e.timeStamp}},{capture:true,passive:true});
+document.addEventListener('touchstart',e=>{const t=[...e.changedTouches].find(t=>t.touchType==='stylus');if(t){STY.pts=[{cx:t.clientX,cy:t.clientY,f:t.force||0,ts:e.timeStamp}];STY.t0=e.timeStamp;STY.t0d=Date.now()}},{capture:true,passive:true});
 /* 펜 신호가 아예 안 오거나(첫 터치) 중간에 끊기면(pointercancel), 터치 기록으로 획을 대신 만든다 */
 STY.down=-1e9;STY.cancel=-1e9;
 /* 손가락으로 넘긴 직후(관성으로 아직 움직이는 중)에 펜을 대면 아이패드가 그 터치를 '스크롤 멈춤'으로 써 버린다.
@@ -3246,15 +3248,19 @@ function styTarget(x,y){const inR=(el,pad)=>{if(!el)return null;const r=el.getBo
   if(FOC.on){if(inR($('#fProb')))return {k:'p',r:$('#fPi').getBoundingClientRect()};if(inR($('#fNote')))return {k:'n',r:$('#fNi').getBoundingClientRect()};return null}
   for(const g of PV.pages||[]){if(!g.live)continue;const r=inR(g.ink.width?g.ink:g.c);if(r)return {k:'v',pg:g,r,z:r.width/(g.cw||r.width)||1}}return null}
 function styScale(x,y){const t=styTarget(x,y);if(!t)return 1;if(t.k==='v')return t.z;if(t.k==='p')return FOC.zf/FOC.pg.k;return 1.1}
-document.addEventListener('touchend',e=>{if(![...e.changedTouches].some(t=>t.touchType==='stylus'))return;const L=STY.pts.slice(),t0=STY.t0;STY.pts=[];
-  const gotDown=STY.down>=t0-150,cut=STY.cancel>=t0-150;if((gotDown&&!cut)||L.length<2)return;const v=$('#vPdf');if(!v||v.hidden||!S&&!FOC.on||PV.busy)return;
+const styMine=s=>s&&(s.t||0)>=(STY.t0d||0)-400;   /* 이번 펜 터치 동안 만든 획만 바꾼다 (앞서 쓴 획은 건드리지 않음) */
+function styLastLen(tg){let s=null,k=1;if(tg.k==='v'){const u=PV.undo[PV.undo.length-1];if(u&&u.kind==='add'&&u.pg===tg.pg&&styMine(u.s)){s=u.s;k=tg.z}}else if(tg.k==='p'){const u=PV.undo[PV.undo.length-1];if(u&&u.kind==='add'&&u.pg===FOC.pg&&styMine(u.s)){s=u.s;k=FOC.zf/FOC.pg.k}}else if(FOC.note){const z=FOC.und[FOC.und.length-1];if(z&&z.k==='note'&&z.op==='add'&&styMine(z.s)){s=z.s.p.map(q=>({x:q[0],y:q[1]}));k=FOC.SW}}
+  if(!s)return 0;let L=0;for(let i=1;i<s.length;i++)L+=Math.hypot(s[i].x-s[i-1].x,s[i].y-s[i-1].y);return L*k}
+document.addEventListener('touchend',e=>{if(![...e.changedTouches].some(t=>t.touchType==='stylus'))return;const L=STY.pts.slice(),t0=STY.t0;STY.pts=[];setTimeout(()=>styEnd(L,t0),30)},{capture:true,passive:true});
+function styEnd(L,t0){const gotDown=STY.down>=t0-150;let cut=STY.cancel>=t0-150;if(L.length<2)return;
+  if(gotDown&&!cut){/* 펜 신호가 중간에 멈춰 획이 짧게만 저장됐으면(손바닥이 화면에 닿아 있을 때 등) 터치 기록으로 바꾼다 */let tl=0;for(let i=1;i<L.length;i++)tl+=Math.hypot(L[i].cx-L[i-1].cx,L[i].cy-L[i-1].cy);if(tl<20)return;const tg0=styTarget(L[0].cx,L[0].cy);if(!tg0)return;const pl=styLastLen(tg0);if(pl>=tl*0.6)return;cut=true}const v=$('#vPdf');if(!v||v.hidden||!S&&!FOC.on||PV.busy)return;
   const tg=styTarget(L[0].cx,L[0].cy);setTimeout(liveClear,0);if(!tg)return;dlog('styFB',(gotDown?'cut ':'nodown ')+L.length);
-  if(cut){/* 끊겨서 앞부분만 저장된 획은 지우고 전체로 바꾼다 */const u=PV.undo[PV.undo.length-1];if(tg.k==='v'&&u&&u.kind==='add'&&u.pg===tg.pg){tg.pg.fresh=tg.pg.fresh.filter(x=>x!==u.s);PV.undo.pop()}
-    else if(tg.k==='p'&&u&&u.kind==='add'&&u.pg===FOC.pg){FOC.pg.fresh=FOC.pg.fresh.filter(x=>x!==u.s);PV.undo.pop();FOC.und.pop()}
-    else if(tg.k==='n'&&FOC.note){const z=FOC.und[FOC.und.length-1];if(z&&z.k==='note'&&z.op==='add'){FOC.note.s=FOC.note.s.filter(x=>x!==z.s);FOC.und.pop()}}}
+  if(cut){/* 끊겨서 앞부분만 저장된 획은 지우고 전체로 바꾼다 */const u=PV.undo[PV.undo.length-1];if(tg.k==='v'&&u&&u.kind==='add'&&u.pg===tg.pg&&styMine(u.s)){tg.pg.fresh=tg.pg.fresh.filter(x=>x!==u.s);PV.undo.pop()}
+    else if(tg.k==='p'&&u&&u.kind==='add'&&u.pg===FOC.pg&&styMine(u.s)){FOC.pg.fresh=FOC.pg.fresh.filter(x=>x!==u.s);PV.undo.pop();FOC.und.pop()}
+    else if(tg.k==='n'&&FOC.note){const z=FOC.und[FOC.und.length-1];if(z&&z.k==='note'&&z.op==='add'&&styMine(z.s)){FOC.note.s=FOC.note.s.filter(x=>x!==z.s);FOC.und.pop()}}}
   const er=PV.tool==='erase';
   if(tg.k==='v'){const pg=tg.pg,pts=L.map(q=>({x:(q.cx-tg.r.left)/tg.z,y:(q.cy-tg.r.top)/tg.z,p:q.f||0.5}));if(er){for(const q of pts)pvErase(pg,q);return}const k=inkTail(pts);pts.length=k;pts.c=PV.color;pts.w=PV.width;pts.t=Date.now();pg.fresh.push(pts);PV.undo.push({pg,kind:'add',s:pts});PV.dirty=true;pvDraw(pg);pvStatus();pvDirty();try{qtPen(pg,pts)}catch(er2){}return}
-  const pts=L.map(q=>({x:q.cx-tg.r.left,y:q.cy-tg.r.top,p:q.f||0.5}));if(er){for(const q of pts)fErase(tg.k,q);return}pts.length=inkTail(pts);pts.c=PV.color;pts.w=PV.width;fCommit(tg.k,pts)},{capture:true,passive:true});
+  const pts=L.map(q=>({x:q.cx-tg.r.left,y:q.cy-tg.r.top,p:q.f||0.5}));if(er){for(const q of pts)fErase(tg.k,q);return}pts.length=inkTail(pts);pts.c=PV.color;pts.w=PV.width;fCommit(tg.k,pts)}
 document.addEventListener('touchcancel',e=>{if([...e.changedTouches].some(t=>t.touchType==='stylus'))STY.pts=[]},{capture:true,passive:true});   /* 지난 획의 점이 다음 획에 붙지 않게 */
 document.addEventListener('touchmove',e=>{const t=[...e.changedTouches].find(t=>t.touchType==='stylus');if(t&&STY.pts.length&&STY.pts.length<400)STY.pts.push({cx:t.clientX,cy:t.clientY,f:t.force||0,ts:e.timeStamp})},{capture:true,passive:true});
 function styPre(e,map){const L=STY.pts;if(!L.length||e.timeStamp-L[0].ts>600)return [];const o=[];for(const q of L){if(q.ts>=e.timeStamp-1)break;const m=map(q.cx,q.cy);o.push({x:m.x,y:m.y,p:q.f||0.3})}
@@ -3475,6 +3481,7 @@ function pvBind(pg){const c=pg.ink;let holdT=null;
   /* 애플 펜슬은 절대 화면을 넘기지 않게, 선택한 도형을 잡은 손가락·두 손가락(확대)도 기본 스크롤을 막는다 */
   c.addEventListener('touchstart',e=>{if(!document.body.classList.contains('nscroll'))return;const t=e.changedTouches[0];if(!t)return;
     if(t.touchType==='stylus'||e.touches.length>=2){e.preventDefault();return}
+    if(PV.penSeen&&((t.radiusX||0)>=30||(t.radiusY||0)>=30)){e.preventDefault();PV.palm=1;return}   /* 넓게 닿은 손바닥: 화면이 움직이지 않게 (펜이 바로 써지도록) */
     if(PV.pages.some(p=>p.cur&&!p.curTouch)||Date.now()-(PV.penT||0)<400){e.preventDefault();PV.palm=1;return}   // 손바닥: 펜으로 쓰는 중·막 뗀 직후·넓게 닿은 터치는 화면을 움직이지 않는다
     if(S&&!PV.busy){const r=c.getBoundingClientRect(),z=r.width/(pg.cw||r.width)||1,p={x:(t.clientX-r.left)/z,y:(t.clientY-r.top)/z};if(selHandle(pg,p)||selIn(pg,p))e.preventDefault()}},{passive:false});
   c.addEventListener('touchmove',e=>{if(!document.body.classList.contains('nscroll'))return;if(e.touches.length>=2||(e.touches[0]&&e.touches[0].touchType==='stylus')||pg.mv)e.preventDefault()},{passive:false});
