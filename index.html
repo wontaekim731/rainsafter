@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>내정수학 러닝메이트</title>
+<title>FILLIN</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<meta name="theme-color" content="#eef2f7"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0E1014"><meta name="apple-mobile-web-app-capable" content="yes">
 <style>
 :root{
   --bg:#f2f3f6;--paper:#fff;--ink:#17202e;--muted:#5b6477;--line:#dce0e8;
@@ -485,13 +485,78 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
 .pTl{overflow-x:auto;margin:6px 0}.pNotes{margin:8px 0;padding-left:18px;font-size:14px;line-height:1.55}.pNotes li{margin:4px 0}.pNotes li.slow,.pNotes li.stall{color:var(--bad)}.pNotes li.fast{color:var(--warn)}
 .pTab{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}.pTab th,.pTab td{border-bottom:1px solid var(--line);padding:5px 3px;text-align:center}
 .tmB{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow:auto;font-size:14px}.tmB label{display:flex;gap:8px;align-items:center}.tmB input{width:18px;height:18px}
+
+/* ===== FILLIN 디자인 (v44) — 다크 바탕 · 민트 = 채움 · 주황 = GAP. 문제지(스캔)는 흰 종이 그대로 ===== */
+:root,:root:not([data-x]){color-scheme:dark;
+  --bg:#0E1014;--paper:#161920;--ink:#F2F4F7;--muted:#8A93A3;--line:#262A33;
+  --omr:#7CF2B0;--ok:#7CF2B0;--ok-soft:#17241D;--bad:#FFB37A;--bad-soft:#2A1E14;--warn:#FFD166;--warn-soft:#2A2414;--gray:#343A46;
+  --navy:#1D222C;--hl:#7CF2B0;--accent:#7CF2B0;--gap:#FFB37A;--gap-line:#B8774A;--gap-bg:#1C1712;
+  --sans:"Pretendard Variable",Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans)}
+body:not(.pip){background-image:none!important}
+.btn{background:var(--omr);color:#0E1014}
+.btn.quiet{background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+.btn:focus-visible,.b:focus-visible{outline:3px solid var(--omr)}
+.card{background:var(--paper);border-color:#232733;border-radius:22px}
+input.txt,select{background:#0E1014;color:var(--ink);border-color:var(--line)}
+.ssO{color:#0E1014}.ssX{color:#1C1712}
+.chips .bad,.dots .bad{background:var(--gap-bg);color:var(--gap);border:1px dashed var(--gap-line)}
+.card.now{background:#1A1F27;color:var(--ink);border:1px solid #2C313C}
+.howTo{background:#12151B;border-color:var(--line)}
+#pvPenPop .ppW.on{background:#2A2414}
+/* 상단바 · 아래 메뉴 */
+.appbar{background:color-mix(in srgb,#0E1014 90%,transparent)}
+.brand{font-weight:900;font-size:20px;letter-spacing:.04em}
+.mark{width:30px;height:30px;border-radius:9px;border:0;background:var(--omr);color:#0E1014;transform:none}
+.tabs.tabbar{background:color-mix(in srgb,#161920 94%,transparent);box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 1px #262A33}
+.tabs.tabbar button.on{color:var(--omr)}
+.tabs.tabbar button.on svg{fill:none;stroke:var(--omr)}
+.tabs.tabbar #dueBadge,#dueBadge{background:var(--gap);color:#1C1712}
+#pvToast{background:#F2F4F7;color:#0E1014}
+#pvToast button{color:inherit}
+/* GO 버튼: 크게 GO →, 아래 작게 채점하기 */
+#pvGrade,#fGrade{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1}
+#pvGrade .goT,#fGrade .goT{display:inline-flex;align-items:center;gap:5px;font-size:19px;font-weight:900;letter-spacing:.04em}
+#pvGrade .goS,#fGrade .goS{font-size:11px;font-weight:700;opacity:.85}
+.focus .fB.fGo{height:54px!important;padding:0 20px!important}
+#pvGrade.resume{background:var(--ok);color:#0E1014}
+/* GO 결과 */
+#pvToast .goRes{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#pvToast .goRes b{font-size:20px;font-weight:900}
+#pvToast .goRes .gp{color:#B4530F}
+#pvToast .goRes small{display:block;font-size:12px;font-weight:500;color:#5B6477}
+/* 홈 */
+#hHell .cc{background:var(--paper);border:1px solid #232733;border-radius:22px;box-shadow:none}
+#hHell .m3>div{background:#0E1014}
+#hHell .sb{border-color:var(--line)}
+#hHell .sb.pri{background:var(--omr);border-color:var(--omr);color:#0E1014}
+#hHell .tbar{background:#232833}#hHell .tbar i{background:var(--omr)}
+#hHell .dd{color:var(--gap)}
+#hHell .ban{background:var(--ok-soft)}#hHell .ban.no{background:var(--gap-bg)}
+.fiHero{display:flex;flex-direction:column;gap:6px;padding:14px 4px 4px}
+.fiHero .who{font-size:16px;color:var(--muted)}
+.fiHero .big{font-size:60px;font-weight:900;line-height:1.05;letter-spacing:-.03em}
+.fiHero .sub2{font-size:16px;color:#B7BECA}.fiHero .sub2 b{color:var(--gap)}
+.fiCard{display:flex;flex-direction:column;gap:18px;background:var(--paper);border:1px solid #232733;border-radius:26px;padding:22px}
+.fiCard .bk{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:15px;color:#B7BECA}
+.fiGrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.fiGrid i{display:flex;align-items:flex-end;height:64px;border-radius:14px;box-sizing:border-box;border:1.5px solid #343A46;padding:8px 9px;font-style:normal;font-size:12px;font-weight:700;color:#8A93A3}
+.fiGrid i.ok{background:#2A5C44;border-color:#2A5C44;color:#CFF7E2}
+.fiGrid i.gp{border:2px dashed var(--gap-line);color:var(--gap)}
+.fiGrid i.now{border:2.5px solid var(--omr);background:var(--ok-soft);color:var(--omr)}
+.fiGo{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:80px;border:0;border-radius:20px;background:var(--omr);color:#0E1014;font:inherit;font-size:24px;font-weight:900;cursor:pointer}
+.fiGo small{font-size:14px;font-weight:600;opacity:.75}
+.fiTwo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fiTwo button{height:68px;border-radius:18px;border:1px solid #262A33;background:var(--paper);color:var(--ink);font:inherit;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:space-between;padding:0 20px;cursor:pointer}
+.fiTwo button.gp{background:var(--gap-bg);border-color:#4A3320}.fiTwo button.gp em{color:var(--gap);font-style:normal;font-weight:900}
+@media (max-width:520px){.fiLong{display:none}.fiHero .big{font-size:46px}.fiGrid{grid-template-columns:repeat(4,minmax(0,1fr))}.fiGo{font-size:21px;height:72px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v43.18</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v43.18)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9.5" y="9.5" width="4" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span><span>FILLIN</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.0</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.0)" aria-label="선생님 모드">⚙</button></header>
 
-  <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
+  <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>GAP</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
     <div id="hHell"></div>
     <div class="hello hOld" id="hHead"></div>
@@ -503,7 +568,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
   <section class="stack" id="vAna" hidden style="display:flex;flex-direction:column;gap:14px">
     <div class="card now" id="aQuiz"></div>
     <div class="card tOnly" id="aSum"></div>
-    <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div class="seg" id="aSeg"><button type="button" data-s="all" class="on">전체 오답</button><button type="button" data-s="star">★ 오답노트</button></div>
+    <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div class="seg" id="aSeg"><button type="button" data-s="all" class="on">전체 GAP</button><button type="button" data-s="star">★ 오답노트</button></div>
       <div class="qzTools" id="aFilt" hidden><button type="button" data-f="all" class="on">전체</button><button type="button" data-f="todo">담을 후보</button><button type="button" data-f="X">틀림</button><button type="button" data-f="S">여전히 모름</button><button type="button" data-f="T">고친 문제</button></div></div>
       <div id="aMsg" style="font-size:14px"></div><div id="aList"></div><div id="nSheet" hidden></div><button id="aAdd" hidden></button></div>
   </section>
@@ -527,7 +592,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
     </div>
   </section>
   <section id="vPdf" hidden>
-    <div id="focus" class="focus" hidden><div class="fBar"><button type="button" class="fB fEnd" id="fExit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>끝내기</button><div class="fMid"><button type="button" class="fB fNav" id="fPrev" aria-label="이전 문제"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="fTit"><b id="fQn" class="fQn"></b><span class="fQt" id="fQt"></span></div><button type="button" class="fB fNav" id="fNext" aria-label="다음 문제"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div><button type="button" class="fB fSolB" id="fSol" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="8" height="16" rx="1.5"/><rect x="13" y="4" width="8" height="16" rx="1.5"/></svg>해설</button><button type="button" class="fB fGo" id="fGrade"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>채점</span></button></div>
+    <div id="focus" class="focus" hidden><div class="fBar"><button type="button" class="fB fEnd" id="fExit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>끝내기</button><div class="fMid"><button type="button" class="fB fNav" id="fPrev" aria-label="이전 문제"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="fTit"><b id="fQn" class="fQn"></b><span class="fQt" id="fQt"></span></div><button type="button" class="fB fNav" id="fNext" aria-label="다음 문제"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div><button type="button" class="fB fSolB" id="fSol" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="8" height="16" rx="1.5"/><rect x="13" y="4" width="8" height="16" rx="1.5"/></svg>해설</button><button type="button" class="fB fGo" id="fGrade" aria-label="GO, 이 문제 채점하기"><span class="goT">GO <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span><small class="goS">채점하기</small></button></div>
       <div class="fScroll" id="fScroll"><div class="fNote" id="fNote"><canvas id="fNi" class="fInk"></canvas><div class="fNum">번호</div><div class="fTip">한 줄에 식 하나씩</div><div class="fProb" id="fProb"><canvas id="fPc"></canvas><canvas id="fPi" class="fInk"></canvas></div><div class="fAns" id="fAns"><canvas id="fAc"></canvas><canvas id="fAi" class="fInk"></canvas><div class="fAnsL" id="fAnsL"></div></div></div></div></div>
     <div id="pvRail" class="pvRail" aria-label="시간·펜 도구"><button type="button" class="rlFold" id="rlFold" title="메뉴 다시 보이기" aria-label="메뉴 다시 보이기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>메뉴</span></button><div class="rlIn"><div class="rlGrip" id="rlGrip" title="끌어서 원하는 곳으로 옮기기">⠿</div><button type="button" class="rlHide" id="rlHide" title="메뉴 숨기기" aria-label="메뉴 숨기기"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>숨기기</span></button><div class="rlT" title="전체 풀이 시간"><small>전체</small><b id="rlAll">0:00</b></div><div class="rlT rlQ" title="지금 푸는 문제에 쓴 시간"><small id="rlQn">문제</small><b id="rlQt">–</b></div><button type="button" class="rlF" id="rlFocus" title="집중 모드: 문제 하나씩 + 연습장">🎯<small>집중</small></button><button type="button" data-r="pen" title="펜">✎</button><button type="button" data-r="erase" title="지우개" aria-label="지우개"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M14.5 3.8 20.2 9.5a1.6 1.6 0 0 1 0 2.3L12 20H7.6l-3.8-3.8a1.6 1.6 0 0 1 0-2.3L12.2 3.8a1.6 1.6 0 0 1 2.3 0Z"/><path d="M8.6 7.4l8 8"/><path d="M12 20h8"/></svg></button><button type="button" data-r="move" title="그린 선·도형 옮기기">✥</button><button type="button" data-r="undo" title="실행 취소">↶</button></div></div>
     <div class="pvBar">
@@ -535,8 +600,8 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
       <div id="pvTools" class="qzTools"><button type="button" data-t="pen" class="on" title="한 번 더 누르면 색·굵기">✎ 펜 <i id="pvPenDot"></i> ▾</button><button type="button" data-t="erase">지우개</button><button type="button" data-t="move" title="그린 선·도형을 펜으로 끌어서 옮기기">✥ 이동</button><button type="button" data-t="undo">↶</button></div>
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
-      <button class="btn quiet" id="pvFocus" type="button" title="문제를 하나씩 크게 보고, 아래 연습장에 풀이 정리" style="padding:9px 12px;font-size:15px">🎯 집중</button><button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v43.18</span></div></div>
+      <button class="btn quiet" id="pvFocus" type="button" title="문제를 하나씩 크게 보고, 아래 연습장에 풀이 정리" style="padding:9px 12px;font-size:15px">🎯 집중</button><button class="btn mid" id="pvGrade" type="button" aria-label="GO, 푼 문제 채점하기" style="padding:8px 16px;font-size:15px"><span class="goT">GO <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span><small class="goS">채점하기</small></button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v44.0</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" title="나가기 (저장하고 문제집 목록으로)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5"/><path d="M11 5l-7 7 7 7"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -606,7 +671,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
     </div>
     <div class="card" id="dProc" hidden></div>
     <div class="card" id="dFix" hidden></div>
-    <div class="card" id="dNext"><p data-nobeta style="margin:0">틀린 문제는 <b>[오답]</b> 탭에 날짜별로 모였어요. 다시 볼 문제는 ☆를 눌러 오답노트에 담으세요.</p><div class="row" style="justify-content:flex-start"><button class="btn mid" type="button" id="dGoAna">오답 보기</button><button class="btn quiet" id="again" type="button">홈으로</button></div></div>
+    <div class="card" id="dNext"><p data-nobeta style="margin:0">틀린 문제는 <b>[GAP]</b> 탭에 날짜별로 모였어요. 다시 볼 문제는 ☆를 눌러 오답노트에 담으세요.</p><div class="row" style="justify-content:flex-start"><button class="btn mid" type="button" id="dGoAna">GAP 확인</button><button class="btn quiet" id="again" type="button">홈으로</button></div></div>
     <div class="card tOnly" id="dTime" hidden></div>
     <div class="card tOnly" id="dWrong" hidden></div>
     <div class="card tOnly" id="dAna" hidden></div>
@@ -1711,7 +1776,7 @@ const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https:
 const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
 window.addEventListener('error',e=>dlog('err',(e.message||'')+' @'+(e.lineno||'')));window.addEventListener('unhandledrejection',e=>dlog('rej',String(e.reason&&(e.reason.message||e.reason)||'')));
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v43.18',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v44.0',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -2555,6 +2620,7 @@ async function gradeFile(file,auto,mem){
     for(const p of P.problems){const x=S.state[p.q];if(x)x.sigs=all.filter(s=>inReg(s,p)).map(s=>s.sig)}
     for(const s of all)S.seen.add(s.sig);S.ink=all;setTimeout(logWrongs,0);setTimeout(pvBadgeAll,0);
     const parts=[];if(nw)parts.push(`새로 ${nw}문항`);if(ok)parts.push(`정답 ${ok}`);if(bad)parts.push(`오답 ${bad}`);if(chk)parts.push(`확인 필요 ${chk}`);if(re){const rs=Object.values(S.state).filter(x=>x.retry&&x.retry.self&&!x.retry.ans).length;if(reOk)parts.push(`고침 △ ${reOk}`);if(re-reOk-rs>0)parts.push(`여전히 틀림 ${re-reOk-rs}`)}{const sp=selfPending().length;if(sp)parts.push(`스스로 채점 ${sp}`)}
+    {const rsN=Object.values(S.state).filter(x=>x.retry&&x.retry.self&&!x.retry.ans).length,still=Math.max(0,re-reOk-rsN);S.goRes={ok:ok+reOk,gap:bad+still,n:ok+bad+reOk+still,chk:chk+rsN}}
     fb((nw||re||clr.length)?'ok':'nk',(nw||re)?'':clr.length?`답을 지운 ${clr.length}문항은 채점 표시를 지웠어요`:'새로 쓴 답이 없어요');chips();
     if(nw||re||ok||bad||clr.length){const w=await writeMarks(clr.length?Object.assign({},S.state,Object.fromEntries(clr.map(q=>[q,{q,status:'none'}]))):undefined),n=$('#markNote');n.className=w===true?'okn':'badn';n.textContent=w===true?'PDF에 ○ / 표시 완료 → PDF 화면에서 F5':w?w:''}
   }catch(e){console.error(e);if(auto){P.lastMod=null;S.seenMod=null}else fb('bad','PDF를 읽지 못했습니다. 저장이 끝났는지 확인하고 다시 눌러 주세요.')}
@@ -2718,7 +2784,7 @@ function fToast(q,b4,h4){if(q==null||!S||!S.state)return;const st=S.state[q],H=(
   if(JSON.stringify(st||null)===b4&&H.length===h4){const ss=document.querySelector('#selfSheet');if(ss&&ss.offsetParent)return;pvToast(nm+' · 채점할 새 답이 없어요 — 답은 답란에 써 주세요');return}
   if(st&&st.status==='check'){pvToast(nm+' · 정답을 보고 직접 채점해 주세요');return}
   const last=H[H.length-1],ok=st&&st.retry&&st.retry.ok!=null?st.retry.ok:(last?last.ok:st&&st.ok);
-  pvToast(ok===true?nm+' · 맞았어요 ○':ok===false?nm+' · 틀렸어요 — 도전 '+H.length+'회':nm+' · 채점했어요')}   /* 집중 모드: 한 번 누르면 바로 채점하고 결과를 알려 준다 */fBind($('#fPi'),'p');fBind($('#fNi'),'n');fBind($('#fAi'),'a');try{abIndex()}catch(e){}
+  pvToast(ok===true?nm+' · 맞았어요 ○':ok===false?nm+' · GAP — 도전 '+H.length+'회':nm+' · 채점했어요')}   /* 집중 모드: 한 번 누르면 바로 채점하고 결과를 알려 준다 */fBind($('#fPi'),'p');fBind($('#fNi'),'n');fBind($('#fAi'),'a');try{abIndex()}catch(e){}
   document.addEventListener('keydown',e=>{if(!FOC.on||/INPUT|TEXTAREA/.test((e.target||{}).tagName||''))return;if(e.key==='ArrowRight')fGo(1);else if(e.key==='ArrowLeft')fGo(-1)});
   addEventListener('resize',()=>{if(FOC.on){fTop();fRender().then(()=>fNoteSize())}});addEventListener('pagehide',()=>fNoteSave(true))})();
 function pvBadgeAll(){for(const pg of (typeof PV!=='undefined'&&PV.pages)||[])if(pg.live)pvBadge(pg)}
@@ -2854,7 +2920,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v43.18 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.0 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -3444,7 +3510,7 @@ async function pvOpen(){try{liveCv()}catch(e){}
   PV.pages.forEach(pg=>{near.observe(pg.wrap);far.observe(pg.wrap)});PV.obs=[near,far];
   if(!PV.scrollFix){PV.scrollFix=1;let rq=0;addEventListener('scroll',()=>{if(rq)return;rq=requestAnimationFrame(()=>{rq=0;if(!PV.show||!PV.pages||$('#vPdf').hidden)return;for(const p of PV.pages){if(p.live)continue;const r=p.wrap.getBoundingClientRect();if(r.height>0&&r.bottom>-400&&r.top<innerHeight+400)PV.show(p)}})},{passive:true})}   // 메모리 때문에 내린 쪽이 다시 보이면 그린다
 PV.solMode=false;{const sp=$('#solPane');if(sp)sp.remove()}solBtnSync();if(P&&P.seqAns&&P.seqAns.sol&&!P.seqAns.sol.done){const P1=P;setTimeout(()=>solIndex(P1),4000)}   /* 해설 읽기를 이어서 */PV.show=show;PV.hide=hide;PV.rezoom=rezoom;pvTA();PV.baseW=cw;PV.baseH=inner.offsetHeight;pvApplyZ();pvZLabel();pvPinch(box);
-  {PV.review=false;const b=$('#pvGrade');if(b){b.textContent='채점하기';b.classList.remove('resume');b.disabled=false}const pz=$('#pvPause');if(pz)pz.hidden=false}   // 새로 연 학습: 지난 학습의 '이어서 학습하기' 상태를 남기지 않는다
+  {PV.review=false;const b=$('#pvGrade');if(b){b.innerHTML=goHtml();b.classList.remove('resume');b.disabled=false}const pz=$('#pvPause');if(pz)pz.hidden=false}   // 새로 연 학습: 지난 학습의 '이어서 학습하기' 상태를 남기지 않는다
   await pvLoadInk();BK.un=[];bkRestore();pvStatus();pvRestore();PV.autoInk=PV.autoInk==='next'?P:null;setTimeout(()=>{rinkBackground().catch(e=>console.error(e))},2500);
 }
 /* 도형 펴기: 펜을 떼지 않고 잠깐(0.6초) 멈추면 그은 선을 직선·꺾은선·삼각형·사각형·원/타원으로 바꾼다 */
@@ -3780,7 +3846,7 @@ window.addEventListener('pagehide',()=>{if(!$('#vPdf').hidden)bkWrite()});
 
 function pvResume(){   // 채점 후 [이어서 학습하기]: 멈췄던 시계를 다시 돌리고 계속 푼다
   if(!S||!PV.review)return;if(S.frozen){S.t0+=performance.now()-S.frozenAt;S.frozen=false}$('#clock').classList.remove('frozen');$('#pause').hidden=false;
-  PV.review=false;const b=$('#pvGrade');b.textContent='채점하기';b.classList.remove('resume');$('#pvPause').hidden=false;$('#pvPause').textContent='일시정지';$('#pvClock').classList.remove('frozen');tick();pvSum()}
+  PV.review=false;const b=$('#pvGrade');b.innerHTML=goHtml();b.classList.remove('resume');$('#pvPause').hidden=false;$('#pvPause').textContent='일시정지';$('#pvClock').classList.remove('frozen');tick();pvSum()}
 /* ================= 힌트(길잡이): 오답을 다시 풀 때, 원장님 교수법 순서대로 단계별 힌트 =================
    ① 문제 이해 → ② 조건을 수식으로 → ③ 구할 것 정하기 → ④ 혼자 관찰(학생이 선택) → ⑤ 조건 재검토 → ⑥ 직접 힌트
    앱은 학생의 생각을 판단하지 못하므로, 학생이 '어디서 막혔는지' 고르고, 이미 한 단계는 건너뛴다. 혼자 생각할지 다음 힌트를 볼지는 학생이 고른다 */
@@ -3881,16 +3947,19 @@ function regFix(){if(!P||!P.problems)return 0;let n=0;const by={};for(const p of
       const top=b.ly+Math.max(18,(b.ls||12)*1.9);   /* b 번호의 윗선 */if(b.y1>top+4&&b.y1>a.ly-6){b.y1=Math.max(b.y0+10,Math.min(b.y1,top));n++;regDirty(b)}   /* 아래 문제 칸이 위 번호까지 올라옴 */
       if(a.y0<b.y1-2&&a.ly>b.y1){a.y0=b.y1;n++;regDirty(a)}}}   /* 위 문제 칸은 아래 번호 위에서 끝 */
   if(n)try{dlog('regFix',n)}catch(e){}return n}
+function goResult(){const r=S&&S.goRes;if(!r||!r.n)return;const p2=n=>String(n).padStart(2,'0');
+  pvToast(`<div class="goRes"><div><b>${r.ok} / ${r.n}</b><small>정답</small></div>${r.gap?`<div><b class="gp">GAP ${p2(r.gap)}</b><small>교정할 문제 ${r.gap}개</small></div>`:''}<small>푼 문제만 채점했어요 · 안 푼 문제는 그대로${r.chk?` · 직접 확인 ${r.chk}`:''}</small></div>`,r.gap?[['GAP 확인 →',async()=>{await pvEnd();view('ana')}]]:[])}
+function goHtml(){return '<span class="goT">GO <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span><small class="goS">채점하기</small>'}
 async function pvGrade(){try{regFix();abIndex();regStale()}catch(e){}try{setTimeout(()=>{if(!S||!S.state||!P)return;for(const p of P.problems){const st=S.state[p.q];if(st&&p._pr&&p.ab&&!st.parts)st.parts=p._pr.slice()}},0)}catch(e){}
   if(PV.review){const ug=ungraded().length;pvResume();if(!ug&&!FOC.on)return}   /* 집중 모드는 다시 쓴 답(이미 표시가 있는 문제)도 바로 다시 채점 */   // 채점 안 된 답이 남아 있으면 이어서 학습하기 대신 바로 채점
   if(!S||PV.busy)return;PV.busy=true;pvStatus();$('#pvGrade').disabled=true;
   try{const job=pvCommit();if(job)pvPersist(job);const saved=!!job;
     if(!S.frozen){if(S.paused)pause();tick();S.frozen=true;S.frozenAt=performance.now();S.frozenEl=(S.frozenAt-S.t0)/1000;$('#clock').classList.add('frozen');$('#pvClock').classList.add('frozen');$('#pause').hidden=true}   // 채점하면 시계는 멈춤
     const pend=(P.baseStrokes||[]).some(s=>!S.seen.has(s.sig))||rinkAll().some(s=>!S.seen.has(s.sig))||ungraded().length||memInk().some(s=>!s.raster&&!S.seen.has(s.sig));   // 자동 저장으로 이미 파일에 옮겨진 새 필기도 채점   
-    if(saved||PV.forceGrade||pend||selfPending().some(x=>x.status==='check'&&!x.self)){PV.forceGrade=false;await gradeFile(null,false,{all:memInk()})}else fb('nk','새로 쓴 필기가 없습니다. 틀린 문제를 고친 뒤 다시 누르세요.');
+    if(saved||PV.forceGrade||pend||selfPending().some(x=>x.status==='check'&&!x.self)){PV.forceGrade=false;S.goRes=null;await gradeFile(null,false,{all:memInk()});goResult()}else fb('nk','새로 쓴 필기가 없습니다. 틀린 문제를 고친 뒤 다시 누르세요.');
     if(selfPending().length)setTimeout(()=>selfSheet(),50);
   }catch(e){console.error(e);fb('bad','저장하거나 채점하지 못했습니다: '+e.message)}
-  finally{PV.busy=false;$('#pvGrade').disabled=false;if(S&&S.frozen){PV.review=true;const b=$('#pvGrade');b.textContent=ungraded().length?'채점하기':'이어서 풀기';b.classList.add('resume');$('#pvPause').hidden=true}pvStatus();pvSum()}}
+  finally{PV.busy=false;$('#pvGrade').disabled=false;if(S&&S.frozen){PV.review=true;const b=$('#pvGrade');if(ungraded().length)b.innerHTML=goHtml();else b.textContent='이어서 풀기';b.classList.add('resume');$('#pvPause').hidden=true}pvStatus();pvSum()}}
 /* 스스로 채점: 정답 그림을 보고 학생이 ○/／를 고른다 (서술형·여러 소문항 등 자동으로 못 읽는 문항) */
 function selfPending(){if(!S)return [];return Object.values(S.state).filter(x=>P&&P.problems.some(p=>p.q===x.q)&&x.status==='check'||(x.retry&&x.retry.self&&!x.retry.ans)).sort((a,b)=>a.q-b.q)}
 let SS=null;
@@ -4351,6 +4420,13 @@ async function hellOnboard(){const box=$('#hHell'),docs=await libAll().catch(()=
   const gb=q('[data-go]');if(gb)gb.onclick=async()=>{if(!save())return;const key='term:'+Date.now();
     await plPut({key,name:H.goal,end:H.end||'',books:H.books.map(name=>({name})),at:Date.now(),hell:1});
     hellSet({goal:H.goal,end:H.end||'',termKey:key,start:dayKey(Date.now()),floor:1,weeks:{}});HELLON=null;renderHome()}}
+function fiHero(o){const n=Math.min(24,Math.max(o.share,o.done)),cells=[];let firstEmpty=true;
+  for(let i=0;i<n;i++){let c='';if(i<o.ok)c='ok';else if(i<o.done)c='gp';else if(firstEmpty){c='now';firstEmpty=false}cells.push(`<i class="${c}">${c==='ok'?'채움':c==='gp'?'GAP':c==='now'?'지금':''}</i>`)}
+  const left=Math.max(0,o.share-o.done);
+  return `<div class="fiHero"><div class="who">${esc(o.name||'')}${o.name?'의 ':''}오늘</div><div class="big">${left?left+'문제':'오늘 목표 끝'}</div><div class="sub2">오늘 목표 ${o.share} · 푼 문제 ${o.done}${o.gap?` · <b>GAP ${o.gap}</b>`:''}</div></div>
+   <div class="fiCard">${o.book?`<div class="bk"><span>${esc(o.book)}</span></div>`:''}<div class="fiGrid" role="img" aria-label="오늘 ${o.share}문제 중 채움 ${o.ok}, GAP ${o.done-o.ok}">${cells.join('')}</div>
+   <button class="fiGo" type="button" data-gate>${esc(o.a)} <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></button></div>
+   <div class="fiTwo"><button type="button" class="gp" data-gapgo><span>GAP <span class="fiLong">모아서 </span>채우기</span><em>${o.gap}</em></button><button type="button" data-books><span>다른 문제집</span><span style="color:var(--muted);font-size:15px">${o.nb}권</span></button></div>`}
 async function renderHell(){const box=$('#hHell'),cfg=hellCfg();if(!cfg){box.innerHTML=teacherOn()?'<div class="cc"><h2>목표</h2><p class="sub" style="margin:0">학생이 아직 목표를 정하지 않았어요. 선생님 모드를 끄면 처음 설정 화면이 나와요.</p></div>':'';return}
   const docs=await libAll().catch(()=>[]),items=await dbAll().catch(()=>[]),wr=await wrAll().catch(()=>[]),ses=await sesAll().catch(()=>[]);
   const now=Date.now(),wk=wKey(now),by=hellDays(ses),today=dayKey(now);cfg.weeks=cfg.weeks||{};
@@ -4371,18 +4447,17 @@ async function renderHell(){const box=$('#hHell'),cfg=hellCfg();if(!cfg){box.inn
   const wkNo=Math.floor((weekStart(now)-weekStart(new Date(cfg.start+'T00:00:00').getTime()))/6048e5)+1,done=(cfg.floor||1)-1;
   const REPS=teacherOn()?await rpAll():[];
   box.innerHTML=`${ban}
+   ${fiHero({name:LS.get('name',''),share,done:td.n,ok:td.ok,gap:open,book:gate.t,a:gate.a,nb:docs.filter(d=>d.orig||!d.from&&d.orig!==false).length})}
    <div class="cc"><h2>목표</h2><div class="goalT">${esc(cfg.goal)}${dl!=null?`<span class="dd">${dTag(dl)}</span>`:''}</div>
      ${hasB?`<div class="tbar" style="margin-top:10px"><i style="width:${P}%"></i></div><div class="sub" style="margin-top:4px">문제집 ${P}% · ${wkNo}주차${done?` · 주간 목표 ${done}번 달성`:''}</div>`:`<div class="sub" style="margin-top:4px">${wkNo}주차${done?` · 주간 목표 ${done}번 달성`:''}</div>`}</div>
-   <button class="go" type="button" data-gate>${esc(gate.a)}<small>${esc(gate.t)}${gate.t&&(going||goalPdf)?` · 오늘 ${share}문항`:''}</small></button>
-   <div class="cc"><h2>오늘</h2><div class="ev">${ev.t}</div><div class="sub">${ev.m}</div></div>
-   <div class="cc"><h2>이번 주 목표</h2>
-     <div class="m3"><div class="${fin(w.days,Dn)?'ok':''}"><span>공부한 날</span><b>${w.days}/${Dn}</b></div><div class="${fin(w.n,N)?'ok':''}"><span>문항</span><b>${w.n}/${N}</b></div><div class="${fin(w.fix,M)?'ok':''}"><span>오답 해결</span><b>${M>0?`${w.fix}/${M}`:'—'}</b></div></div>
+      <div class="cc"><h2>이번 주 목표</h2>
+     <div class="m3"><div class="${fin(w.days,Dn)?'ok':''}"><span>공부한 날</span><b>${w.days}/${Dn}</b></div><div class="${fin(w.n,N)?'ok':''}"><span>문항</span><b>${w.n}/${N}</b></div><div class="${fin(w.fix,M)?'ok':''}"><span>GAP 해결</span><b>${M>0?`${w.fix}/${M}`:'—'}</b></div></div>
      <div class="wk">${w.list.map((x,i)=>`<div class="${x.k===today?'tdy':''}">${'월화수목금토일'[i]}<i class="${dot(x.x)}"></i></div>`).join('')}</div>
      ${ackd?'':`<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">${pr.pend?'<span class="sub">문제집 분량을 계산하는 중…</span>':'<button class="sb pri" data-ack>이번 주 목표 확정</button><span class="sub">남은 기간과 문제집 분량으로 계산했어요</span>'}<span class="tOnly" style="display:flex;gap:6px;align-items:center"><span class="sub">문항</span><input class="txt" id="hwN" type="number" value="${N}" style="width:70px"><span class="sub">오답</span><input class="txt" id="hwM" type="number" value="${M}" style="width:60px"></span></div>`}
-     <div class="ln"><span>남은 오답 <b>${open}</b>개${dueN?` · 오늘 복습 ${dueN}개`:''}</span><button class="sb" data-ana>오답 보기</button></div></div>
+     <div class="ln"><span>남은 GAP <b>${open}</b>개${dueN?` · 오늘 복습 ${dueN}개`:''}</span><button class="sb" data-ana>GAP 모음</button></div></div>
    <div class="tOnly cc"><h2>선생님</h2><div class="ln" style="border:0;margin:0;padding:0"><span>채점 신고 <b>${REPS.length}</b>건${REPS.length?` · 최근 ${esc(REPS[0].book)} ${REPS[0].q}번 (${esc(REPS[0].why)})`:''}</span><span style="display:flex;gap:6px">${REPS.length?'<button class="sb pri" data-rexp>파일로 내보내기</button><button class="sb" data-rclr>비우기</button>':''}</span></div><div style="margin-top:12px"><button class="sb" data-reset>목표 다시 정하기</button></div></div>`;
   const q=x=>box.querySelector(x);
-  q('[data-gate]').onclick=gate.go;q('[data-ana]').onclick=()=>view('ana');
+  q('[data-gate]').onclick=gate.go;q('[data-ana]').onclick=()=>view('ana');q('[data-gapgo]').onclick=()=>view('ana');q('[data-books]').onclick=()=>view('solve');
   const ab=q('[data-ackb]');if(ab)ab.onclick=()=>{delete L.ban;hellSet(cfg);renderHell()};
   const ak=q('[data-ack]');if(ak)ak.onclick=()=>{const n=parseInt((q('#hwN')||{}).value,10),m=parseInt((q('#hwM')||{}).value,10);cfg.weeks[wk]={N:teacherOn()&&n>0?n:N,M:teacherOn()&&m>=0?m:M,D:Dn,ack:1};hellSet(cfg);renderHell()};
   {const e=q('[data-rexp]');if(e)e.onclick=()=>rpExport();const c=q('[data-rclr]');if(c)c.onclick=async()=>{if(!confirm(`채점 신고 ${REPS.length}건을 지울까요? 내보내기를 먼저 했는지 확인해 주세요.`))return;for(const r of REPS)await plDel(r.key);renderHell()}}
