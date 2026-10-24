@@ -162,13 +162,46 @@ body.pip #sum,body.pip #markNote,body.pip #rec{display:none}body.pip{min-width:0
 .focus[hidden]{display:none}.fBar{display:flex;gap:8px;align-items:center;padding:8px 12px 8px 66px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
 .fBar .btn{padding:8px 12px;font-size:15px}.fBar .btn.on{background:#2563eb;color:#fff}.fBar .fEnd{background:#fff;color:#dc2626;border:2px solid #dc2626;font-weight:800}.fQn{font-size:18px;min-width:70px;text-align:center}.fQt{font-variant-numeric:tabular-nums;color:var(--accent,#2563eb);font-weight:700}
 .fScroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:14px 14px 60px 66px}
-.fProb{position:absolute;left:0;top:0;background:#fff;border-radius:10px 0 10px 0;box-shadow:0 0 0 1px #d6e0ee,2px 2px 10px rgba(0,0,0,.08);overflow:hidden;z-index:2}.fAns{position:absolute;left:0;background:#fff;z-index:2;border-top:2px solid #2563eb;border-radius:0 0 10px 0;box-shadow:0 0 0 1px #d6e0ee,2px 2px 10px rgba(0,0,0,.08);overflow:hidden}.fAns canvas{display:block}.fAns .fInk{position:absolute;left:0;top:0}
-.fAnsL{position:absolute;inset:0;display:flex;pointer-events:none;z-index:3}.fAnsL>div{flex:1;border-left:1.5px dashed #b9c6d8;font-size:12px;font-weight:800;color:#2563eb;padding:2px 6px}.fAnsL>div:first-child{border-left:0}
+.fProb{position:absolute;left:0;top:0;background:#fff;border-radius:10px 0 10px 0;box-shadow:0 0 0 1px #d6e0ee,2px 2px 10px rgba(0,0,0,.08);overflow:hidden;z-index:2}.fAns{position:absolute;left:0;background:#eef4ff;z-index:2;border:2.5px solid #2563eb;border-radius:12px;box-sizing:border-box;box-shadow:2px 3px 12px rgba(37,99,235,.18);overflow:hidden}.fAns #fAc{mix-blend-mode:multiply}.fAns canvas{display:block}.fAns .fInk{position:absolute;left:0;top:0}
+.fAnsL{position:absolute;inset:0;display:flex;pointer-events:none;z-index:3}.fAnsL>div{flex:1;border-left:2px dashed #93b4f5;position:relative}.fAnsL>div:first-child{border-left:0}.fAnsL b{position:absolute;left:0;top:0;background:#2563eb;color:#fff;font-size:13px;font-weight:900;padding:3px 9px;border-radius:0 0 8px 0}.fAnsL i{position:absolute;right:10px;bottom:6px;font-style:normal;font-size:12px;color:#7d98cf}
 .fTip{position:absolute;right:12px;top:14px;font-size:12px;color:#a8b4c6;pointer-events:none}.fProb canvas{display:block}.fProb .fInk{position:absolute;left:0;top:0}
 .fNote{position:relative;margin:0 auto;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08);background-color:#fff;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 47px,#d6e0ee 47px,#d6e0ee 48px);background-position:0 8px}
 .fNote .fInk{position:absolute;left:0;top:0;z-index:1}.fNum{position:absolute;left:calc(50% + 12px);top:6px;width:120px;height:44px;border:2px dashed #a8b4c6;border-radius:8px;color:#a8b4c6;font-size:12px;padding:2px 7px;pointer-events:none;background:#fff}
 .fInk{touch-action:pan-y}
 #pvTools{display:none!important}
+/* ===== FILLIN 시안: 어두운 막대 + 흰 종이, 포인트 민트 ===== */
+:root{--fi-bg:#0E1014;--fi-card:#161920;--fi-line:#232733;--fi-btn:#1A1D24;--fi-ink:#F2F4F7;--fi-mute:#8A93A3;--fi-acc:#7CF2B0;--fi-ans:#1D4ED8}
+.focus{background:var(--fi-bg)!important;font-family:'Noto Sans KR',var(--sans),sans-serif}
+.focus .fBar{height:68px;box-sizing:border-box;padding:0 16px 0 72px!important;background:var(--fi-bg);border-bottom:1px solid #1F232C!important;flex-wrap:nowrap;gap:12px}
+.focus .fB{height:44px;border-radius:12px;border:0;background:var(--fi-btn);color:#A9B0BC;font:700 15px/1 inherit;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:0 14px;font-family:inherit;cursor:pointer}
+.focus .fB.fEnd{background:transparent;border:1.5px solid #3A3F4B!important;color:var(--fi-ink)!important}
+.focus .fB.fNav{width:44px;padding:0}.focus .fB.fNav:disabled{opacity:.35}
+.focus .fMid{flex:1;display:flex;align-items:center;justify-content:center;gap:14px;min-width:0}
+.focus .fTit{display:flex;flex-direction:column;align-items:center;line-height:1.15;min-width:96px}
+.focus .fQn{font-size:19px!important;font-weight:900;color:var(--fi-ink);min-width:0!important}
+.focus .fQt{font-size:13px!important;color:var(--fi-acc)!important;font-weight:700}
+.focus .fB.fGo{height:48px;padding:0 20px;border-radius:14px;background:var(--fi-acc);color:#0E1014;font-size:17px;font-weight:900}
+.focus .fB.fGo:disabled{opacity:.6}.focus .fB.fSolB.on{background:var(--fi-acc);color:#0E1014}
+.focus .fScroll{background:#fff}
+.focus .fNote{box-shadow:none!important;border-radius:0!important;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 51px,#DCE3EE 51px,#DCE3EE 52px)!important;background-position:0 30px!important}
+.focus .fProb{border-radius:0 0 0 0!important;box-shadow:0 0 0 1px #DCE3EE!important}
+.focus .fAns{background:#fff!important;border:0!important;border-top:2.5px solid var(--fi-ans)!important;border-radius:0 0 14px 14px!important;box-shadow:0 0 0 1px #DCE3EE,4px 4px 16px rgba(15,23,42,.08)!important}
+.focus .fAns #fAc{mix-blend-mode:multiply}
+.focus .fAnsL>div{border-left:1.5px dashed #B9C6D8!important}.focus .fAnsL>div:first-child{border-left:0!important}
+.focus .fAnsL b{background:transparent!important;color:var(--fi-ans)!important;padding:5px 9px!important;font-size:13px!important}
+.focus .fAnsL i{color:#9AA8BE!important}
+.fAnsL .mk{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+@keyframes fiDraw{from{stroke-dashoffset:120}to{stroke-dashoffset:0}}.fAnsL .mk path,.fAnsL .mk circle{stroke-dasharray:120;animation:fiDraw .32s ease-out both}
+.fSwipe{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:rgba(14,16,20,.86);color:#E6E9EF;font-size:13px;pointer-events:none;transition:opacity .4s}
+/* 왼쪽 막대도 어둡게 */
+.pvRail .rlIn{background:var(--fi-bg)!important;border-color:#1F232C!important}
+.pvRail .rlIn button[data-r],.pvRail .rlF,.pvRail .rlHide,.pvRail .rlGrip,.pvRail .rlIn .btn,.pvRail .rlIn .pvPgBtn,.pvRail .rlIn .pvZoom button{background:var(--fi-btn)!important;color:#A9B0BC!important;border-color:transparent!important}
+.pvRail .rlIn button[data-r].on{background:var(--fi-ink)!important;color:#0E1014!important}
+.pvRail .rlIn #pvGrade{background:var(--fi-acc)!important;color:#0E1014!important}
+.pvRail .rlT b{color:var(--fi-ink)}.pvRail .rlT small{color:var(--fi-mute)}.pvRail .rlQ b{color:var(--fi-acc)!important}
+.pvRail .rlF.on{background:transparent!important;color:#FF8A8A!important;border:1.5px solid #5A2A2A!important}
+.pvRail .rlIn hr{border-top-color:#262A33}
+
 /* 왼쪽 막대에 모든 메뉴: 위쪽은 상태 한 줄만 남기고 문제집 화면을 넓게 */
 body:has(#vPdf:not([hidden])){padding:0 2px 40px 14px;touch-action:pan-x pan-y}html:has(#vPdf:not([hidden])){touch-action:pan-x pan-y}body:has(#vPdf:not([hidden])) .wrap{max-width:none!important}
 #vPdf .pvBar{position:static;padding:2px 8px 2px 60px;margin-bottom:4px;border:0;background:transparent;min-height:0}#vPdf #pvClock{display:none}
@@ -185,7 +218,10 @@ body:has(#vPdf:not([hidden])){padding:0 2px 40px 14px;touch-action:pan-x pan-y}h
 .pvRail{position:fixed;left:4px;top:50%;transform:translateY(-50%);z-index:30;display:flex;align-items:center;gap:2px;pointer-events:none}
 .pvRail>*{pointer-events:auto}.pvRail .rlIn{display:flex;flex-direction:column;gap:6px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 4px 14px rgba(0,0,0,.12);order:1}
 .pvRail .rlFold{order:2;border:1px solid var(--line);background:var(--paper);border-radius:0 10px 10px 0;width:18px;height:44px;padding:0;font-size:14px;color:var(--muted)}
-.pvRail.fold .rlIn{display:none}.pvRail.fold .rlFold{border-radius:10px}
+.pvRail.fold .rlIn{display:none}
+.pvRail:not(.fold) .rlFold{display:none!important}
+.pvRail.fold .rlFold{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:58px!important;height:64px!important;border-radius:0 16px 16px 0!important;background:#2563eb!important;color:#fff!important;border:0!important;box-shadow:0 6px 18px rgba(37,99,235,.35);font-size:12px;font-weight:800}
+.pvRail .rlHide{height:34px;width:46px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;font-size:10px;font-weight:700;padding:0;flex:none}
 .pvRail .rlT{display:flex;flex-direction:column;align-items:center;line-height:1.1;min-width:48px}.pvRail .rlT small{font-size:10px;color:var(--muted);max-width:56px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pvRail .rlT b{font-size:14px;font-variant-numeric:tabular-nums}
 .pvRail .rlQ b{color:var(--accent,#2563eb)}.pvRail:not(.foc) .rlQ{display:none}
 .pvRail .rlF{width:48px;height:48px;border:1px solid var(--line);border-radius:10px;background:var(--bg,#fff);font-size:18px;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}.pvRail .rlF small{font-size:10px;margin-top:2px}.pvRail .rlF.on{background:#fff;color:#dc2626;border:2px solid #dc2626;font-weight:800}
@@ -453,7 +489,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v43.12</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v43.12)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v43.15</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v43.15)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -491,16 +527,16 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
     </div>
   </section>
   <section id="vPdf" hidden>
-    <div id="focus" class="focus" hidden><div class="fBar"><button type="button" class="btn fEnd" id="fExit">✕ 집중 모드 끝내기</button><button type="button" class="btn quiet" id="fPrev">‹ 이전</button><b id="fQn" class="fQn"></b><span class="fQt" id="fQt"></span><button type="button" class="btn quiet" id="fNext">다음 ›</button><span style="flex:1"></span><button type="button" class="btn quiet" id="fSol" hidden>📖 해설</button><button type="button" class="btn quiet" id="fMore" title="문제 위아래를 더 보기 (그림·보기가 잘렸을 때)">↕ 더 보기</button><button type="button" class="btn mid" id="fGrade">✓ 채점</button></div>
+    <div id="focus" class="focus" hidden><div class="fBar"><button type="button" class="fB fEnd" id="fExit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>끝내기</button><div class="fMid"><button type="button" class="fB fNav" id="fPrev" aria-label="이전 문제"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="fTit"><b id="fQn" class="fQn"></b><span class="fQt" id="fQt"></span></div><button type="button" class="fB fNav" id="fNext" aria-label="다음 문제"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div><button type="button" class="fB fSolB" id="fSol" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="8" height="16" rx="1.5"/><rect x="13" y="4" width="8" height="16" rx="1.5"/></svg>해설</button><button type="button" class="fB fGo" id="fGrade"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>채점</span></button></div>
       <div class="fScroll" id="fScroll"><div class="fNote" id="fNote"><canvas id="fNi" class="fInk"></canvas><div class="fNum">번호</div><div class="fTip">한 줄에 식 하나씩</div><div class="fProb" id="fProb"><canvas id="fPc"></canvas><canvas id="fPi" class="fInk"></canvas></div><div class="fAns" id="fAns"><canvas id="fAc"></canvas><canvas id="fAi" class="fInk"></canvas><div class="fAnsL" id="fAnsL"></div></div></div></div></div>
-    <div id="pvRail" class="pvRail" aria-label="시간·펜 도구"><button type="button" class="rlFold" id="rlFold" title="접기/펴기">‹</button><div class="rlIn"><div class="rlGrip" id="rlGrip" title="끌어서 원하는 곳으로 옮기기">⠿</div><div class="rlT" title="전체 풀이 시간"><small>전체</small><b id="rlAll">0:00</b></div><div class="rlT rlQ" title="지금 푸는 문제에 쓴 시간"><small id="rlQn">문제</small><b id="rlQt">–</b></div><button type="button" class="rlF" id="rlFocus" title="집중 모드: 문제 하나씩 + 연습장">🎯<small>집중</small></button><button type="button" data-r="pen" title="펜">✎</button><button type="button" data-r="erase" title="지우개" aria-label="지우개"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M14.5 3.8 20.2 9.5a1.6 1.6 0 0 1 0 2.3L12 20H7.6l-3.8-3.8a1.6 1.6 0 0 1 0-2.3L12.2 3.8a1.6 1.6 0 0 1 2.3 0Z"/><path d="M8.6 7.4l8 8"/><path d="M12 20h8"/></svg></button><button type="button" data-r="move" title="그린 선·도형 옮기기">✥</button><button type="button" data-r="undo" title="실행 취소">↶</button></div></div>
+    <div id="pvRail" class="pvRail" aria-label="시간·펜 도구"><button type="button" class="rlFold" id="rlFold" title="메뉴 다시 보이기" aria-label="메뉴 다시 보이기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>메뉴</span></button><div class="rlIn"><div class="rlGrip" id="rlGrip" title="끌어서 원하는 곳으로 옮기기">⠿</div><button type="button" class="rlHide" id="rlHide" title="메뉴 숨기기" aria-label="메뉴 숨기기"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>숨기기</span></button><div class="rlT" title="전체 풀이 시간"><small>전체</small><b id="rlAll">0:00</b></div><div class="rlT rlQ" title="지금 푸는 문제에 쓴 시간"><small id="rlQn">문제</small><b id="rlQt">–</b></div><button type="button" class="rlF" id="rlFocus" title="집중 모드: 문제 하나씩 + 연습장">🎯<small>집중</small></button><button type="button" data-r="pen" title="펜">✎</button><button type="button" data-r="erase" title="지우개" aria-label="지우개"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M14.5 3.8 20.2 9.5a1.6 1.6 0 0 1 0 2.3L12 20H7.6l-3.8-3.8a1.6 1.6 0 0 1 0-2.3L12.2 3.8a1.6 1.6 0 0 1 2.3 0Z"/><path d="M8.6 7.4l8 8"/><path d="M12 20h8"/></svg></button><button type="button" data-r="move" title="그린 선·도형 옮기기">✥</button><button type="button" data-r="undo" title="실행 취소">↶</button></div></div>
     <div class="pvBar">
       <b class="clock" id="pvClock" style="font-size:18px">0:00:00</b>
       <div id="pvTools" class="qzTools"><button type="button" data-t="pen" class="on" title="한 번 더 누르면 색·굵기">✎ 펜 <i id="pvPenDot"></i> ▾</button><button type="button" data-t="erase">지우개</button><button type="button" data-t="move" title="그린 선·도형을 펜으로 끌어서 옮기기">✥ 이동</button><button type="button" data-t="undo">↶</button></div>
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn quiet" id="pvFocus" type="button" title="문제를 하나씩 크게 보고, 아래 연습장에 풀이 정리" style="padding:9px 12px;font-size:15px">🎯 집중</button><button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v43.12</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v43.15</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" title="나가기 (저장하고 문제집 목록으로)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5"/><path d="M11 5l-7 7 7 7"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1675,7 +1711,7 @@ const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https:
 const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
 window.addEventListener('error',e=>dlog('err',(e.message||'')+' @'+(e.lineno||'')));window.addEventListener('unhandledrejection',e=>dlog('rej',String(e.reason&&(e.reason.message||e.reason)||'')));
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v43.12',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v43.15',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -2552,7 +2588,8 @@ function qtRail(){const R=$('#pvRail');if(!R)return;const all=!S?0:S.paused?S.pa
   for(const b of R.querySelectorAll('button[data-r]')){const t=b.dataset.r;if(t==='undo')continue;const o=document.querySelector('#pvTools [data-t="'+t+'"]');b.classList.toggle('on',!!(o&&o.classList.contains('on')))}}
 (()=>{const R=$('#pvRail');if(!R)return;try{if(localStorage.getItem('njRail')==='0')R.classList.add('fold')}catch(e){}
   {const I=R.querySelector('.rlIn');I.appendChild(document.createElement('hr'));for(const id of ['pvPg','pvZoom','pvGrade','pvSolBtn','pvSelf']){const x=$('#'+id);if(x)I.appendChild(x)}const mw=document.querySelector('.pvMoreW');if(mw)I.appendChild(mw);const en=$('#pvEnd');if(en){en.style.cssText='';I.appendChild(en)}for(const x of I.querySelectorAll('.btn'))x.style.removeProperty('padding'),x.style.removeProperty('font-size')}   /* 위쪽 막대의 메뉴를 모두 왼쪽 막대로 옮긴다 (기능은 그대로) */
-  $('#rlFold').onclick=()=>{R.classList.toggle('fold');try{localStorage.setItem('njRail',R.classList.contains('fold')?'0':'1')}catch(e){}};
+  $('#rlHide').onclick=e=>{e.stopPropagation();$('#rlFold').click()};
+  $('#rlFold').onclick=()=>{R.classList.toggle('fold');setTimeout(railPlace,0);try{localStorage.setItem('njRail',R.classList.contains('fold')?'0':'1')}catch(e){}};
   R.querySelectorAll('button[data-r]').forEach(b=>b.onclick=e=>{e.stopPropagation();const o=document.querySelector('#pvTools [data-t="'+b.dataset.r+'"]');if(o)o.click();setTimeout(qtRail,0)});
   setInterval(()=>{try{if($('#vPdf').hidden||!P)return;qtLoad();
     if(FOC.on&&FOC.p)QT.q=FOC.p.q;else if(Date.now()-QT.at>15000){const p=qtScreen();if(p&&p.q!==QT.q){QT.q=p.q}}   /* 집중 모드: 보고 있는 문제에만 시간이 쌓인다 */   /* 최근 15초 안에 쓴 문제가 없으면 화면 가운데 문제 */
@@ -2585,7 +2622,8 @@ function fSolClose(){FOC.sol=false;const el=$('#solPane');if(el)el.remove();$('#
 function fSolToggle(){if(FOC.sol){fSolClose();return}if(!FOC.p)return;FOC.sol=true;solPaneEl();$('#fSol').classList.add('on');solShow(FOC.p)}   /* 집중 모드 해설: 오른쪽 칸에 지금 문제의 해설 (채점한 문제만) */
 function fClose(quiet){if(!FOC.on)return;if(FOC.sol)fSolClose();fNoteSave(true);FOC.on=false;$('#focus').hidden=true;$('#rlFocus').classList.remove('on');$('#pvRail').classList.remove('foc');$('#rlFocus').innerHTML='🎯<small>집중</small>';$('#pvFocus').textContent='🎯 집중';if(FOC.rt){try{FOC.rt.cancel()}catch(e){}FOC.rt=null}
   if(!quiet&&FOC.p)try{pvGo(FOC.p.page)}catch(e){}FOC.pg=null;FOC.p=null}
-async function fShow(i){fNoteSave(true);try{regFix()}catch(e){}i=Math.max(0,Math.min(FOC.list.length-1,i));FOC.i=i;const p=FOC.list[i];FOC.p=p;FOC.pg=PV.pages.find(g=>g.n===p.page);FOC.ext=0;FOC.und=[];
+async function fShow(i){if(!FOC.hinted){FOC.hinted=1;const h=document.createElement('div');h.className='fSwipe';h.textContent='손가락으로 좌우로 밀어 이전 · 다음 문제';$('#focus').appendChild(h);setTimeout(()=>{h.style.opacity=0;setTimeout(()=>h.remove(),500)},3500)}fNoteSave(true);try{regFix()}catch(e){}i=Math.max(0,Math.min(FOC.list.length-1,i));FOC.i=i;const p=FOC.list[i];FOC.p=p;FOC.pg=PV.pages.find(g=>g.n===p.page);FOC.ext=0;FOC.und=[];
+  try{const o=posGet(P.name)||{};posSet(P.name,Object.assign(o,{pg:p.page,f:0,n:PV.pages.length,at:Date.now(),fq:p.q}));const b=$('#pvPg');if(b&&!b.dataset.edit)b.textContent=`${p.page} / ${PV.pages.length}쪽`}catch(e){}   /* 집중 모드에서 푸는 문제의 쪽을 기억 (다시 열면 그 쪽부터) */
   qtLoad();QT.q=p.q;QT.lq=p.q;QT.vis=0;QT.at=Date.now();$('#fQn').textContent=QN(p.q)+'번';$('#fQt').textContent='⏱ 0:00';$('#fSol').hidden=!(P.seqAns&&P.seqAns.sol);if(FOC.sol)solShow(p);
   FOC.full=false;$('#fScroll').scrollTop=0;await fRender();await fNoteLoad()}
 async function fRender(){const p=FOC.p,pg=FOC.pg;if(!p||!pg)return;const ox=pg.ox||0,top=pg.H,bot=pg.H-pg.v1h,pad=8,ex=FOC.ext;
@@ -2597,20 +2635,32 @@ async function fRender(){const p=FOC.p,pg=FOC.pg;if(!p||!pg)return;const ox=pg.o
       const im=tg.getImageData(0,0,t.width,t.height).data,w=t.width;let last=0;for(let y=t.height-1;y>=0&&!last;y--){const o=y*w*4;for(let x=0;x<w;x+=2){const k=o+x*4;if(im[k]<190||im[k+1]<190||im[k+2]<190){last=y;break}}}cut=last/s0}catch(e){cut=-1}FOC.cache[ck]=cut}
     let ib=0;for(const t of pg.saved)if(!pg.del.has(t.id))for(const q of t.pts)if(q.x>=X0&&q.x<=X1&&q.y<=Yt&&q.y>=Yb)ib=Math.max(ib,Yt-q.y);for(const t of pg.fresh)for(const q of t){const Y=pg.H-q.y/pg.k;if(Y<=Yt&&Y>=Yb)ib=Math.max(ib,Yt-Y)}
     if(cut>0)Yb=Math.max(Yb,Yt-Math.max(cut,ib)-14)}
+  if(p.npr===undefined&&!(p.key&&p.key.kind==='nparts'))fPrinted(p,pg,X0,X1,Yt,Yb);
   /* 답란: 인쇄된 문제 바로 아래(같은 쪽, 이 문제 칸 안)의 띠. 여기 쓴 것만 답으로 채점한다 */
-  const sp=46,np=fParts(p);if(!p.ab||p.ab.v!==2){let y1=Yb+2,y0=y1-sp;if(y0<p.y0){y0=Math.max(bot,p.y0);y1=Math.min(Yt-20,y0+sp)}p.ab={x0:X0,x1:X1,y0,y1,v:2}}const ab=p.ab;if(!FOC.full)Yb=Math.max(Yb,ab.y1);
+  const np=fParts(p),sp=Math.max(40,Math.min(110,84/(Math.max(320,$('#fScroll').clientWidth-80)/2/(X1-X0))));if(!p.ab||p.ab.v!==3){let y1=Yb+2,y0=y1-sp;if(y0<p.y0){y0=Math.max(bot,p.y0);y1=Math.min(Yt-20,y0+sp)}p.ab={x0:X0,x1:X1,y0,y1,v:3}}const ab=p.ab;if(!FOC.full)Yb=Math.max(Yb,ab.y1);
   /* 화면을 4등분한 왼쪽 위 칸에 맞춘다 (답란 포함) */
   const sc=$('#fScroll'),SW=Math.max(320,sc.clientWidth-80),maxW=SW/2-4,maxH=Math.max(200,sc.clientHeight*(FOC.full?0.75:0.5)-10),zf=Math.min(maxW/(X1-X0),maxH/((Yt-Yb)+(ab.y1-ab.y0))),W=Math.round((X1-X0)*zf),H=Math.round((Yt-Yb)*zf),d=Math.min(window.devicePixelRatio||1,3);
   Object.assign(FOC,{X0,Yt,W,H,zf,d,SW});FOC.ma={X0:ab.x0,Yt:ab.y1,zf};const AH=Math.round((ab.y1-ab.y0)*zf),AW=Math.round((ab.x1-ab.x0)*zf);
   const c=$('#fPc'),k=$('#fPi'),box=$('#fProb');box.style.width=W+'px';box.style.height=H+'px';
   for(const x of [c,k]){x.width=Math.round(W*d);x.height=Math.round(H*d);x.style.width=W+'px';x.style.height=H+'px'}
-  const ac=$('#fAc'),ak=$('#fAi'),abx=$('#fAns');abx.style.top=(H+4)+'px';abx.style.width=AW+'px';abx.style.height=AH+'px';FOC.AH=AH+4;
+  const ac=$('#fAc'),ak=$('#fAi'),abx=$('#fAns');abx.style.top=(H+10)+'px';abx.style.width=AW+'px';abx.style.height=AH+'px';FOC.AH=AH+10;
   for(const x of [ac,ak]){x.width=Math.round(AW*d);x.height=Math.round(AH*d);x.style.width=AW+'px';x.style.height=AH+'px'}
-  $('#fAnsL').innerHTML=np>1?Array.from({length:np},(_,i)=>`<div>(${i+1})</div>`).join(''):'<div>답</div>';
-  const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);const ga=ac.getContext('2d');ga.fillStyle='#fff';ga.fillRect(0,0,ac.width,ac.height);fDraw();try{fNoteSize()}catch(e){}
+  $('#fAnsL').innerHTML=np>1?Array.from({length:np},(_,i)=>`<div><b>(${i+1})</b></div>`).join('').replace(/<\/div>$/,'<i>답만 여기에</i></div>'):'<div><b>답</b><i>답만 여기에 · 풀이는 오른쪽 연습장</i></div>';
+  try{fAnsMarks()}catch(e){}const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);const ga=ac.getContext('2d');ga.fillStyle='#fff';ga.fillRect(0,0,ac.width,ac.height);fDraw();try{fNoteSize()}catch(e){}
   const s=zf*d,rt=pg.page.render({canvasContext:g,viewport:pg.page.getViewport({scale:s}),transform:[1,0,0,1,-(X0-ox)*s,-(pg.H-Yt)*s],annotationMode:0});FOC.rt=rt;try{await rt.promise}catch(e){}if(FOC.rt===rt)FOC.rt=null}
 /* 소문제 수: 빠른 정답이 (1)(2)(3)으로 나뉘어 있으면 답란도 그만큼 나눈다 */
-function fParts(p){const k=p&&p.key;if(k&&k.kind==='nparts'&&k.nums&&k.nums.length>1)return Math.min(5,k.nums.length);if(k&&k.np>1)return Math.min(5,k.np);return 1}
+/* 답란 칸마다 채점 표시: 소문제는 칸마다 ○·✗, 한 칸이면 칸 전체에 */
+function fAnsMarks(){const p=FOC.p,L=$('#fAnsL');if(!p||!L)return;L.querySelectorAll('.mk').forEach(e=>e.remove());const st=S&&S.state&&S.state[p.q];if(!st||st.status!=='done'||!abInk(p,memInk()))return;
+  const cells=[...L.children],O='<svg class="mk" width="70" height="70" viewBox="0 0 70 70" role="img" aria-label="맞음"><circle cx="35" cy="35" r="27" fill="none" stroke="#DC2626" stroke-width="3.4" stroke-linecap="round" pathLength="120"/></svg>',X='<svg class="mk" width="70" height="70" viewBox="0 0 70 70" role="img" aria-label="틀림"><path d="M14 14L56 56M56 14L14 56" fill="none" stroke="#DC2626" stroke-width="3.6" stroke-linecap="round" pathLength="120"/></svg>';
+  const pr=st.parts||p._pr;if(cells.length>1&&pr&&pr.length===cells.length){cells.forEach((c,i)=>{if(pr[i]===true)c.insertAdjacentHTML('beforeend',O);else if(pr[i]===false)c.insertAdjacentHTML('beforeend',X)});return}
+  if(st.ok===true)cells[0].insertAdjacentHTML('beforeend',O);else if(st.ok===false)cells[0].insertAdjacentHTML('beforeend',X)}
+function fParts(p){const k=p&&p.key;if(k&&k.kind==='nparts'&&k.nums&&k.nums.length>1)return Math.min(5,k.nums.length);if(k&&k.np>1)return Math.min(5,k.np);if(p&&p.npr>1)return Math.min(5,p.npr);return 1}
+/* 정답이 소문제로 나뉘어 있지 않아도, 문제에 (1)(2)(3)이 인쇄돼 있으면 그 수만큼 답란을 나눈다 (한 번 읽으면 기억) */
+async function fPrinted(p,pg,X0,X1,Yt,Yb){if(p.npr!==undefined)return;p.npr=0;try{const s=Math.min(3,1400/(X1-X0)),c=document.createElement('canvas');c.width=Math.ceil((X1-X0)*s);c.height=Math.ceil((Yt-Yb)*s);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
+  await pg.page.render({canvasContext:g,viewport:pg.page.getViewport({scale:s}),transform:[1,0,0,1,-(X0-(pg.ox||0))*s,-(pg.H-Yt)*s],annotationMode:0}).promise;
+  const wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;const W=await SCAN.words(wk,c,null,11);c.width=c.height=0;const txt=W.map(w=>w.t).join(' ');
+  const got=new Set();for(const m of txt.matchAll(/[(（]\s*([1-5])\s*[)）]/g))got.add(+m[1]);let n=0;while(got.has(n+1))n++;p.npr=n>=2?n:0;dlog('npr',p.q+':'+n)}catch(e){p.npr=0}
+  if(p.npr>1&&FOC.on&&FOC.p===p){delete p.ab;fRender()}}
 /* 좌표: 쪽 화면 좌표(필기 저장 단위) ↔ 집중 화면 좌표 */
 const fFromPage=(pg,x,y,m)=>{m=m||FOC;const X=x/pg.k+(pg.ox||0),Y=pg.H-y/pg.k;return {x:(X-m.X0)*m.zf,y:(m.Yt-Y)*m.zf}};
 const fToPage=(pg,x,y,m)=>{m=m||FOC;const X=x/m.zf+m.X0,Y=m.Yt-y/m.zf;return {x:(X-(pg.ox||0))*pg.k,y:(pg.H-Y)*pg.k}};
@@ -2655,10 +2705,11 @@ function fCommit(kind,s){if(!FOC.on||!s.length)return;if(kind==='p'||kind==='a')
   QT.at=Date.now()}
 function fErase(kind,p){if(kind==='p'||kind==='a'){const pg=FOC.pg,q=fToPage(pg,p.x,p.y,fMap(kind));pvErase(pg,q);fDraw();return}
   const n=FOC.note,W=FOC.SW,r=10;let hit=false;n.s=n.s.filter(s=>{if(s.p.some(q=>Math.hypot(q[0]*W-p.x,q[1]*W-p.y)<r)){FOC.und.push({k:'note',op:'erase',s});hit=true;return false}return true});if(hit){n.dirty=1;fNoteDraw();fNoteSave()}}
-(()=>{const fs=$('#fScroll');if(fs){fs.addEventListener('touchstart',e=>{const t=e.changedTouches[0];if(!t)return;if(t.touchType==='stylus'||FOC.draw||(IOS&&PV.penSeen&&((t.radiusX||0)>=30||(t.radiusY||0)>=30))){e.preventDefault()}},{passive:false});fs.addEventListener('touchmove',e=>{if(FOC.draw||[...e.touches].some(t=>t.touchType==='stylus'))e.preventDefault()},{passive:false})}})();
+(()=>{const fs=$('#fScroll');if(fs){let sw=null;fs.addEventListener('touchstart',e=>{const t=e.touches[0];sw=e.touches.length===1&&t&&t.touchType!=='stylus'?{x:t.clientX,y:t.clientY,t:Date.now()}:null},{passive:true});fs.addEventListener('touchend',e=>{if(!sw||!FOC.on)return;const t=e.changedTouches[0],dx=t.clientX-sw.x,dy=t.clientY-sw.y;const ok=Math.abs(dx)>90&&Math.abs(dy)<Math.abs(dx)*0.45&&Date.now()-sw.t<700;sw=null;if(ok)fGo(dx<0?1:-1)},{passive:true});   /* 손가락으로 좌우로 밀면 다음/이전 문제 */
+fs.addEventListener('touchstart',e=>{const t=e.changedTouches[0];if(!t)return;if(t.touchType==='stylus'||FOC.draw||(IOS&&PV.penSeen&&((t.radiusX||0)>=30||(t.radiusY||0)>=30))){e.preventDefault()}},{passive:false});fs.addEventListener('touchmove',e=>{if(FOC.draw||[...e.touches].some(t=>t.touchType==='stylus'))e.preventDefault()},{passive:false})}})();
 (()=>{const b=$('#pvFocus');if(!b)return;b.onclick=()=>FOC.on?fClose():fOpen();$('#rlFocus').onclick=e=>{e.stopPropagation();FOC.on?fClose():fOpen()};$('#fExit').onclick=()=>fClose();$('#fPrev').onclick=()=>fGo(-1);$('#fNext').onclick=()=>fGo(1);
-  $('#fSol').onclick=fSolToggle;$('#fGrade').onclick=async()=>{if(PV.busy)return;const b=$('#fGrade');b.disabled=true;b.textContent='채점 중…';try{if(PV.review)pvResume();await pvGrade()}catch(e){console.error(e)}finally{b.disabled=false;b.textContent='✓ 채점'}
-  const t=($('#pvSum')||{}).textContent||'';pvToast(t&&!/채점 전/.test(t)?esc(t.slice(0,80)):'채점할 새 답이 없어요 · 답은 문제 칸에 써 주세요');fDraw()};   /* 집중 모드: 한 번 누르면 바로 채점하고 결과를 알려 준다 */$('#fMore').onclick=()=>{if(FOC.full)FOC.ext+=60;FOC.full=true;fRender()};fBind($('#fPi'),'p');fBind($('#fNi'),'n');fBind($('#fAi'),'a');
+  $('#fSol').onclick=fSolToggle;$('#fGrade').onclick=async()=>{if(PV.busy)return;const b=$('#fGrade');b.disabled=true;b.querySelector('span').textContent='채점 중…';try{if(PV.review)pvResume();await pvGrade()}catch(e){console.error(e)}finally{b.disabled=false;b.querySelector('span').textContent='채점'}
+  const t=($('#pvSum')||{}).textContent||'';pvToast(t&&!/채점 전/.test(t)?esc(t.slice(0,80)):'채점할 새 답이 없어요 · 답은 답란에 써 주세요');fDraw();fAnsMarks()};   /* 집중 모드: 한 번 누르면 바로 채점하고 결과를 알려 준다 */fBind($('#fPi'),'p');fBind($('#fNi'),'n');fBind($('#fAi'),'a');
   document.addEventListener('keydown',e=>{if(!FOC.on||/INPUT|TEXTAREA/.test((e.target||{}).tagName||''))return;if(e.key==='ArrowRight')fGo(1);else if(e.key==='ArrowLeft')fGo(-1)});
   addEventListener('resize',()=>{if(FOC.on){fTop();fRender().then(()=>fNoteSize())}});addEventListener('pagehide',()=>fNoteSave(true))})();
 function pvBadgeAll(){for(const pg of (typeof PV!=='undefined'&&PV.pages)||[])if(pg.live)pvBadge(pg)}
@@ -2794,7 +2845,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v43.12 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v43.15 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -3817,8 +3868,8 @@ function regFix(){if(!P||!P.problems)return 0;let n=0;const by={};for(const p of
       const top=b.ly+Math.max(18,(b.ls||12)*1.9);   /* b 번호의 윗선 */if(b.y1>top+4&&b.y1>a.ly-6){b.y1=Math.max(b.y0+10,Math.min(b.y1,top));n++;regDirty(b)}   /* 아래 문제 칸이 위 번호까지 올라옴 */
       if(a.y0<b.y1-2&&a.ly>b.y1){a.y0=b.y1;n++;regDirty(a)}}}   /* 위 문제 칸은 아래 번호 위에서 끝 */
   if(n)try{dlog('regFix',n)}catch(e){}return n}
-async function pvGrade(){try{regFix();regStale()}catch(e){}
-  if(PV.review){const ug=ungraded().length;pvResume();if(!ug)return}   // 채점 안 된 답이 남아 있으면 이어서 학습하기 대신 바로 채점
+async function pvGrade(){try{regFix();regStale()}catch(e){}try{setTimeout(()=>{if(!S||!S.state||!P)return;for(const p of P.problems){const st=S.state[p.q];if(st&&p._pr&&p.ab&&!st.parts)st.parts=p._pr.slice()}},0)}catch(e){}
+  if(PV.review){const ug=ungraded().length;pvResume();if(!ug&&!FOC.on)return}   /* 집중 모드는 다시 쓴 답(이미 표시가 있는 문제)도 바로 다시 채점 */   // 채점 안 된 답이 남아 있으면 이어서 학습하기 대신 바로 채점
   if(!S||PV.busy)return;PV.busy=true;pvStatus();$('#pvGrade').disabled=true;
   try{const job=pvCommit();if(job)pvPersist(job);const saved=!!job;
     if(!S.frozen){if(S.paused)pause();tick();S.frozen=true;S.frozenAt=performance.now();S.frozenEl=(S.frozenAt-S.t0)/1000;$('#clock').classList.add('frozen');$('#pvClock').classList.add('frozen');$('#pause').hidden=true}   // 채점하면 시계는 멈춤
