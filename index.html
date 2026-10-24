@@ -162,7 +162,9 @@ body.pip #sum,body.pip #markNote,body.pip #rec{display:none}body.pip{min-width:0
 .focus[hidden]{display:none}.fBar{display:flex;gap:8px;align-items:center;padding:8px 12px 8px 66px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
 .fBar .btn{padding:8px 12px;font-size:15px}.fBar .btn.on{background:#2563eb;color:#fff}.fBar .fEnd{background:#fff;color:#dc2626;border:2px solid #dc2626;font-weight:800}.fQn{font-size:18px;min-width:70px;text-align:center}.fQt{font-variant-numeric:tabular-nums;color:var(--accent,#2563eb);font-weight:700}
 .fScroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:14px 14px 60px 66px}
-.fProb{position:absolute;left:0;top:0;background:#fff;border-radius:10px 0 10px 0;box-shadow:0 0 0 1px #d6e0ee,2px 2px 10px rgba(0,0,0,.08);overflow:hidden;z-index:2}.fTip{position:absolute;right:12px;top:14px;font-size:12px;color:#a8b4c6;pointer-events:none}.fProb canvas{display:block}.fProb .fInk{position:absolute;left:0;top:0}
+.fProb{position:absolute;left:0;top:0;background:#fff;border-radius:10px 0 10px 0;box-shadow:0 0 0 1px #d6e0ee,2px 2px 10px rgba(0,0,0,.08);overflow:hidden;z-index:2}.fAns{position:absolute;left:0;background:#fff;z-index:2;border-top:2px solid #2563eb;border-radius:0 0 10px 0;box-shadow:0 0 0 1px #d6e0ee,2px 2px 10px rgba(0,0,0,.08);overflow:hidden}.fAns canvas{display:block}.fAns .fInk{position:absolute;left:0;top:0}
+.fAnsL{position:absolute;inset:0;display:flex;pointer-events:none;z-index:3}.fAnsL>div{flex:1;border-left:1.5px dashed #b9c6d8;font-size:12px;font-weight:800;color:#2563eb;padding:2px 6px}.fAnsL>div:first-child{border-left:0}
+.fTip{position:absolute;right:12px;top:14px;font-size:12px;color:#a8b4c6;pointer-events:none}.fProb canvas{display:block}.fProb .fInk{position:absolute;left:0;top:0}
 .fNote{position:relative;margin:0 auto;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08);background-color:#fff;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 47px,#d6e0ee 47px,#d6e0ee 48px);background-position:0 8px}
 .fNote .fInk{position:absolute;left:0;top:0;z-index:1}.fNum{position:absolute;left:calc(50% + 12px);top:6px;width:120px;height:44px;border:2px dashed #a8b4c6;border-radius:8px;color:#a8b4c6;font-size:12px;padding:2px 7px;pointer-events:none;background:#fff}
 .fInk{touch-action:pan-y}
@@ -451,7 +453,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v43.10</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v43.10)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true">내</span><span>러닝메이트</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v43.11</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v43.11)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>오답</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -490,7 +492,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
   </section>
   <section id="vPdf" hidden>
     <div id="focus" class="focus" hidden><div class="fBar"><button type="button" class="btn fEnd" id="fExit">✕ 집중 모드 끝내기</button><button type="button" class="btn quiet" id="fPrev">‹ 이전</button><b id="fQn" class="fQn"></b><span class="fQt" id="fQt"></span><button type="button" class="btn quiet" id="fNext">다음 ›</button><span style="flex:1"></span><button type="button" class="btn quiet" id="fSol" hidden>📖 해설</button><button type="button" class="btn quiet" id="fMore" title="문제 위아래를 더 보기 (그림·보기가 잘렸을 때)">↕ 더 보기</button><button type="button" class="btn mid" id="fGrade">✓ 채점</button></div>
-      <div class="fScroll" id="fScroll"><div class="fNote" id="fNote"><canvas id="fNi" class="fInk"></canvas><div class="fNum">번호</div><div class="fTip">한 줄에 식 하나씩</div><div class="fProb" id="fProb"><canvas id="fPc"></canvas><canvas id="fPi" class="fInk"></canvas></div></div></div></div>
+      <div class="fScroll" id="fScroll"><div class="fNote" id="fNote"><canvas id="fNi" class="fInk"></canvas><div class="fNum">번호</div><div class="fTip">한 줄에 식 하나씩</div><div class="fProb" id="fProb"><canvas id="fPc"></canvas><canvas id="fPi" class="fInk"></canvas></div><div class="fAns" id="fAns"><canvas id="fAc"></canvas><canvas id="fAi" class="fInk"></canvas><div class="fAnsL" id="fAnsL"></div></div></div></div></div>
     <div id="pvRail" class="pvRail" aria-label="시간·펜 도구"><button type="button" class="rlFold" id="rlFold" title="접기/펴기">‹</button><div class="rlIn"><div class="rlGrip" id="rlGrip" title="끌어서 원하는 곳으로 옮기기">⠿</div><div class="rlT" title="전체 풀이 시간"><small>전체</small><b id="rlAll">0:00</b></div><div class="rlT rlQ" title="지금 푸는 문제에 쓴 시간"><small id="rlQn">문제</small><b id="rlQt">–</b></div><button type="button" class="rlF" id="rlFocus" title="집중 모드: 문제 하나씩 + 연습장">🎯<small>집중</small></button><button type="button" data-r="pen" title="펜">✎</button><button type="button" data-r="erase" title="지우개" aria-label="지우개"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M14.5 3.8 20.2 9.5a1.6 1.6 0 0 1 0 2.3L12 20H7.6l-3.8-3.8a1.6 1.6 0 0 1 0-2.3L12.2 3.8a1.6 1.6 0 0 1 2.3 0Z"/><path d="M8.6 7.4l8 8"/><path d="M12 20h8"/></svg></button><button type="button" data-r="move" title="그린 선·도형 옮기기">✥</button><button type="button" data-r="undo" title="실행 취소">↶</button></div></div>
     <div class="pvBar">
       <b class="clock" id="pvClock" style="font-size:18px">0:00:00</b>
@@ -498,7 +500,7 @@ body.nscroll #pdfPages,body.nscroll #pdfPages .pvPage,body.nscroll #pdfPages .pv
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn quiet" id="pvFocus" type="button" title="문제를 하나씩 크게 보고, 아래 연습장에 풀이 정리" style="padding:9px 12px;font-size:15px">🎯 집중</button><button class="btn mid" id="pvGrade" type="button" style="padding:9px 16px;font-size:15px">채점하기</button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v43.10</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v43.11</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" title="나가기 (저장하고 문제집 목록으로)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5"/><path d="M11 5l-7 7 7 7"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1673,7 +1675,7 @@ const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https:
 const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
 window.addEventListener('error',e=>dlog('err',(e.message||'')+' @'+(e.lineno||'')));window.addEventListener('unhandledrejection',e=>dlog('rej',String(e.reason&&(e.reason.message||e.reason)||'')));
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v43.10',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v43.11',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -2393,7 +2395,16 @@ async function keyFromCrop(p,im){if(!im||!im.page||!window.SCAN)return null;try{
   const pick=t=>{for(const line of t.split(/\n+/)){const tk=line.trim().split(/\s+/);for(let i=0;i<tk.length-1;i++)if(labs.includes(tk[i])&&/^-?\d{1,4}$/.test(tk[i+1])&&(i+2>=tk.length||nl.some(l=>l.includes(tk[i+2]))))return tk[i+1];for(const L of labs){const m=new RegExp('^'+L+'\\s+(-?\\d{1,4})$').exec(line.trim());if(m)return m[1]}}return null};
   const t6=await rd('6'),t7=await rd('7');c.width=c.height=0;const v6=pick(t6),v7=pick(t7);if(window.NJPROF)console.log('PROF qkc raw',p.q,JSON.stringify(t6),JSON.stringify(t7));
   return v6&&v6===v7?v6:(v6&&!v7&&!t7.replace(/\D/g,'')?v6:null)}catch(e){console.error(e);return null}}
-async function readA(p,ink){p._used=null;p._kc=null;if(p.key&&p.key.kind==='nparts'&&p.key.nums&&p._lab===undefined)p._lab=await subLabels(p);const r=SV.readAnswer(p,ink);if(window.NJPROF)console.log('PROF rl',p.q,JSON.stringify(r),p._used&&p._used.length);const k=keyOf(p),st=p._used,num=v=>/^-?\d{1,4}$/.test(v||'');
+/* 집중 모드 답란에 쓴 답이 있으면 그것만 답으로 읽는다 (문제 칸·연습장의 풀이 과정은 채점하지 않음). 소문제는 칸마다 따로 읽는다 */
+function abInk(p,ink){const a=p&&p.ab;if(!a)return null;const L=ink.filter(s=>{if(s.page!==p.page||s.raster)return false;const cx=(s.b.x0+s.b.x1)/2,cy=(s.b.y0+s.b.y1)/2;return cx>=a.x0&&cx<=a.x1&&cy>=a.y0-2&&cy<=a.y1+2});return L.length?L:null}
+function readAB(p,A){const n=fParts(p);if(n<2){const r=SV.readAnswer(Object.assign({},p,{y0:p.ab.y0-2,y1:p.ab.y1+2}),A);return r}
+  const k=p.key,w=(p.ab.x1-p.ab.x0)/n,rs=[];for(let i=0;i<n;i++){const x0=p.ab.x0+w*i,x1=x0+w,C=A.filter(s=>{const cx=(s.b.x0+s.b.x1)/2;return cx>=x0&&cx<x1});
+    if(!C.length){rs.push({ans:'',sure:true,none:true});continue}const v=k&&k.nums?k.nums[i]:null;const q=Object.assign({},p,{x0,x1,y0:p.ab.y0-2,y1:p.ab.y1+2,key:v!=null?{text:String(v)}:{text:''},choices:null,_lab:null,_gs:null});rs.push(SV.readAnswer(q,C)||{ans:'',sure:false})}
+  p._used=A;const val=rs.map(r=>/^-?\d+(\/\d+)?$/.test(r.ans||'')?r.ans:null),sure=rs.every(r=>r.sure!==false);
+  if(k&&k.nums){const known=k.nums.map((v,i)=>v==null||val[i]==null?null:SV.same(v,val[i]));p._pr=known.slice();if(known.some((x,i)=>x===false&&rs[i].sure!==false))return {ans:val.map(v=>v==null?'?':v).join('|'),how:'written',sure:true};
+    if(val.every(v=>v!=null)&&k.nums.every(v=>v!=null))return {ans:val.join('|'),how:'written',sure};p._pre=known}
+  return {ans:'',how:'self'}}
+async function readA(p,ink){{const A=abInk(p,ink);if(A){p._used=null;p._kc=null;const r=readAB(p,A);if(!p._used)p._used=A;if(window.NJPROF)console.log('PROF ab',p.q,JSON.stringify(r));return r||{ans:'',how:'self'}}}p._used=null;p._kc=null;if(p.key&&p.key.kind==='nparts'&&p.key.nums&&p._lab===undefined)p._lab=await subLabels(p);const r=SV.readAnswer(p,ink);if(window.NJPROF)console.log('PROF rl',p.q,JSON.stringify(r),p._used&&p._used.length);const k=keyOf(p),st=p._used,num=v=>/^-?\d{1,4}$/.test(v||'');
   if(r&&r.ans&&p.key&&p.key.kind==='circled'&&!(p.choices&&p.choices.length)&&!/^[1-5]$/.test(r.ans))return Object.assign({},r,{sure:false});
   if(!(r&&r.how==='written'&&num(k)&&st&&st.length&&st.length<=14&&window.SCAN&&SCAN.worker))return r;
   const wrong=r.sure!==false&&num(r.ans)&&r.ans!==k&&Math.abs(r.ans.length-k.length)<=1,unsure=r.sure===false&&!(p.choices&&p.choices.length)&&!/^0+$/.test(r.ans||'');if(!wrong&&!unsure)return r;
@@ -2586,30 +2597,39 @@ async function fRender(){const p=FOC.p,pg=FOC.pg;if(!p||!pg)return;const ox=pg.o
       const im=tg.getImageData(0,0,t.width,t.height).data,w=t.width;let last=0;for(let y=t.height-1;y>=0&&!last;y--){const o=y*w*4;for(let x=0;x<w;x+=2){const k=o+x*4;if(im[k]<190||im[k+1]<190||im[k+2]<190){last=y;break}}}cut=last/s0}catch(e){cut=-1}FOC.cache[ck]=cut}
     let ib=0;for(const t of pg.saved)if(!pg.del.has(t.id))for(const q of t.pts)if(q.x>=X0&&q.x<=X1&&q.y<=Yt&&q.y>=Yb)ib=Math.max(ib,Yt-q.y);for(const t of pg.fresh)for(const q of t){const Y=pg.H-q.y/pg.k;if(Y<=Yt&&Y>=Yb)ib=Math.max(ib,Yt-Y)}
     if(cut>0)Yb=Math.max(Yb,Yt-Math.max(cut,ib)-14)}
-  /* 화면을 4등분한 왼쪽 위 칸에 맞춘다 */
-  const sc=$('#fScroll'),SW=Math.max(320,sc.clientWidth-80),maxW=SW/2-4,maxH=Math.max(200,sc.clientHeight*(FOC.full?0.75:0.5)-10),zf=Math.min(maxW/(X1-X0),maxH/(Yt-Yb)),W=Math.round((X1-X0)*zf),H=Math.round((Yt-Yb)*zf),d=Math.min(window.devicePixelRatio||1,3);
-  Object.assign(FOC,{X0,Yt,W,H,zf,d,SW});const c=$('#fPc'),k=$('#fPi'),box=$('#fProb');box.style.width=W+'px';box.style.height=H+'px';
+  /* 답란: 인쇄된 문제 바로 아래(같은 쪽, 이 문제 칸 안)의 띠. 여기 쓴 것만 답으로 채점한다 */
+  const sp=46,np=fParts(p);if(!p.ab||p.ab.v!==2){let y1=Yb+2,y0=y1-sp;if(y0<p.y0){y0=Math.max(bot,p.y0);y1=Math.min(Yt-20,y0+sp)}p.ab={x0:X0,x1:X1,y0,y1,v:2}}const ab=p.ab;if(!FOC.full)Yb=Math.max(Yb,ab.y1);
+  /* 화면을 4등분한 왼쪽 위 칸에 맞춘다 (답란 포함) */
+  const sc=$('#fScroll'),SW=Math.max(320,sc.clientWidth-80),maxW=SW/2-4,maxH=Math.max(200,sc.clientHeight*(FOC.full?0.75:0.5)-10),zf=Math.min(maxW/(X1-X0),maxH/((Yt-Yb)+(ab.y1-ab.y0))),W=Math.round((X1-X0)*zf),H=Math.round((Yt-Yb)*zf),d=Math.min(window.devicePixelRatio||1,3);
+  Object.assign(FOC,{X0,Yt,W,H,zf,d,SW});FOC.ma={X0:ab.x0,Yt:ab.y1,zf};const AH=Math.round((ab.y1-ab.y0)*zf),AW=Math.round((ab.x1-ab.x0)*zf);
+  const c=$('#fPc'),k=$('#fPi'),box=$('#fProb');box.style.width=W+'px';box.style.height=H+'px';
   for(const x of [c,k]){x.width=Math.round(W*d);x.height=Math.round(H*d);x.style.width=W+'px';x.style.height=H+'px'}
-  const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);fDraw();
+  const ac=$('#fAc'),ak=$('#fAi'),abx=$('#fAns');abx.style.top=(H+4)+'px';abx.style.width=AW+'px';abx.style.height=AH+'px';FOC.AH=AH+4;
+  for(const x of [ac,ak]){x.width=Math.round(AW*d);x.height=Math.round(AH*d);x.style.width=AW+'px';x.style.height=AH+'px'}
+  $('#fAnsL').innerHTML=np>1?Array.from({length:np},(_,i)=>`<div>(${i+1})</div>`).join(''):'<div>답</div>';
+  const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);const ga=ac.getContext('2d');ga.fillStyle='#fff';ga.fillRect(0,0,ac.width,ac.height);fDraw();try{fNoteSize()}catch(e){}
   const s=zf*d,rt=pg.page.render({canvasContext:g,viewport:pg.page.getViewport({scale:s}),transform:[1,0,0,1,-(X0-ox)*s,-(pg.H-Yt)*s],annotationMode:0});FOC.rt=rt;try{await rt.promise}catch(e){}if(FOC.rt===rt)FOC.rt=null}
+/* 소문제 수: 빠른 정답이 (1)(2)(3)으로 나뉘어 있으면 답란도 그만큼 나눈다 */
+function fParts(p){const k=p&&p.key;if(k&&k.kind==='nparts'&&k.nums&&k.nums.length>1)return Math.min(5,k.nums.length);if(k&&k.np>1)return Math.min(5,k.np);return 1}
 /* 좌표: 쪽 화면 좌표(필기 저장 단위) ↔ 집중 화면 좌표 */
-const fFromPage=(pg,x,y)=>{const X=x/pg.k+(pg.ox||0),Y=pg.H-y/pg.k;return {x:(X-FOC.X0)*FOC.zf,y:(FOC.Yt-Y)*FOC.zf}};
-const fToPage=(pg,x,y)=>{const X=x/FOC.zf+FOC.X0,Y=FOC.Yt-y/FOC.zf;return {x:(X-(pg.ox||0))*pg.k,y:(pg.H-Y)*pg.k}};
-function fPath(g,pts,w,col){if(!pts.length)return;g.strokeStyle=col||'#1d4ed8';g.lineWidth=w;g.beginPath();g.moveTo(pts[0].x,pts[0].y);if(pts.length===1)g.lineTo(pts[0].x+0.01,pts[0].y);
+const fFromPage=(pg,x,y,m)=>{m=m||FOC;const X=x/pg.k+(pg.ox||0),Y=pg.H-y/pg.k;return {x:(X-m.X0)*m.zf,y:(m.Yt-Y)*m.zf}};
+const fToPage=(pg,x,y,m)=>{m=m||FOC;const X=x/m.zf+m.X0,Y=m.Yt-y/m.zf;return {x:(X-(pg.ox||0))*pg.k,y:(pg.H-Y)*pg.k}};
+const fMap=k=>k==='a'?FOC.ma:FOC;   /* 'a' = 답란 (같은 쪽, 문제 칸 바로 아래 띠) */
+function fPath(g,pts,w,col,straight){if(!pts.length)return;g.strokeStyle=col||'#1d4ed8';g.lineWidth=w;g.beginPath();g.moveTo(pts[0].x,pts[0].y);if(pts.length===1)g.lineTo(pts[0].x+0.01,pts[0].y);if(straight){for(let i=1;i<pts.length;i++)g.lineTo(pts[i].x,pts[i].y);g.stroke();return}   /* 도형·채점 표시(△ 등)는 꼭짓점을 살린다 */
   for(let i=1;i<pts.length-1;i++){const mx=(pts[i].x+pts[i+1].x)/2,my=(pts[i].y+pts[i+1].y)/2;g.quadraticCurveTo(pts[i].x,pts[i].y,mx,my)}if(pts.length>1){const l=pts[pts.length-1];g.lineTo(l.x,l.y)}g.stroke()}
 function fDrawSoon(){if(FOC._raf)return;FOC._raf=requestAnimationFrame(()=>{FOC._raf=0;fDraw()})}
-function fDraw(){const pg=FOC.pg,c=$('#fPi');if(!FOC.on||!pg||!c.width)return;const g=c.getContext('2d'),d=FOC.d,r=FOC.zf/pg.k;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,c.width,c.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';
-  const pdf=q=>({x:(q.x-FOC.X0)*FOC.zf,y:(FOC.Yt-q.y)*FOC.zf});
-  for(const s of pg.saved)if(!pg.del.has(s.id))fPath(g,s.pts.map(pdf),2*(s.w||1)*r,s.c);
-  for(const s of pg.fresh)fPath(g,s.map(q=>fFromPage(pg,q.x,q.y)),2*(s.w||1)*r,s.c);
-  for(const s of pg.marks){if(s.skip){g.save();g.globalAlpha=0.42;g.lineCap='butt';fPath(g,s.pts.map(pdf),(s.w||14)*FOC.zf,'#facc15');g.restore();continue}fPath(g,s.pts.map(pdf),2.6*r,s.pend?'#d97706':'#dc2626')}
-  if(FOC.draw&&FOC.draw.el===c)fPath(g,FOC.draw.s,2*(FOC.draw.s.w||1)*r,FOC.draw.s.c)}
+function fDrawOn(c,m){const pg=FOC.pg;if(!c||!c.width||!m)return;const g=c.getContext('2d'),d=FOC.d,r=m.zf/pg.k;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,c.width,c.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';
+  const pdf=q=>({x:(q.x-m.X0)*m.zf,y:(m.Yt-q.y)*m.zf});
+  for(const s of pg.saved)if(!pg.del.has(s.id))fPath(g,s.pts.map(pdf),2*(s.w||1)*r,s.c,true);
+  for(const s of pg.fresh)fPath(g,s.map(q=>fFromPage(pg,q.x,q.y,m)),2*(s.w||1)*r,s.c,!!s.snapped);
+  for(const s of pg.marks){if(s.skip){g.save();g.globalAlpha=0.42;g.lineCap='butt';fPath(g,s.pts.map(pdf),(s.w||14)*m.zf,'#facc15',true);g.restore();continue}fPath(g,s.pts.map(pdf),2.6*r,s.pend?'#d97706':'#dc2626',true)}}
+function fDraw(){if(!FOC.on||!FOC.pg)return;fDrawOn($('#fPi'),FOC);if(FOC.ma)fDrawOn($('#fAi'),FOC.ma)}
 /* 연습장 */
 async function fNoteLoad(){const p=FOC.p;FOC.nKey=fNoteKey(p.q);let n=null;try{const b=await blobTx('readonly',st=>st.get(FOC.nKey));if(b&&b.bytes)n=JSON.parse(b.bytes)}catch(e){}if(FOC.p!==p)return;FOC.note=n||{s:[],h:0};FOC.note.dirty=0;fNoteSize()}
-function fNoteSize(){const W=FOC.SW||600,el=$('#fNote'),c=$('#fNi'),n=FOC.note;const h=Math.max(Math.round($('#fScroll').clientHeight*1.3),Math.round((n.h||0)*W),FOC.H+200);n.h=h/W;el.style.width=W+'px';el.style.height=h+'px';
+function fNoteSize(){const W=FOC.SW||600,el=$('#fNote'),c=$('#fNi'),n=FOC.note;const h=Math.max(Math.round($('#fScroll').clientHeight*1.3),Math.round((n.h||0)*W),FOC.H+(FOC.AH||0)+200);n.h=h/W;el.style.width=W+'px';el.style.height=h+'px';
   const d=Math.min(window.devicePixelRatio||1,Math.sqrt(8e6/(W*h)));FOC.nd=d;c.width=Math.round(W*d);c.height=Math.round(h*d);c.style.width=W+'px';c.style.height=h+'px';fNoteDraw()}
 function fNoteDraw(){const c=$('#fNi'),n=FOC.note;if(!n||!c.width)return;const g=c.getContext('2d'),W=FOC.SW,d=FOC.nd;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,c.width,c.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';
-  for(const s of n.s)fPath(g,s.p.map(q=>({x:q[0]*W,y:q[1]*W})),2.2*(s.w||1),s.c);if(FOC.draw&&FOC.draw.el===c)fPath(g,FOC.draw.s,2.2*(FOC.draw.s.w||1),FOC.draw.s.c)}
+  for(const s of n.s)fPath(g,s.p.map(q=>({x:q[0]*W,y:q[1]*W})),2.2*(s.w||1),s.c,!!s.sn);if(FOC.draw&&FOC.draw.el===c)fPath(g,FOC.draw.s,2.2*(FOC.draw.s.w||1),FOC.draw.s.c)}
 function fNoteSave(now){const n=FOC.note,k=FOC.nKey;if(!n||!k||!n.dirty)return;clearTimeout(FOC.nT);const go=()=>{n.dirty=0;const o={s:n.s,h:n.h,q:FOC.p&&FOC.p.q,at:Date.now()};blobTx('readwrite',st=>{st.put({name:k,bytes:JSON.stringify(o)})}).catch(e=>console.error(e))};if(now)go();else FOC.nT=setTimeout(go,1200)}
 function fUndo(){const u=FOC.und.pop();if(!u)return;if(u.k==='pg'){FOC.inUndo=true;try{pvUndo()}finally{FOC.inUndo=false}return}const n=FOC.note;if(!n)return;if(u.op==='add')n.s=n.s.filter(x=>x!==u.s);else n.s.push(u.s);n.dirty=1;fNoteDraw();fNoteSave()}
 /* 펜 입력 (문제 칸·연습장 공통): 펜·마우스만 쓰고, 손가락은 위아래 넘기기 */
@@ -2628,17 +2648,17 @@ function fBind(el,kind){const pos=e=>{const r=el.getBoundingClientRect();return 
 /* 집중 모드 도형 펴기: 그린 뒤 펜을 떼지 않고 잠깐 멈추면 직선·원·다각형으로 */
 function fHold(){clearTimeout(FOC.holdT);const D=FOC.draw;if(!SNAP_ON||!D||D.er||D.s.snapped)return;const a=D.s[D.s.length-1];D.anc=a;
   FOC.holdT=setTimeout(()=>{if(FOC.draw!==D||D.s.snapped)return;const z=D.s[D.s.length-1];if(Math.hypot(z.x-a.x,z.y-a.y)>7)return;const f=shapeFit(D.s);if(!f)return;const np=shapePts(f),c=D.s.c,w=D.s.w;D.s.length=0;for(const q of np)D.s.push(q);D.s.c=c;D.s.w=w;D.s.snapped=f.k;
-    const r=D.el.getBoundingClientRect(),kind=D.el.id==='fNi'?'n':'p';liveDraw(D.s.map(q=>({x:r.left+q.x,y:r.top+q.y})),kind==='n'?2.2*(w||1):2*(w||1)*FOC.zf/FOC.pg.k,c)},500)}
-function fCommit(kind,s){if(!FOC.on||!s.length)return;if(kind==='p'){const pg=FOC.pg,o=s.map(q=>Object.assign(fToPage(pg,q.x,q.y),{p:q.p}));o.c=s.c;o.w=s.w;o.t=Date.now();if(s.snapped)o.snapped=s.snapped;pg.fresh.push(o);PV.undo.push({pg,kind:'add',s:o});FOC.und.push({k:'pg'});PV.dirty=true;pvStatus();pvDirty();pvDraw(pg);fDraw()}
-  else{const W=FOC.SW,n=FOC.note;if(!n)return;const o={p:s.map(q=>[+(q.x/W).toFixed(4),+(q.y/W).toFixed(4)]),c:s.c,w:s.w,t:Date.now()};n.s.push(o);FOC.und.push({k:'note',op:'add',s:o});n.dirty=1;
+    const r=D.el.getBoundingClientRect(),kind=D.el.id==='fNi'?'n':D.el.id==='fAi'?'a':'p';liveDraw(D.s.map(q=>({x:r.left+q.x,y:r.top+q.y})),kind==='n'?2.2*(w||1):2*(w||1)*FOC.zf/FOC.pg.k,c,true)},500)}
+function fCommit(kind,s){if(!FOC.on||!s.length)return;if(kind==='p'||kind==='a'){const pg=FOC.pg,m=fMap(kind),o=s.map(q=>Object.assign(fToPage(pg,q.x,q.y,m),{p:q.p}));o.c=s.c;o.w=s.w;o.t=Date.now();if(s.snapped)o.snapped=s.snapped;pg.fresh.push(o);PV.undo.push({pg,kind:'add',s:o});FOC.und.push({k:'pg'});PV.dirty=true;pvStatus();pvDirty();pvDraw(pg);fDraw()}
+  else{const W=FOC.SW,n=FOC.note;if(!n)return;const o={p:s.map(q=>[+(q.x/W).toFixed(4),+(q.y/W).toFixed(4)]),c:s.c,w:s.w,t:Date.now()};if(s.snapped)o.sn=1;n.s.push(o);FOC.und.push({k:'note',op:'add',s:o});n.dirty=1;
     let my=0;for(const q of s)my=Math.max(my,q.y);if(my>parseFloat($('#fNote').style.height)-220){n.h=(parseFloat($('#fNote').style.height)+600)/W;fNoteSize()}else fNoteDraw();fNoteSave()}
   QT.at=Date.now()}
-function fErase(kind,p){if(kind==='p'){const pg=FOC.pg,q=fToPage(pg,p.x,p.y);pvErase(pg,q);fDraw();return}
+function fErase(kind,p){if(kind==='p'||kind==='a'){const pg=FOC.pg,q=fToPage(pg,p.x,p.y,fMap(kind));pvErase(pg,q);fDraw();return}
   const n=FOC.note,W=FOC.SW,r=10;let hit=false;n.s=n.s.filter(s=>{if(s.p.some(q=>Math.hypot(q[0]*W-p.x,q[1]*W-p.y)<r)){FOC.und.push({k:'note',op:'erase',s});hit=true;return false}return true});if(hit){n.dirty=1;fNoteDraw();fNoteSave()}}
-(()=>{const fs=$('#fScroll');if(fs){fs.addEventListener('touchstart',e=>{const t=e.changedTouches[0];if(!t)return;if(t.touchType==='stylus'||FOC.draw||(PV.penSeen&&((t.radiusX||0)>=30||(t.radiusY||0)>=30))){e.preventDefault()}},{passive:false});fs.addEventListener('touchmove',e=>{if(FOC.draw||[...e.touches].some(t=>t.touchType==='stylus'))e.preventDefault()},{passive:false})}})();
+(()=>{const fs=$('#fScroll');if(fs){fs.addEventListener('touchstart',e=>{const t=e.changedTouches[0];if(!t)return;if(t.touchType==='stylus'||FOC.draw||(IOS&&PV.penSeen&&((t.radiusX||0)>=30||(t.radiusY||0)>=30))){e.preventDefault()}},{passive:false});fs.addEventListener('touchmove',e=>{if(FOC.draw||[...e.touches].some(t=>t.touchType==='stylus'))e.preventDefault()},{passive:false})}})();
 (()=>{const b=$('#pvFocus');if(!b)return;b.onclick=()=>FOC.on?fClose():fOpen();$('#rlFocus').onclick=e=>{e.stopPropagation();FOC.on?fClose():fOpen()};$('#fExit').onclick=()=>fClose();$('#fPrev').onclick=()=>fGo(-1);$('#fNext').onclick=()=>fGo(1);
   $('#fSol').onclick=fSolToggle;$('#fGrade').onclick=async()=>{if(PV.busy)return;const b=$('#fGrade');b.disabled=true;b.textContent='채점 중…';try{if(PV.review)pvResume();await pvGrade()}catch(e){console.error(e)}finally{b.disabled=false;b.textContent='✓ 채점'}
-  const t=($('#pvSum')||{}).textContent||'';pvToast(t&&!/채점 전/.test(t)?esc(t.slice(0,80)):'채점할 새 답이 없어요 · 답은 문제 칸에 써 주세요');fDraw()};   /* 집중 모드: 한 번 누르면 바로 채점하고 결과를 알려 준다 */$('#fMore').onclick=()=>{if(FOC.full)FOC.ext+=60;FOC.full=true;fRender()};fBind($('#fPi'),'p');fBind($('#fNi'),'n');
+  const t=($('#pvSum')||{}).textContent||'';pvToast(t&&!/채점 전/.test(t)?esc(t.slice(0,80)):'채점할 새 답이 없어요 · 답은 문제 칸에 써 주세요');fDraw()};   /* 집중 모드: 한 번 누르면 바로 채점하고 결과를 알려 준다 */$('#fMore').onclick=()=>{if(FOC.full)FOC.ext+=60;FOC.full=true;fRender()};fBind($('#fPi'),'p');fBind($('#fNi'),'n');fBind($('#fAi'),'a');
   document.addEventListener('keydown',e=>{if(!FOC.on||/INPUT|TEXTAREA/.test((e.target||{}).tagName||''))return;if(e.key==='ArrowRight')fGo(1);else if(e.key==='ArrowLeft')fGo(-1)});
   addEventListener('resize',()=>{if(FOC.on){fTop();fRender().then(()=>fNoteSize())}});addEventListener('pagehide',()=>fNoteSave(true))})();
 function pvBadgeAll(){for(const pg of (typeof PV!=='undefined'&&PV.pages)||[])if(pg.live)pvBadge(pg)}
@@ -2774,7 +2794,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v43.10 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v43.11 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -2875,20 +2895,20 @@ function procSvg(R,M,W){W=W||680;const qs=Object.keys(M.Q).map(Number).sort((a,b
   return s+'</svg>'}
 function procCard(R){const el=$('#dProc');if(!el)return;const M=procOf(R);R.proc=M;if(!M){el.hidden=true;return}el.hidden=false;
   const notes=procNotes(R,M),qs=Object.values(M.Q).sort((a,b)=>a.q-b.q),R2={O:'○',T:'△',X:'／','?':'?'};
-  el.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">풀이 과정 분석</h2><button class="btn quiet" type="button" id="dRep" style="font-size:13px;padding:7px 12px">📄 리포트 저장</button></div>
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div><h2 style="margin:0">풀이 과정 분석</h2>${(R.name||(P&&P.name))?`<div class="muted" style="font-size:14px;margin-top:2px">📘 ${esc(String(R.name||P.name).replace(/\s*\(풀이[^)]*\)\s*$/,''))}</div>`:''}</div><button class="btn quiet" type="button" id="dRep" style="font-size:13px;padding:7px 12px">📄 리포트 저장</button></div>
     <p class="muted" style="font-size:13px;margin:4px 0 8px">펜으로 쓴 시각과 위치로 측정했어요 · 막대 = 그 문항을 붙잡고 있던 시간 (초록 맞음 · 빨강 틀림 · 주황 고쳐서 맞음 · 회색 미채점)</p>
     <div class="pTl">${procSvg(R,M)}</div>
     <ul class="pNotes">${notes.map(n=>`<li class="${n.k}">${esc(n.t)}</li>`).join('')}</ul>
-    <table class="pTab"><thead><tr><th>번호</th><th>결과</th><th>착수 순서</th><th>머문 시간</th><th>쓴 시간</th><th>멈춤</th><th>오간 횟수</th></tr></thead><tbody>${qs.map(x=>`<tr><td>${x.q}</td><td>${R2[resOf(R,x.q)]||'—'}</td><td>${x.ord}</td><td>${fmtT(x.dwell)}</td><td>${fmtT(x.ink)}</td><td>${x.stalls?x.stalls+'번 (최장 '+fmtT(x.maxStall)+')':'-'}</td><td>${x.visits.length}</td></tr>`).join('')}</tbody></table>`;
+    <table class="pTab"><thead><tr><th>번호</th><th>결과</th><th>착수 순서</th><th>머문 시간</th><th>쓴 시간</th><th>멈춤</th><th>오간 횟수</th></tr></thead><tbody>${qs.map(x=>`<tr><td>${QN(x.q)}번</td><td>${R2[resOf(R,x.q)]||'—'}</td><td>${x.ord}</td><td>${fmtT(x.dwell)}</td><td>${fmtT(x.ink)}</td><td>${x.stalls?x.stalls+'번 (최장 '+fmtT(x.maxStall)+')':'-'}</td><td>${x.visits.length}</td></tr>`).join('')}</tbody></table>`;
   $('#dRep').onclick=()=>saveReport(R,M,notes)}
 function saveReport(R,M,notes){const nm=LS.get('name','')||'학생',d=new Date(R.wall),qs=Object.values(M.Q).sort((a,b)=>a.q-b.q),st=Object.values(R.state),g=st.filter(x=>x.status==='done'&&x.ok!=null),ok=g.filter(x=>x.ok).length,R2={O:'○',T:'△',X:'／','?':'?'};
   const html=`<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(nm)} 풀이 리포트</title>
 <style>body{font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#1c2433}h1{font-size:22px;margin:0 0 4px}h2{font-size:17px;margin:22px 0 8px}.m{color:#667085;font-size:13px}.big{display:flex;gap:28px;margin:14px 0}.big b{font-size:30px;display:block}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid #e3e8ef;padding:6px 4px;text-align:center}li{margin:6px 0;line-height:1.5}@media print{body{margin:0}}</style></head><body>
-<h1>${esc(nm)} · 풀이 과정 리포트</h1><div class="m">${esc(P?P.name:'')} · ${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} · 내정수학 러닝메이트</div>
+<h1>${esc(nm)} · 풀이 과정 리포트</h1><div class="m">📘 ${esc(String((R&&R.name)||(P?P.name:'')).replace(/\s*\(풀이[^)]*\)\s*$/,''))} · ${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} · 내정수학 러닝메이트</div>
 <div class="big"><div><span class="m">점수</span><b>${ok}/${g.length}</b></div><div><span class="m">측정 시간</span><b>${fmtT(M.T)}</b></div><div><span class="m">펜 쓴 시간</span><b>${Math.round(M.ink/Math.max(1,M.T)*100)}%</b></div></div>
 <h2>풀이 흐름</h2>${procSvg(R,M,720)}<div class="m">막대 = 그 문항을 붙잡고 있던 시간 · 초록 맞음 · 빨강 틀림 · 주황 고쳐서 맞음</div>
 <h2>분석</h2><ul>${notes.map(n=>`<li>${esc(n.t)}</li>`).join('')}</ul>
-<h2>문항별</h2><table><tr><th>번호</th><th>결과</th><th>착수 순서</th><th>머문 시간</th><th>쓴 시간</th><th>멈춤</th><th>오간 횟수</th></tr>${qs.map(x=>`<tr><td>${x.q}</td><td>${R2[resOf(R,x.q)]||'—'}</td><td>${x.ord}</td><td>${fmtT(x.dwell)}</td><td>${fmtT(x.ink)}</td><td>${x.stalls?x.stalls+'번':'-'}</td><td>${x.visits.length}</td></tr>`).join('')}</table>
+<h2>문항별</h2><table><tr><th>번호</th><th>결과</th><th>착수 순서</th><th>머문 시간</th><th>쓴 시간</th><th>멈춤</th><th>오간 횟수</th></tr>${qs.map(x=>`<tr><td>${QN(x.q)}번</td><td>${R2[resOf(R,x.q)]||'—'}</td><td>${x.ord}</td><td>${fmtT(x.dwell)}</td><td>${fmtT(x.ink)}</td><td>${x.stalls?x.stalls+'번':'-'}</td><td>${x.visits.length}</td></tr>`).join('')}</table>
 </body></html>`;
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=`${nm}_${(P&&P.name||'리포트').replace(/[\\/:*?"<>|]/g,'')}_${d.getMonth()+1}-${d.getDate()}_리포트.html`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
 
@@ -3245,18 +3265,18 @@ document.addEventListener('pointerdown',e=>{if(e.pointerType==='pen')STY.down=e.
 document.addEventListener('pointercancel',e=>{if(e.pointerType==='pen')STY.cancel=e.timeStamp},true);
 document.addEventListener('touchmove',e=>{if(!STY.pts.length||STY.down>=STY.t0-150)return;const t=[...e.touches].find(t=>t.touchType==='stylus');if(!t)return;const v=$('#vPdf');if(!v||v.hidden||PV.tool==='erase')return;liveDraw(STY.pts.map(q=>({x:q.cx,y:q.cy})),2*(PV.width||1)*styScale(STY.pts[0].cx,STY.pts[0].cy),PV.color)},{capture:true,passive:true});
 function styTarget(x,y){const inR=(el,pad)=>{if(!el)return null;const r=el.getBoundingClientRect();return x>=r.left-(pad||0)&&x<=r.right&&y>=r.top&&y<=r.bottom?r:null};
-  if(FOC.on){if(inR($('#fProb')))return {k:'p',r:$('#fPi').getBoundingClientRect()};if(inR($('#fNote')))return {k:'n',r:$('#fNi').getBoundingClientRect()};return null}
+  if(FOC.on){if(inR($('#fAns')))return {k:'a',r:$('#fAi').getBoundingClientRect()};if(inR($('#fProb')))return {k:'p',r:$('#fPi').getBoundingClientRect()};if(inR($('#fNote')))return {k:'n',r:$('#fNi').getBoundingClientRect()};return null}
   for(const g of PV.pages||[]){if(!g.live)continue;const r=inR(g.ink.width?g.ink:g.c);if(r)return {k:'v',pg:g,r,z:r.width/(g.cw||r.width)||1}}return null}
-function styScale(x,y){const t=styTarget(x,y);if(!t)return 1;if(t.k==='v')return t.z;if(t.k==='p')return FOC.zf/FOC.pg.k;return 1.1}
+function styScale(x,y){const t=styTarget(x,y);if(!t)return 1;if(t.k==='v')return t.z;if(t.k==='p'||t.k==='a')return FOC.zf/FOC.pg.k;return 1.1}
 const styMine=s=>s&&(s.t||0)>=(STY.t0d||0)-400;   /* 이번 펜 터치 동안 만든 획만 바꾼다 (앞서 쓴 획은 건드리지 않음) */
-function styLastLen(tg){let s=null,k=1;if(tg.k==='v'){const u=PV.undo[PV.undo.length-1];if(u&&u.kind==='add'&&u.pg===tg.pg&&styMine(u.s)){s=u.s;k=tg.z}}else if(tg.k==='p'){const u=PV.undo[PV.undo.length-1];if(u&&u.kind==='add'&&u.pg===FOC.pg&&styMine(u.s)){s=u.s;k=FOC.zf/FOC.pg.k}}else if(FOC.note){const z=FOC.und[FOC.und.length-1];if(z&&z.k==='note'&&z.op==='add'&&styMine(z.s)){s=z.s.p.map(q=>({x:q[0],y:q[1]}));k=FOC.SW}}
+function styLastLen(tg){let s=null,k=1;if(tg.k==='v'){const u=PV.undo[PV.undo.length-1];if(u&&u.kind==='add'&&u.pg===tg.pg&&styMine(u.s)){s=u.s;k=tg.z}}else if(tg.k==='p'||tg.k==='a'){const u=PV.undo[PV.undo.length-1];if(u&&u.kind==='add'&&u.pg===FOC.pg&&styMine(u.s)){s=u.s;k=FOC.zf/FOC.pg.k}}else if(FOC.note){const z=FOC.und[FOC.und.length-1];if(z&&z.k==='note'&&z.op==='add'&&styMine(z.s)){s=z.s.p.map(q=>({x:q[0],y:q[1]}));k=FOC.SW}}
   if(!s)return 0;let L=0;for(let i=1;i<s.length;i++)L+=Math.hypot(s[i].x-s[i-1].x,s[i].y-s[i-1].y);return L*k}
 document.addEventListener('touchend',e=>{if(![...e.changedTouches].some(t=>t.touchType==='stylus'))return;const L=STY.pts.slice(),t0=STY.t0;STY.pts=[];setTimeout(()=>styEnd(L,t0),30)},{capture:true,passive:true});
 function styEnd(L,t0){const gotDown=STY.down>=t0-150;let cut=STY.cancel>=t0-150;if(L.length<2)return;
   if(gotDown&&!cut){/* 펜 신호가 중간에 멈춰 획이 짧게만 저장됐으면(손바닥이 화면에 닿아 있을 때 등) 터치 기록으로 바꾼다 */let tl=0;for(let i=1;i<L.length;i++)tl+=Math.hypot(L[i].cx-L[i-1].cx,L[i].cy-L[i-1].cy);if(tl<20)return;const tg0=styTarget(L[0].cx,L[0].cy);if(!tg0)return;const pl=styLastLen(tg0);if(pl>=tl*0.6)return;cut=true}const v=$('#vPdf');if(!v||v.hidden||!S&&!FOC.on||PV.busy)return;
   const tg=styTarget(L[0].cx,L[0].cy);setTimeout(liveClear,0);if(!tg)return;dlog('styFB',(gotDown?'cut ':'nodown ')+L.length);
   if(cut){/* 끊겨서 앞부분만 저장된 획은 지우고 전체로 바꾼다 */const u=PV.undo[PV.undo.length-1];if(tg.k==='v'&&u&&u.kind==='add'&&u.pg===tg.pg&&styMine(u.s)){tg.pg.fresh=tg.pg.fresh.filter(x=>x!==u.s);PV.undo.pop()}
-    else if(tg.k==='p'&&u&&u.kind==='add'&&u.pg===FOC.pg&&styMine(u.s)){FOC.pg.fresh=FOC.pg.fresh.filter(x=>x!==u.s);PV.undo.pop();FOC.und.pop()}
+    else if((tg.k==='p'||tg.k==='a')&&u&&u.kind==='add'&&u.pg===FOC.pg&&styMine(u.s)){FOC.pg.fresh=FOC.pg.fresh.filter(x=>x!==u.s);PV.undo.pop();FOC.und.pop()}
     else if(tg.k==='n'&&FOC.note){const z=FOC.und[FOC.und.length-1];if(z&&z.k==='note'&&z.op==='add'&&styMine(z.s)){FOC.note.s=FOC.note.s.filter(x=>x!==z.s);FOC.und.pop()}}}
   const er=PV.tool==='erase';
   if(tg.k==='v'){const pg=tg.pg,pts=L.map(q=>({x:(q.cx-tg.r.left)/tg.z,y:(q.cy-tg.r.top)/tg.z,p:q.f||0.5}));if(er){for(const q of pts)pvErase(pg,q);return}const k=inkTail(pts);pts.length=k;pts.c=PV.color;pts.w=PV.width;pts.t=Date.now();pg.fresh.push(pts);PV.undo.push({pg,kind:'add',s:pts});PV.dirty=true;pvDraw(pg);pvStatus();pvDirty();try{qtPen(pg,pts)}catch(er2){}return}
@@ -3269,7 +3289,7 @@ function inkTail(s,live){const n=s.length;if(n<4)return n;let mx=0;for(const q o
 const LIVE={c:null,g:null,d:1,on:false};
 function liveCv(){let c=LIVE.c;if(!c){c=document.createElement('canvas');c.id='liveInk';c.style.cssText='position:fixed;left:0;top:0;pointer-events:none;z-index:25';document.body.appendChild(c);LIVE.c=c}
   const d=Math.min(window.devicePixelRatio||1,3),W=Math.round(innerWidth*d),H=Math.round(innerHeight*d);if(c.width!==W||c.height!==H){c.width=W;c.height=H;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';LIVE.g=c.getContext('2d')}LIVE.d=d;return LIVE.g}
-function liveDraw(pts,w,col){const g=liveCv(),d=LIVE.d;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,LIVE.c.width,LIVE.c.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';fPath(g,pts,w,col);LIVE.on=true}
+function liveDraw(pts,w,col,straight){const g=liveCv(),d=LIVE.d;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,LIVE.c.width,LIVE.c.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';fPath(g,pts,w,col,straight);LIVE.on=true}
 function liveClear(){if(!LIVE.on||!LIVE.c)return;LIVE.on=false;LIVE.g.setTransform(1,0,0,1,0,0);LIVE.g.clearRect(0,0,LIVE.c.width,LIVE.c.height)}
 const liveBusy=()=>(typeof FOC!=='undefined'&&FOC.draw&&!FOC.draw.er)||(PV.pages||[]).some(p=>p.cur&&!p.cur.snapped);
 function pvLive(pg){const s=pg.cur;if(!s||s.snapped){liveClear();return}const r=pg.c.getBoundingClientRect(),z=r.width/(pg.cw||r.width)||1;liveDraw(s.slice(0,inkTail(s,1)).map(q=>({x:r.left+q.x*z,y:r.top+q.y*z})),inkW(s,0)*z,s.c)}
@@ -3299,7 +3319,7 @@ function pvInk(pg){if(pg.ink.width)return true;pg.di=Math.max(pg.d||1,Math.min((
 function pvDraw(pg){if(FOC.on&&FOC.pg===pg)fDrawSoon();if(!pg.live)return;if(!pg.ink.width){if(!(pg.saved.length||pg.marks.length||pg.fresh.length||pg.cur||(PV.sel&&PV.sel.pg===pg)))return;if(!pvInk(pg))return}const g=pg.g,k=pg.k,H=pg.H,d=pg.di||pg.d||window.devicePixelRatio||1;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,pg.ink.width,pg.ink.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';
   const line=(pts,css)=>{g.beginPath();pts.forEach((p,i)=>{const x=css?p.x:(p.x-(pg.ox||0))*k,y=css?p.y:(H-p.y)*k;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke()};
   for(const s of pg.saved)if(!pg.del.has(s.id)){g.strokeStyle=s.c||'#1d4ed8';g.lineWidth=2*(s.w||1);line(s.pts,false)}
-  for(const s of pg.fresh.concat(pg.cur&&pg.cur.snapped?[pg.cur]:[]))fPath(g,s,inkW(s,0),s.c);if(!liveBusy())liveClear();   /* 획 하나를 한 번에 그린다 (조각조각 그리면 이음새가 점처럼 보임) */
+  for(const s of pg.fresh.concat(pg.cur&&pg.cur.snapped?[pg.cur]:[]))fPath(g,s,inkW(s,0),s.c,!!s.snapped);if(!liveBusy())liveClear();   /* 획 하나를 한 번에 그린다 (조각조각 그리면 이음새가 점처럼 보임) */
   for(const s of pg.marks){if(s.skip){g.save();g.globalAlpha=0.42;g.strokeStyle='#facc15';g.lineCap='butt';g.lineWidth=(s.w||14)*k;line(s.pts,false);g.restore();continue}g.lineWidth=2.6;g.strokeStyle=s.pend?'#d97706':'#dc2626';line(s.pts,false)}
   if(PV.sel&&PV.sel.pg===pg&&!(PV.sel.h.f&&!pg.fresh.includes(PV.sel.h.f))){const b=selBox(pg,PV.sel.h),m=8;g.save();g.setLineDash([6,5]);g.strokeStyle='#0ea5e9';g.lineWidth=1.5;g.strokeRect(b.x0-m,b.y0-m,b.x1-b.x0+2*m,b.y1-b.y0+2*m);g.setLineDash([]);const H=selHandles(b);g.fillStyle='#fff';g.lineWidth=2;if(!selRound(PV.sel.h)){g.beginPath();g.moveTo(H.rot.x,b.y0-m);g.lineTo(H.rot.x,H.rot.y+9);g.stroke();
     g.beginPath();g.arc(H.rot.x,H.rot.y,9,0,7);g.fill();g.stroke();g.beginPath();g.arc(H.rot.x,H.rot.y,4.5,-0.3,4.4);g.stroke()}   // 돌리기 손잡이
@@ -3481,7 +3501,7 @@ function pvBind(pg){const c=pg.ink;let holdT=null;
   /* 애플 펜슬은 절대 화면을 넘기지 않게, 선택한 도형을 잡은 손가락·두 손가락(확대)도 기본 스크롤을 막는다 */
   c.addEventListener('touchstart',e=>{if(!document.body.classList.contains('nscroll'))return;const t=e.changedTouches[0];if(!t)return;
     if(t.touchType==='stylus'||e.touches.length>=2){e.preventDefault();return}
-    if(PV.penSeen&&((t.radiusX||0)>=30||(t.radiusY||0)>=30)){e.preventDefault();PV.palm=1;return}   /* 넓게 닿은 손바닥: 화면이 움직이지 않게 (펜이 바로 써지도록) */
+    if(IOS&&PV.penSeen&&((t.radiusX||0)>=30||(t.radiusY||0)>=30)){e.preventDefault();PV.palm=1;return}   /* 아이패드만: 윈도우(서피스)는 손가락도 넓게 잡혀 넘기기가 막혔음 */   /* 넓게 닿은 손바닥: 화면이 움직이지 않게 (펜이 바로 써지도록) */
     if(PV.pages.some(p=>p.cur&&!p.curTouch)||Date.now()-(PV.penT||0)<400){e.preventDefault();PV.palm=1;return}   // 손바닥: 펜으로 쓰는 중·막 뗀 직후·넓게 닿은 터치는 화면을 움직이지 않는다
     if(S&&!PV.busy){const r=c.getBoundingClientRect(),z=r.width/(pg.cw||r.width)||1,p={x:(t.clientX-r.left)/z,y:(t.clientY-r.top)/z};if(selHandle(pg,p)||selIn(pg,p))e.preventDefault()}},{passive:false});
   c.addEventListener('touchmove',e=>{if(!document.body.classList.contains('nscroll'))return;if(e.touches.length>=2||(e.touches[0]&&e.touches[0].touchType==='stylus')||pg.mv)e.preventDefault()},{passive:false});
