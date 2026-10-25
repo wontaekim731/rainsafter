@@ -190,7 +190,7 @@ body.pip #sum,body.pip #markNote,body.pip #rec{display:none}body.pip{min-width:0
 .focus .fAnsL>div{border-left:1.5px dashed #B9C6D8!important}.focus .fAnsL>div:first-child{border-left:0!important}
 .focus .fAnsL b{background:transparent!important;color:var(--fi-ans)!important;padding:5px 9px!important;font-size:13px!important}
 .focus .fAnsL i{color:#9AA8BE!important}
-.fAnsL .mk{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+.fAnsL .mk{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}#fPmk .mk path,#fPmk .mk circle{stroke-dasharray:120;animation:fiDraw .32s ease-out both}
 @keyframes fiDraw{from{stroke-dashoffset:120}to{stroke-dashoffset:0}}.fAnsL .mk path,.fAnsL .mk circle{stroke-dasharray:120;animation:fiDraw .32s ease-out both}
 .fSwipe{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:rgba(14,16,20,.86);color:#E6E9EF;font-size:13px;pointer-events:none;transition:opacity .4s}
 /* 왼쪽 막대도 어둡게 */
@@ -593,7 +593,7 @@ input.txt,select{background:#0E1014;color:var(--ink);border-color:var(--line)}
   </section>
   <section id="vPdf" hidden>
     <div id="focus" class="focus" hidden><div class="fBar"><button type="button" class="fB fEnd" id="fExit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>끝내기</button><div class="fMid"><button type="button" class="fB fNav" id="fPrev" aria-label="이전 문제"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="fTit"><b id="fQn" class="fQn"></b><span class="fQt" id="fQt"></span></div><button type="button" class="fB fNav" id="fNext" aria-label="다음 문제"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div><button type="button" class="fB fSolB" id="fSol" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="8" height="16" rx="1.5"/><rect x="13" y="4" width="8" height="16" rx="1.5"/></svg>해설</button><button type="button" class="fB fGo" id="fGrade" aria-label="GO, 이 문제 채점하기"><span class="goT">GO <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span><small class="goS">채점하기</small></button></div>
-      <div class="fScroll" id="fScroll"><div class="fNote" id="fNote"><canvas id="fNi" class="fInk"></canvas><div class="fNum">번호</div><div class="fTip">한 줄에 식 하나씩</div><div class="fProb" id="fProb"><canvas id="fPc"></canvas><canvas id="fPi" class="fInk"></canvas></div><div class="fAns" id="fAns"><canvas id="fAc"></canvas><canvas id="fAi" class="fInk"></canvas><div class="fAnsL" id="fAnsL"></div></div></div></div></div>
+      <div class="fScroll" id="fScroll"><div class="fNote" id="fNote"><canvas id="fNi" class="fInk"></canvas><div class="fNum">번호</div><div class="fTip">한 줄에 식 하나씩</div><div class="fProb" id="fProb"><canvas id="fPc"></canvas><canvas id="fPi" class="fInk"></canvas><div id="fPmk" style="position:absolute;inset:0;pointer-events:none;z-index:3"></div></div><div class="fAns" id="fAns"><canvas id="fAc"></canvas><canvas id="fAi" class="fInk"></canvas><div class="fAnsL" id="fAnsL"></div></div></div></div></div>
     <div id="pvRail" class="pvRail" aria-label="시간·펜 도구"><button type="button" class="rlFold" id="rlFold" title="메뉴 다시 보이기" aria-label="메뉴 다시 보이기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>메뉴</span></button><div class="rlIn"><div class="rlGrip" id="rlGrip" title="끌어서 원하는 곳으로 옮기기">⠿</div><button type="button" class="rlHide" id="rlHide" title="메뉴 숨기기" aria-label="메뉴 숨기기"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>숨기기</span></button><div class="rlT" title="전체 풀이 시간"><small>전체</small><b id="rlAll">0:00</b></div><div class="rlT rlQ" title="지금 푸는 문제에 쓴 시간"><small id="rlQn">문제</small><b id="rlQt">–</b></div><button type="button" class="rlF" id="rlFocus" title="집중 모드: 문제 하나씩 + 연습장">🎯<small>집중</small></button><button type="button" data-r="pen" title="펜">✎</button><button type="button" data-r="erase" title="지우개" aria-label="지우개"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M14.5 3.8 20.2 9.5a1.6 1.6 0 0 1 0 2.3L12 20H7.6l-3.8-3.8a1.6 1.6 0 0 1 0-2.3L12.2 3.8a1.6 1.6 0 0 1 2.3 0Z"/><path d="M8.6 7.4l8 8"/><path d="M12 20h8"/></svg></button><button type="button" data-r="move" title="그린 선·도형 옮기기">✥</button><button type="button" data-r="undo" title="실행 취소">↶</button></div></div>
     <div class="pvBar">
       <b class="clock" id="pvClock" style="font-size:18px">0:00:00</b>
@@ -2499,13 +2499,13 @@ async function keyFromCrop(p,im){if(!im||!im.page||!window.SCAN)return null;try{
 /* 집중 모드 답란에 쓴 답이 있으면 그것만 답으로 읽는다 (문제 칸·연습장의 풀이 과정은 채점하지 않음). 소문제는 칸마다 따로 읽는다 */
 function abInk(p,ink){const a=p&&p.ab;if(!a)return null;const L=ink.filter(s=>{if(s.page!==p.page||s.raster)return false;const cx=(s.b.x0+s.b.x1)/2,cy=(s.b.y0+s.b.y1)/2;return cx>=a.x0&&cx<=a.x1&&cy>=a.y0-2&&cy<=a.y1+2});return L.length?L:null}
 function readAB(p,A){const n=fParts(p);if(n<2){const r=SV.readAnswer(Object.assign({},p,{y0:p.ab.y0-2,y1:p.ab.y1+2}),A);return r}
-  const k=p.key,w=(p.ab.x1-p.ab.x0)/n,rs=[];for(let i=0;i<n;i++){const x0=p.ab.x0+w*i,x1=x0+w,C=A.filter(s=>{const cx=(s.b.x0+s.b.x1)/2;return cx>=x0&&cx<x1});
+  const k=p.key,w=(p.ab.x1-p.ab.x0)/n,rs=[];if(!p._lab)p._gs=Array.from({length:n},(_,i)=>({x0:p.ab.x0+w*i+w*0.3,x1:p.ab.x0+w*i+w*0.7,y0:p.ab.y0+(p.ab.y1-p.ab.y0)*0.3,y1:p.ab.y1-(p.ab.y1-p.ab.y0)*0.3}));for(let i=0;i<n;i++){const x0=p.ab.x0+w*i,x1=x0+w,C=A.filter(s=>{const cx=(s.b.x0+s.b.x1)/2;return cx>=x0&&cx<x1});
     if(!C.length){rs.push({ans:'',sure:true,none:true});continue}const v=k&&k.nums?k.nums[i]:null;const q=Object.assign({},p,{x0,x1,y0:p.ab.y0-2,y1:p.ab.y1+2,key:v!=null?{text:String(v)}:{text:''},choices:[]});delete q._lab;delete q._gs;delete q._pr;delete q._pre;let r1=null;try{r1=SV.readAnswer(q,C)}catch(e){dlog('abRead',String(e).slice(0,60))}rs.push(r1||{ans:'',sure:false})}
   p._used=A;const val=rs.map(r=>/^-?\d+(\/\d+)?$/.test(r.ans||'')?r.ans:null),sure=rs.every(r=>r.sure!==false);
   if(k&&k.nums){const known=k.nums.map((v,i)=>v==null||val[i]==null?null:SV.same(v,val[i]));p._pr=known.slice();if(known.some((x,i)=>x===false&&rs[i].sure!==false))return {ans:val.map(v=>v==null?'?':v).join('|'),how:'written',sure:true};
     if(val.every(v=>v!=null)&&k.nums.every(v=>v!=null))return {ans:val.join('|'),how:'written',sure};p._pre=known}
   return {ans:'',how:'self'}}
-async function readA(p,ink){{const A=abInk(p,ink);if(A){p._used=null;p._kc=null;let r=null;try{r=readAB(p,A)}catch(e){dlog('abErr',String(e).slice(0,80));r={ans:'',how:'self'}}if(!p._used)p._used=A;if(window.NJPROF)console.log('PROF ab',p.q,JSON.stringify(r));return r||{ans:'',how:'self'}}}p._used=null;p._kc=null;if(p.key&&p.key.kind==='nparts'&&p.key.nums&&p._lab===undefined)p._lab=await subLabels(p);const r=SV.readAnswer(p,ink);if(window.NJPROF)console.log('PROF rl',p.q,JSON.stringify(r),p._used&&p._used.length);const k=keyOf(p),st=p._used,num=v=>/^-?\d{1,4}$/.test(v||'');
+async function readA(p,ink){{const A=abInk(p,ink);if(A){p._used=null;p._kc=null;let r=null;if(fParts(p)>1&&p._lab===undefined&&p.key&&p.key.kind==='nparts'){try{p._lab=await subLabels(p)}catch(e){p._lab=null}}   /* 소번호 자리: 채점 표시를 (1)(2) 위에 */try{r=readAB(p,A)}catch(e){dlog('abErr',String(e).slice(0,80));r={ans:'',how:'self'}}if(!p._used)p._used=A;if(window.NJPROF)console.log('PROF ab',p.q,JSON.stringify(r));return r||{ans:'',how:'self'}}}p._used=null;p._kc=null;if(p.key&&p.key.kind==='nparts'&&p.key.nums&&p._lab===undefined)p._lab=await subLabels(p);const r=SV.readAnswer(p,ink);if(window.NJPROF)console.log('PROF rl',p.q,JSON.stringify(r),p._used&&p._used.length);const k=keyOf(p),st=p._used,num=v=>/^-?\d{1,4}$/.test(v||'');
   if(r&&r.ans&&p.key&&p.key.kind==='circled'&&!(p.choices&&p.choices.length)&&!/^[1-5]$/.test(r.ans))return Object.assign({},r,{sure:false});
   if(!(r&&r.how==='written'&&num(k)&&st&&st.length&&st.length<=14&&window.SCAN&&SCAN.worker))return r;
   const wrong=r.sure!==false&&num(r.ans)&&r.ans!==k&&Math.abs(r.ans.length-k.length)<=1,unsure=r.sure===false&&!(p.choices&&p.choices.length)&&!/^0+$/.test(r.ans||'');if(!wrong&&!unsure)return r;
@@ -2584,6 +2584,7 @@ async function gradeFile(file,auto,mem){
       if(window.NJPROF)console.log('PROF clr',JSON.stringify(clr))}
     if(window.NJPROF)console.log('PROF g:loop');const at=S.series.length;let nw=0,ok=0,bad=0,chk=0,re=0,reOk=0;
     for(const p of P.problems){
+      if(GRADE_ONLY!=null&&p.q!==GRADE_ONLY)continue;
       const regSigs=all.filter(s=>inReg(s,p)).map(s=>s.sig),st0=S.state[p.q],erased=!!(st0&&st0.sigs&&st0.sigs.some(g=>!regSigs.includes(g)));
       // 답은 써 있는데 채점 표시가 없는 문항(기록만 있고 표시가 없는 것 포함): 새 필기가 아니어도 지금 있는 필기 전체로 처음부터 채점한다
       if(!S.state[p.q]&&!(P.prev&&P.prev[p.q])&&(()=>{const r=all.filter(s=>inReg(s,p));return tinyInk(r)&&!(p.choices||[]).some(c=>r.some(s=>Math.hypot((s.b.x0+s.b.x1)/2-c.x,(s.b.y0+s.b.y1)/2-c.y)<14))})()){if(window.NJPROF)console.log('PROF tiny',p.q);continue}   // 점·짧은 실수 획만 있는 문항은 안 푼 것으로 본다
@@ -2688,7 +2689,7 @@ async function fGo(dir){if(FOC.busy||!FOC.p)return;FOC.busy=true;const cur=FOC.p
   FOC.list=L;if(t)await fShow(L.indexOf(t));else{$('#fQn').textContent=QN(cur.q)+'번';pvToast(dir>0?'마지막 문제예요':'첫 문제예요')}}finally{FOC.busy=false}}
 function fSolClose(){FOC.sol=false;const el=$('#solPane');if(el)el.remove();$('#fSol').classList.remove('on')}
 function fSolToggle(){if(FOC.sol){fSolClose();return}if(!FOC.p)return;FOC.sol=true;solPaneEl();$('#fSol').classList.add('on');solShow(FOC.p)}   /* 집중 모드 해설: 오른쪽 칸에 지금 문제의 해설 (채점한 문제만) */
-function fClose(quiet){if(!FOC.on)return;if(FOC.sol)fSolClose();try{touchReset()}catch(e){}fNoteSave(true);FOC.on=false;$('#focus').hidden=true;$('#rlFocus').classList.remove('on');$('#pvRail').classList.remove('foc');$('#rlFocus').innerHTML='🎯<small>집중</small>';$('#pvFocus').textContent='🎯 집중';if(FOC.rt){try{FOC.rt.cancel()}catch(e){}FOC.rt=null}
+function fClose(quiet){if(!FOC.on)return;GRADE_ONLY=null;if(FOC.sol)fSolClose();try{touchReset()}catch(e){}fNoteSave(true);FOC.on=false;$('#focus').hidden=true;$('#rlFocus').classList.remove('on');$('#pvRail').classList.remove('foc');$('#rlFocus').innerHTML='🎯<small>집중</small>';$('#pvFocus').textContent='🎯 집중';if(FOC.rt){try{FOC.rt.cancel()}catch(e){}FOC.rt=null}
   if(!quiet&&FOC.p)try{pvGo(FOC.p.page)}catch(e){}FOC.pg=null;FOC.p=null}
 async function fShow(i){if(!FOC.hinted){FOC.hinted=1;const h=document.createElement('div');h.className='fSwipe';h.textContent='손가락으로 좌우로 밀어 이전 · 다음 문제';$('#focus').appendChild(h);setTimeout(()=>{h.style.opacity=0;setTimeout(()=>h.remove(),500)},3500)}fNoteSave(true);try{regFix()}catch(e){}i=Math.max(0,Math.min(FOC.list.length-1,i));FOC.i=i;const p=FOC.list[i];FOC.p=p;FOC.pg=PV.pages.find(g=>g.n===p.page);FOC.ext=0;FOC.und=[];
   try{const o=posGet(P.name)||{};posSet(P.name,Object.assign(o,{pg:p.page,f:0,n:PV.pages.length,at:Date.now(),fq:p.q}));const b=$('#pvPg');if(b&&!b.dataset.edit)b.textContent=`${p.page} / ${PV.pages.length}쪽`}catch(e){}   /* 집중 모드에서 푸는 문제의 쪽을 기억 (다시 열면 그 쪽부터) */
@@ -2700,18 +2701,21 @@ async function fRender(){const p=FOC.p,pg=FOC.pg;if(!p||!pg)return;const ox=pg.o
   /* 문제 아래 빈칸은 잘라 낸다: 작게 한 번 그려서 인쇄된 내용(+필기)의 맨 아래를 찾는다 ([더 보기]면 자르지 않음) */
   if(!FOC.full){const ck='c'+p.q;let cut=FOC.cache[ck];if(cut==null){try{const s0=Math.min(2,420/(X1-X0)),t=document.createElement('canvas');t.width=Math.ceil((X1-X0)*s0);t.height=Math.ceil((Yt-Yb)*s0);const tg=t.getContext('2d');tg.fillStyle='#fff';tg.fillRect(0,0,t.width,t.height);
       const rt=pg.page.render({canvasContext:tg,viewport:pg.page.getViewport({scale:s0}),transform:[1,0,0,1,-(X0-ox)*s0,-(pg.H-Yt)*s0],annotationMode:0});FOC.rt=rt;await rt.promise;if(FOC.p!==p)return;
-      const im=tg.getImageData(0,0,t.width,t.height).data,w=t.width;let last=0;for(let y=t.height-1;y>=0&&!last;y--){const o=y*w*4;for(let x=0;x<w;x+=2){const k=o+x*4;if(im[k]<190||im[k+1]<190||im[k+2]<190){last=y;break}}}cut=last/s0}catch(e){cut=-1}FOC.cache[ck]=cut}
+      const im=tg.getImageData(0,0,t.width,t.height).data,w=t.width,h=t.height,dk=k=>im[k]<190||im[k+1]<190||im[k+2]<190,cf=new Uint16Array(w);for(let y=0;y<h;y++){const o=y*w*4;for(let x=0;x<w;x++)if(dk(o+x*4))cf[x]++}
+      const rule=new Uint8Array(w);for(let x=0;x<w;x++)if(cf[x]>h*0.4){for(let j=Math.max(0,x-2);j<=Math.min(w-1,x+2);j++)rule[j]=1}   /* 세로 점선·쪽 테두리처럼 위아래로 길게 이어진 선은 내용으로 보지 않는다 */
+      let last=0;for(let y=h-1;y>=0&&!last;y--){const o=y*w*4;let n=0;for(let x=0;x<w;x++)if(!rule[x]&&dk(o+x*4)&&++n>=2){last=y;break}}cut=last/s0}catch(e){cut=-1}FOC.cache[ck]=cut}
     let ib=0;for(const t of pg.saved)if(!pg.del.has(t.id))for(const q of t.pts)if(q.x>=X0&&q.x<=X1&&q.y<=Yt&&q.y>=Yb)ib=Math.max(ib,Yt-q.y);for(const t of pg.fresh)for(const q of t){const Y=pg.H-q.y/pg.k;if(Y<=Yt&&Y>=Yb)ib=Math.max(ib,Yt-Y)}
     if(cut>0)Yb=Math.max(Yb,Yt-Math.max(cut,ib)-14)}
-  if(p.npr===undefined&&!(p.key&&p.key.kind==='nparts'))fPrinted(p,pg,X0,X1,Yt,Yb);
+  if(p.npr===undefined||!p.nprPos)fPrinted(p,pg,X0,X1,Yt,Yb);
   /* 답란: 인쇄된 문제 바로 아래(같은 쪽, 이 문제 칸 안)의 띠. 여기 쓴 것만 답으로 채점한다 */
   if(p.ab){const a=p.ab,bad=a.y0<p.y0-1||a.y1>p.y1+1||P.problems.some(q=>q!==p&&q.page===p.page&&q.x1>q.x0&&Math.min(q.x1,a.x1)-Math.max(q.x0,a.x0)>0.5*Math.min(q.x1-q.x0,a.x1-a.x0)&&Math.min(q.y1,a.y1)-Math.max(q.y0,a.y0)>4);if(bad){delete p.ab;dlog('abReset',p.q)}}   /* 예전에 잘못 잡힌 칸으로 정한 답란 위치면 다시 정한다 */
-  const np=fParts(p),sp=Math.max(40,Math.min(110,84/(Math.max(320,$('#fScroll').clientWidth-80)/2/(X1-X0))));if(!p.ab||p.ab.v!==3){let y1=Yb+2,y0=y1-sp;if(y0<p.y0){y0=Math.max(bot,p.y0);y1=Math.min(Yt-20,y0+sp)}p.ab={x0:X0,x1:X1,y0,y1,v:3};try{abIndex()}catch(e){}}const ab=p.ab;if(!FOC.full)Yb=Math.max(Yb,ab.y1);
+  const scE=$('#fScroll'),SWE=Math.max(320,scE.clientWidth-80),mxH=Math.max(200,scE.clientHeight*0.85-10),zf0=Math.min(fColW(SWE,X1-X0,Yt-Yb)/(X1-X0),mxH/Math.max(20,Yt-Yb)),np=fParts(p),sp=Math.max(28,Math.min(150,76/zf0));if(!p.ab||p.ab.v!==4){let y1=Yb+2,y0=y1-sp;if(y0<p.y0){y0=Math.max(bot,p.y0);y1=Math.min(Yt-20,y0+sp)}p.ab={x0:X0,x1:X1,y0,y1,v:4};try{abIndex()}catch(e){}}const ab=p.ab;if(!FOC.full)Yb=Math.max(Yb,ab.y1);
   /* 화면을 4등분한 왼쪽 위 칸에 맞춘다 (답란 포함) */
-  const sc=$('#fScroll'),SW=Math.max(320,sc.clientWidth-80),maxW=SW/2-4,maxH=Math.max(200,sc.clientHeight*(FOC.full?0.75:0.5)-10),zf=Math.min(maxW/(X1-X0),maxH/((Yt-Yb)+(ab.y1-ab.y0))),W=Math.round((X1-X0)*zf),H=Math.round((Yt-Yb)*zf),d=Math.min(window.devicePixelRatio||1,3);
+  const sc=$('#fScroll'),SW=Math.max(320,sc.clientWidth-80),maxW=fColW(SW,X1-X0,Yt-Yb+(ab.y1-ab.y0)),maxH=Math.max(200,sc.clientHeight*0.85-10),zf=Math.min(maxW/(X1-X0),maxH/((Yt-Yb)+(ab.y1-ab.y0))),W=Math.round((X1-X0)*zf),H=Math.round((Yt-Yb)*zf),d=Math.min(window.devicePixelRatio||1,3);
   Object.assign(FOC,{X0,Yt,W,H,zf,d,SW});FOC.ma={X0:ab.x0,Yt:ab.y1,zf};const AH=Math.round((ab.y1-ab.y0)*zf),AW=Math.round((ab.x1-ab.x0)*zf);
   const c=$('#fPc'),k=$('#fPi'),box=$('#fProb');box.style.width=W+'px';box.style.height=H+'px';
   for(const x of [c,k]){x.width=Math.round(W*d);x.height=Math.round(H*d);x.style.width=W+'px';x.style.height=H+'px'}
+  {const nb=document.querySelector('.fNum');if(nb)nb.style.left=(W+24)+'px'}
   const ac=$('#fAc'),ak=$('#fAi'),abx=$('#fAns');abx.style.top=(H+10)+'px';abx.style.width=AW+'px';abx.style.height=AH+'px';FOC.AH=AH+10;
   for(const x of [ac,ak]){x.width=Math.round(AW*d);x.height=Math.round(AH*d);x.style.width=AW+'px';x.style.height=AH+'px'}
   $('#fAnsL').innerHTML=np>1?Array.from({length:np},(_,i)=>`<div><b>(${i+1})</b></div>`).join('').replace(/<\/div>$/,'<i>답만 여기에</i></div>'):'<div><b>답</b><i>답만 여기에 · 풀이는 오른쪽 연습장</i></div>';
@@ -2719,17 +2723,22 @@ async function fRender(){const p=FOC.p,pg=FOC.pg;if(!p||!pg)return;const ox=pg.o
   const s=zf*d,rt=pg.page.render({canvasContext:g,viewport:pg.page.getViewport({scale:s}),transform:[1,0,0,1,-(X0-ox)*s,-(pg.H-Yt)*s],annotationMode:0});FOC.rt=rt;try{await rt.promise}catch(e){}if(FOC.rt===rt)FOC.rt=null}
 /* 소문제 수: 빠른 정답이 (1)(2)(3)으로 나뉘어 있으면 답란도 그만큼 나눈다 */
 /* 답란 칸마다 채점 표시: 소문제는 칸마다 ○·✗, 한 칸이면 칸 전체에 */
-function fAnsMarks(){const p=FOC.p,L=$('#fAnsL');if(!p||!L)return;L.querySelectorAll('.mk').forEach(e=>e.remove());const st=S&&S.state&&S.state[p.q];if(!st||st.status!=='done'||!abInk(p,memInk()))return;
+function fAnsMarks(){const p=FOC.p,L=$('#fAnsL');if(!p||!L)return;L.querySelectorAll('.mk').forEach(e=>e.remove());{const pm=$('#fPmk');if(pm)pm.innerHTML=''}const st=S&&S.state&&S.state[p.q];if(!st||st.status!=='done'||!abInk(p,memInk()))return;
   const cells=[...L.children],O='<svg class="mk" width="70" height="70" viewBox="0 0 70 70" role="img" aria-label="맞음"><circle cx="35" cy="35" r="27" fill="none" stroke="#DC2626" stroke-width="3.4" stroke-linecap="round" pathLength="120"/></svg>',X='<svg class="mk" width="70" height="70" viewBox="0 0 70 70" role="img" aria-label="틀림"><path d="M14 14L56 56M56 14L14 56" fill="none" stroke="#DC2626" stroke-width="3.6" stroke-linecap="round" pathLength="120"/></svg>';
-  const pr=st.parts||p._pr;if(cells.length>1&&pr&&pr.length===cells.length){cells.forEach((c,i)=>{if(pr[i]===true)c.insertAdjacentHTML('beforeend',O);else if(pr[i]===false)c.insertAdjacentHTML('beforeend',X)});return}
+  const pr=st.parts||p._pr;if(cells.length>1&&pr&&pr.length===cells.length){cells.forEach((c,i)=>{if(pr[i]===true)c.insertAdjacentHTML('beforeend',O);else if(pr[i]===false)c.insertAdjacentHTML('beforeend',X)});
+    const pm=null,P2=null;if(pm&&P2)pr.forEach((v,i)=>{const b=P2[i+1];if(!b||v==null)return;const cx=((b.x0+b.x1)/2-FOC.X0)*FOC.zf,cy=(FOC.Yt-(b.y0+b.y1)/2)*FOC.zf,r=Math.max(14,(b.y1-b.y0)*FOC.zf*1.15);
+      pm.insertAdjacentHTML('beforeend',`<svg class="mk" width="${2*r+8}" height="${2*r+8}" viewBox="0 0 ${2*r+8} ${2*r+8}" style="position:absolute;left:${cx-r-4}px;top:${cy-r-4}px" aria-hidden="true">${v?`<circle cx="${r+4}" cy="${r+4}" r="${r}" fill="none" stroke="#DC2626" stroke-width="3" pathLength="120"/>`:`<path d="M4 4L${2*r+4} ${2*r+4}M${2*r+4} 4L4 ${2*r+4}" fill="none" stroke="#DC2626" stroke-width="3.2" stroke-linecap="round" pathLength="120"/>`}</svg>`)});return}
   if(st.ok===true)cells[0].insertAdjacentHTML('beforeend',O);else if(st.ok===false)cells[0].insertAdjacentHTML('beforeend',X)}
+/* 문제 칸 폭: 보통은 화면 왼쪽 절반(4분할의 왼쪽 위). 세로로 긴 문제는 넓은 화면에서 왼쪽 1/3 칸에 세로로 길게 */
+function fColW(SW,w,h){const tall=h>w*1.1;return (tall&&SW/3>=480?SW/3:SW/2)-4}   /* 1/3 칸이 480px 이상 될 만큼 넓은 화면에서만 (좁으면 글씨가 작아짐) */
 function fParts(p){const k=p&&p.key;if(k&&k.kind==='nparts'&&k.nums&&k.nums.length>1)return Math.min(5,k.nums.length);if(k&&k.np>1)return Math.min(5,k.np);if(p&&p.npr>1)return Math.min(5,p.npr);return 1}
 /* 정답이 소문제로 나뉘어 있지 않아도, 문제에 (1)(2)(3)이 인쇄돼 있으면 그 수만큼 답란을 나눈다 (한 번 읽으면 기억) */
-async function fPrinted(p,pg,X0,X1,Yt,Yb){if(p.npr!==undefined||p._nprBusy)return;p._nprBusy=1;try{const s=Math.min(3,1400/(X1-X0)),c=document.createElement('canvas');c.width=Math.ceil((X1-X0)*s);c.height=Math.ceil((Yt-Yb)*s);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
+async function fPrinted(p,pg,X0,X1,Yt,Yb){if((p.npr!==undefined&&p.nprPos)||p._nprBusy)return;p._nprBusy=1;try{const s=Math.min(3,1400/(X1-X0)),c=document.createElement('canvas');c.width=Math.ceil((X1-X0)*s);c.height=Math.ceil((Yt-Yb)*s);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
   await pg.page.render({canvasContext:g,viewport:pg.page.getViewport({scale:s}),transform:[1,0,0,1,-(X0-(pg.ox||0))*s,-(pg.H-Yt)*s],annotationMode:0}).promise;
   const wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;const W=await SCAN.words(wk,c,null,11);c.width=c.height=0;const txt=W.map(w=>w.t).join(' ');
-  const got=new Set();for(const m of txt.matchAll(/[(（]\s*([1-5])\s*[)）]/g))got.add(+m[1]);let n=0;while(got.has(n+1))n++;p.npr=n>=2?n:0;dlog('npr',p.q+':'+n)}catch(e){delete p.npr;dlog('nprErr',String(e).slice(0,60))}finally{p._nprBusy=0}
-  if(p.npr>1&&FOC.on&&FOC.p===p){delete p.ab;fRender()}}
+  const got=new Set();for(const m of txt.matchAll(/[(（]\s*([1-5])\s*[)）]/g))got.add(+m[1]);let n=0;while(got.has(n+1))n++;p.npr=n>=2?n:0;
+  {const pos={};for(const w of W){const m=/^[(（]?\s*([1-5])\s*[)）]/.exec(w.t||'');if(!m||!/[()（）]/.test(w.t))continue;const k=+m[1];if(pos[k])continue;pos[k]={x0:X0+w.x0/s,x1:X0+w.x1/s,y1:Yt-w.y0/s,y0:Yt-w.y1/s}}p.nprPos=pos}   /* 소번호 자리 (채점 표시를 그 위에) */dlog('npr',p.q+':'+n)}catch(e){delete p.npr;dlog('nprErr',String(e).slice(0,60))}finally{p._nprBusy=0}
+  if(FOC.on&&FOC.p===p){if(p.npr>1&&fParts(p)!==($('#fAnsL')||{children:[]}).children.length)delete p.ab;fRender()}}
 /* 좌표: 쪽 화면 좌표(필기 저장 단위) ↔ 집중 화면 좌표 */
 const fFromPage=(pg,x,y,m)=>{m=m||FOC;const X=x/pg.k+(pg.ox||0),Y=pg.H-y/pg.k;return {x:(X-m.X0)*m.zf,y:(m.Yt-Y)*m.zf}};
 const fToPage=(pg,x,y,m)=>{m=m||FOC;const X=x/m.zf+m.X0,Y=m.Yt-y/m.zf;return {x:(X-(pg.ox||0))*pg.k,y:(pg.H-Y)*pg.k}};
@@ -2818,7 +2827,7 @@ async function subLabels(p){const k=p&&p.key,n=k&&k.nums?k.nums.length:0;if(n<2|
   const key=P.name+'#'+p.page;let R=SUBR[key];if(!R){for(const x of Object.keys(SUBR).slice(0,-3))delete SUBR[x];const pg=await P.doc.getPage(p.page),sc=2,vp=pg.getViewport({scale:sc}),W=Math.round(vp.width),H=Math.round(vp.height),c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d',{willReadFrequently:true});g.fillStyle='#fff';g.fillRect(0,0,W,H);
     await pg.render({canvasContext:g,viewport:vp,annotationMode:0}).promise;const d=g.getImageData(0,0,W,H).data,gr=new Uint8Array(W*H);for(let i=0,j=0;j<gr.length;i+=4,j++)gr[j]=(d[i]*77+d[i+1]*150+d[i+2]*29)>>8;c.width=c.height=0;
     R={W,H,gr,sc,pdfH:pg.view[3]-pg.view[1],ox:pg.view[0],oy:pg.view[1]};SUBR[key]=R}
-  const sc=R.sc,px=x=>Math.round((x-R.ox)*sc),py=y=>Math.round((R.pdfH-(y-R.oy))*sc),ink=(x,y)=>x>=0&&y>=0&&x<R.W&&y<R.H&&R.gr[y*R.W+x]<140;
+  const sc=R.sc,px=x=>Math.round((x-R.ox)*sc),py=y=>Math.round((R.pdfH-(y-R.oy))*sc),ink=(x,y)=>x>=0&&y>=0&&x<R.W&&y<R.H&&R.gr[y*R.W+x]<185   /* 연한 회색으로 인쇄된 (1)(2)도 */;
   const XL=Math.max(0,px(p.x0-8)),XR=Math.min(R.W-1,px(Math.min(p.x1,p.x0+90))),YT=Math.max(0,py(p.y1)),YB=Math.min(R.H-1,py(p.y0));
   const XN=Math.min(XR,px(p.x0+26)),row=y=>{for(let x=XL;x<=XN;x++)if(ink(x,y))return true;return false},bands=[];let t=-1,gap=0;
   for(let y=YT;y<=YB+1;y++){const h=y<=YB&&row(y);if(h){if(t<0)t=y;gap=0}else if(t>=0&&++gap>sc*1.5){bands.push({t,b:y-gap});t=-1;gap=0}}
@@ -3450,6 +3459,10 @@ function pvDraw(pg){if(FOC.on&&FOC.pg===pg)fDrawSoon();if(!pg.live)return;if(!pg
   const line=(pts,css)=>{g.beginPath();pts.forEach((p,i)=>{const x=css?p.x:(p.x-(pg.ox||0))*k,y=css?p.y:(H-p.y)*k;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke()};
   for(const s of pg.saved)if(!pg.del.has(s.id)){g.strokeStyle=s.c||'#1d4ed8';g.lineWidth=2*(s.w||1);line(s.pts,false)}
   for(const s of pg.fresh.concat(pg.cur&&pg.cur.snapped?[pg.cur]:[]))fPath(g,s,inkW(s,0),s.c,!!s.snapped);if(!liveBusy())liveClear();   /* 획 하나를 한 번에 그린다 (조각조각 그리면 이음새가 점처럼 보임) */
+  try{const ox=pg.ox||0,inA=(a,x,y)=>x>=a.x0&&x<=a.x1&&y>=a.y0&&y<=a.y1;for(const q of (P&&P.problems)||[]){const a=q.ab;if(!a||q.page!==pg.n)continue;
+      if(!(pg.saved.some(s=>!pg.del.has(s.id)&&s.pts.some(t=>inA(a,t.x,t.y)))||pg.fresh.some(s=>s.some(t=>inA(a,t.x/k+ox,H-t.y/k)))))continue;   /* 답을 쓴 답란만 */const X=x=>(x-ox)*k,Y=y=>(H-y)*k,n=fParts(q);g.save();g.setLineDash([5,4]);g.strokeStyle='rgba(37,99,235,.55)';g.lineWidth=1.3;g.strokeRect(X(a.x0)+2,Y(a.y1),X(a.x1)-X(a.x0)-4,Y(a.y0)-Y(a.y1));
+      for(let i=1;i<n;i++){const xx=X(a.x0+(a.x1-a.x0)*i/n);g.beginPath();g.moveTo(xx,Y(a.y1));g.lineTo(xx,Y(a.y0));g.stroke()}g.setLineDash([]);g.fillStyle='rgba(37,99,235,.8)';g.font='700 '+Math.max(9,Math.round(10*k))+'px sans-serif';
+      for(let i=0;i<n;i++)g.fillText(n>1?'('+(i+1)+')':'답',X(a.x0+(a.x1-a.x0)*i/n)+5,Y(a.y1)+Math.max(10,Math.round(11*k)));g.restore()}}catch(e){}   /* 집중 모드 답란 자리를 쪽 위에도 연하게: 답이 어느 칸에 쓰였는지 보이게 */
   for(const s of pg.marks){if(s.skip){g.save();g.globalAlpha=0.42;g.strokeStyle='#facc15';g.lineCap='butt';g.lineWidth=(s.w||14)*k;line(s.pts,false);g.restore();continue}g.lineWidth=2.6;g.strokeStyle=s.pend?'#d97706':'#dc2626';line(s.pts,false)}
   if(PV.sel&&PV.sel.pg===pg&&!(PV.sel.h.f&&!pg.fresh.includes(PV.sel.h.f))){const b=selBox(pg,PV.sel.h),m=8;g.save();g.setLineDash([6,5]);g.strokeStyle='#0ea5e9';g.lineWidth=1.5;g.strokeRect(b.x0-m,b.y0-m,b.x1-b.x0+2*m,b.y1-b.y0+2*m);g.setLineDash([]);const H=selHandles(b);g.fillStyle='#fff';g.lineWidth=2;if(!selRound(PV.sel.h)){g.beginPath();g.moveTo(H.rot.x,b.y0-m);g.lineTo(H.rot.x,H.rot.y+9);g.stroke();
     g.beginPath();g.arc(H.rot.x,H.rot.y,9,0,7);g.fill();g.stroke();g.beginPath();g.arc(H.rot.x,H.rot.y,4.5,-0.3,4.4);g.stroke()}   // 돌리기 손잡이
@@ -3940,17 +3953,18 @@ function ungraded(){if(!S||!P||!PV.pages)return [];const ink=memInk();return P.p
    위 문제에 쓴 답이 아래 문제 답으로도 읽히고 '내 풀이'에 남의 문제가 보인다 → 칸의 위 끝은 자기 번호 바로 위, 아래 끝은 다음 번호 위까지 */
 /* 칸을 정리한 뒤, 예전에 잘못 잡힌 칸 때문에 '직접 채점'으로 남아 있던 문항(이제 그 칸에 필기가 없음)은 지운다 */
 function regStale(){if(!S||!S.state||!P)return;const ink=memInk();for(const q of Object.keys(S.state)){const st=S.state[q];if(!st||st.status!=='check')continue;const p=P.problems.find(x=>String(x.q)===q);if(p&&!ink.some(s=>inReg(s,p))){delete S.state[q];try{dlog('stale',q)}catch(e){}}}}
-function regDirty(p){delete p.ab;delete p.npr;try{if(typeof FOC!=='undefined'&&FOC.cache)delete FOC.cache['c'+p.q]}catch(e){}}
+function regDirty(p){delete p.ab;delete p.npr;delete p.nprPos;try{if(typeof FOC!=='undefined'&&FOC.cache)delete FOC.cache['c'+p.q]}catch(e){}}
 function regFix(){if(!P||!P.problems)return 0;let n=0;const by={};for(const p of P.problems){if(p.ly==null||!(p.x1>p.x0))continue;(by[p.page]=by[p.page]||[]).push(p)}
   for(const L of Object.values(by)){if(L.length<2)continue;for(const a of L)for(const b of L){if(a===b||!(b.ly<a.ly))continue;   /* b가 a보다 아래 */
       const ov=Math.min(a.x1,b.x1)-Math.max(a.x0,b.x0);if(ov<0.5*Math.min(a.x1-a.x0,b.x1-b.x0))continue;
       const top=b.ly+Math.max(18,(b.ls||12)*1.9);   /* b 번호의 윗선 */if(b.y1>top+4&&b.y1>a.ly-6){b.y1=Math.max(b.y0+10,Math.min(b.y1,top));n++;regDirty(b)}   /* 아래 문제 칸이 위 번호까지 올라옴 */
       if(a.y0<b.y1-2&&a.ly>b.y1){a.y0=b.y1;n++;regDirty(a)}}}   /* 위 문제 칸은 아래 번호 위에서 끝 */
   if(n)try{dlog('regFix',n)}catch(e){}return n}
+let GRADE_ONLY=null;   /* 집중 모드: 지금 보는 문제만 채점·직접 채점 */
 function goResult(){const r=S&&S.goRes;if(!r||!r.n)return;const p2=n=>String(n).padStart(2,'0');
   pvToast(`<div class="goRes"><div><b>${r.ok} / ${r.n}</b><small>정답</small></div>${r.gap?`<div><b class="gp">GAP ${p2(r.gap)}</b><small>교정할 문제 ${r.gap}개</small></div>`:''}<small>푼 문제만 채점했어요 · 안 푼 문제는 그대로${r.chk?` · 직접 확인 ${r.chk}`:''}</small></div>`,r.gap?[['GAP 확인 →',async()=>{await pvEnd();view('ana')}]]:[])}
 function goHtml(){return '<span class="goT">GO <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span><small class="goS">채점하기</small>'}
-async function pvGrade(){try{regFix();abIndex();regStale()}catch(e){}try{setTimeout(()=>{if(!S||!S.state||!P)return;for(const p of P.problems){const st=S.state[p.q];if(st&&p._pr&&p.ab&&!st.parts)st.parts=p._pr.slice()}},0)}catch(e){}
+async function pvGrade(){GRADE_ONLY=FOC.on&&FOC.p?FOC.p.q:null;try{regFix();abIndex();regStale()}catch(e){}try{setTimeout(()=>{if(!S||!S.state||!P)return;for(const p of P.problems){const st=S.state[p.q];if(st&&p._pr&&p.ab&&!st.parts)st.parts=p._pr.slice()}},0)}catch(e){}
   if(PV.review){const ug=ungraded().length;pvResume();if(!ug&&!FOC.on)return}   /* 집중 모드는 다시 쓴 답(이미 표시가 있는 문제)도 바로 다시 채점 */   // 채점 안 된 답이 남아 있으면 이어서 학습하기 대신 바로 채점
   if(!S||PV.busy)return;PV.busy=true;pvStatus();$('#pvGrade').disabled=true;
   try{const job=pvCommit();if(job)pvPersist(job);const saved=!!job;
@@ -3963,7 +3977,7 @@ async function pvGrade(){try{regFix();abIndex();regStale()}catch(e){}try{setTime
 /* 스스로 채점: 정답 그림을 보고 학생이 ○/／를 고른다 (서술형·여러 소문항 등 자동으로 못 읽는 문항) */
 function selfPending(){if(!S)return [];return Object.values(S.state).filter(x=>P&&P.problems.some(p=>p.q===x.q)&&x.status==='check'||(x.retry&&x.retry.self&&!x.retry.ans)).sort((a,b)=>a.q-b.q)}
 let SS=null;
-async function selfSheet(onDone){const L=selfPending();if(!L.length){if(onDone)onDone();return}SS={L,i:0,onDone,n:0};$('#selfSheet').hidden=false;ssShow()}
+async function selfSheet(onDone){const L=selfPending().filter(x=>GRADE_ONLY==null||x.q===GRADE_ONLY);if(!L.length){if(onDone)onDone();return}SS={L,i:0,onDone,n:0};$('#selfSheet').hidden=false;ssShow()}
 /* 소문제 (1)(2)…: 정답 글에서 개수를 센다. 소문제마다 ○/／를 고르고, 모두 맞아야 그 문항이 ○ */
 function partsOf(p){const k=p&&p.key;if(!k)return 0;let n=0;if(k.nums&&k.nums.length>1)n=k.nums.length;if(k.np>1)n=k.np;if(k.multi&&k.multi.length>1)n=k.multi.length;
   const raw=String(k.raw||'')+' '+String(p.keyShow||'');for(const m of raw.matchAll(/\(\s*([1-9lI|])\s*\)/g)){const d=+String(m[1]).replace(/[lI|]/,'1');if(d>n&&d<=6)n=d}
