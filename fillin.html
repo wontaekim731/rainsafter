@@ -3631,9 +3631,9 @@ async function showQ(){
 }
 /* 퀴즈 확대·축소: 문제 그림을 다시 그리고, 이미 쓴 필기도 같은 비율로 키운다 */
 async function qzLayout(z){if(!QZ)return;const it=QZ.list[QZ.i],page=$('#qzPage'),dpr=window.devicePixelRatio||1;z=Math.max(1,Math.min(3,Math.round(z*100)/100));
-  const cw=Math.round(QZ.cw0*z),k=cw/it.w,old=INK.k||k,f=k/old;if(f!==1){for(const s of INK.strokes)for(const p of s){p.x*=f;p.y*=f}}
+  const cw=Math.round(QZ.cw0*z),k=Math.min(QZ.cw0/it.w,Math.max(1.2,QZ.cw0/520))*z,old=INK.k||k,f=k/old;if(f!==1){for(const s of INK.strokes)for(const p of s){p.x*=f;p.y*=f}}
   const H=Math.round(it.h*k+Math.max(380,QZ.cw0*0.75)*z),d2=Math.min(dpr,Math.sqrt(9e6/(cw*H)));INK.k=k;QZ.z=z;
-  const pc=$('#qzProb');pc.width=Math.round(cw*d2);pc.height=Math.round(it.h*k*d2);pc.style.width=cw+'px';pc.style.height=Math.round(it.h*k)+'px';
+  const pc=$('#qzProb');pc.width=Math.round(it.w*k*d2);pc.height=Math.round(it.h*k*d2);pc.style.width=Math.round(it.w*k)+'px';pc.style.height=Math.round(it.h*k)+'px';
   const g=pc.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,pc.width,pc.height);page.style.height=H+'px';
   const ic=$('#qzInk');ic.width=Math.round(cw*d2);ic.height=Math.round(H*d2);ic.style.width=cw+'px';ic.style.height=H+'px';INK.dpr=d2;inkRedraw();
   $('#qzZ').textContent=Math.round(z*100)+'%';
