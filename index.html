@@ -619,7 +619,7 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9.5" y="9.5" width="4" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span><span>FILLIN</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.8</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.8)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9.5" y="9.5" width="4" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span><span>FILLIN</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.9</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.9)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>GAP</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -670,7 +670,7 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn quiet" id="pvFocus" type="button" title="문제를 하나씩 크게 보고, 아래 연습장에 풀이 정리" style="padding:9px 12px;font-size:15px">🎯 집중</button><button class="btn mid" id="pvGrade" type="button" aria-label="GO, 푼 문제 채점하기" style="padding:8px 16px;font-size:15px"><span class="goT">GO <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span><small class="goS">채점하기</small></button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v44.8</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v44.9</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" title="나가기 (저장하고 문제집 목록으로)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5"/><path d="M11 5l-7 7 7 7"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1849,7 +1849,7 @@ const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date
 window.addEventListener('error',e=>{dlog('err',(e.message||'')+' @'+(e.lineno||''));if(e.error||e.message)window.NJERR&&NJERR(e.error||{message:e.message})},true);window.addEventListener('unhandledrejection',e=>{dlog('rej',String(e.reason&&(e.reason.message||e.reason)||''));window.NJERR&&NJERR(e.reason)});
 {const ce=console.error.bind(console);console.error=function(...a){ce(...a);try{const x=a.find(v=>v instanceof Error||(v&&v.name&&v.message))||(typeof a[0]==='string'?{message:a.map(v=>typeof v==='string'?v:(v&&v.message)||'').join(' ').trim()}:null);if(x&&window.NJERR){const st=new Error().stack;NJERR(x,(x.stack?'':'')||errWhere(x.stack)||errWhere(st))}}catch(_){}}}
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v44.8',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v44.9',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -2494,15 +2494,23 @@ function xiClean(probs){const X=probs.filter(p=>p.q>=100000);if(X.length<2)retur
     if(L2&&!probs.some(o=>o.q===q2)){p.q=q2;if(p.key&&p.key.xi)p.key={text:'✓',kind:'self',ebs:1,xi:1}}else bad.add(p)}
   return bad.size?probs.filter(p=>!bad.has(p)):probs}
 function QN(q){q=+q;if(q>=3000000&&q<4000000){const p=P&&P.problems&&P.problems.find(x=>x.q===q);return p&&p.disp?`${p.page-((P.seqAns&&P.seqAns.off)||0)}쪽 ${String(p.disp).padStart(2,'0')}`:q}return q>=100000&&q<1000000?String.fromCharCode(64+Math.floor(q/100000))+String(q%100000).padStart(2,'0'):q}   // 자이스토리 'A32'
-const EBS={sec:{},off:{}};
-async function ebsPrinted(pi){if(EBS.off[pi]!=null)return EBS.off[pi];try{const page=await P.doc.getPage(pi),B=await SCAN.render(page,2,0,1),wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;
+const EBS={sec:{},off:{},raw:{},d:null,k:null};
+/* 책마다 따로: 정답 구역 위치와 '쪽 번호 차이'는 기기에 기억해 두고 다음 채점부터 다시 읽지 않는다 */
+function ebsBook(){const k=P&&P.name;if(EBS.k===k)return;EBS.k=k;EBS.sec={};EBS.off={};EBS.raw={};EBS.d=null;try{const o=JSON.parse(localStorage.getItem('njebs:'+k)||'null');if(o){EBS.sec=o.sec||{};EBS.d=o.d!=null?o.d:null}}catch(e){}}
+function ebsKeep(){try{if(EBS.k)localStorage.setItem('njebs:'+EBS.k,JSON.stringify({sec:EBS.sec,d:EBS.d}))}catch(e){}}
+async function ebsRaw(pi){if(EBS.raw[pi])return EBS.raw[pi];let c=[];try{const page=await P.doc.getPage(pi),B=await SCAN.render(page,2,0,1),wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;
   const ws=await SCAN.words(wk,B.c,{left:0,top:Math.round(B.h*0.9),width:B.w,height:B.h-Math.round(B.h*0.9)},11);B.c.width=B.c.height=0;
-  const c=ws.filter(w=>/^\d{1,3}$/.test(w.t)&&(w.x1<B.w*0.25||w.x0>B.w*0.75)).map(w=>+w.t).filter(n=>n>0&&n<=pi);EBS.off[pi]=c.length?c[0]:null}catch(e){console.error(e);EBS.off[pi]=null}
-  if(EBS.off[pi]==null){const ks=Object.keys(EBS.off).map(Number).filter(k=>EBS.off[k]!=null);if(ks.length){const k=ks[0];return pi-(k-EBS.off[k])}}   // 못 읽으면 다른 쪽에서 읽은 차이로
-  return EBS.off[pi]}
+  c=ws.filter(w=>/^\d{1,3}$/.test(w.t)&&(w.x1<B.w*0.25||w.x0>B.w*0.75)).map(w=>+w.t).filter(n=>n>0&&n<=pi)}catch(e){console.error(e)}return EBS.raw[pi]=c}
+/* 인쇄된 쪽 번호: 한 쪽만 읽으면 '11'을 '1'로 읽는 일이 있다 → 앞뒤 쪽과 '파일 쪽 − 인쇄 쪽' 차이가 맞는지 확인하고, 맞는 차이를 쓴다 */
+async function ebsPrinted(pi){ebsBook();if(EBS.off[pi]!==undefined)return EBS.off[pi];const c=await ebsRaw(pi);
+  if(EBS.d!=null&&(c.includes(pi-EBS.d)||!c.length))return EBS.off[pi]=pi-EBS.d;
+  const N=P.doc.numPages,votes={};for(const v of c)votes[pi-v]=(votes[pi-v]||0)+1;
+  for(const k of [pi+1,pi-1,pi+2,pi-2].filter(k=>k>=1&&k<=N)){for(const v of await ebsRaw(k))votes[k-v]=(votes[k-v]||0)+1;const best=Object.entries(votes).sort((a,b)=>b[1]-a[1])[0];
+    if(best&&best[1]>=2){const d=+best[0];if(EBS.d!==d){dlog('ebsOff',pi+' 읽음 '+c.join('/')+' → 차이 '+d);EBS.d=d;ebsKeep()}return EBS.off[pi]=pi-d}}
+  if(EBS.d!=null)return EBS.off[pi]=pi-EBS.d;return EBS.off[pi]=c.length?c[0]:null}
 const ebsRange=t=>{t=String(t||'').replace(/\s+/g,'');const out=[];for(const part of t.split(',')){const m=/^(\d{1,3})[~\-–](\d{1,3})$/.exec(part);if(m){const a=+m[1],b=+m[2];if(b>=a&&b-a<60)for(let i=a;i<=b;i++)out.push(i)}else if(/^\d{1,3}$/.test(part))out.push(+part)}return out};
 // 정답 페이지: 구역 제목 밑줄(가로 점선)을 찾고, 그 줄 오른쪽 끝 '본문 10~19쪽'을 한글 OCR로 읽음
-async function ebsPage(pi){if(EBS.sec[pi])return EBS.sec[pi];const R={heads:[],W:0,H:0,pH:0,SC:3};try{
+async function ebsPage(pi){ebsBook();if(EBS.sec[pi])return EBS.sec[pi];const R={heads:[],W:0,H:0,pH:0,SC:3};try{
   const page=await P.doc.getPage(pi),SC=3,B=await SCAN.render(page,SC,0,1),W=B.w,H=B.h;R.W=W;R.H=H;R.pH=page.view[3]-page.view[1];
   const D=B.g.getImageData(0,0,W,H).data,rules=[];
   for(const [cx0,cx1] of [[0,W>>1],[W>>1,W]]){let prev=-99;for(let y=Math.round(H*0.04);y<H*0.95;y++){let n=0,f=-1,l=-1;for(let x=cx0;x<cx1;x++){const i=(y*W+x)*4;if(Math.min(D[i],D[i+1],D[i+2])<235){n++;if(f<0)f=x;l=x}}
@@ -2511,7 +2519,7 @@ async function ebsPage(pi){if(EBS.sec[pi])return EBS.sec[pi];const R={heads:[],W
   for(const r of rules){const t=await SCAN.ocrBox(kw,B,r.l-W*0.13,r.y-SC*15,r.l+SC*2,r.y-SC*2,'');const m=/본문(.*?)쪽/.exec(t);if(!m)continue;
     const pg=ebsRange(m[1].replace(/[^\d~,\-–]/g,''));if(pg.length)R.heads.push({col:r.col,y:r.y,f:r.f,l:r.l,pages:pg,t})}
   B.c.width=B.c.height=0}catch(e){console.error(e)}
-  if(window.NJPROF)console.log('PROF ebsPage',pi,JSON.stringify(R.heads.map(h=>[h.col,h.y,h.pages[0],h.pages[h.pages.length-1]])));EBS.sec[pi]=R;return R}
+  if(window.NJPROF)console.log('PROF ebsPage',pi,JSON.stringify(R.heads.map(h=>[h.col,h.y,h.pages[0],h.pages[h.pages.length-1]])));EBS.sec[pi]=R;ebsKeep();return R}
 // ①~⑤: 원 안쪽 글자만 떼어 10×14 격자로 만든 뒤 1~5 글꼴 견본과 비교 (Tesseract는 ④를 못 읽음)
 const EBSG={GX:10,GY:14,T:null};
 function ebsGrid(get,x0,y0,x1,y1){const {GX,GY}=EBSG,v=[],w=x1-x0+1,h=y1-y0+1;for(let j=0;j<GY;j++)for(let i=0;i<GX;i++){let n=0,t=0;for(let y=Math.floor(y0+j*h/GY);y<y0+(j+1)*h/GY;y++)for(let x=Math.floor(x0+i*w/GX);x<x0+(i+1)*w/GX;x++){t++;n+=get(x,y)}v.push(t?n/t:0)}return v}
@@ -2528,8 +2536,11 @@ async function ebsBlockKey(pi,h,n,ch){const segs=[],R=await ebsPage(pi);const nx
   if(!nx){if(h.col===0){const f=R.heads.filter(o=>o.col===1).sort((a,b)=>a.y-b.y)[0];segs.push({pi,col:1,y0:R.H*0.04,y1:f?f.y-R.SC*16:R.H*0.95})}
     else if(pi<P.doc.numPages){const R2=await ebsPage(pi+1),f=R2.heads.filter(o=>o.col===0).sort((a,b)=>a.y-b.y)[0];segs.push({pi:pi+1,col:0,y0:R2.H*0.04,y1:f?f.y-R2.SC*16:R2.H*0.95})}}
   const wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;
-  for(const sg of segs){if(sg.y1-sg.y0<20)continue;const page=await P.doc.getPage(sg.pi),SC=3,B=await SCAN.render(page,SC,0,1),W=B.w,pH=page.view[3]-page.view[1],ox=page.view[0],oy=page.view[1];try{
-    const x0=sg.col?W>>1:0,ws=await SCAN.words(wk,B.c,{left:x0,top:Math.round(sg.y0),width:W>>1,height:Math.round(sg.y1-sg.y0)},11);
+  for(const sg of segs){if(sg.y1-sg.y0<20)continue;const page=await P.doc.getPage(sg.pi),SC=3,pH=page.view[3]-page.view[1],ox=page.view[0],oy=page.view[1];
+    /* 같은 정답 쪽을 문항마다 다시 그리고 다시 읽지 않는다: 그린 쪽 하나와 구역 글자 인식 결과를 채점하는 동안 기억 */
+    clearTimeout(EBS.bt);let B=EBS.B&&EBS.B.k===P.name+'#'+sg.pi?EBS.B.B:null;if(!B){if(EBS.B)EBS.B.B.c.width=EBS.B.B.c.height=0;B=await SCAN.render(page,SC,0,1);EBS.B={k:P.name+'#'+sg.pi,B}}const W=B.w;
+    EBS.bt=setTimeout(()=>{if(EBS.B){EBS.B.B.c.width=EBS.B.B.c.height=0;EBS.B=null}},20000);try{
+    const x0=sg.col?W>>1:0,sk=P.name+'#'+sg.pi+':'+sg.col+':'+Math.round(sg.y0)+':'+Math.round(sg.y1);EBS.ws=EBS.ws||{};const ws=EBS.ws[sk]||(EBS.ws[sk]=await SCAN.words(wk,B.c,{left:x0,top:Math.round(sg.y0),width:W>>1,height:Math.round(sg.y1-sg.y0)},11));
     const labs=ws.map(w=>{const m=/^(\d{2})/.exec(w.t);return m&&w.y1-w.y0>SC*5?{n:+m[1],x0:w.x0,y0:w.y0,y1:w.y1,h:w.y1-w.y0}:null}).filter(l=>l&&SCAN.colorOf(B,{x0:l.x0,y0:l.y0,x1:l.x0+l.h*1.1,y1:l.y1})>22);
     let L=labs.find(l=>l.n===n);
     if(!L){const col=labs.find(l=>(l.n-n)%4===0&&l.n!==n),row=labs.find(l=>Math.abs(l.n-n)<4&&Math.floor((l.n-1)/4)===Math.floor((n-1)/4));   // 4칸 격자에서 못 읽은 번호는 같은 열·같은 행으로 위치 추정
@@ -2540,7 +2551,7 @@ async function ebsBlockKey(pi,h,n,ch){const segs=[],R=await ebsPage(pi);const nx
     if(window.NJPROF)console.log('PROF ebsKey',n,sg.pi,L.guess?'guess':'',JSON.stringify(c),JSON.stringify(t));
     if(c)return {text:c,kind:'circled',img,ebs:1,ebsT:1};
     if(/^-?\d{1,4}$/.test(t))return {text:t,kind:'number',img,ebs:1,ebsT:1};
-    return {text:'✓',kind:'self',img,ebs:1,ebsT:1}}finally{B.c.width=B.c.height=0;try{page.cleanup()}catch(e){}}}
+    return {text:'✓',kind:'self',img,ebs:1,ebsT:1}}finally{}}
   return null}
 async function ebsKey(p){const pp=await ebsPrinted(p.page);if(window.NJPROF)console.log('PROF ebsPrinted',p.page,pp);if(pp==null)return null;const dq=p.disp||p.q,N=P.doc.numPages,ch=!!(p.choices&&p.choices.length);
   const sr=P.solRange||[],from=Math.max(1,sr[0]?sr[0]-8:N-14),to=Math.min(N,sr[1]?sr[1]+1:N);
@@ -3156,7 +3167,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.8 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.9 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -3716,7 +3727,7 @@ for(const ev of ['selectstart','contextmenu'])document.addEventListener(ev,e=>{c
 function pvSeg(pg,from){if(!pg.live||!pg.cur)return;if(!pg.ink.width){pvDraw(pg);return}const g=pg.g,d=pg.di||pg.d||window.devicePixelRatio||1,s=pg.cur;g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';g.strokeStyle=s.c||'#1d4ed8';
   inkCurve(g,s,from,false)}
 function pvDrawSoon(pg){if(pg._raf)return;pg._raf=requestAnimationFrame(()=>{pg._raf=0;pvDraw(pg)})}
-function pvInk(pg){if(pg.ink.width)return true;pg.di=Math.max(pg.d||1,Math.min((window.devicePixelRatio||1)*(PV.z||1),Math.sqrt((IOS?6e6:12e6)/(pg.cw*pg.h))));/* 필기 캔버스는 화면 화소만큼 선명하게 (확대해도 계단·흐림 없이) */const W=Math.round(pg.cw*pg.di),H=Math.round(pg.h*pg.di);if(!W||!H)return false;pg.ink.width=W;pg.ink.height=H;pg.g=pg.ink.getContext('2d');if(pg.ink.width!==W)dlog('inkFail',pg.n);return true}
+function pvInk(pg){if(pg.ink.width)return true;pg.di=Math.max(pg.d||1,Math.min((window.devicePixelRatio||1)*(PV.z||1),Math.sqrt((IOS||LOWCV?6e6:12e6)/(pg.cw*pg.h))));/* 필기 캔버스는 화면 화소만큼 선명하게 (확대해도 계단·흐림 없이) */const W=Math.round(pg.cw*pg.di),H=Math.round(pg.h*pg.di);if(!W||!H)return false;pg.ink.width=W;pg.ink.height=H;pg.g=pg.ink.getContext('2d');if(pg.ink.width!==W)dlog('inkFail',pg.n);return true}
 function pvDraw(pg){if(FOC.on&&FOC.pg===pg)fDrawSoon();if(!pg.live)return;if(!pg.ink.width){if(!(pg.saved.length||pg.marks.length||pg.fresh.length||pg.cur||(PV.sel&&PV.sel.pg===pg)))return;if(!pvInk(pg))return}const g=pg.g,k=pg.k,H=pg.H,d=pg.di||pg.d||window.devicePixelRatio||1;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,pg.ink.width,pg.ink.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';
   const line=(pts,css)=>{g.beginPath();pts.forEach((p,i)=>{const x=css?p.x:(p.x-(pg.ox||0))*k,y=css?p.y:(H-p.y)*k;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke()};
   for(const s of pg.saved)if(!pg.del.has(s.id)){g.strokeStyle=s.c||'#1d4ed8';g.lineWidth=2*(s.w||1);line(s.pts,false)}
@@ -3855,8 +3866,9 @@ function shapePts(f){const out=[],add=(a,b)=>{const d=Math.hypot(b.x-a.x,b.y-a.y
   if(f.k==='ell'){const m=Math.max(24,Math.ceil(Math.PI*(f.rx+f.ry)/3));for(let i=0;i<=m;i++){const t=i/m*Math.PI*2;out.push({x:f.cx+f.rx*Math.cos(t),y:f.cy+f.ry*Math.sin(t),p:0.5})}return out}
   const V=f.V;for(let i=0;i+1<V.length;i++)add(V[i],V[i+1]);if(f.closed)add(V[V.length-1],V[0]);const e=f.closed?V[0]:V[V.length-1];out.push({x:e.x,y:e.y,p:0.5});return out}
 /* 쪽 그림 해상도: 아이패드 사파리는 캔버스 메모리가 작아 크게 확대하면 쪽이 하얗게 깜빡인다 → 캔버스 하나를 400만 화소까지로 */
+const LOWCV=/Android|Linux|SamsungBrowser/.test(navigator.userAgent)&&navigator.maxTouchPoints>1;   /* 안드로이드 태블릿: 쪽 그림을 너무 크게 그리면 쪽마다 2~4초 걸린다 */
 const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-function pvD(pg){const dpr=window.devicePixelRatio||1;return Math.min(dpr*(PV.z||1),Math.sqrt((IOS?4e6:9e6)/(pg.cw*pg.h)))}
+function pvD(pg){const dpr=window.devicePixelRatio||1;return Math.min(dpr*(PV.z||1),Math.sqrt((IOS||LOWCV?4e6:9e6)/(pg.cw*pg.h)))}
 function pvApplyZ(){const z=PV.z||1;if(!PV.inner)return;PV.inner.style.transform=`scale(${z})`;PV.sizer.style.width=Math.round(PV.baseW*z)+'px';PV.sizer.style.height=Math.round(PV.baseH*z)+'px'}
 let FINGER_INK=false;try{FINGER_INK=localStorage.getItem('njFinger')==='1'}catch(e){}
 /* 손가락 화면 넘기기는 브라우저 기본 스크롤에 맡긴다 (그리는 중에도 부드럽게, 관성도 기기 그대로). 손가락으로 쓰기를 켰고 펜을 아직 안 쓴 경우만 손가락이 그린다 */
