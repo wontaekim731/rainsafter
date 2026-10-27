@@ -376,6 +376,14 @@ body:has(#vPdf:not([hidden])) .appbar{display:none}
 #wxSheet{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(15,23,42,.35)}#wxSheet[hidden]{display:none}#wxSheet .sh{background:var(--paper);width:min(620px,100%);max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 18px 24px;display:flex;flex-direction:column;gap:12px}
 .wxRow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.wxRow input.txt{width:84px}.wxSeg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}.wxSeg button{border:0;background:none;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer}.wxSeg button.on{background:var(--ink,#1f2937);color:#fff}.wxQs{font-size:13px;line-height:1.7}
 #nSheet[hidden]{display:none}
+.tchH{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.tchH h2{margin:0}
+.tchT{display:flex;flex-direction:column;gap:4px}.tchR{display:grid;grid-template-columns:minmax(120px,1.6fr) 1fr .9fr .6fr 2fr;gap:8px;align-items:center;text-align:left;font:inherit;color:inherit;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer}
+.tchR span small{display:block;color:var(--muted,#888);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tchR .ok{color:var(--ok)}.tchR .bad{color:var(--bad)}
+.tchHd{background:none;border:0;font-size:12px;color:var(--muted,#888);cursor:default;padding:0 10px}
+.tchS{display:flex;flex-wrap:wrap;gap:4px}.tchS i{font-style:normal;font-size:12px;padding:2px 7px;border-radius:999px;background:var(--warn-soft,#fff3d6);color:#8a5a00}.tchS i.rep{background:#fde2e2;color:#a11}.tchS i.quick{background:#e6efff;color:#2448a8}
+.tchInfo{display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.6}
+@media (max-width:640px){.tchR{grid-template-columns:1.4fr 1fr .8fr;}.tchR>span:nth-child(4){display:none}.tchR>span:nth-child(5){grid-column:1/-1}}
+
 #rtCover{position:fixed;inset:0;z-index:95;display:flex;align-items:center;justify-content:center;background:var(--bg)}#rtCover div{display:flex;flex-direction:column;gap:6px;align-items:center;font-size:17px}#rtCover small{color:var(--muted,#888);font-size:13px}
 
 @media (hover:none) and (pointer:coarse){.appbar,.tabs.tabbar,.qzDock{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.appbar{background:var(--bg)}.tabs.tabbar{background:var(--paper)}}   /* 아이패드: 반투명 흐림 막대 아래로 그림이 많이 지나가면 스크롤이 버벅이고 깜빡임 */
@@ -668,7 +676,7 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9.5" y="9.5" width="4" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span><span>FILLIN</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.31</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.31)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9.5" y="9.5" width="4" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span><span>FILLIN</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.32</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.32)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>GAP</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -719,7 +727,7 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn quiet" id="pvFocus" type="button" title="문제를 하나씩 크게 보고, 아래 연습장에 풀이 정리" style="padding:9px 12px;font-size:15px">🎯 한 문제씩</button><button class="btn mid" id="pvGrade" type="button" aria-label="GO, 푼 문제 채점하기" style="padding:8px 16px;font-size:15px"><span class="goT">GO</span><small class="goS">채점하기</small></button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvRtAsk" type="button" onclick="rtAskToggle(this)">🔁 채점 뒤 틀린 문제 다시 풀기: 묻기</button><button class="btn quiet" id="pvRtNow" type="button" onclick="rtAll()">🔁 틀린 문제만 지금 다시 풀기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v44.31</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvRtAsk" type="button" onclick="rtAskToggle(this)">🔁 채점 뒤 틀린 문제 다시 풀기: 묻기</button><button class="btn quiet" id="pvRtNow" type="button" onclick="rtAll()">🔁 틀린 문제만 지금 다시 풀기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v44.32</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" title="나가기 (저장하고 문제집 목록으로)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5"/><path d="M11 5l-7 7 7 7"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1898,7 +1906,7 @@ const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date
 window.addEventListener('error',e=>{dlog('err',(e.message||'')+' @'+(e.lineno||''));if(e.error||e.message)window.NJERR&&NJERR(e.error||{message:e.message})},true);window.addEventListener('unhandledrejection',e=>{dlog('rej',String(e.reason&&(e.reason.message||e.reason)||''));window.NJERR&&NJERR(e.reason)});
 {const ce=console.error.bind(console);console.error=function(...a){ce(...a);try{const x=a.find(v=>v instanceof Error||(v&&v.name&&v.message))||(typeof a[0]==='string'?{message:a.map(v=>typeof v==='string'?v:(v&&v.message)||'').join(' ').trim()}:null);if(x&&window.NJERR){const st=new Error().stack;NJERR(x,(x.stack?'':'')||errWhere(x.stack)||errWhere(st))}}catch(_){}}}
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v44.31',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v44.32',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -2807,6 +2815,11 @@ function pvBadge(pg){try{if(!P||!pg||!pg.wrap)return;pg.wrap.querySelectorAll('.
   for(const p of P.problems){if(p.page!==pg.n)continue;const L=H[p.q];if(!L||!L.length)continue;const k=L.findIndex(a=>a.ok),x=(p.lx-(pg.ox||0))*pg.k,y=(pg.H-p.ly)*pg.k,b=document.createElement('div');b.className='tryB '+(k<0?'no':'ok');
     {const t=qtOf(p.q),tt=t>=5?`⏱${mmss(t)}`:'';b.textContent=k===0?tt:[k<0?`도전 ${L.length}회`:(L.length>k+1?`${k+1}번째 정답 · 도전 ${L.length}회`:`${k+1}번째 정답`),tt].filter(Boolean).join(' · ');if(!b.textContent)continue}   /* 한 번에 맞힌 문제는 '1번째 정답' 표시 안 함 (시간만) */b.style.left=Math.round(x-(p.ls||12)*pg.k*0.2)+'px';b.style.top=Math.max(0,Math.round(y-(p.ls||12)*pg.k*1.1-30))+'px';   /* 번호 바로 위 빈칸에 */pg.wrap.appendChild(b)}}catch(e){}}
 /* 문제별 시간: 펜으로 쓰고 있는 문제(없으면 화면 가운데 문제)에 1초씩 더한다. 일시정지·채점 후·5분 넘게 손 안 대면 멈춤 */
+/* 문항 방문 기록 (선생님 분석용): 문제마다 [처음 본 시각, 머문 초, 그날 풀이 시작 후 초]를 방문마다 하나씩. 학생 화면에는 보이지 않는다 */
+const qvKey=n=>'njqv:'+String(n||'').replace(/\s*\(풀이[^)]*\)\s*$/,'');const QV={k:null,m:{},cur:null,dirty:0};
+function qvSave(){if(!QV.dirty||!QV.k)return;try{localStorage.setItem(QV.k,JSON.stringify(QV.m));QV.dirty=0}catch(e){}}
+function qvLoad(){const k=P&&qvKey(P.name);if(QV.k!==k){qvSave();QV.k=k;QV.cur=null;try{QV.m=JSON.parse(localStorage.getItem(k)||'{}')}catch(e){QV.m={}}}return QV.m}
+function qvTick(q){qvLoad();const now=Date.now(),L=QV.m[q]||(QV.m[q]=[]),l=L[L.length-1];if(l&&QV.cur===q&&now-(l[0]+l[1]*1000)<8000)l[1]++;else{let off=-1;try{if(S&&S.t0)off=Math.round((performance.now()-S.t0)/1000)}catch(e){}L.push([now,1,off]);if(L.length>60)L.splice(0,L.length-60)}QV.cur=q;if(++QV.dirty>=5)qvSave()}
 const qtKey=n=>'njqt:'+String(n||'').replace(/\s*\(풀이[^)]*\)\s*$/,'');const QT={k:null,m:{},q:null,at:0,dirty:0};
 function qtLoad(){const k=P&&qtKey(P.name);if(QT.k!==k){QT.k=k;QT.q=null;QT.at=0;try{QT.m=JSON.parse(localStorage.getItem(k)||'{}')}catch(e){QT.m={}}}return QT.m}
 function qtSave(){if(!QT.dirty||!QT.k)return;try{localStorage.setItem(QT.k,JSON.stringify(QT.m));QT.dirty=0}catch(e){}}
@@ -2836,9 +2849,9 @@ function qtRail(){const R=$('#pvRail');if(!R)return;const all=!S?0:S.paused?S.pa
     if(FOC.on&&FOC.p)QT.q=FOC.p.q;else if(Date.now()-QT.at>15000){const p=qtScreen();if(p&&p.q!==QT.q){QT.q=p.q}}   /* 집중 모드: 보고 있는 문제에만 시간이 쌓인다 */   /* 최근 15초 안에 쓴 문제가 없으면 화면 가운데 문제 */
     const run=!(S&&S.paused)&&(FOC.on||(S&&!S.frozen))&&document.visibilityState==='visible'&&Date.now()-LASTACT<5*60e3;   /* 집중 모드는 채점한 뒤(전체 시계가 멈춘 뒤)에도 문제별 시간을 잰다 */
     if(QT.q!==QT.lq){QT.lq=QT.q;QT.vis=0}   /* 문제가 바뀌면 이 문제 시계는 0부터 (누적 시간은 따로 저장) */
-    if(run&&FOC.on&&QT.q!=null){QT.m[QT.q]=(QT.m[QT.q]||0)+1;QT.vis=(QT.vis||0)+1;QT.dirty++;if(QT.dirty>=5)qtSave()}   /* 문항별 시간은 집중 모드에서만 잰다 */
+    if(run&&QT.q!=null)try{qvTick(QT.q)}catch(e){}if(run&&FOC.on&&QT.q!=null){QT.m[QT.q]=(QT.m[QT.q]||0)+1;QT.vis=(QT.vis||0)+1;QT.dirty++;if(QT.dirty>=5)qtSave()}   /* 문항별 시간은 집중 모드에서만 잰다 */
     qtRail();if(FOC.on&&FOC.p)$('#fQt').textContent='⏱ '+mmss(QT.vis||0);$('#pvClock').textContent=$('#clock').textContent}catch(e){}},1000);
-  addEventListener('pagehide',qtSave);document.addEventListener('visibilitychange',qtSave)})();
+  addEventListener('pagehide',()=>{qtSave();qvSave()});document.addEventListener('visibilitychange',()=>{qtSave();qvSave()})})();
 /* ================= 집중 모드: 문제 하나만 크게(원래 쪽을 그 문제만 잘라서) + 아래 줄 연습장 =================
    문제 칸에 쓴 필기는 원래 쪽 필기로 저장(채점 그대로). 연습장은 문제마다 따로 저장해서 나중에 선생님이 다시 볼 수 있다 */
 const FOC={cache:{},on:false,i:0,list:[],pg:null,p:null,zf:1,X0:0,Yt:0,W:0,H:0,d:1,ext:0,note:null,nKey:null,und:[],rt:null,draw:null,inUndo:false};
@@ -3104,7 +3117,7 @@ function rpDraw(){const vt=RPV.vt,dpr=RPV.dpr,A=$('#rpA'),B=$('#rpB'),gA=A.getCo
   const t0=RPV.st[0].e.a;$('#rpT').textContent=mmss(Math.max(0,rpReal(vt)-t0)/1000)}
 function rpLoop(){cancelAnimationFrame(RPV.raf);const step=now=>{if(!RPV.on)return;const dt=Math.min(100,now-RPV.last);RPV.last=now;if(RPV.play){RPV.vt+=dt*(+$('#rpSpd').value||1);if(RPV.vt>=RPV.V){RPV.vt=RPV.V;RPV.play=false;rpBtn()}}rpDraw();RPV.raf=requestAnimationFrame(step)};RPV.raf=requestAnimationFrame(step)}
 function rpBtn(){$('#rpGo').textContent=RPV.play?'⏸ 멈춤':(RPV.vt>=RPV.V?'↺ 처음부터':'▶ 재생')}
-function rplClose(){RPV.on=false;cancelAnimationFrame(RPV.raf);$('#rpBox').hidden=true;RPV.crop=null}
+function rplClose(){RPV.on=false;cancelAnimationFrame(RPV.raf);$('#rpBox').hidden=true;RPV.crop=null;const b=RPV.back;RPV.back=null;if(b)setTimeout(async()=>{try{await pvEnd()}catch(e){console.error(e)}if(b!=='home')setTimeout(()=>{if(CURV==='home')view(b)},50)},0)}
 (()=>{if(!$('#rpBox'))return;$('#rpX').onclick=rplClose;$('#rpGo').onclick=()=>{if(RPV.vt>=RPV.V)RPV.vt=0;RPV.play=!RPV.play;RPV.last=performance.now();rpBtn()};
   $('#rpRange').addEventListener('input',e=>{RPV.vt=+e.target.value;RPV.play=false;rpBtn()});$('#rpCut').onchange=()=>{const r=rpReal(RPV.vt);rpBuild();RPV.vt=rpMap(r)};
   const fp=$('#fPlay');if(fp)fp.onclick=()=>{if(FOC.p){fNoteSave(true);rpPlay(FOC.p.q)}};addEventListener('keydown',e=>{if(RPV.on&&e.key==='Escape')rplClose()})})();
@@ -3242,7 +3255,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.31 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.32 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -4351,17 +4364,20 @@ let RT_ITEMS=null;
 /* 오답 다시 풀기는 문제집 쪽 화면을 보여 주지 않는다: 여는 동안 가림막, 끝내면 원래 있던 화면(홈·오답)으로 */
 function rtCover(on){let c=$('#rtCover');if(!on){if(c)c.remove();return}if(!c){c=document.createElement('div');c.id='rtCover';c.innerHTML='<div><b>오답 문제 여는 중…</b><small>문제집에서 그 문제만 꺼내고 있어요</small></div>';document.body.appendChild(c)}}
 async function itemRetry(list){if(!list||!list.length)return;const back=CURV==='solve'?'home':(CURV||'home');rtCover(true);try{await itemRetry0(list)}finally{rtCover(false)}if(FOC.on&&FOC.retry)FOC.back=back}
-async function itemRetry0(list){const by={};for(const it of list)(by[bookOf(it.src)]=by[bookOf(it.src)]||[]).push(it);
+/* 오답 문항들의 문제집을 찾아 연다 (화면은 가림막 뒤). 열면 {its}, 못 열면 {fail:목록} */
+async function rtOpen(list){const by={};for(const it of list)(by[bookOf(it.src)]=by[bookOf(it.src)]||[]).push(it);
   /* 문제집을 찾는다: 담을 때의 풀이 사본 → 원본 → 그 원본의 최근 풀이 사본. 여러 문제집이면 많은 쪽부터 */
   const bks=Object.keys(by).sort((a,b)=>by[b].length-by[a].length);let src=null,bk=null;
   for(const k of bks){const c=[...new Set(by[k].map(i=>i.src))];c.push(k);try{const l=await latestCopy(k);if(l)c.push(l.name)}catch(e){}
     for(const n of c){if(await libMeta(n).catch(()=>null)){src=n;bk=k;break}}if(src)break}
-  if(!src){dlog('itemRetry','no book '+bks.join('|'));startQuizOld(list);return}   /* 문제집 파일이 기기에 없으면 예전 복습 화면으로 */
+  if(!src){dlog('itemRetry','no book '+bks.join('|'));return {fail:list}}   /* 문제집 파일이 기기에 없으면 */
   const its=by[bk],same=()=>P&&(P.name===src||bookOf(P.name)===bk);
   if(!(same()&&!$('#vPdf').hidden&&S)){view('solve');await openRecent(src);
-    if(same()&&$('#vPdf').hidden&&!$('#start').disabled){try{PEND_START=false;await start()}catch(e){console.error(e)}}   /* '풀기 전에 확인' 창이 떠도 다시 풀기는 바로 연다 */
+    if(same()&&$('#vPdf').hidden&&!$('#start').disabled){try{PEND_START=false;await start()}catch(e){console.error(e)}}   /* '풀기 전에 확인' 창이 떠도 바로 연다 */
     for(let i=0;i<60&&!(same()&&!$('#vPdf').hidden&&(PV.pages||[]).length);i++)await new Promise(r=>setTimeout(r,500))}
-  if(!(same()&&!$('#vPdf').hidden)){dlog('itemRetry','open fail '+src+' / '+(P&&P.name));startQuizOld(its);return}
+  if(!(same()&&!$('#vPdf').hidden)){dlog('itemRetry','open fail '+src+' / '+(P&&P.name));return {fail:its}}
+  return {its}}
+async function itemRetry0(list){const o=await rtOpen(list);if(o.fail){startQuizOld(o.fail);return}const its=o.its;
   const qs=[];RT_ITEMS={};for(const it of its){const p=await rtFind(it);if(!p)continue;if(p.q!==it.q){it.q=p.q;try{await dbPut(it)}catch(e){}}if(!qs.includes(p.q)){qs.push(p.q);RT_ITEMS[p.q]=it}}
   dlog('itemRetry',P.name+' '+its.map(i=>i.q).join(',')+' → '+qs.join(','));
   if(!qs.length){RT_ITEMS=null;startQuizOld(its);return}
@@ -5068,6 +5084,7 @@ async function renderAnaTab(){
   memoList().then(L=>{const b=$('#aMq');if(b&&L.length){b.hidden=false;b.textContent=`📝 코멘트 숏 퀴즈 ${Math.min(8,L.length)}문제`;b.onclick=()=>memoQuiz(L)}});
   const qz=$('#aQz');if(qz)qz.onclick=()=>startQuiz(dueItems(items));const qa=$('#aQzAll');if(qa)qa.onclick=()=>startQuiz(items.filter(i=>!i.done).sort((a,b)=>(a.due||0)-(b.due||0)));
   $('#aSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.s===ANAV));
+  try{renderTch(W)}catch(e){console.error(e)}
   if(teacherOn())await renderAnaSum(W,inNote);
   anaList(W,items,inNote);return
   box.querySelectorAll('[data-star]').forEach(b=>b.onclick=async()=>{const id=b.dataset.star;if(await dbGet(id))await dbDel(id);else await noteAddFromWrongs([id]);badge();renderAnaTab()});
@@ -5184,6 +5201,45 @@ const memoBox=(x)=>`<div class="mqBox"><div class="label">오답 분석 코멘�
   <div class="row" style="justify-content:flex-start;gap:8px"><button class="btn mid" type="button" id="mqSave">코멘트 저장</button><button class="btn quiet" type="button" id="mqTry" ${x.memo?'':'hidden'}>이 코멘트로 숏 퀴즈</button><span class="muted" id="mqMsg" style="font-size:13px"></span></div></div>`;
 function memoBind(x){const sv=$('#mqSave'),tr=$('#mqTry');if(!sv)return;sv.onclick=async()=>{const v=$('#mqIn').value.trim();await memoSave(x.id,v);x.memo=v;$('#mqMsg').textContent=v?'저장했어요 ✓':'지웠어요';tr.hidden=!v;
     const kw=mqKw(v);if(v)$('#mqMsg').textContent+=kw?` · 퀴즈 빈칸: '${kw}'`:''};tr.onclick=()=>memoQuiz([x])}
+
+/* ================= 선생님: 우선 확인할 오답 → 실제 풀이 (학생 기기에서 선생님 모드) =================
+   신호는 원인이 아니라 '먼저 볼 만한 행동': 오래 머묾 · 여러 번 돌아옴 · 짧게 보고 넘어감 · 전에도 틀림 */
+const TCH={days:7};
+function tchQn(w){const s=QN(w.q);if(typeof s==='string')return s+'번';const r=w.q-3000000;if(r>0&&r<1000000&&r%100)return `${Math.floor(r/100)}쪽 ${String(r%100).padStart(2,'0')}번`;return w.q<1000?w.q+'번':''}
+function tchData(W){const qt={},qv={};const get=(m,k)=>{if(!(k in m)){try{m[k]=JSON.parse(localStorage.getItem(k)||'{}')}catch(e){m[k]={}}}return m[k]};
+  const R=W.map(w=>{const V=(get(qv,qvKey(w.src))[w.q]||[]).slice().sort((a,b)=>a[0]-b[0]),tq=get(qt,qtKey(w.src))[w.q]||0,tv=V.reduce((a,v)=>a+v[1],0);return {w,V,tot:Math.max(tq,tv),nv:V.length}});
+  const byB={};for(const r of R)if(r.tot>0)(byB[bookOf(r.w.src)]=byB[bookOf(r.w.src)]||[]).push(r.tot);const med={};for(const k in byB){const a=byB[k].sort((x,y)=>x-y);med[k]=a[a.length>>1]}
+  for(const r of R){const m=med[bookOf(r.w.src)]||0,st=wStage(r.w),S0=[];r.st=st;
+    if(r.tot>=Math.max(180,m*2))S0.push(['long','시간 과다',3]);if((r.w.tries||1)>=2||st==='S')S0.push(['rep','반복 오답',3]);if(r.nv>=2)S0.push(["rev",`다시 봄 ${r.nv}회`,2]);if(r.tot>0&&r.tot<40&&st!=='T')S0.push(['quick','빠른 포기',2]);
+    r.sig=S0;r.score=S0.reduce((a,x)=>a+x[2],0)+Math.min(2,r.tot/600)-(st==='T'?2:0)}
+  return R.sort((a,b)=>b.score-a.score||(b.w.upd||b.w.at||0)-(a.w.upd||a.w.at||0))}
+function renderTch(W){let box=$('#aTch');if(!teacherOn()){if(box)box.hidden=true;return}
+  if(!box){box=document.createElement('div');box.id='aTch';box.className='cc tchBox';const a=$('#aSum');a.parentNode.insertBefore(box,a)}box.hidden=false;
+  const lim=TCH.days?Date.now()-TCH.days*864e5:0,L=tchData(W.filter(w=>(w.upd||w.at||0)>=lim)),res={T:['도전해서 맞춤','ok'],S:['다시 틀림','bad'],X:['오답','bad']};
+  box.innerHTML=`<div class="tchH"><h2>우선 확인할 오답</h2><div class="seg">${[[7,'최근 7일'],[30,'30일'],[0,'전체']].map(([d,t])=>`<button type="button" data-td="${d}" class="${TCH.days===d?'on':''}">${t}</button>`).join('')}</div></div>
+    <p class="sub" style="margin:2px 0 8px">${L.length}문제 · 위에서부터 먼저 보세요. 신호는 원인이 아니라 확인할 만한 행동이에요. 머문 시간은 그 문제가 화면에 떠 있던 시간이에요.</p>
+    ${L.length?`<div class="tchT"><div class="tchR tchHd"><span>문제</span><span>결과</span><span>머문 시간</span><span>방문</span><span>신호</span></div>${L.slice(0,60).map(r=>`<button type="button" class="tchR" data-tw="${esc(r.w.id)}"><span><b>${esc(tchQn(r.w))}</b><small>${esc(bookOf(r.w.src))}</small></span><span class="${res[r.st][1]}">${res[r.st][0]}</span><span>${r.tot?mmss(r.tot):'–'}</span><span>${r.nv?r.nv+'회':'–'}</span><span class="tchS">${r.sig.map(x=>`<i class="${x[0]}">${x[1]}</i>`).join('')}</span></button>`).join('')}</div>`:'<p class="muted">이 기간에 틀린 문제가 없어요.</p>'}`;
+  box.querySelectorAll('[data-td]').forEach(b=>b.onclick=()=>{TCH.days=+b.dataset.td;renderTch(W)});
+  box.querySelectorAll('[data-tw]').forEach(b=>b.onclick=()=>tchDetail(L.find(r=>r.w.id===b.dataset.tw)))}
+function tchDetail(r){if(!r)return;const w=r.w,S=$('#nSheet'),d=t=>{const x=new Date(t);return `${x.getMonth()+1}/${x.getDate()} ${String(x.getHours()).padStart(2,'0')}:${String(x.getMinutes()).padStart(2,'0')}`};
+  const V=r.V,first=V[0];
+  S.innerHTML=`<div class="sh" role="dialog" aria-label="풀이 확인"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font-size:18px">${esc(bookOf(w.src))} · ${esc(tchQn(w))}</b><button class="btn quiet" type="button" data-x style="padding:6px 12px;font-size:13px">닫기</button></div>
+    <img src="${w.thumb}" alt="">
+    <div class="tchInfo">${first?`<div>최초 방문 <b>${first[2]>=0?'풀이 시작 후 '+mmss(first[2]):d(first[0])}</b> <span class="muted">(${d(first[0])})</span></div>`:''}
+      ${V.map((v,i)=>`<div>${i+1}번째 체류 <b>${mmss(v[1])}</b> <span class="muted">${d(v[0])}${v[2]>=0?' · 시작 후 '+mmss(v[2]):''}</span></div>`).join('')}
+      <div>총 체류 <b>${r.tot?mmss(r.tot):'기록 없음'}</b>${!V.length&&r.tot?' <span class="muted">(방문별 기록은 이번 버전부터)</span>':''}</div>
+      <div>최종 결과 ${wCat(w)} · 학생 답 <b>${esc(w.ans||'–')}</b>${w.retry?` → ${esc(w.retry)}`:''} · 정답 <b>${esc(w.keyShow||'')}</b>${(w.tries||1)>1?` · ${w.tries}번 틀림`:''}</div>
+      ${r.sig.length?`<div class="tchS">${r.sig.map(x=>`<i class="${x[0]}">${x[1]}</i>`).join('')}</div>`:''}</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn mid" type="button" data-rp>▶ 실제 필기 · 풀이 과정 보기</button></div>
+    <p class="muted" style="font-size:12px;margin:0">필기 과정은 앱에서 쓴 획만 순서대로 남아요 (v44.5 이후). 기록이 없으면 문제집의 그 쪽을 보여 줘요.</p></div>`;
+  S.hidden=false;const close=()=>{S.hidden=true;S.innerHTML=''};S.querySelector('[data-x]').onclick=close;S.onclick=e=>{if(e.target===S)close()};
+  S.querySelector('[data-rp]').onclick=()=>{close();tchReplay(w)}}
+async function tchReplay(w){const back=CURV==='solve'?'home':(CURV||'home');rtCover(true);let ok=false;
+  try{const o=await rtOpen([w]);if(o.fail){alert('이 문제집 파일이 이 기기에 없어서 필기를 열 수 없어요.');return}
+    const p=await rtFind(w);if(!p){alert('문제집에서 이 문제 위치를 찾지 못했어요.');return}
+    try{pvGo(p.page)}catch(e){}await rpPlay(p.q);ok=true;
+    if(RPV.on)RPV.back=back;else pvToast('이 문제는 풀이 과정 기록이 없어요. 문제집의 그 쪽에 쓴 필기를 보여 줘요 · [나가기]로 돌아가요')}
+  finally{rtCover(false)}}
 async function renderAnaSum(W,inNote){   // 선생님용 요약
   const cnt={X:0,S:0,T:0};W.forEach(w=>cnt[w.cat]=(cnt[w.cat]||0)+1);const byT={};for(const w of W){if(w.cat==='T')continue;const k=w.topic||'(유형 없음)';byT[k]=(byT[k]||0)+1}
   const tops=Object.entries(byT).sort((a,b)=>b[1]-a[1]).slice(0,6),rc={};for(const w of W)rc[w.reason]=(rc[w.reason]||0)+1;const rmax=Math.max(1,...Object.values(rc));
