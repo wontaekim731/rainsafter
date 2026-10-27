@@ -505,6 +505,10 @@ body.fRetry .fBar .fQn{color:#FFB37A}
 .impC .th{height:150px;border-radius:10px;overflow:hidden;background:#f4f4f2;display:flex;align-items:flex-start;justify-content:center}.impC .th img{width:100%;height:auto;display:block}
 .impC .nm{display:flex;flex-direction:column}.impC .nm b{font-size:17px}.impC .nm span{font-size:12px;color:var(--muted,#6b7280);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .impC .st em{font-style:normal;font-size:13px;font-weight:700;color:#c2410c}.impC .st em.ok{color:#15803d}
+
+/* 스스로 채점 창: 머리줄을 끌어서 옮기기 (정답·내 풀이를 문제와 나란히 비교) */
+.ssHead{cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;border-radius:10px;margin:-6px -8px 6px;padding:6px 8px}.ssHead:active{cursor:grabbing;background:rgba(0,0,0,.04)}
+.ssGrip{color:var(--muted,#8A93A3);margin-right:4px}
 </style>
 <style>.term{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px;display:flex;flex-direction:column;gap:6px;background:var(--paper)}.term.over{opacity:.7}
 .termHd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.termN{font-size:17px}.termP{font-size:22px;font-weight:800}
@@ -634,7 +638,7 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9.5" y="9.5" width="4" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span><span>FILLIN</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.14</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.14)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9.5" y="9.5" width="4" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span><span>FILLIN</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.15</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.15)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>GAP</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -685,13 +689,13 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn quiet" id="pvFocus" type="button" title="문제를 하나씩 크게 보고, 아래 연습장에 풀이 정리" style="padding:9px 12px;font-size:15px">🎯 집중</button><button class="btn mid" id="pvGrade" type="button" aria-label="GO, 푼 문제 채점하기" style="padding:8px 16px;font-size:15px"><span class="goT">GO <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span><small class="goS">채점하기</small></button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvRtAsk" type="button" onclick="rtAskToggle(this)">🔁 채점 뒤 틀린 문제 다시 풀기: 묻기</button><button class="btn quiet" id="pvRtNow" type="button" onclick="rtAll()">🔁 틀린 문제만 지금 다시 풀기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v44.14</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvRtAsk" type="button" onclick="rtAskToggle(this)">🔁 채점 뒤 틀린 문제 다시 풀기: 묻기</button><button class="btn quiet" id="pvRtNow" type="button" onclick="rtAll()">🔁 틀린 문제만 지금 다시 풀기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v44.15</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" title="나가기 (저장하고 문제집 목록으로)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5"/><path d="M11 5l-7 7 7 7"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
     <div id="pdfPages"></div>
     <div id="pvToast" hidden></div>
-    <div id="selfSheet" hidden><div class="ssIn"><div class="ssHead"><b>스스로 채점</b><span class="muted" id="ssProg"></span></div><div id="ssBody"></div></div></div>
+    <div id="selfSheet" hidden><div class="ssIn"><div class="ssHead" id="ssHead" title="끌어서 옮기기 · 두 번 누르면 제자리"><b><span class="ssGrip" aria-hidden="true">⠿</span> 스스로 채점</b><span class="muted" style="font-size:12px;margin-left:auto;margin-right:10px">끌어서 옮길 수 있어요</span><span class="muted" id="ssProg"></span></div><div id="ssBody"></div></div></div>
   </section>
 <div id="addSheet" hidden><div class="asIn">
   <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">문제집 추가</h2><button type="button" class="btn quiet" id="asClose">닫기</button></div>
@@ -1864,7 +1868,7 @@ const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date
 window.addEventListener('error',e=>{dlog('err',(e.message||'')+' @'+(e.lineno||''));if(e.error||e.message)window.NJERR&&NJERR(e.error||{message:e.message})},true);window.addEventListener('unhandledrejection',e=>{dlog('rej',String(e.reason&&(e.reason.message||e.reason)||''));window.NJERR&&NJERR(e.reason)});
 {const ce=console.error.bind(console);console.error=function(...a){ce(...a);try{const x=a.find(v=>v instanceof Error||(v&&v.name&&v.message))||(typeof a[0]==='string'?{message:a.map(v=>typeof v==='string'?v:(v&&v.message)||'').join(' ').trim()}:null);if(x&&window.NJERR){const st=new Error().stack;NJERR(x,(x.stack?'':'')||errWhere(x.stack)||errWhere(st))}}catch(_){}}}
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v44.14',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v44.15',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -2648,8 +2652,15 @@ function quickGuessImg(q){const K=P&&P.solKeys,sr=P&&P.solRange;if(!K||!sr||sr[2
   if(a)return {page:a.page,x0:a.x0-6,x1:a.x1+260,y0:a.y0-34,y1:a.y1+4};
   if(b)return {page:b.page,x0:b.x0-260,x1:b.x1+6,y0:b.y0-4,y1:b.y1+34};return null}
 async function keyImg(p,doc){const k=p&&p.key;if(!k)return '';if(k.png)return k.png;const im=k.img||(k.kind==='self'&&!doc?quickGuessImg(p.q):null);if(!im)return '';try{doc=doc||P.doc;const page=await doc.getPage(im.page),sc=3,vp=page.getViewport({scale:sc}),a=vp.convertToViewportPoint(im.x0,im.y1),b=vp.convertToViewportPoint(im.x1,im.y0);
-  const c=document.createElement('canvas');c.width=Math.max(2,Math.round(b[0]-a[0]));c.height=Math.max(2,Math.round(b[1]-a[1]));const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
-  await page.render({canvasContext:g,viewport:vp,transform:[1,0,0,1,-a[0],-a[1]],annotationMode:0}).promise;return c.toDataURL('image/jpeg',0.85)}catch(e){console.error(e);return ''}}
+  /* 정답 칸 오른쪽으로 글이 이어지면(서술형·긴 답이 칸 밖으로 넘침) 이어지는 데까지 넓혀서 보여 준다: 오른쪽으로 넓게 그린 뒤, 큰 빈칸이 나오는 곳에서 자른다 */
+  const W0=Math.max(2,Math.round(b[0]-a[0])),H=Math.max(2,Math.round(b[1]-a[1])),Wmax=Math.max(W0,Math.min(Math.round(vp.width-a[0]-4),W0*5));
+  const c=document.createElement('canvas');c.width=Wmax;c.height=H;const g=c.getContext('2d',{willReadFrequently:true});g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
+  await page.render({canvasContext:g,viewport:vp,transform:[1,0,0,1,-a[0],-a[1]],annotationMode:0}).promise;
+  let W=W0;if(Wmax>W0){const D=g.getImageData(0,0,Wmax,H).data,y0=Math.round(H*0.15),y1=Math.round(H*0.85),col=x=>{let n=0;for(let y=y0;y<y1;y++){const i=(y*Wmax+x)*4;if(D[i]<150||D[i+1]<150||D[i+2]<150)n++}return n},rule=(y1-y0)*0.8,gapMax=Math.max(18,H*0.9);
+    let last=-1,gap=0;for(let x=Math.max(0,W0-Math.round(H*0.6));x<Wmax;x++){const n=col(x);if(n>rule){gap++;if(gap>gapMax)break;continue}if(n>0){last=x;gap=0}else if(++gap>gapMax)break}   /* 세로 칸선은 글로 보지 않는다 */
+    if(last>W0)W=Math.min(Wmax,last+Math.round(H*0.3))}
+  if(W<Wmax){const c2=document.createElement('canvas');c2.width=W;c2.height=H;c2.getContext('2d').drawImage(c,0,0);c.width=c.height=0;return c2.toDataURL('image/jpeg',0.85)}
+  return c.toDataURL('image/jpeg',0.85)}catch(e){console.error(e);return ''}}
 const inReg=(s,p)=>{const cx=(s.b.x0+s.b.x1)/2,cy=(s.b.y0+s.b.y1)/2;if(!(s.page===p.page&&cx>=p.x0&&cx<=p.x1&&cy>=p.y0&&cy<=p.y1))return false;
   const L=ABP&&ABP[s.page];if(L)for(const q of L){if(q===p)continue;const a=q.ab;if(cx>=a.x0&&cx<=a.x1&&cy>=a.y0-2&&cy<=a.y1+2)return false}return true};   /* 다른 문제 답란에 쓴 글씨는 이 문제 것이 아니다 */
 let ABP=null;function abIndex(){ABP={};if(!P||!P.problems)return;for(const q of P.problems)if(q.ab)(ABP[q.page]=ABP[q.page]||[]).push(q)}
@@ -3191,7 +3202,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.14 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.15 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -4305,7 +4316,14 @@ async function pvGrade(){GRADE_ONLY=FOC.on&&FOC.p?FOC.p.q:null;try{regFix();abIn
 /* 스스로 채점: 정답 그림을 보고 학생이 ○/／를 고른다 (서술형·여러 소문항 등 자동으로 못 읽는 문항) */
 function selfPending(){if(!S)return [];return Object.values(S.state).filter(x=>P&&P.problems.some(p=>p.q===x.q)&&x.status==='check'||(x.retry&&x.retry.self&&!x.retry.ans)).sort((a,b)=>a.q-b.q)}
 let SS=null;
-async function selfSheet(onDone){const L=selfPending().filter(x=>GRADE_ONLY==null||x.q===GRADE_ONLY);if(!L.length){if(onDone)onDone();return}SS={L,i:0,onDone,n:0};$('#selfSheet').hidden=false;ssShow()}
+(()=>{const h=$('#ssHead'),box=document.querySelector('#selfSheet .ssIn');if(!h||!box)return;let d=null,pos={x:0,y:0};try{pos=JSON.parse(localStorage.getItem('njSsPos')||'null')||pos}catch(e){}
+  const apply=()=>{box.style.transform='';const r=box.getBoundingClientRect();pos={x:Math.max(100-r.left-r.width,Math.min(innerWidth-r.left-100,pos.x)),y:Math.max(-r.top,Math.min(innerHeight-r.top-60,pos.y))};box.style.transform=pos.x||pos.y?`translate(${pos.x}px,${pos.y}px)`:''};   /* 화면 밖으로 다 나가지 않게 */
+  h.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;e.preventDefault();d={sx:e.clientX,sy:e.clientY,x:pos.x,y:pos.y,id:e.pointerId};try{h.setPointerCapture(e.pointerId)}catch(er){}});
+  h.addEventListener('pointermove',e=>{if(!d||e.pointerId!==d.id)return;e.preventDefault();pos={x:d.x+e.clientX-d.sx,y:d.y+e.clientY-d.sy};box.style.transform=`translate(${pos.x}px,${pos.y}px)`});
+  const end=e=>{if(!d)return;d=null;apply();try{localStorage.setItem('njSsPos',JSON.stringify(pos))}catch(er){}};h.addEventListener('pointerup',end);h.addEventListener('pointercancel',end);
+  h.addEventListener('dblclick',()=>{pos={x:0,y:0};box.style.transform='';try{localStorage.removeItem('njSsPos')}catch(e){}});
+  window.ssPosApply=()=>{requestAnimationFrame(apply)}})();
+async function selfSheet(onDone){const L=selfPending().filter(x=>GRADE_ONLY==null||x.q===GRADE_ONLY);if(!L.length){if(onDone)onDone();return}SS={L,i:0,onDone,n:0};$('#selfSheet').hidden=false;ssShow();try{ssPosApply()}catch(e){}}
 /* 소문제 (1)(2)…: 정답 글에서 개수를 센다. 소문제마다 ○/／를 고르고, 모두 맞아야 그 문항이 ○ */
 function partsOf(p){const k=p&&p.key;if(!k)return 0;let n=0;if(k.nums&&k.nums.length>1)n=k.nums.length;if(k.np>1)n=k.np;if(k.multi&&k.multi.length>1)n=k.multi.length;
   const raw=String(k.raw||'')+' '+String(p.keyShow||'');for(const m of raw.matchAll(/\(\s*([1-9lI|])\s*\)/g)){const d=+String(m[1]).replace(/[lI|]/,'1');if(d>n&&d<=6)n=d}
