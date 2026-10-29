@@ -706,7 +706,7 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 </head>
 <body>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9.5" y="9.5" width="4" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span><span>FILLIN</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.54</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.54)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9.5" y="9.5" width="4" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span><span>FILLIN</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.55</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.55)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.3 7.9 4.8 4.5 5v13c3.4-.2 5.8.3 7.5 1.5 1.7-1.2 4.1-1.7 7.5-1.5V5c-3.4-.2-5.8.3-7.5 1.5zM12 6.5v13"/></svg><span>공부</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>GAP</span><span id="dueBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -757,7 +757,7 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
       <button type="button" class="pvPgBtn" id="pvPg" title="쪽 이동">1 / 1쪽</button>
       <div class="pvZoom" id="pvZoom"><button type="button" data-z="-" aria-label="축소">－</button><button type="button" id="pvZ" title="원래 크기로">100%</button><button type="button" data-z="+" aria-label="확대">＋</button></div>
       <button class="btn quiet" id="pvFocus" type="button" title="문제를 하나씩 크게 보고, 아래 연습장에 풀이 정리" style="padding:9px 12px;font-size:15px">🎯 한 문제씩</button><button class="btn mid" id="pvGrade" type="button" aria-label="GO, 푼 문제 채점하기" style="padding:8px 16px;font-size:15px"><span class="goT">GO</span><small class="goS">채점하기</small></button><button class="btn quiet" id="pvSolBtn" type="button" hidden style="padding:9px 12px;font-size:15px">📖 해설</button><button class="btn" id="pvSelf" type="button" hidden style="padding:9px 14px;font-size:15px;background:var(--warn,#d97706);color:#fff">직접 채점</button>
-      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvClr" type="button" title="지금 보는 쪽의 필기를 모두 지워요">🧹 이 쪽 필기 모두 지우기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvRtAsk" type="button" onclick="rtAskToggle(this)">🔁 채점 뒤 틀린 문제 다시 풀기: 묻기</button><button class="btn quiet" id="pvRtNow" type="button" onclick="rtAll()">🔁 틀린 문제만 지금 다시 풀기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v44.54</span></div></div>
+      <div class="pvMoreW"><button class="btn quiet" id="pvMoreB" type="button" aria-label="더보기" title="힌트·채점 신고·직접 채점 등">⋯</button><div class="pvMoreM" id="pvMoreM" hidden><button class="btn quiet" id="pvHint" type="button" hidden>💡 힌트</button><button class="btn quiet" id="pvFix" type="button" hidden>✏️ 직접 채점</button><button class="btn quiet" id="pvReread" type="button" hidden>🔄 이 쪽 문항 다시 읽기</button><button class="btn quiet" id="pvClr" type="button" title="지금 보는 쪽의 필기를 모두 지워요">🧹 이 쪽 필기 모두 지우기</button><button class="btn quiet" id="pvRep" type="button" title="채점이 이상하면 눌러 주세요">🚩 채점 신고</button><button class="btn quiet tOnly" id="pvPause" type="button">일시정지</button><button class="btn quiet tOnly" id="pvExport" type="button">내보내기</button><button class="btn quiet" id="pvRtAsk" type="button" onclick="rtAskToggle(this)">🔁 채점 뒤 틀린 문제 다시 풀기: 묻기</button><button class="btn quiet" id="pvRtNow" type="button" onclick="rtAll()">🔁 틀린 문제만 지금 다시 풀기</button><button class="btn quiet" id="pvDiag" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button><span style="font-size:12px;color:var(--muted);padding:4px 10px">러닝메이트 v44.55</span></div></div>
       <button class="btn quiet" id="pvEnd" type="button" title="나가기 (저장하고 문제집 목록으로)" aria-label="나가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5"/><path d="M11 5l-7 7 7 7"/></svg>나가기</button>
       <div style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:13px"><span class="fb tOnly" id="pvFb" style="font-size:14px;min-height:0"></span><span id="pvSum"></span><span class="muted" id="pvState"></span></div>
     </div>
@@ -1954,7 +1954,7 @@ const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date
 window.addEventListener('error',e=>{dlog('err',(e.message||'')+' @'+(e.lineno||''));if(e.error||e.message)window.NJERR&&NJERR(e.error||{message:e.message})},true);window.addEventListener('unhandledrejection',e=>{dlog('rej',String(e.reason&&(e.reason.message||e.reason)||''));window.NJERR&&NJERR(e.reason)});
 {const ce=console.error.bind(console);console.error=function(...a){ce(...a);try{const x=a.find(v=>v instanceof Error||(v&&v.name&&v.message))||(typeof a[0]==='string'?{message:a.map(v=>typeof v==='string'?v:(v&&v.message)||'').join(' ').trim()}:null);if(x&&window.NJERR){const st=new Error().stack;NJERR(x,(x.stack?'':'')||errWhere(x.stack)||errWhere(st))}}catch(_){}}}
 function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],live=pg.filter(p=>p.live);let tot=0;for(const p of live)tot+=p.c.width*p.c.height+p.ink.width*p.ink.height;
-  return ['러닝메이트 진단 v44.54',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
+  return ['러닝메이트 진단 v44.55',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
     (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
@@ -2817,7 +2817,8 @@ async function selfNumTry(p,ink){const K=keyNums(p);if(!K||!window.SCAN)return f
   dlog('selfNum',p.q+' '+K.join(',')+' ← '+out.join(','));return out.length===K.length&&out.every((v,i)=>v===K[i])}
 /* 그림에서 읽어 낸 소문제 정답: 맞을 때만 믿는다 */
 const imgKey=p=>{const k=p&&p.key;if(!k)return false;if(k.fromImg)return true;return k.kind==='nparts'&&!!k.img&&(k.nums||[]).some(v=>v==null||!/^-?\d{1,4}$/.test(String(v)))};   /* 빠른 정답 표에서 읽은 정수 소문제 답은 믿는다 */
-async function readA(p,ink){{const A=abInk(p,ink);if(A){p._used=null;p._kc=null;let r=null;if(fParts(p)>1&&p._lab===undefined&&p.key&&p.key.kind==='nparts'){try{p._lab=await subLabels(p)}catch(e){p._lab=null}}   /* 소번호 자리: 채점 표시를 (1)(2) 위에 */try{r=readAB(p,A)}catch(e){dlog('abErr',String(e).slice(0,80));r={ans:'',how:'self'}}if(!p._used)p._used=A;if(window.NJPROF)console.log('PROF ab',p.q,JSON.stringify(r));return r||{ans:'',how:'self'}}}p._used=null;p._kc=null;if(p.key&&p.key.kind==='nparts'&&p.key.nums&&p._lab===undefined)p._lab=await subLabels(p);const r=SV.readAnswer(p,ink);if(window.NJPROF)console.log('PROF rl',p.q,JSON.stringify(r),p._used&&p._used.length);const k=keyOf(p),st=p._used,num=v=>/^-?\d{1,4}$/.test(v||'');
+async function readA(p,ink){const r=await readA0(p,ink);try{p._rd=r?{ans:r.ans,how:r.how,sure:r.sure}:null}catch(e){}return r}
+async function readA0(p,ink){{const A=abInk(p,ink);if(A){p._used=null;p._kc=null;let r=null;if(fParts(p)>1&&p._lab===undefined&&p.key&&p.key.kind==='nparts'){try{p._lab=await subLabels(p)}catch(e){p._lab=null}}   /* 소번호 자리: 채점 표시를 (1)(2) 위에 */try{r=readAB(p,A)}catch(e){dlog('abErr',String(e).slice(0,80));r={ans:'',how:'self'}}if(!p._used)p._used=A;if(window.NJPROF)console.log('PROF ab',p.q,JSON.stringify(r));return r||{ans:'',how:'self'}}}p._used=null;p._kc=null;if(p.key&&p.key.kind==='nparts'&&p.key.nums&&p._lab===undefined)p._lab=await subLabels(p);const r=SV.readAnswer(p,ink);if(window.NJPROF)console.log('PROF rl',p.q,JSON.stringify(r),p._used&&p._used.length);const k=keyOf(p),st=p._used,num=v=>/^-?\d{1,4}$/.test(v||'');
   if(r&&r.ans&&p.key&&p.key.kind==='circled'&&!(p.choices&&p.choices.length)&&!/^[1-5]$/.test(r.ans))return Object.assign({},r,{sure:false});
   if(!(r&&r.how==='written'&&num(k)&&st&&st.length&&st.length<=14&&window.SCAN&&SCAN.worker))return r;
   const wrong=r.sure!==false&&num(r.ans)&&r.ans!==k&&Math.abs(r.ans.length-k.length)<=1,unsure=r.sure===false&&!(p.choices&&p.choices.length)&&!/^0+$/.test(r.ans||'');if(!wrong&&!unsure)return r;
@@ -2868,7 +2869,7 @@ function ebsPrefetch(P0,pg){if(!P0||!(P0.ebs||P0.xi))return;const L=P0.problems.
   EBS.pre=(EBS.pre||Promise.resolve()).then(async()=>{if(P!==P0)return;const t=performance.now();for(const p of L){if(P!==P0)return;await ebsFill(p)}dlog('ebsPre',pg+'쪽 '+L.length+'개 '+Math.round(performance.now()-t)+'ms');try{await recentSave()}catch(e){}}).catch(e=>console.error(e))}
 let GT0=0;
 async function gradeFile(file,auto,mem){
-  if(S.busy)return;GT0=performance.now();
+  if(S.busy)return;GT0=performance.now();dlog('GO',(typeof FOC!=='undefined'&&FOC.on?'focus ':'page ')+(GRADE_ONLY!=null?GRADE_ONLY:'')+(typeof FOC!=='undefined'&&FOC.retry?' retry':''));
   if(!mem&&P.handle&&file.lastModified===P.lastMod){if(auto)return;fb('nk',Object.keys(S.state).length?'새로 저장된 필기가 없습니다. PDF에서 고친 뒤 꼭 Ctrl+S로 저장하고 다시 누르세요.':'아직 저장된 필기가 없습니다. PDF에서 Ctrl+S로 저장한 뒤 누르세요.');return}
   fb('nk',auto?'저장을 확인해 자동 채점 중…':'저장된 필기를 읽는 중…');$('#grade').disabled=true;S.busy=true;
   try{
@@ -2908,7 +2909,7 @@ async function gradeFile(file,auto,mem){
     if(clr.length){const dk='njd:'+bookOf(P.name)+':'+dayKey(Date.now());let D={},M={};try{D=JSON.parse(localStorage.getItem(dk)||'{}');M=JSON.parse(localStorage.getItem('njm:'+P.name)||'{}')}catch(e){}
       for(const q of clr){delete S.state[q];if(P.prev)delete P.prev[q];delete D[q];delete M[q]}try{localStorage.setItem(dk,JSON.stringify(D));localStorage.setItem('njm:'+P.name,JSON.stringify(M))}catch(e){}
       if(window.NJPROF)console.log('PROF clr',JSON.stringify(clr))}
-    if(window.NJPROF)console.log('PROF g:loop');dlog('g:loop',Math.round(performance.now()-GT0)+'ms');const at=S.series.length;let nw=0,ok=0,bad=0,chk=0,re=0,reOk=0;
+    if(window.NJPROF)console.log('PROF g:loop');dlog('g:loop',Math.round(performance.now()-GT0)+'ms');const at=S.series.length;let nw=0,ok=0,bad=0,chk=0,re=0,reOk=0;const TLB=TL.on()?tlSnap():null;
     for(const p of P.problems){
       if(GRADE_ONLY!=null&&p.q!==GRADE_ONLY)continue;
       const regSigs=all.filter(s=>inReg(s,p)).map(s=>s.sig),st0=S.state[p.q],erased=!!(st0&&st0.sigs&&st0.sigs.some(g=>!regSigs.includes(g)));
@@ -2949,6 +2950,7 @@ async function gradeFile(file,auto,mem){
       }
     }
     for(const p of P.problems){const x=S.state[p.q];if(x)x.sigs=all.filter(s=>inReg(s,p)).map(s=>s.sig)}
+    if(TLB){const qs=new Set(GFRESH);for(const q of Object.keys(S.state))if(JSON.stringify(tlClean(S.state[q]))!==JSON.stringify(TLB[q]||null))qs.add(+q);setTimeout(()=>tlGrade(TLB,[...qs]),400)}
     for(const s of all)S.seen.add(s.sig);S.ink=all;setTimeout(logWrongs,0);setTimeout(pvBadgeAll,0);
     const parts=[];if(nw)parts.push(`새로 ${nw}문항`);if(ok)parts.push(`정답 ${ok}`);if(bad)parts.push(`오답 ${bad}`);if(chk)parts.push(`확인 필요 ${chk}`);if(re){const rs=Object.values(S.state).filter(x=>x.retry&&x.retry.self&&!x.retry.ans).length;if(reOk)parts.push(`고침 △ ${reOk}`);if(re-reOk-rs>0)parts.push(`여전히 틀림 ${re-reOk-rs}`)}{const sp=selfPending().length;if(sp)parts.push(`스스로 채점 ${sp}`)}
     {const rsN=Object.values(S.state).filter(x=>x.retry&&x.retry.self&&!x.retry.ans).length,still=Math.max(0,re-reOk-rsN);S.goRes={ok:ok+reOk,gap:bad+still,n:ok+bad+reOk+still,chk:chk+rsN}}
@@ -3450,7 +3452,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.54 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.55 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -3460,7 +3462,7 @@ function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.cr
       <div class="muted" style="font-size:13px">지금 보는 쪽의 문항이에요. 앱이 잘못 채점했거나 채점하지 못한 문항을 ○ 또는 ／로 정해 주세요. ○로 정하면 오답 기록에서 빠져요.</div>
       ${L.map(x=>{const p=P.problems.find(z=>z.q===x.q),c=x.none?(P.prev&&P.prev[x.q])||null:catOf(x),a=x.retry&&x.retry.ans?x.retry.ans:x.ans;return `<div class="rcAtt"><span><b>${QN(x.q)}번</b> · ${x.none?(c?({O:'○',T:'△',S:'／',X:'／'}[c]||'?')+' (지난번)':'채점 안 됨'):({O:'○',T:'△',S:'／',X:'／'}[c]||'?')}${x.teacher?' (고침)':''}${x.none?'':` · 읽은 답 ${esc(p?fmt(p,a)||'-':a||'-')}`} · 정답 ${esc(p?showKey(p):'')}</span><span class="rcAttB"><button class="btn quiet sm" type="button" data-o="${x.q}" ${c==='O'?'disabled':''}>○로</button><button class="btn quiet sm" type="button" data-w="${x.q}" ${c==='X'||c==='S'?'disabled':''}>／로</button></span></div>`}).join('')||'<p class="muted">아직 채점한 문항이 없어요.</p>'}</div>`;
     sh.querySelector('[data-x]').onclick=()=>{sh.hidden=true};sh.onclick=e=>{if(e.target===sh)sh.hidden=true};
-    const apply=async(q,ok)=>{if(!S.state[q]){const p0=P.problems.find(z=>z.q===q);if(!p0)return;S.state[q]={q,ans:'',ok:null,status:'done',at:S.series.length,short:shortOf(p0),wrongs:0,sigs:memInk().filter(s=>inReg(s,p0)).map(s=>s.sig)};if(P.prev)delete P.prev[q]}const x=S.state[q];if(!x)return;const p=P.problems.find(z=>z.q===q);x.ok=ok;x.status='done';if(ok&&p&&keyOf(p)&&!/^✓/.test(keyOf(p)))x.ans=keyOf(p).split('|').join('|');delete x.retry;x.wrongs=ok?0:Math.max(1,x.wrongs||1);x.teacher=ok?'O':'X';
+    const apply=async(q,ok)=>{try{const p=P.problems.find(z=>z.q===q);tlEv('fix',{q,ok,before:tlClean(S.state[q]),read:p&&p._rd||null,key:p&&tlClean(p.key)})}catch(e){}if(!S.state[q]){const p0=P.problems.find(z=>z.q===q);if(!p0)return;S.state[q]={q,ans:'',ok:null,status:'done',at:S.series.length,short:shortOf(p0),wrongs:0,sigs:memInk().filter(s=>inReg(s,p0)).map(s=>s.sig)};if(P.prev)delete P.prev[q]}const x=S.state[q];if(!x)return;const p=P.problems.find(z=>z.q===q);x.ok=ok;x.status='done';if(ok&&p&&keyOf(p)&&!/^✓/.test(keyOf(p)))x.ans=keyOf(p).split('|').join('|');delete x.retry;x.wrongs=ok?0:Math.max(1,x.wrongs||1);x.teacher=ok?'O':'X';
       if(ok){const id=P.name+'#'+q;try{await wrDel(id)}catch(e){}try{await dbDel(id)}catch(e){}try{const t=JSON.parse(localStorage.getItem('njt:'+P.name)||'{}');delete t[q];localStorage.setItem('njt:'+P.name,JSON.stringify(t))}catch(e){}}
       chips();await writeMarks();pvSum();draw()};
     sh.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>apply(+b.dataset.o,true));sh.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>apply(+b.dataset.w,false))};
@@ -4513,6 +4515,8 @@ function ghAsk(q){try{const o=JSON.parse(localStorage.getItem(ghAskK())||'{}');o
 /* ================= 채점 베타 모드 (window.NJ_BETA): 문제집 풀기 · 채점 · 채점 신고만 보이게 ================= */
 async function betaBar(){if(!window.NJ_BETA)return;{const g=$('#again');if(g)g.textContent='문제집 목록으로'}document.body.classList.add('beta');const b=$('#betaBar');if(!b)return;const n=(await rpAll().catch(()=>[])).length;b.hidden=false;
   b.innerHTML=`<div><b>채점 베타 테스트</b><br>문제를 풀고 [채점하기]를 누르세요. 채점이 이상하면 문제 화면의 <b>🚩 채점 신고</b>를 눌러 주세요.</div><div style="display:flex;gap:6px;align-items:center">${n?`<span>신고 <b>${n}</b>건</span><button class="btn quiet" type="button" id="betaExp" style="padding:8px 12px;font-size:14px">신고 파일 보내기</button>`:'<span class="muted">아직 신고 없음</span>'}</div>`;
+  {const tn=await tlCnt();const d=document.createElement('div');d.style.cssText='display:flex;gap:6px;align-items:center';d.innerHTML=`<button class="btn mid" type="button" id="tlExp" style="padding:8px 12px;font-size:14px">📦 테스트 기록 보내기${tn?` (${tn})`:''}</button>`;b.appendChild(d);
+    $('#tlExp').onclick=async()=>{const bt=$('#tlExp');bt.disabled=true;bt.textContent='파일 만드는 중…';try{const r=await tlExport();bt.textContent=r==='cancel'?'📦 테스트 기록 보내기':'✓ 파일을 만들었어요 — 선생님께 보내 주세요'}catch(e){console.error(e);bt.textContent='만들지 못했어요. 다시 눌러 주세요'}bt.disabled=false}}
   const e=$('#betaExp');if(e)e.onclick=()=>rpExport()}
 /* ================= 채점 신고: 이상한 채점을 그 자리에서 캡처해 둔다 =================
    문제 칸 그림(학생 필기 포함) · 정답 그림 · 앱이 읽은 답과 판정 · 그 칸의 필기 획 좌표까지 저장 → 선생님 모드에서 파일로 내보내기 */
@@ -4542,6 +4546,44 @@ async function rpSave(q,why,memo){const p=P.problems.find(x=>x.q===q);if(!p)thro
 const rpAll=async()=>(await plAll().catch(()=>[])).filter(x=>String(x.key).startsWith('rep:')).sort((a,b)=>b.at-a.at);
 async function rpExport(){const L=await rpAll();if(!L.length)return;const blob=new Blob([JSON.stringify({app:'njmath',kind:'grade-reports',at:Date.now(),n:L.length,reports:L})],{type:'application/json'});
   const a=document.createElement('a'),d=new Date();a.href=URL.createObjectURL(blob);a.download=`njmath_grade_reports_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}_${L.length}.json`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
+
+/* ================= 베타 테스트 기록 (NJ_BETA 또는 localStorage njTL=1)
+   GO를 누를 때마다 문항별로 [정답(어디서 읽었는지) · 앱이 읽은 답 · 판정 · 그 칸의 필기 획 · 걸린 시간 · 그 사이의 진단 기록]을 남기고,
+   학생이 직접 채점(○/✕/답 입력/안 푼 문제)·채점 고치기로 바로잡은 결과도 함께 남긴다 → 파일 하나로 내보내 분석 (앱 오류도 기록) */
+const TL={sid:Date.now().toString(36),n:0,book:null,g0:0,last:0,on:()=>{try{return !!window.NJ_BETA||localStorage.getItem('njTL')==='1'}catch(e){return !!window.NJ_BETA}}};
+function tlDb(){if(TL.dbp)return TL.dbp;TL.dbp=new Promise((res,rej)=>{const r=indexedDB.open('njtl',1);r.onupgradeneeded=()=>{r.result.createObjectStore('ev',{keyPath:'k'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});return TL.dbp}
+async function tlTx(mode,f){const db=await tlDb();return new Promise((res,rej)=>{const t=db.transaction('ev',mode),st=t.objectStore('ev');let out;const q=f(st);if(q)q.onsuccess=()=>{out=q.result};t.oncomplete=()=>res(out);t.onerror=()=>rej(t.error)})}
+async function tlPut(o){if(!TL.on())return;try{o.k=TL.sid+':'+String(++TL.n).padStart(5,'0');o.at=Date.now();await tlTx('readwrite',st=>st.put(o));
+  if(TL.n%40===0){const n=await tlTx('readonly',st=>st.count());if(n>1500)await tlTx('readwrite',st=>{let d=n-1200;const c=st.openCursor();c.onsuccess=()=>{const r=c.result;if(r&&d-->0){r.delete();r.continue()}};return null})}}catch(e){console.error(e)}}
+const tlCnt=async()=>{try{return await tlTx('readonly',st=>st.count())}catch(e){return 0}};
+function tlClean(o){try{return o==null?o:JSON.parse(JSON.stringify(o,(k,v)=>k==='crop'||k==='png'||k==='sigs'?undefined:v))}catch(e){return null}}
+function tlInk(L){return (L||[]).filter(s=>s.pts&&s.pts.length).slice(0,60).map(s=>{let P0=s.pts;if(P0.length>80){const st=Math.ceil(P0.length/80);P0=P0.filter((_,i)=>i%st===0||i===s.pts.length-1)}return {t:s.t||0,r:s.raster?1:0,p:P0.map(q=>[Math.round(q.x*10)/10,Math.round(q.y*10)/10])}})}
+async function tlShrink(u,W){if(!u)return '';try{const im=new Image();await new Promise((r,j)=>{im.onload=r;im.onerror=j;im.src=u});const k=Math.min(1,W/im.width),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*k));c.height=Math.max(1,Math.round(im.height*k));c.getContext('2d').drawImage(im,0,0,c.width,c.height);const d=c.toDataURL('image/jpeg',0.62);c.width=c.height=0;return d}catch(e){return ''}}
+function tlDev(){return {ver:(document.querySelector('.brand')||{}).textContent||'',beta:!!window.NJ_BETA,ua:navigator.userAgent,dev:typeof DEV!=='undefined'?DEV:'',dpr:devicePixelRatio,scr:screen.width+'x'+screen.height,win:innerWidth+'x'+innerHeight,mem:navigator.deviceMemory||null,touch:navigator.maxTouchPoints||0,name:(typeof LS!=='undefined'&&LS.get&&LS.get('name'))||''}}
+function tlDg(){const t=TL.last;TL.last=(Date.now()-DG.t0)/1000;return DG.L.filter(l=>l[0]>=t-0.05).slice(-220)}
+const tlSnap=()=>{const o={};try{for(const [q,x] of Object.entries(S.state||{}))o[q]=tlClean(x)}catch(e){}return o};
+async function tlGrade(before,qs){if(!TL.on()||!P||!S)return;try{
+  if(TL.book!==P.name){TL.book=P.name;await tlPut({ev:'book',dev:tlDev(),book:P.name,pages:P.doc&&P.doc.numPages,kind:{lazy:!!P.lazy,ebs:!!P.ebs,xi:!!P.xi,scan:!!P.scan,seq:!!P.seqAns,foot:!!P.footAns,tbl:!!(P.seqAns&&P.seqAns.tbl)},sol:P.solRange||null,np:P.problems.length,keys:P.problems.filter(p=>p.key&&p.key.kind!=='self').length})}
+  const ink=memInk(),dg=tlDg(),ms=Math.round(performance.now()-GT0),mode={focus:!!(typeof FOC!=='undefined'&&FOC.on),retry:!!(typeof FOC!=='undefined'&&FOC.retry),only:GRADE_ONLY};
+  const L=[];for(const q of qs){const p=P.problems.find(z=>z.q===q);if(!p)continue;const a=tlClean(S.state[q]),b=before[q]||null;
+    const clean=a&&a.status==='done'&&a.ok===true&&!(a.retry&&(a.retry.self||a.retry.ok===false)),bad=!clean;
+    const e={q,disp:p.disp||null,page:p.page,box:[p.x0,p.y0,p.x1,p.y1].map(v=>Math.round(v)),ab:p.ab?[p.ab.x0,p.ab.y0,p.ab.x1,p.ab.y1].map(v=>Math.round(v)):null,npr:p.npr||null,
+      key:tlClean(p.key),keyShow:(()=>{try{return showKey(p)}catch(e){return null}})(),choices:(p.choices||[]).map(c=>[Math.round(c.x),Math.round(c.y)]),read:p._rd||null,pr:p._pr||null,gs:p._gs||null,before:b,after:a,prev:P.prev&&P.prev[q]||null,
+      ink:tlInk(ink.filter(s=>inReg(s,p)))};
+    if(bad){try{e.crop=await tlShrink(await cropUrl(P.doc,p,ink),520)}catch(x){}try{e.keyImg=await tlShrink(await keyImg(p),360)}catch(x){}}
+    L.push(e)}
+  await tlPut({ev:'grade',book:P.name,ms,mode,items:L,dg})}catch(e){console.error(e);dlog('tlErr',String(e).slice(0,80))}}
+function tlEv(ev,o){if(!TL.on())return;tlPut(Object.assign({ev,book:P&&P.name},o||{}))}
+window.addEventListener('error',e=>{try{dlog('jsErr',String(e.message||e).slice(0,150)+' @'+(e.lineno||''));tlEv('err',{msg:String(e.message||''),line:e.lineno||0,col:e.colno||0,stack:e.error&&String(e.error.stack||'').slice(0,800)})}catch(x){}});
+window.addEventListener('unhandledrejection',e=>{try{const r=e.reason;dlog('jsRej',String(r&&r.message||r).slice(0,150));tlEv('err',{msg:'rej: '+String(r&&r.message||r),stack:r&&String(r.stack||'').slice(0,800)})}catch(x){}});
+async function tlExport(){const all=await tlTx('readonly',st=>st.getAll()).catch(()=>[]),rep=await rpAll().catch(()=>[]);
+  const d=new Date(),nm=(tlDev().name||'학생').replace(/[\\/:*?"<>|\s]/g,''),fn=`njmath_beta_${nm}_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}_${String(d.getHours()).padStart(2,'0')}${String(d.getMinutes()).padStart(2,'0')}.json`;
+  const body=JSON.stringify({app:'njmath',kind:'beta-log',v:1,at:Date.now(),dev:tlDev(),n:all.length,events:all,reports:rep,diag:DG.L.slice(-400)});
+  const blob=new Blob([body],{type:'application/json'});
+  try{const f=new File([blob],fn,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'러닝메이트 테스트 기록'});return 'share'}}catch(e){if(e&&e.name==='AbortError')return 'cancel'}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},3000);return 'file'}
+async function tlClear(){try{await tlTx('readwrite',st=>st.clear())}catch(e){}}
+window.NJTL={all:()=>tlTx('readonly',st=>st.getAll()),exp:tlExport,clear:tlClear,on:()=>TL.on()};
 /* 답이 써 있는데 채점 기록이 없는 문항 (놓친 문항) */
 /* 화면/파일에 채점 표시가 실제로 있는 문항인가: 이번 학습의 판정이 표시를 만들거나, 예전 표시가 파일에 남아 있어야 한다 (기록만 있고 표시가 없으면 채점 안 된 것) */
 /* 풀이가 아니라 실수로 찍힌 점·짧은 선: 획 3개 이하, 전체 길이 12pt 미만, 크기 8pt 미만 (숫자 1 하나도 보통 이보다 크다) */
@@ -4673,7 +4715,7 @@ async function ssShow(){setTimeout(()=>{try{ssPosApply()}catch(e){}},0);const x=
     ask.innerHTML=obj?'내가 고른 번호를 눌러 주세요':'내가 쓴 답을 입력해 주세요';
     btns.outerHTML=obj?`<div class="qzch" style="justify-content:center">${[1,2,3,4,5].map(n=>`<button type="button" data-pk="${n}">${'①②③④⑤'[n-1]}</button>`).join('')}</div>`
       :`<div style="display:flex;gap:8px;justify-content:center"><input class="txt" id="ssTyped" inputmode="numeric" style="font-size:22px;max-width:200px" value="${esc(x.ans||'')}"><button class="btn mid" type="button" id="ssTypedOk">확인</button></div>`;
-    const done=v=>{v=String(v).replace(/\s/g,'');if(!v)return;const k=keyOf(p),ok=normAns(v)===normAns(k);x.ans=v;x.status='done';x.ok=ok;x.wrongs=ok?0:1;SS.n++;SS.np=0;chips();if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()};
+    const done=v=>{v=String(v).replace(/\s/g,'');if(!v)return;const k=keyOf(p),ok=normAns(v)===normAns(k);try{tlEv('self',{q:x.q,typed:v,key:k,good:ok,how:'typed',read:p&&p._rd||null})}catch(e){}x.ans=v;x.status='done';x.ok=ok;x.wrongs=ok?0:1;SS.n++;SS.np=0;chips();if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()};
     $('#ssBody').querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>done(b.dataset.pk));const ti=$('#ssTyped');if(ti){$('#ssTypedOk').onclick=()=>done(ti.value);ti.onkeydown=e=>{if(e.key==='Enter')done(ti.value)}}}
   if(NP){const pv=new Array(NP).fill(null);$('#ssBody').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{pv[+b.dataset.p]=b.dataset.v==='1';
       $('#ssBody').querySelectorAll(`[data-p="${b.dataset.p}"]`).forEach(y=>y.classList.toggle('pick',y===b));$('#ssPartOk').disabled=pv.some(v=>v===null);
@@ -4687,13 +4729,13 @@ async function ssShow(){setTimeout(()=>{try{ssPosApply()}catch(e){}},0);const x=
     $('#ssSolAll').onclick=async()=>{const b=$('#ssSolAll');b.disabled=true;b.textContent='불러오는 중…';try{const u=await solImg(P,f,true);let ov=$('#solOv');if(!ov){ov=document.createElement('div');ov.id='solOv';ov.style.cssText='position:fixed;inset:0;z-index:120;background:rgba(15,23,42,.6);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:4vh 12px';ov.onclick=e=>{if(e.target===ov||e.target.dataset.x)ov.remove()};document.body.appendChild(ov)}
       ov.innerHTML=`<div style="background:#fff;border-radius:14px;padding:12px;max-width:760px;width:100%"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;color:#111"><b>${esc(QN(p.q))}번 해설</b><button type="button" class="btn quiet" data-x="1">닫기</button></div><img src="${u}" style="width:100%"></div>`}catch(e){console.error(e)}finally{b.disabled=false;b.textContent='📖 해설 전체 보기'}}}}}
 /* 스스로 채점에 안 푼 문제가 나왔을 때: 채점 기록을 지우고 '안 푼 문제'(노란 형광)로 돌린다 */
-function ssNone(x){if(!S||!SS)return;delete S.state[x.q];(S.clrMk=S.clrMk||[]).push(x.q);if(P.prev)delete P.prev[x.q];try{const k='njm:'+P.name,o=JSON.parse(localStorage.getItem(k)||'{}');delete o[x.q];localStorage.setItem(k,JSON.stringify(o))}catch(e){}
+function ssNone(x){if(!S||!SS)return;try{const p=P.problems.find(z=>z.q===x.q);tlEv('self',{q:x.q,how:'none',state:tlClean(x),read:p&&p._rd||null,ink:p?tlInk(memInk().filter(s=>inReg(s,p))):null})}catch(e){}delete S.state[x.q];(S.clrMk=S.clrMk||[]).push(x.q);if(P.prev)delete P.prev[x.q];try{const k='njm:'+P.name,o=JSON.parse(localStorage.getItem(k)||'{}');delete o[x.q];localStorage.setItem(k,JSON.stringify(o))}catch(e){}
   SS.L.splice(SS.i,1);SS.n++;SS.np=0;chips();if(SS.i<SS.L.length)ssShow();else ssClose()}
 function ssApply(x,p,good){const k=keyOf(p)||'✓';
   if(x.status==='check'){x.ans=good?k:'✗';x.status='done';x.ok=good;x.wrongs=good?0:1;x.manual=!good}
   else{x.retry.ans=good?k:'✗';x.retry.ok=good;x.retry.sure=true;if(!good){x.wrongs=(x.wrongs||1)+1;x.manual=true}}
   histEvt(x.q,good);setTimeout(pvBadgeAll,0);SS.n++;SS.np=0;chips()}
-function ssSet(x,p,good){ssApply(x,p,good);if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()}
+function ssSet(x,p,good){try{tlEv('self',{q:x.q,good,pr:x.pr||null,pw:x.pw||null,how:'button',read:p&&p._rd||null,key:p&&tlClean(p.key)})}catch(e){}ssApply(x,p,good);if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()}
 /* 내가 쓴 답만: 문제 칸 안의 필기(인쇄된 글자 없이)를 크게 그려 정답과 바로 비교 */
 function inkOnlyImg(p,x){if(!p)return '';let L=memInk().filter(s=>!s.raster&&inReg(s,p));if(!L.length)return '';
   const A=p.ab;if(A){const inA=L.filter(s=>{const cx=(s.b.x0+s.b.x1)/2,cy=(s.b.y0+s.b.y1)/2;return cx>=A.x0&&cx<=A.x1&&cy>=A.y0&&cy<=A.y1});if(inA.length)L=inA}   /* 답란에 쓴 것이 있으면 그것이 답 */
