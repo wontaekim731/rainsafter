@@ -605,7 +605,8 @@ body.snOpen #pdfPages{padding-right:var(--snW)}
 .simAns{flex-basis:100%;width:100%;margin-top:8px;font-size:14px}
 .simAns table{width:100%;border-collapse:collapse;font-family:inherit}
 .simAns td{font-family:inherit;border-top:1px dashed var(--line);padding:5px 6px;vertical-align:top}
-.simAns td:last-child{text-align:right;vertical-align:middle;white-space:nowrap}.simAns td:last-child b{font-size:24px;line-height:1.1}#anTask .simAns td:last-child b{font-size:30px}
+.simAns td:last-child{text-align:right;vertical-align:middle;white-space:nowrap}.simAns td:last-child b{font-size:24px;line-height:1.1}#anTask{width:max(240px,min(23vw,320px))}#anTask .simAns{font-size:13px!important;padding:6px 8px!important}#anTask .simAns td{padding:8px 4px;border-top:0;border-bottom:2px solid #e2e8f0}#anTask .simAns tr:nth-child(even) td{background:#f8fafc}#anTask .simAns td:first-child{font-weight:800;font-size:15px;color:#1f3a8a}
+.ansC{display:inline-flex;align-items:center;justify-content:center;width:1.5em;height:1.5em;border:.12em solid currentColor;border-radius:50%;font:800 24px/1 "Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif}.ansN{font:800 24px/1 "Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;letter-spacing:0}#anTask .ansC{font-size:30px}#anTask .ansN{font-size:34px}
 .simAns td:first-child{font-family:ui-monospace,monospace;color:var(--muted);width:28px}
 .simAns td:last-child{text-align:right;white-space:nowrap;font-size:16px}
 .simRow{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;border-top:1px dashed var(--line);padding-top:8px}
@@ -3456,7 +3457,7 @@ function anpToggle(){if(ANP.on){anpClose();return}if(!P){return}if(P.task){anpTa
 async function anpTask(){let el=$('#anTask');if(!el){el=document.createElement('div');el.id='anTask';el.className='anPane';el.innerHTML='<div class="anBar"><b>정답표</b><span style="flex:1"></span><button type="button" data-a="x">✕</button></div><div class="anBody simAns" style="padding:10px 14px;margin:0;background:#fff;color:#111;font-size:15px"></div>';document.body.appendChild(el);el.querySelector('[data-a="x"]').onclick=anpClose}
   let r=null;try{r=await libMeta(P.name)}catch(e){}const q=anpCurQ(),B=el.querySelector('.anBody');
   const L=r&&r.simItems?r.simItems:P.problems.map(p=>({n:p.q,label:p.label||'',big:'',a:null,k:showKey(p)}));
-  B.innerHTML=`<table>${L.map(x=>`<tr${x.n===q?' style="background:#dcfce7"':''}><td>${String(x.n).padStart(2,'0')}</td><td>${esc(x.label||'')}${x.big?`<div class="muted" style="font-size:12px">${esc(x.big)}${x.lv?` · ${SIM_LV[x.lv]}`:''}</div>`:''}</td><td><b>${esc(x.a!=null?simAnsTxt(x.a):x.k)}</b></td></tr>`).join('')}</table>${r&&r.simItems?'<button type="button" class="btn" data-apdf style="margin-top:10px;padding:7px 12px;font-size:14px;background:#f1f5f9;color:#111;border:1px solid #cbd5e1">📄 정답지 PDF</button>':''}`;
+  B.innerHTML=`<table>${L.map(x=>`<tr${x.n===q?' style="background:#dcfce7"':''}><td>${String(x.n).padStart(2,'0')}</td><td>${esc(x.label||'')}${x.big?`<div class="muted" style="font-size:12px">${esc(x.big)}${x.lv?` · ${SIM_LV[x.lv]}`:''}</div>`:''}</td><td>${simAnsHTML(x.a!=null?x.a:x.k)}</td></tr>`).join('')}</table>${r&&r.simItems?'<button type="button" class="btn" data-apdf style="margin-top:10px;padding:7px 12px;font-size:14px;background:#f1f5f9;color:#111;border:1px solid #cbd5e1">📄 정답지 PDF</button>':''}`;
   {const b=B.querySelector('[data-apdf]');if(b)b.onclick=()=>simAnsPdf(r,b)}
   ANP.on=true;el.hidden=false;document.body.classList.add('anOpen');$('#rlAns')&&$('#rlAns').classList.add('on')}
 /* ================= 풀이 다시 보기: 획마다 언제 썼는지(시작·끝)와 지운 때를 문제별로 기록 → 영상처럼 재생 =================
@@ -4017,7 +4018,8 @@ async function makeTask(list,opt){opt=opt||{};
 /* --- 과제 PDF를 풀었을 때: 채점 결과를 오답노트에 반영 --- */
 /* 유사 기출 정답지: 화면 표 + A4 PDF (번호 · 정답 · 출처 · 유형 · 난이도) */
 const simAnsTxt=a=>String(a).startsWith('c')?'①②③④⑤'[+String(a).slice(1)-1]:String(a);
-function simAnsTable(items,res){return `<table>${items.map(x=>{const r=res&&res[x.n];return `<tr><td>${String(x.n).padStart(2,'0')}</td>${res?`<td style="font-weight:800;color:${r==null?'var(--muted,#64748b)':r?'var(--ok)':'var(--bad)'}">${r==null?'-':r?'○':'✗'}</td>`:''}<td>${esc(x.label)}<div class="muted" style="font-size:12px">${esc(x.big)}${x.lv?` · ${SIM_LV[x.lv]}`:''}</div></td><td><b>${esc(simAnsTxt(x.a))}</b></td></tr>`}).join('')}</table>`}
+const simAnsHTML=a=>{const t=String(a);if(t.startsWith('c'))return `<span class="ansC">${esc(t.slice(1))}</span>`;const i='①②③④⑤'.indexOf(t);return i>=0&&t.length===1?`<span class="ansC">${i+1}</span>`:`<span class="ansN">${esc(t)}</span>`};
+function simAnsTable(items,res){return `<table>${items.map(x=>{const r=res&&res[x.n];return `<tr><td>${String(x.n).padStart(2,'0')}</td>${res?`<td style="font-weight:800;color:${r==null?'var(--muted,#64748b)':r?'var(--ok)':'var(--bad)'}">${r==null?'-':r?'○':'✗'}</td>`:''}<td>${esc(x.label)}<div class="muted" style="font-size:12px">${esc(x.big)}${x.lv?` · ${SIM_LV[x.lv]}`:''}</div></td><td>${simAnsHTML(x.a)}</td></tr>`}).join('')}</table>`}
 async function simAnsPdf(r,btn){if(!r||!r.simItems)return;const t0=btn&&btn.textContent;if(btn)btn.textContent='만드는 중…';
   try{const {PDFDocument}=PDFLib,out=await PDFDocument.create(),items=r.simItems,per=22,title=r.name.replace(/\.pdf$/i,'');
     for(let k=0;k<items.length;k+=per){const pg=out.addPage([A4W,A4H]),part=items.slice(k,k+per),H=A4H-MG*2;
