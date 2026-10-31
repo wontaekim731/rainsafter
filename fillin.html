@@ -5428,13 +5428,12 @@ async function homeSimple(){const box=$('#hHell');const docs=await libAll().catc
   const REPS=teacherOn()?await rpAll().catch(()=>[]):[];
   box.innerHTML=`<div class="fiHero"><div class="who">${esc(LS.get('name',''))}의 오늘</div><div class="big">${td.n?`${td.n}문제 풀었어요`:'오늘 시작해요'}</div><div class="sub2">${td.n?`맞음 ${td.ok}`:''}${open?`${td.n?' · ':''}<b>GAP ${open}</b>`:''}</div></div>
    <div class="fiCard">${gate.t?`<div class="bk"><span>${esc(gate.t)}</span></div>`:''}<button class="fiGo" type="button" data-gate>${esc(gate.a)} <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></button>
-     <div class="sub" style="margin-top:8px;text-align:center">문제집 풀기 → GO 채점 → 틀린 문제는 GAP 탭에서 ☆로 담기</div></div>
+     <div class="sub" style="margin-top:8px;text-align:center">문제집 풀기 → GO 채점 → 틀린 문제는 BLOCK 탭에서 ☆로 담기</div></div>
    <div class="cc impW"><div class="impH"><h2>중요 오답</h2>${left.length?`<button class="sb pri" data-impall>남은 ${left.length}개 다시 풀기</button>`:''}</div>
      ${imp.length?`<div class="impS" tabindex="0" aria-label="중요 오답, 옆으로 넘겨 보기">${imp.map(card).join('')}</div><div class="sub" style="margin-top:6px">옆으로 밀어서 넘겨 보고, 누르면 그 문제를 다시 풀어요</div>`
-       :`<p class="sub" style="margin:0">아직 담은 오답이 없어요. [BLOCK] 탭에서 틀린 문제를 누르고 「☆ 오답노트에 담기」를 누르면 여기에 모여요.</p>`}</div>
-   <div class="fiTwo"><button type="button" class="gp" data-gapgo><span>BLOCK 모음</span><em>${open}</em></button><button type="button" data-books><span>다른 문제집</span><span style="color:var(--muted);font-size:15px">${docs.filter(d=>d.orig||!d.from&&d.orig!==false).length}권</span></button></div>
+       :`<p class="sub" style="margin:0">아직 담은 오답이 없어요. [BLOCK] 탭에서 틀린 문제를 누르고 「☆ 오답노트에 담기」를 누르면 여기에 모여요.</p>`}</div> 
    ${teacherOn()?`<div class="cc"><h2>선생님</h2><div class="ln" style="border:0;margin:0;padding:0"><span>채점 신고 <b>${REPS.length}</b>건</span><span style="display:flex;gap:6px">${REPS.length?'<button class="sb pri" data-rexp>파일로 내보내기</button><button class="sb" data-rclr>비우기</button>':''}</span></div></div>`:''}`;
-  const q=x=>box.querySelector(x);q('[data-gate]').onclick=gate.go;q('[data-gapgo]').onclick=()=>view('ana');q('[data-books]').onclick=()=>view('solve');
+  const q=x=>box.querySelector(x);q('[data-gate]').onclick=gate.go;{const g=q('[data-gapgo]');if(g)g.onclick=()=>view('ana');const bk=q('[data-books]');if(bk)bk.onclick=()=>view('solve')}
   box.querySelectorAll('[data-iid]').forEach(b=>b.onclick=()=>{const it=imp.find(i=>String(i.id)===b.dataset.iid);if(it)itemRetry([it])});
   {const a=q('[data-impall]');if(a)a.onclick=()=>itemRetry(left)}
   {const e=q('[data-rexp]');if(e)e.onclick=()=>rpExport();const c=q('[data-rclr]');if(c)c.onclick=async()=>{if(!confirm(`채점 신고 ${REPS.length}건을 지울까요?`))return;for(const r of REPS)await plDel(r.key);homeSimple()}}}
@@ -5463,8 +5462,7 @@ function fiHero(o){const n=Math.min(24,Math.max(o.share,o.done)),cells=[];let fi
   const left=Math.max(0,o.share-o.done);
   return `<div class="fiHero"><div class="who">${esc(o.name||'')}${o.name?'의 ':''}오늘</div><div class="big">${left?left+'문제':'오늘 목표 끝'}</div><div class="sub2">오늘 목표 ${o.share} · 푼 문제 ${o.done}${o.gap?` · <b>GAP ${o.gap}</b>`:''}</div></div>
    <div class="fiCard">${o.book?`<div class="bk"><span>${esc(o.book)}</span></div>`:''}<div class="fiGrid" role="img" aria-label="오늘 ${o.share}문제 중 채움 ${o.ok}, GAP ${o.done-o.ok}">${cells.join('')}</div>
-   <button class="fiGo" type="button" data-gate>${esc(o.a)} <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></button></div>
-   <div class="fiTwo"><button type="button" class="gp" data-gapgo><span>BLOCK <span class="fiLong">모아서 </span>클리어</span><em>${o.gap}</em></button><button type="button" data-books><span>다른 문제집</span><span style="color:var(--muted);font-size:15px">${o.nb}권</span></button></div>`}
+   <button class="fiGo" type="button" data-gate>${esc(o.a)} <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></button></div> `}
 async function renderHell(){const box=$('#hHell'),cfg=hellCfg();if(!cfg){box.innerHTML=teacherOn()?'<div class="cc"><h2>목표</h2><p class="sub" style="margin:0">학생이 아직 목표를 정하지 않았어요. 선생님 모드를 끄면 처음 설정 화면이 나와요.</p></div>':'';return}
   const docs=await libAll().catch(()=>[]),items=await dbAll().catch(()=>[]),wr=await wrAll().catch(()=>[]),ses=await sesAll().catch(()=>[]);
   const now=Date.now(),wk=wKey(now),by=hellDays(ses),today=dayKey(now);cfg.weeks=cfg.weeks||{};
@@ -5495,7 +5493,7 @@ async function renderHell(){const box=$('#hHell'),cfg=hellCfg();if(!cfg){box.inn
      <div class="ln"><span>남은 GAP <b>${open}</b>개${dueN?` · 오늘 복습 ${dueN}개`:''}</span><button class="sb" data-ana>GAP 모음</button></div></div>
    <div class="tOnly cc"><h2>선생님</h2><div class="ln" style="border:0;margin:0;padding:0"><span>채점 신고 <b>${REPS.length}</b>건${REPS.length?` · 최근 ${esc(REPS[0].book)} ${REPS[0].q}번 (${esc(REPS[0].why)})`:''}</span><span style="display:flex;gap:6px">${REPS.length?'<button class="sb pri" data-rexp>파일로 내보내기</button><button class="sb" data-rclr>비우기</button>':''}</span></div><div style="margin-top:12px"><button class="sb" data-reset>목표 다시 정하기</button></div></div>`;
   const q=x=>box.querySelector(x);
-  q('[data-gate]').onclick=gate.go;q('[data-ana]').onclick=()=>view('ana');q('[data-gapgo]').onclick=()=>view('ana');q('[data-books]').onclick=()=>view('solve');
+  q('[data-gate]').onclick=gate.go;q('[data-ana]').onclick=()=>view('ana');{const g=q('[data-gapgo]');if(g)g.onclick=()=>view('ana');const bk=q('[data-books]');if(bk)bk.onclick=()=>view('solve')}
   const ab=q('[data-ackb]');if(ab)ab.onclick=()=>{delete L.ban;hellSet(cfg);renderHell()};
   const ak=q('[data-ack]');if(ak)ak.onclick=()=>{const n=parseInt((q('#hwN')||{}).value,10),m=parseInt((q('#hwM')||{}).value,10);cfg.weeks[wk]={N:teacherOn()&&n>0?n:N,M:teacherOn()&&m>=0?m:M,D:Dn,ack:1};hellSet(cfg);renderHell()};
   {const e=q('[data-rexp]');if(e)e.onclick=()=>rpExport();const c=q('[data-rclr]');if(c)c.onclick=async()=>{if(!confirm(`채점 신고 ${REPS.length}건을 지울까요? 내보내기를 먼저 했는지 확인해 주세요.`))return;for(const r of REPS)await plDel(r.key);renderHell()}}
