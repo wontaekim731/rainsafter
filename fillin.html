@@ -605,6 +605,7 @@ body.snOpen #pdfPages{padding-right:var(--snW)}
 .simAns{flex-basis:100%;width:100%;margin-top:8px;font-size:14px}
 .simAns table{width:100%;border-collapse:collapse;font-family:inherit}
 .simAns td{font-family:inherit;border-top:1px dashed var(--line);padding:5px 6px;vertical-align:top}
+.simAns td:last-child{text-align:right;vertical-align:middle;white-space:nowrap}.simAns td:last-child b{font-size:24px;line-height:1.1}#anTask .simAns td:last-child b{font-size:30px}
 .simAns td:first-child{font-family:ui-monospace,monospace;color:var(--muted);width:28px}
 .simAns td:last-child{text-align:right;white-space:nowrap;font-size:16px}
 .simRow{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;border-top:1px dashed var(--line);padding-top:8px}
@@ -4018,11 +4019,11 @@ async function makeTask(list,opt){opt=opt||{};
 const simAnsTxt=a=>String(a).startsWith('c')?'①②③④⑤'[+String(a).slice(1)-1]:String(a);
 function simAnsTable(items,res){return `<table>${items.map(x=>{const r=res&&res[x.n];return `<tr><td>${String(x.n).padStart(2,'0')}</td>${res?`<td style="font-weight:800;color:${r==null?'var(--muted,#64748b)':r?'var(--ok)':'var(--bad)'}">${r==null?'-':r?'○':'✗'}</td>`:''}<td>${esc(x.label)}<div class="muted" style="font-size:12px">${esc(x.big)}${x.lv?` · ${SIM_LV[x.lv]}`:''}</div></td><td><b>${esc(simAnsTxt(x.a))}</b></td></tr>`}).join('')}</table>`}
 async function simAnsPdf(r,btn){if(!r||!r.simItems)return;const t0=btn&&btn.textContent;if(btn)btn.textContent='만드는 중…';
-  try{const {PDFDocument}=PDFLib,out=await PDFDocument.create(),items=r.simItems,per=26,title=r.name.replace(/\.pdf$/i,'');
+  try{const {PDFDocument}=PDFLib,out=await PDFDocument.create(),items=r.simItems,per=22,title=r.name.replace(/\.pdf$/i,'');
     for(let k=0;k<items.length;k+=per){const pg=out.addPage([A4W,A4H]),part=items.slice(k,k+per),H=A4H-MG*2;
       const png=await out.embedPng(textPng(A4W-MG*2,H,g=>{let y=0;if(k===0){g.fillStyle='#111';g.font=`700 17px ${FONT}`;g.fillText('정답',0,18);g.fillStyle='#555';g.font=`11px ${FONT}`;let t=title;while(g.measureText(t).width>A4W-MG*2-50&&t.length>4)t=t.slice(0,-2);g.fillText(t,46,17);y=34}
         g.strokeStyle='#999';g.lineWidth=0.8;g.beginPath();g.moveTo(0,y);g.lineTo(A4W-MG*2,y);g.stroke();
-        for(const x of part){y+=26;g.fillStyle='#1f3a8a';g.font=`700 14px ${FONT}`;g.fillText(String(x.n).padStart(2,'0'),2,y-8);g.fillStyle='#111';g.font=`700 15px ${FONT}`;g.fillText(simAnsTxt(x.a),40,y-8);
+        for(const x of part){y+=31;g.fillStyle='#1f3a8a';g.font=`700 14px ${FONT}`;g.fillText(String(x.n).padStart(2,'0'),2,y-8);g.fillStyle='#111';g.font=`700 21px ${FONT}`;g.fillText(simAnsTxt(x.a),40,y-8);
           g.fillStyle='#444';g.font=`11px ${FONT}`;let t=`${x.label} · ${x.big}${x.lv?' · '+SIM_LV[x.lv]:''}`;while(g.measureText(t).width>A4W-MG*2-120&&t.length>4)t=t.slice(0,-2);g.fillText(t,110,y-9);
           g.strokeStyle='#ddd';g.lineWidth=0.5;g.beginPath();g.moveTo(0,y);g.lineTo(A4W-MG*2,y);g.stroke()}}));
       pg.drawImage(png,{x:MG,y:MG,width:A4W-MG*2,height:H})}
