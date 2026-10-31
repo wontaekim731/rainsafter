@@ -2796,6 +2796,7 @@ async function start(){
   if(!P)return;$('#err').textContent='';let stream=null;
   if(P.handle){try{if(await P.handle.queryPermission({mode:'readwrite'})!=='granted')await P.handle.requestPermission({mode:'readwrite'})}catch(e){}}
   const appMode=document.querySelector('input[name=mode]:checked').value==='app';
+  if(appMode&&P.orig&&P.handle&&P.handle.kind==='lib'&&(P.task||((await libMeta(P.name).catch(()=>null))||{}).task)){P.orig=false}   /* 과제·유사 기출 문제지는 사본(풀이 날짜) 없이 그 문제지에 바로 푼다 */
   if(appMode&&P.orig&&P.handle&&P.handle.kind==='lib'){let c=FRESH?null:await latestCopy(P.name);FRESH=false;c=c?await libGet(c.name):await makeWorkCopy(P.name);await loadPdf(new File([c.bytes],c.name+'.pdf',{lastModified:c.mod}),vHandle(c.name),c);if(!P||P.name!==c.name)return;P.orig=false}
   if(GRADE_EXISTING){P.base=new Set();P.extInk=0;try{const r=await libMeta(P.name);if(r){r.inkAsked=true;await libPut(r)}}catch(e){}}
   if(appMode&&!P.handle){$('#err').textContent='이 브라우저에서는 앱에서 풀기를 쓸 수 없습니다. 엣지(또는 크롬)에서 열거나 "엣지 PDF에서 풀기"를 고르세요.';return}
@@ -4000,7 +4001,7 @@ async function makeTask(list,opt){opt=opt||{};
     out.getInfoDict().set(PDFName.of('NJTask'),PDFHexString.fromText(JSON.stringify(meta)));out.setTitle(opt.sim?'QLEAR 유사 기출':'내정수학 오답 과제');
     const bytes=await out.save({useObjectStreams:false});
     let nm=name.replace(/\.pdf$/i,''),i=2;while(await libMeta(nm))nm=name.replace(/\.pdf$/i,'')+` (${i++})`;await libPut({name:nm,bytes,size0:bytes.length,mod:Date.now(),at:Date.now(),task:true,orig:true,n:list.length,...(opt.sim?{sim:true,simFrom:opt.sim.from,simItems:opt.sim.items}:{})});
-    msg.className='okn';msg.innerHTML=`${list.length}문항 과제를 만들었습니다. <button class="btn mid" type="button" id="taskGo" style="padding:7px 12px;font-size:14px">지금 풀기</button>`;const tg=$('#taskGo');if(tg)tg.onclick=()=>{view('solve');openRecent(nm)};
+    msg.className='okn';msg.innerHTML=`${list.length}문항 과제를 만들었습니다. <button class="btn mid" type="button" id="taskGo" style="padding:7px 12px;font-size:14px">지금 풀기</button>`;const tg=$('#taskGo');if(tg)tg.onclick=()=>{view('solve');openRecent(nm)};return nm;
   }catch(e){console.error(e);msg.className='err';msg.textContent='과제 PDF를 만들지 못했습니다: '+e.message;return false}
 }
 /* --- 과제 PDF를 풀었을 때: 채점 결과를 오답노트에 반영 --- */
@@ -5689,13 +5690,17 @@ function wrongSheet(w,inNote){if(!w)return;const S=$('#nSheet'),has=inNote.has(w
   simSheet(w,S.querySelector('[data-sim]'));memoBind(w);S.querySelector('[data-st]').onclick=async()=>{if(await dbGet(w.id))await dbDel(w.id);else await noteAddFromWrongs([w.id]);badge();close();renderAnaTab()}
   /* 학생 화면(단순): 문제 · 내 답/정답 · [다시 풀기][비슷한 문제][☆ 고정] 만 보이고, 나머지(분류·힌트·코멘트·지우기)는 [더 보기] 안으로 */
   if(!teacherOn()){const sh=S.querySelector('.sh'),kids=[...sh.children],sim=sh.querySelector('[data-sim]'),row=kids[kids.length-1],st=sh.querySelector('[data-st]'),del=sh.querySelector('[data-wdel]');
-    const act=document.createElement('div');act.className='shAct';act.innerHTML='<button class="btn mid" type="button" data-redo>다시 풀기</button><button class="btn quiet" type="button" data-simt>비슷한 문제</button>';
+    const act=document.createElement('div');act.className='shAct';act.innerHTML='<button class="btn mid" type="button" data-redo>다시 풀기</button><button class="btn quiet" type="button" data-simt>유사 문제</button>';
     st.className='btn quiet';st.textContent=has?'★ 고정됨':'☆ 고정';act.appendChild(st);
     const more=document.createElement('details');more.className='shMore';more.innerHTML='<summary>더 보기</summary><div class="shMoreB"></div>';const mb=more.querySelector('.shMoreB');
     for(const k of kids.slice(3))if(k!==sim&&k!==row)mb.appendChild(k);if(del)mb.appendChild(del);row.remove();
     {const c=kids[2].querySelector('.chip');if(c){const SL={X:'남음',S:'다시 틀림',T:'클리어'},t=wStage(w);c.outerHTML=`<span class="sdot s${t}"><i></i>${SL[t]}</span>`}}
     kids[2].after(act);act.after(sim);sim.hidden=true;sim.after(more);
-    act.querySelector('[data-simt]').onclick=()=>{sim.hidden=!sim.hidden};
+    {const sb=act.querySelector('[data-simt]'),go=async big=>{const nm=await simQuick(w,big,sb);if(nm){close();view('solve');openRecent(nm)}};
+      sim._go=big=>{sim.hidden=true;go(big)};
+      sb.onclick=async()=>{if(sb.disabled)return;const h=await qpHdr();if(!h){sim.hidden=false;return}   /* 기출 팩이 없으면 넣는 방법 안내 */
+        const a=simAuto(w);if(a){go(a.big);return}
+        sim.hidden=false;if(sim._pick)sim._pick()}}   /* 유형을 모르는 문제만: 유형을 한 번 고르면 바로 문제지로 */
     act.querySelector('[data-redo]').onclick=async()=>{await noteAddFromWrongs([w.id]);const it=await dbGet(w.id);close();if(it)await startQuiz([it])}}}
 /* 오답 코멘트 → 숏 퀴즈: 학생이 남긴 코멘트에서 수학 용어를 찾아 빈칸 문제로 낸다 (인터넷·AI 없이 기기 안에서) */
 const MQ_G=[['극한','좌극한','우극한','극한값','수렴','발산','무한대'],['연속','불연속','함숫값','정의역','치역','구간'],['인수분해','유리화','통분','약분','전개','대입','치환','소거'],['분모','분자','최고차항','계수','상수항','차수'],
@@ -5828,7 +5833,7 @@ async function simSheet(w,box){if(!box)return;const hdr=await qpHdr();
     const go=box.querySelector('[data-simgo]');if(go)go.onclick=()=>auto?send(auto.big):pick();
     const pk=box.querySelector('[data-simpick]');if(pk)pk.onclick=pick;
     const dl=box.querySelector('[data-simdel]');if(dl)dl.onclick=()=>{simSave(simSent().filter(x=>x.id!==w.id));draw();try{renderAnaTab()}catch(e){}}};
-  const send=big=>{const RC=LS.get('simRecent',{}),bk=bookOf(w.src);RC[bk]=[big].concat((RC[bk]||[]).filter(x=>x!==big)).slice(0,6);LS.set('simRecent',RC);const L2=simSent().filter(x=>x.id!==w.id);L2.push({id:w.id,src:w.src,q:w.q,big,code:simCode(w)||'',at:Date.now()});simSave(L2);draw();try{renderAnaTab()}catch(e){}};
+  const send=big=>{if(box._go){box._go(big);return}const RC=LS.get('simRecent',{}),bk=bookOf(w.src);RC[bk]=[big].concat((RC[bk]||[]).filter(x=>x!==big)).slice(0,6);LS.set('simRecent',RC);const L2=simSent().filter(x=>x.id!==w.id);L2.push({id:w.id,src:w.src,q:w.q,big,code:simCode(w)||'',at:Date.now()});simSave(L2);draw();try{renderAnaTab()}catch(e){}};
   const pick=()=>{let sj=simSubjOf(w.src)||(auto&&QP.by.get(auto.code).s)||'M1';
     const rec=(LS.get('simRecent',{})[bookOf(w.src)]||[]).map(qpBig).filter(Boolean);
     const dr=()=>{const bs=hdr.bigs.filter(b=>b.subj===sj).sort((a,b)=>(a.order||0)-(b.order||0));
@@ -5836,7 +5841,7 @@ async function simSheet(w,box){if(!box)return;const hdr=await qpHdr();
       box.innerHTML=`<div class="label">🧩 이 문제는 어떤 유형인가요?</div>${bmBtns}<div class="seg" style="margin:4px 0 8px">${Object.entries(hdr.subj).map(([k,v])=>`<button type="button" data-sj="${k}" class="${k===sj?'on':''}">${esc(v)}</button>`).join('')}</div>
         ${rec.length?`<div class="muted" style="font-size:12px;margin:2px 0 4px">이 책에서 최근 고른 유형</div><div class="simBigs" style="margin-bottom:8px">${rec.map(b=>`<button type="button" data-big="${esc(b.id)}">${esc(b.name)}</button>`).join('')}</div>`:''}<div class="simBigs">${bs.map(b=>`<button type="button" data-big="${esc(b.id)}">${esc(b.name)}<small>${hdr.items.filter(i=>i.b===b.id&&i.e).length}</small></button>`).join('')}</div><div style="text-align:right"><button type="button" class="linkDel" data-simx>닫기</button></div>`;
       box.querySelectorAll('[data-sj]').forEach(b=>b.onclick=()=>{sj=b.dataset.sj;dr()});box.querySelectorAll('[data-sbook]').forEach(b=>b.onclick=()=>{const M=LS.get('simBookSubj',{});M[bookOf(w.src)]=b.dataset.sbook;LS.set('simBookSubj',M);simSheet(w,box)});box.querySelectorAll('[data-big]').forEach(b=>b.onclick=()=>send(b.dataset.big));box.querySelector('[data-simx]').onclick=draw};dr()};
-  draw()}
+  box._pick=pick;draw()}
 /* 유사 문제 고르기: 같은 큰 유형, 출처가 있는 기출, 안 푼 것 → 평가원 → 최근 순 (조금 섞음) */
 function simPick(big,n,own,taken,lv){const used=LS.get('simUsed',{}),h=QP.hdr;
   const pool=h.items.filter(i=>i.b===big&&i.e&&i.c!==own&&!taken.has(i.c)).map(i=>{const d=SIM_DIFF[i.c]||2;return {i,r:(lv?Math.abs(d-lv)*1000:0)+(used[i.c]?100:0)+(i.kice?0:10)-(+i.y||0)/1000+Math.random()*4}});
@@ -5846,12 +5851,27 @@ async function simItem(it){const h=QP.hdr,dpi=h.dpi||220,k=72/dpi,blob=await qpT
   const pdf=await doc.save(),ch=String(it.a).startsWith('c'),key=ch?{text:String(it.a).slice(1),kind:'circled'}:{text:String(it.a),kind:'number'};
   return {id:'qp:'+it.c,pdf,w:W,h:H,topic:qpBigName(it.b),src:simLabel(it),q:it.n,hist:[],key,keyShow:ch?'①②③④⑤'[+String(it.a).slice(1)-1]:String(it.a),
     choices:ch&&it.ch?it.ch.map(([x,y,s],j)=>({n:j+1,x:x*k,y:(it.h-y)*k,s:Math.max(9,s*k*1.1)})):[],label:`${simLabel(it)} · ${qpBigName(it.b)}`}}
+/* 유사 기출 문제지 이름: 어느 책 몇 번에서 나온 문제지인지 보이게 — '유사 · 고쟁이 미적분 016번 · 다항함수 · 어려움 4문항 (10.31 21:47)' */
+function simName(from,lv,n){const d=new Date(),hm=`${d.getMonth()+1}.${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,f=from[0]||{},bn=[...new Set(from.map(s=>qpBigName(s.big)))];
+  let bk=bookOf(f.src).replace(/\.pdf$/i,'').replace(/[_\s]+$/,'').replace(/^유형\s*\+\s*내신\s*/,'');if(bk.length>16)bk=bk.slice(0,16)+'…';
+  return `유사 · ${bk} ${QN(f.q)}번${from.length>1?` 외 ${from.length-1}`:''} · ${bn[0]}${bn.length>1?` 외 ${bn.length-1}유형`:''} · ${SIM_LV[lv]||'섞어서'} ${n}문항 (${hm}).pdf`}
+/* BLOCK [유사 문제]: 이 문제와 같은 유형 기출로 바로 문제지를 만들어 연다 (보내기·문제지 만들기 단계 없이) */
+async function simQuick(w,big,btn){const h=await qpHdr();if(!h)return false;const t0=btn.textContent;btn.disabled=true;
+  const done=t=>{btn.textContent=t||t0;btn.disabled=false;if(t)setTimeout(()=>{btn.textContent=t0},2500);return false};
+  try{const n=LS.get('simN',3)||3,lv=LS.get('simLv',0)||0,list=simPick(big,n,simCode(w)||'',new Set(),lv);if(!list.length)return done('고를 기출이 없어요');
+    const items=[];for(let i=0;i<list.length;i++){btn.textContent=`유사 문제 만드는 중 ${i+1}/${list.length}`;items.push(await simItem(list[i]))}
+    const from=[{src:w.src,q:w.q,big}],nm=await makeTask(items,{msg:document.createElement('div'),max:400,name:simName(from,lv,list.length),sim:{from,items:list.map((it,i)=>({n:i+1,c:it.c,label:simLabel(it),big:qpBigName(it.b),a:it.a,lv:SIM_DIFF[it.c]||2})),lv}});
+    if(!nm)return done('만들지 못했어요');
+    const used=LS.get('simUsed',{});for(const it of list)used[it.c]=Date.now();LS.set('simUsed',used);
+    const RC=LS.get('simRecent',{}),bk=bookOf(w.src);RC[bk]=[big].concat((RC[bk]||[]).filter(x=>x!==big)).slice(0,6);LS.set('simRecent',RC);
+    btn.textContent=t0;btn.disabled=false;return nm}
+  catch(e){console.error(e);return done('만들지 못했어요')}}
 async function simMake(n,msg,lv){lv=lv||0;const h=await qpHdr();if(!h)return;const S=simSent();if(!S.length)return;const taken=new Set(),list=[];
   msg.className='';msg.textContent='유사 문제를 고르는 중…';
   try{for(const s of S){for(const it of simPick(s.big,n,s.code,taken,lv)){taken.add(it.c);list.push(it)}}
     if(!list.length){msg.className='err';msg.textContent='고를 수 있는 기출이 없어요.';return}
     const items=[];for(let i=0;i<list.length;i++){items.push(await simItem(list[i]));msg.innerHTML=progHTML((i+1)/list.length*60,'유사 문제지 만드는 중',`${i+1}/${list.length}문항`)}
-    const d=new Date(),bn=[...new Set(S.map(s=>qpBigName(s.big)))],hm=`${d.getMonth()+1}.${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`,name=`유사 기출 · ${bn[0]}${bn.length>1?` 외 ${bn.length-1}유형`:''} · ${SIM_LV[lv]} ${list.length}문항 (${hm}).pdf`;
+    const name=simName(S,lv,list.length);
     const ok=await makeTask(items,{msg,max:400,name,sim:{from:S.map(s=>({src:s.src,q:s.q,big:s.big})),items:list.map((it,i)=>({n:i+1,c:it.c,label:simLabel(it),big:qpBigName(it.b),a:it.a,lv:SIM_DIFF[it.c]||2})),lv}});
     if(ok!==false){const used=LS.get('simUsed',{});for(const it of list)used[it.c]=Date.now();LS.set('simUsed',used);simSave([])}
     renderTask()}
