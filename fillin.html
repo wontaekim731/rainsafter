@@ -3448,9 +3448,16 @@ function anpPinch(B){if(!B||B._pz)return;B._pz=1;let p0=null;const d=t=>Math.hyp
   B.addEventListener('touchmove',e=>{if(!p0||e.touches.length<2)return;e.preventDefault();const k=Math.max(1/p0.z,Math.min(4/p0.z,d(e.touches)/Math.max(20,p0.d)));p0.k=k;for(const el of B.children){el.style.transformOrigin=`${p0.x-B.getBoundingClientRect().left+B.scrollLeft}px ${p0.y-B.getBoundingClientRect().top+B.scrollTop}px`;el.style.transform=`scale(${k})`}},{passive:false});
   B.addEventListener('touchend',e=>{if(!p0||e.touches.length>=2)return;const k=p0.k||1,z0=p0.z,x=p0.x,y=p0.y;p0=null;for(const el of B.children){el.style.transform='';el.style.transformOrigin=''}if(Math.abs(k-1)>0.03)anpZoom(z0*k,x,y)});
   B.addEventListener('gesturestart',e=>e.preventDefault());B.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();anpZoom(ANP.z*(e.deltaY<0?1.15:1/1.15),e.clientX,e.clientY)},{passive:false})}
-function anpClose(){ANP.on=false;const el=$('#anPane');if(el){el.hidden=true;const c=el.querySelector('canvas');if(c){c.width=c.height=0}}document.body.classList.remove('anOpen');$('#rlAns')&&$('#rlAns').classList.remove('on')}
-function anpToggle(){if(ANP.on){anpClose();return}if(!P){return}const q=anpCurQ();ANP.q=q;ANP.hl=null;const im=q!=null?anpImg(q):null;
+function anpClose(){ANP.on=false;{const t=$('#anTask');if(t)t.hidden=true}const el=$('#anPane');if(el){el.hidden=true;const c=el.querySelector('canvas');if(c){c.width=c.height=0}}document.body.classList.remove('anOpen');$('#rlAns')&&$('#rlAns').classList.remove('on')}
+function anpToggle(){if(ANP.on){anpClose();return}if(!P){return}if(P.task){anpTask();return}const q=anpCurQ();ANP.q=q;ANP.hl=null;const im=q!=null?anpImg(q):null;
   if(im){anpOpen(im.page,im);return}const sr=P.solRange||(P.seqAns&&P.seqAns.ansFrom?[P.seqAns.ansFrom]:null);if(sr&&sr[0]){pvToast('이 문제의 정답 칸 위치는 몰라서 답안지 첫 쪽을 보여 줘요');anpOpen(sr[0],null);return}pvToast('이 문제집에서는 답안지 쪽을 찾지 못했어요')}
+/* 과제·유사 기출 문제지: 답안지 쪽이 따로 없으니 문제지에 들어 있는 정답으로 정답표를 보여 준다 */
+async function anpTask(){let el=$('#anTask');if(!el){el=document.createElement('div');el.id='anTask';el.className='anPane';el.innerHTML='<div class="anBar"><b>정답표</b><span style="flex:1"></span><button type="button" data-a="x">✕</button></div><div class="anBody simAns" style="padding:10px 14px;margin:0;background:#fff;color:#111;font-size:15px"></div>';document.body.appendChild(el);el.querySelector('[data-a="x"]').onclick=anpClose}
+  let r=null;try{r=await libMeta(P.name)}catch(e){}const q=anpCurQ(),B=el.querySelector('.anBody');
+  const L=r&&r.simItems?r.simItems:P.problems.map(p=>({n:p.q,label:p.label||'',big:'',a:null,k:showKey(p)}));
+  B.innerHTML=`<table>${L.map(x=>`<tr${x.n===q?' style="background:#dcfce7"':''}><td>${String(x.n).padStart(2,'0')}</td><td>${esc(x.label||'')}${x.big?`<div class="muted" style="font-size:12px">${esc(x.big)}${x.lv?` · ${SIM_LV[x.lv]}`:''}</div>`:''}</td><td><b>${esc(x.a!=null?simAnsTxt(x.a):x.k)}</b></td></tr>`).join('')}</table>${r&&r.simItems?'<button type="button" class="btn" data-apdf style="margin-top:10px;padding:7px 12px;font-size:14px;background:#f1f5f9;color:#111;border:1px solid #cbd5e1">📄 정답지 PDF</button>':''}`;
+  {const b=B.querySelector('[data-apdf]');if(b)b.onclick=()=>simAnsPdf(r,b)}
+  ANP.on=true;el.hidden=false;document.body.classList.add('anOpen');$('#rlAns')&&$('#rlAns').classList.add('on')}
 /* ================= 풀이 다시 보기: 획마다 언제 썼는지(시작·끝)와 지운 때를 문제별로 기록 → 영상처럼 재생 =================
    기록: 기기 저장소 'rp\u0001책\u0001문제' = {ev:[{k:'v'(문제지),id,pg,f:PDF좌표,c,w,a:시작,b:끝} | {k:'n'(연습장),id,p,W,..} | {k:'x',id,t}(지움) | {k:'r',id,t}(되살림)]} */
 const RPL={m:{},rq:{},dirty:new Set(),n:0,T:0};
