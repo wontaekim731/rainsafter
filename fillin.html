@@ -2072,7 +2072,7 @@ function diagText(){const pv=(typeof PV!=='undefined'&&PV)||{},pg=pv.pages||[],l
   return ['러닝메이트 진단 v44.81',new Date().toISOString(),navigator.userAgent,'dpr '+(window.devicePixelRatio||1)+' 화면 '+screen.width+'x'+screen.height+' 창 '+innerWidth+'x'+innerHeight+' 메모리 '+(navigator.deviceMemory||'?')+'GB',
     'PDF일꾼 '+DG.wk+' · 문제집 '+(typeof P!=='undefined'&&P?P.name+' ('+(P.doc?P.doc.numPages:'?')+'쪽, '+(P.bytes?Math.round(P.bytes.length/1e6)+'MB':'?')+')':'없음'),
     '쪽 '+pg.length+' · 그린 쪽 '+live.length+' ('+live.map(p=>p.n).join(',')+') · 화소 '+Math.round(tot/1e6)+'M · 대기 '+(pv.rq?pv.rq.size:0)+' · 확대 '+(pv.z||1),
-    (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));
+    (()=>{try{const Q=typeof P!=='undefined'&&P;if(!Q)return '';const A=Q.seqAns,ln=[];if(A)ln.push('STEP정답 차이 '+A.off+(A.tbl?' 표':'')+' · '+A.secs.map(x=>(x.a==null?'?':x.a+'~'+x.b)+'/'+x.n+'/'+Object.keys(x.k).length).join(' '));if(A&&A.sol)ln.push('해설 '+(A.sol.from||'?')+'~'+(A.sol.to||'?')+(A.sol.done?' 다 읽음':' 읽는 중 '+(A.sol.at||''))+' · 짝 '+(A.sol.map||[]).map(v=>v==null?'-':v).join(',')+' · 묶음 '+(A.sol.G||[]).map(g=>g.length?g[0][0]+'쪽:'+g[g.length-1][4]:'0').join(' '));
       const vis=new Set(live.map(p=>p.n));const ps=Q.problems.filter(p=>vis.has(p.page)).slice(0,60);ln.push('보이는 쪽 문제: '+ps.map(p=>p.page+':'+(p.disp||p.q)+'@'+Math.round(p.x0)+','+Math.round(p.y1)+'='+(p.key?p.key.text+(p.key.kind||'')[0]:'-')).join(' '));return ln.join('\n')}catch(e){return 'diagErr '+e.message}})(),
     ...DG.L.map(x=>x.join(' '))].join('\n')}
 async function diagCopy(btn){const t=diagText();let ok=false;try{await navigator.clipboard.writeText(t);ok=true}catch(e){}
@@ -2516,9 +2516,18 @@ async function solIndex(P0){const A=P0&&P0.seqAns;if(!A||!A.sol||A.sol.done||SOL
 /* 해설 번호 줄을 01로 다시 시작하는 곳에서 끊어 묶음을 만들고, 빠른 정답 STEP 순서와 짝짓는다 (묶음의 마지막 번호 ≈ STEP 문항 수) */
 function solAlign(P0){const A=P0.seqAns,S=A&&A.sol;if(!S||!S.pg)return;const seq=[];for(const pi of Object.keys(S.pg).map(Number).sort((a,b)=>a-b))for(const l of S.pg[pi])seq.push(Object.assign({pi},l));
   const G=[];for(const l of seq){const g=G[G.length-1];if(!g||(l.n<=2&&g.max>2&&l.n<g.max))G.push({max:l.n,L:[l]});else{if(l.n>g.max+3||l.n<=g.L[g.L.length-1].n&&l.n>2)continue;g.L.push(l);g.max=Math.max(g.max,l.n)}}   /* 동떨어진 잡음 번호(190 등)는 버림 */
-  const T=A.secs;let gi=0;const map=[];for(let si=0;si<T.length;si++){const want=T[si].m||T[si].n||0;let best=-1;for(let k=gi;k<Math.min(G.length,gi+3);k++){if(Math.abs(G[k].max-want)<=Math.max(2,want*0.15)){best=k;break}}if(best<0){map.push(null);continue}map.push(best);gi=best+1}
-  S.map=map;S.G=G.map(g=>g.L.map(l=>[l.pi,l.c,l.y,l.h,l.n]))}
-function solFind(P0,p){const A=P0&&P0.seqAns,S=A&&A.sol;if(!S||!S.map||!S.G)return null;const pp=p.page-(A.off||0),si=A.secs.findIndex(s=>s.a!=null&&pp>=s.a&&pp<=s.b);if(si<0)return null;const gi=S.map[si];if(gi==null)return null;const L=S.G[gi];let i=L.findIndex(l=>l[4]===p.disp);if(i<0){const a=L.filter(l=>l[4]<p.disp).pop(),b=L.find(l=>l[4]>p.disp);if(a&&b&&b[4]-a[4]<=3&&a[0]===b[0]&&a[1]===b[1]){const [pi,c,y,h]=a;return {pi,c,y,h,ny:b[2],W:(S.pw&&S.pw[pi])||(S.cal&&S.cal.W),m:S.cal&&S.cal.m,near:1}}return null}   /* 번호를 못 읽었으면 앞뒤 번호 사이를 보여 준다 */
+  /* 단원 ↔ 해설 묶음 짝짓기: 문항 수만 보고 앞에서부터 고르면, 읽다 빠진 묶음이 하나만 있어도 뒤 단원이 모두 한 칸씩 밀려 다른 단원의 해설을 보여 줬다.
+     → 문항 수 + 해설 쪽 간격(앞 단원 묶음에서 문항 수만큼 떨어진 곳)을 함께 보고 전체에서 가장 잘 맞는 짝을 고른다. 맞는 묶음이 없으면 짝 없음(해설 안 보여 줌) */
+  const T=A.secs,W=T.map(s=>s.m||s.n||0),tot=W.reduce((a,b)=>a+b,0)||1,fr=S.from||1,span=Math.max(1,(S.to||fr)-fr+1),ppp=span/tot,cum=[0];for(const w of W)cum.push(cum[cum.length-1]+w);
+  const gm=G.map(g=>g.max),gs=G.map(g=>g.L[0].pi),n=T.length,m=G.length,D=new Map(),PR=new Map();
+  for(let i=0;i<n;i++)for(let k=0;k<m;k++){const w=W[i];if(!w||Math.abs(gm[k]-w)>Math.max(2,w*0.15))continue;let best=i+k*0.05+4*Math.abs(gs[k]-(fr+ppp*cum[i]))/span,bp=null;
+    for(const [key,v] of D){const i2=Math.floor(key/1000),k2=key%1000;if(i2>=i||k2>=k)continue;const c=v+(i-i2-1)+(k-k2-1)*0.05+4*Math.abs(gs[k]-gs[k2]-ppp*(cum[i]-cum[i2]))/span;if(c<best){best=c;bp=key}}
+    D.set(i*1000+k,best+Math.abs(gm[k]-w)/Math.max(w,4));PR.set(i*1000+k,bp)}
+  let end=null,bv=n;for(const [key,v] of D){const t=v+(n-1-Math.floor(key/1000))+(m-1-key%1000)*0.05;if(t<bv){bv=t;end=key}}
+  const map=new Array(n).fill(null);while(end!=null){map[Math.floor(end/1000)]=end%1000;end=PR.get(end)}
+  S.map=map;S.alV=2;S.G=G.map(g=>g.L.map(l=>[l.pi,l.c,l.y,l.h,l.n]))}
+function solFind(P0,p){const A=P0&&P0.seqAns,S=A&&A.sol;if(S&&S.pg&&S.alV!==2){try{solAlign(P0)}catch(e){console.error(e)}}   /* 예전 방식으로 짝지어 둔 책도 새 방식으로 한 번 다시 짝짓는다 */
+  if(!S||!S.map||!S.G)return null;const pp=A.tbl?seqPP(P0,p.page):p.page-(A.off||0),si=A.tbl?A.secs.indexOf(tblSec(A,pp,p.disp)):A.secs.findIndex(s=>s.a!=null&&pp>=s.a&&pp<=s.b);if(si<0)return null;   /* 정답을 찾을 때와 똑같은 방법으로 단원을 고른다 (정답·해설이 서로 다른 단원에서 오지 않게) */const gi=S.map[si];if(gi==null)return null;const L=S.G[gi];let i=L.findIndex(l=>l[4]===p.disp);if(i<0){const a=L.filter(l=>l[4]<p.disp).pop(),b=L.find(l=>l[4]>p.disp);if(a&&b&&b[4]-a[4]<=3&&a[0]===b[0]&&a[1]===b[1]){const [pi,c,y,h]=a;return {pi,c,y,h,ny:b[2],W:(S.pw&&S.pw[pi])||(S.cal&&S.cal.W),m:S.cal&&S.cal.m,near:1}}return null}   /* 번호를 못 읽었으면 앞뒤 번호 사이를 보여 준다 */
   const [pi,c,y,h]=L[i],nx=L[i+1]&&L[i+1][0]===pi&&L[i+1][1]===c?L[i+1][2]:null;return {pi,c,y,h,ny:nx,W:(S.pw&&S.pw[pi])||(S.cal&&S.cal.W),m:S.cal&&S.cal.m}}
 /* 해설 그림: 번호 줄(답이 줄 끝에 있음) 또는 그 문제 해설 전체 */
 async function solImg(P0,f,whole){const doc=await solDoc(P0);if(!doc)return '';const page=await doc.getPage(f.pi),sc=2,vp=page.getViewport({scale:sc}),W=vp.width,H=vp.height,k=W/(f.W||W);
