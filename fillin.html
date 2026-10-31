@@ -740,12 +740,47 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 #qlSplash .qlBig rect.qlInk:nth-child(n){animation-delay:calc(var(--i,0)*45ms)}
 @media (prefers-reduced-motion:reduce){#qlSplash .qlBig rect,#qlSplash .qlWord{animation:none!important;opacity:1!important;transform:none!important}}
 </style>
+<style>
+/* v44.82 학생이 직접 고르는 오답 분류: GO 뒤 틀린 문제마다 [방향을 모르겠다 · 여기서 막혔다(형광펜) · 알았는데 틀렸다] → 다시 풀기 → 한 줄 코멘트 또는 선생님에게 */
+#clsSheet{position:fixed;inset:0;z-index:90;background:rgba(8,10,14,.72);display:flex;align-items:flex-end;justify-content:center;padding:0 10px max(10px,env(safe-area-inset-bottom,0px))}
+#clsSheet .cIn{width:min(680px,100%);max-height:calc(100vh - 20px);overflow:auto;box-sizing:border-box;background:#0E1014;color:#F2F4F7;border:1px solid #232733;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:12px;font-family:'Noto Sans KR',var(--sans),sans-serif}
+#clsSheet .cTop{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#clsSheet .cTop .cR{font-size:22px;font-weight:900}#clsSheet .cTop .cR small{font-size:13px;color:#8A93A3;font-weight:500}
+#clsSheet .cTop .cB{font-weight:900;color:#FFB37A;font-size:17px}
+#clsSheet .cDots{display:flex;gap:5px}#clsSheet .cDots i{width:22px;height:7px;border-radius:4px;background:#232733}#clsSheet .cDots i.now{background:#F2F4F7}#clsSheet .cDots i.ok{background:#7CF2B0}
+#clsSheet .cLater{margin-left:auto;background:none;border:0;color:#8A93A3;font:inherit;font-size:14px;text-decoration:underline;cursor:pointer;padding:6px}
+#clsSheet .cQ{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}#clsSheet .cQ b{font-size:19px}#clsSheet .cQ span{font-size:13px;color:#8A93A3}
+#clsSheet .cImg{position:relative;background:#fff;border-radius:12px;overflow:hidden;align-self:stretch;touch-action:none;-webkit-user-select:none;user-select:none}
+#clsSheet .cImg img{display:block;width:100%;max-height:46vh;object-fit:contain;pointer-events:none}
+#clsSheet .cImg canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#clsSheet .cImg.draw canvas{pointer-events:auto;cursor:crosshair}
+#clsSheet h3{margin:2px 0 0;font-size:18px;font-weight:900}
+#clsSheet .cOpts{display:grid;gap:8px}
+#clsSheet .cOpt{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:center;text-align:left;font:inherit;color:#F2F4F7;background:#1A1D24;border:1px solid #232733;border-radius:14px;padding:12px 14px;min-height:60px;cursor:pointer}
+#clsSheet .cOpt i{grid-row:span 2;width:10px;height:34px;border-radius:5px;background:var(--c)}#clsSheet .cOpt b{font-size:17px}#clsSheet .cOpt span{font-size:13px;color:#8A93A3}
+#clsSheet .cOpt.on{border-color:var(--c)}
+#clsSheet .cHint{font-size:14px;color:#A9B0BC;margin:0}#clsSheet .cHint b{color:#FFE24A}
+#clsSheet .cRow{display:flex;gap:8px;flex-wrap:wrap}
+#clsSheet .cBtn{flex:1 1 auto;font:inherit;font-size:16px;font-weight:900;border:0;border-radius:14px;padding:14px 18px;background:#7CF2B0;color:#0B1A12;cursor:pointer}
+#clsSheet .cBtn.g{background:#1A1D24;color:#F2F4F7;border:1px solid #232733;font-weight:700}
+#clsSheet .cBtn[disabled]{opacity:.35;cursor:default}
+#clsSheet .cSkip{align-self:center;background:none;border:0;color:#8A93A3;font:inherit;font-size:13px;text-decoration:underline;cursor:pointer;padding:4px}
+#clsSheet input.cLine{font:inherit;font-size:16px;color:#F2F4F7;background:#161920;border:1px solid #232733;border-radius:12px;padding:12px 14px;width:100%;box-sizing:border-box}
+#clsSheet .cChips{display:flex;gap:6px;flex-wrap:wrap}#clsSheet .cChips button{font:inherit;font-size:13px;color:#A9B0BC;background:#1A1D24;border:1px solid #232733;border-radius:999px;padding:5px 11px;cursor:pointer}
+#clsSheet .cRes{font-size:20px;font-weight:900}#clsSheet .cRes.ok{color:#7CF2B0}#clsSheet .cRes.no{color:#FFB37A}
+#clsSheet .cSum{display:grid;gap:6px}#clsSheet .cSum div{display:flex;gap:10px;align-items:center;background:#1A1D24;border:1px solid #232733;border-radius:12px;padding:10px 12px;font-size:14px}#clsSheet .cSum b{min-width:44px}
+#clsSheet button:focus-visible{outline:2px solid #7CF2B0;outline-offset:2px}
+#clsHint{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:88;max-width:calc(100% - 32px);box-sizing:border-box;background:#0E1014;color:#F2F4F7;border:1px solid var(--c,#232733);border-radius:999px;padding:9px 16px;font:600 14px 'Noto Sans KR',var(--sans),sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.3);pointer-events:none;transition:opacity .3s}
+.clsChip{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.clsBox{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
+.clsBox img{width:100%;border-radius:8px;background:#fff}
+</style>
 </head>
 <body>
 <div id="qlSplash" aria-hidden="true"><svg class="qlBig" width="120" height="140" viewBox="0 0 120 140" aria-hidden="true"><rect style="--i:1" x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:2" x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:3" x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:4" x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:5" x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:6" x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:7" x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:8" x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:9" x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:10" x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:11" x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:12" x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:13" x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:14" x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:15" x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:16" x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:17" x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:18" x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:19" x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlAcc"/></svg><div class="qlWord">QLEAR</div></div>
 <script>window.QL_T0=performance.now()</script>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="qlMark"><svg class="qlQ" width="26" height="31" viewBox="0 0 26 31" aria-hidden="true"><rect style="--i:1" x="4.80" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:2" x="9.20" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:3" x="13.60" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:4" x="18.00" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:5" x="0.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:6" x="22.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:7" x="0.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:8" x="22.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:9" x="0.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:10" x="22.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:11" x="0.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:12" x="13.60" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:13" x="22.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:14" x="0.40" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:15" x="18.00" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:16" x="4.80" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:17" x="9.20" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:18" x="13.60" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:19" x="22.40" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlAcc"/></svg></span><span>QLEAR</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.81</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.81)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="qlMark"><svg class="qlQ" width="26" height="31" viewBox="0 0 26 31" aria-hidden="true"><rect style="--i:1" x="4.80" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:2" x="9.20" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:3" x="13.60" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:4" x="18.00" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:5" x="0.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:6" x="22.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:7" x="0.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:8" x="22.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:9" x="0.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:10" x="22.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:11" x="0.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:12" x="13.60" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:13" x="22.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:14" x="0.40" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:15" x="18.00" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:16" x="4.80" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:17" x="9.20" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:18" x="13.60" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:19" x="22.40" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlAcc"/></svg></span><span>QLEAR</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v44.82</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.81)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>홈</span></button><button type="button" data-v="solve"><svg class="tabQ" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 2.8a8.6 8.6 0 1 0 0 17.2a8.6 8.6 0 1 0 0-17.2zm0 4.1a4.5 4.5 0 1 1 0 9a4.5 4.5 0 1 1 0-9z"/><path d="M13.6 15.9l2.9-2.9 5 5-2.9 2.9z"/></svg><span>Q</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>BLOCK</span><span id="dueBadge" hidden></span></button><button type="button" data-v="task" style="position:relative"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5h6v2.5H9z"/><path d="M8.5 12h7M8.5 16h5"/></svg><span>과제</span><span id="taskBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -3152,7 +3187,7 @@ function fClose(quiet){if(!FOC.on)return;if(ANP.on&&!FOC.back)anpClose();setTime
   if(!quiet&&FOC.p)try{pvGo(FOC.p.page)}catch(e){}FOC.pg=null;FOC.p=null}
 /* 한 문제씩: 보여 주는 문제의 영역이 다음 문제까지 늘어나 보이면 그 쪽을 다시 읽고, 나뉘면 바로 다시 보여 준다 */
 function fGapCheck(p){if(!p||!P)return;const P0=P,pg=p.page;const L=LZ.m[P0.name+'#'+pg];Promise.resolve(L).then(()=>lazyOne(pg)).then(()=>{if(P!==P0||!FOC.on||!FOC.p||P0.problems.includes(FOC.p))return;const q=FOC.p.q,np=P0.problems.find(x=>x.q===q);if(!np)return;dlog('gapFix',pg+' '+q);FOC.list=fList();const i=FOC.list.findIndex(x=>x.q===q);if(i>=0)fShow(i)}).catch(e=>console.error(e))}
-async function fShow(i){FOC.nsel=null;if(FOC.selK){PV.sel=null;FOC.selK=null}if(!FOC.hinted){FOC.hinted=1;const h=document.createElement('div');h.className='fSwipe';h.textContent='손가락으로 좌우로 밀어 이전 · 다음 문제';$('#focus').appendChild(h);setTimeout(()=>{h.style.opacity=0;setTimeout(()=>h.remove(),500)},3500)}fNoteSave(true);try{regFix()}catch(e){}i=Math.max(0,Math.min(FOC.list.length-1,i));FOC.i=i;const p=FOC.list[i];FOC.p=p;setTimeout(()=>fGapCheck(p),300);FOC.pg=PV.pages.find(g=>g.n===p.page);FOC.ext=0;FOC.und=[];
+async function fShow(i){setTimeout(()=>{try{clsHint()}catch(e){}},450);FOC.nsel=null;if(FOC.selK){PV.sel=null;FOC.selK=null}if(!FOC.hinted){FOC.hinted=1;const h=document.createElement('div');h.className='fSwipe';h.textContent='손가락으로 좌우로 밀어 이전 · 다음 문제';$('#focus').appendChild(h);setTimeout(()=>{h.style.opacity=0;setTimeout(()=>h.remove(),500)},3500)}fNoteSave(true);try{regFix()}catch(e){}i=Math.max(0,Math.min(FOC.list.length-1,i));FOC.i=i;const p=FOC.list[i];FOC.p=p;setTimeout(()=>fGapCheck(p),300);FOC.pg=PV.pages.find(g=>g.n===p.page);FOC.ext=0;FOC.und=[];
   try{const o=posGet(P.name)||{};posSet(P.name,Object.assign(o,{pg:p.page,f:0,n:PV.pages.length,at:Date.now(),fq:p.q}));const b=$('#pvPg');if(b&&!b.dataset.edit)b.textContent=`${p.page} / ${PV.pages.length}쪽`}catch(e){}   /* 집중 모드에서 푸는 문제의 쪽을 기억 (다시 열면 그 쪽부터) */
   qtLoad();QT.q=p.q;QT.lq=p.q;QT.vis=0;QT.at=Date.now();$('#fQn').textContent=(FOC.only?'':'')+QN(p.q)+'번';$('#fQt').textContent='⏱ 0:00';$('#fSol').hidden=!(P.seqAns&&P.seqAns.sol);if(FOC.sol)solShow(p);
   FOC.full=false;$('#fScroll').scrollTop=0;await fRender();await fNoteLoad()}
@@ -3573,7 +3608,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.81 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v44.82 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -4750,6 +4785,7 @@ const rtSig=x=>JSON.stringify([x.status,x.ok,x.ans,x.retry&&[x.retry.ans,x.retry
 function rtSnap(){const m={};if(S&&S.state)for(const k in S.state)m[k]=rtSig(S.state[k]);return m}
 function rtWrong(){if(!S||!RT_SNAP)return [];return Object.values(S.state).filter(x=>rtSig(x)!==RT_SNAP[x.q]&&x.status==='done'&&(x.retry&&(x.retry.ans||x.retry.self)?x.retry.ok===false:x.ok===false)).map(x=>x.q).sort((a,b)=>a-b)}
 function retryAsk(){if(GRADE_ONLY!=null||FOC.on||!S||!P)return;const W=rtWrong();RT_SNAP=null;if(!W.length)return;let off=false;try{off=localStorage.getItem('njRtAsk')==='0'}catch(e){}if(off)return;
+  clsStart(W);return;   /* v44.82: 묻는 창 대신 학생이 이유를 고르는 시트 */
   let d=$('#rtAsk');if(!d){d=document.createElement('div');d.id='rtAsk';d.className='rtAsk';d.setAttribute('role','dialog');document.body.appendChild(d)}
   d.innerHTML=`<b>틀린 문제 ${W.length}개</b><span>${W.slice(0,8).map(q=>QN(q)+'번').join(' · ')}${W.length>8?' …':''}</span><p>지금 바로 다시 풀어 볼까요? 지난 풀이는 가리고, 틀린 문제만 하나씩 보여 줘요.</p><div class="rtBtns"><button type="button" class="rtGo">지금 다시 풀기</button><button type="button" class="rtLater">나중에</button></div><button type="button" class="rtOff">다음부터 묻지 않기</button>`;d.hidden=false;
   d.querySelector('.rtGo').onclick=()=>{d.hidden=true;rtStart(W)};d.querySelector('.rtLater').onclick=()=>{d.hidden=true};d.querySelector('.rtOff').onclick=()=>{d.hidden=true;try{localStorage.setItem('njRtAsk','0')}catch(e){}pvToast('다음부터 묻지 않아요 · ⋯ 메뉴에서 다시 켤 수 있어요')}}
@@ -4820,7 +4856,7 @@ async function pvGrade(){GRADE_ONLY=FOC.on&&FOC.p?FOC.p.q:null;try{regFix();abIn
     if(!S.frozen){if(S.paused)pause();tick();S.frozen=true;S.frozenAt=performance.now();S.frozenEl=(S.frozenAt-S.t0)/1000;$('#clock').classList.add('frozen');$('#pvClock').classList.add('frozen');$('#pause').hidden=true}   // 채점하면 시계는 멈춤
     const pend=(P.baseStrokes||[]).some(s=>!S.seen.has(s.sig))||rinkAll().some(s=>!S.seen.has(s.sig))||ungraded().length||memInk().some(s=>!s.raster&&!S.seen.has(s.sig));   // 자동 저장으로 이미 파일에 옮겨진 새 필기도 채점   
     if(saved||PV.forceGrade||pend||selfPending().some(x=>x.status==='check'&&!x.self)){PV.forceGrade=false;S.goRes=null;RT_SNAP=rtSnap();GFRESH=new Set();await gradeFile(null,false,{all:memInk()});goResult()}else fb('nk','새로 쓴 필기가 없습니다. 틀린 문제를 고친 뒤 다시 누르세요.');
-    if(selfPending().some(x=>GFRESH.has(x.q)))setTimeout(()=>selfSheet(()=>setTimeout(retryAsk,300),true),50);else setTimeout(retryAsk,900);
+    if(selfPending().some(x=>GFRESH.has(x.q)))setTimeout(()=>selfSheet(()=>setTimeout(retryAsk,300),true),50);else setTimeout(retryAsk,900);setTimeout(clsAfter,700);
   }catch(e){console.error(e);fb('bad','저장하거나 채점하지 못했습니다: '+e.message)}
   finally{PV.busy=false;$('#pvGrade').disabled=false;if(S&&S.frozen){PV.review=true;const b=$('#pvGrade');if(ungraded().length)b.innerHTML=goHtml();else b.textContent='이어서 풀기';b.classList.add('resume');$('#pvPause').hidden=true}pvStatus();pvSum()}}
 /* 스스로 채점: 정답 그림을 보고 학생이 ○/／를 고른다 (서술형·여러 소문항 등 자동으로 못 읽는 문항) */
@@ -5171,13 +5207,13 @@ async function logWrongsNow(){   // 지금 학습에서 틀린(고친·여전히
       w={id,src:P0.name,q:p.q,page:p.page,day:dayKey(Date.now()),at:Date.now(),topic:tag.topic,rate:tag.rate,key:p.key,keyShow:showKey(p),keyImg:(isSelf(p)||isMulti(p))?await keyImg(p):'',w:bw,h:bh,pdf:pdfs[k],thumb:thumbOf(p,box),th2:1,
         choices:p.choices.map(c=>({n:c.n,x:c.x-box.left,y:c.y-box.bottom,s:c.s})),ans:x.earlier?'':fmt(p,x.ans),t,auto:dg.s,reason:dg.s,why:dg.why}}
     if(!x.pw&&p.key&&p.key.kind==='nparts'&&x.ans&&x.ans!=='✗'){const A=String(x.ans).split('|');x.pw=p.key.nums.map((v,i)=>v!=null&&A[i]!==v?i+1:null).filter(Boolean)}
-    w.cat=c;if(x.pw&&x.pw.length)w.pw=x.pw;w.tries=Math.max(w.tries||1,x.wrongs||1);w.retry=x.retry&&x.retry.ans?fmt(p,x.retry.ans):(w.retry||'');w.upd=Date.now();
+    w.cat=c;if(x.cls)w.cls=x.cls;if(x.pw&&x.pw.length)w.pw=x.pw;w.tries=Math.max(w.tries||1,x.wrongs||1);w.retry=x.retry&&x.retry.ans?fmt(p,x.retry.ans):(w.retry||'');w.upd=Date.now();
     if(LAST&&LAST.ana&&LAST.ana[x.q]&&LAST===R)w.reason=LAST.ana[x.q].pick||w.reason;
     await wrPut(w)}
   if(!$('#vAna').hidden)renderAnaTab();
 }
 function itemFromWrong(w){return {id:w.id,src:w.src,q:w.q,page:w.page,topic:w.topic,rate:w.rate,key:w.key,keyShow:w.keyShow,keyImg:w.keyImg||'',w:w.w,h:w.h,pdf:w.pdf,thumb:w.thumb,ts:w.ts,th2:w.th2,choices:w.choices,
-  added:Date.now(),first:{ans:w.ans,t:w.t},cat:w.cat,reason:w.reason,auto:w.auto,hist:[],stage:0,done:false,due:today0()+DAY}}
+  added:Date.now(),first:{ans:w.ans,t:w.t},cat:w.cat,cls:w.cls,reason:w.reason,auto:w.auto,hist:[],stage:0,done:false,due:today0()+DAY}}
 async function noteAddFromWrongs(ids){let n=0;for(const id of ids){if(await dbGet(id))continue;const w=await wrGet(id);if(!w)continue;const it=itemFromWrong(w);if(w.pw)it.pw=w.pw;await dbPut(it);n++}badge();return n}
 let ANAF='all';
 async function renderAnaTabOld(){
@@ -5554,7 +5590,7 @@ function anaList(W,items,inNote){const SIMS=new Set(simSent().map(x=>x.id)),box=
   if(!src0.length){box.innerHTML=star?'<p class="muted">아직 오답노트가 비어 있어요. [전체 오답]에서 문항을 눌러 ☆ 담기를 해 보세요.</p>':'<p class="muted">아직 오답이 없어요. 문제집을 풀고 [채점하기]를 누르면 틀린 문항이 여기에 문제집별로 모여요.</p>';return}
   const memoLine=x=>byM&&x.memo?`<div class="nmemo">${esc(bookOf(x.src))} · ${esc(String(x.memo).slice(0,40))}</div>`:'';
   const card=x=>star?`<button type="button" class="ncard" data-nid="${esc(x.id)}"><span class="ncX" role="button" aria-label="지우기" data-xid="${esc(x.id)}">✕</span><div class="th"><img src="${x.ts||x.thumb}" alt="" loading="lazy" decoding="async" data-ts="${x.ts?'':esc(x.id)}"></div>${memoLine(x)}<div class="nh"><span>${QN(x.q)}번</span>${nStat(x)}</div>${x.pw&&x.pw.length?`<div style="font-size:12px;color:var(--omr);font-weight:700">${x.pw.map(i=>'('+i+')').join('')} 틀렸던 문제</div>`:''}${nDots(x)}</button>`
-    :`<button type="button" class="ncard${rec(x)?' rec':''}" data-wid="${esc(x.id)}"><span class="ncX" role="button" aria-label="지우기" data-xid="${esc(x.id)}">✕</span><div class="th"><img src="${x.ts||x.thumb}" alt="" loading="lazy" decoding="async" data-ts="${x.ts?'':esc(x.id)}"></div>${memoLine(x)}<div class="nh"><span>${QN(x.q)}번${inNote.has(x.id)?' <span style="color:#f5b301">★</span>':''}${SIMS.has(x.id)?' 🧩':''}</span>${wCat(x)}</div><div class="muted" style="font-size:12px">${x.memo?'📝 ':''}${(x.tries||1)>1?`${x.tries}번 틀림 · `:''}${x.day?dayLabel(x.day).replace(/\s*\(.\)$/,''):''}</div></button>`;
+    :`<button type="button" class="ncard${rec(x)?' rec':''}" data-wid="${esc(x.id)}"><span class="ncX" role="button" aria-label="지우기" data-xid="${esc(x.id)}">✕</span><div class="th"><img src="${x.ts||x.thumb}" alt="" loading="lazy" decoding="async" data-ts="${x.ts?'':esc(x.id)}"></div>${memoLine(x)}<div class="nh"><span>${QN(x.q)}번${inNote.has(x.id)?' <span style="color:#f5b301">★</span>':''}${SIMS.has(x.id)?' 🧩':''}</span>${wCat(x)}</div>${clsChip(x)?`<div>${clsChip(x)}</div>`:''}<div class="muted" style="font-size:12px">${x.memo?'📝 ':''}${(x.tries||1)>1?`${x.tries}번 틀림 · `:''}${x.day?dayLabel(x.day).replace(/\s*\(.\)$/,''):''}</div></button>`;
   box.innerHTML=tabs+chips+(L.length?keys.map((k,gi)=>{const g=grp[k].sort((a,b)=>byM?bookOf(a.src).localeCompare(bookOf(b.src))||a.q-b.q:a.q-b.q||(b.at||0)-(a.at||0)),A=byM?g:src.filter(x=>bookOf(x.src)===k),td=star?g.filter(isToday).length:0,fin=star?A.filter(i=>i.done).length:A.filter(w=>w.cat==='T').length;
       const op=AL.open[ANAV+':'+k]!=null?AL.open[ANAV+':'+k]:(keys.length<=2||td>0||gi===0);
       return `<details class="ngrp" data-k="${esc(k)}"${op?' open':''}><summary><span class="arr">▶</span><span class="nt">${byM&&!k.startsWith('　')?'🧩 ':''}${esc(k.trim())}${byM&&!k.startsWith('　')&&g.length>1&&!/실수$/.test(k)?' <span class="muted" style="font-weight:500;font-size:13px">관련 실수</span>':''}</span>${td&&f!=='today'?`<span class="chip today">오늘 ${td}</span>`:''}<span class="nm">${g.length}문항</span><span class="mini" title="${star?'완료':'고침'} ${fin}/${A.length}"><i style="width:${A.length?fin/A.length*100:0}%"></i></span></summary><div style="text-align:right"><button type="button" class="linkDel" data-gdel="${esc(k)}">${star?`이 ${g.length}문항 오답노트에서 빼기`:`이 ${g.length}문항 오답 기록에서 지우기`}</button></div>${byM&&!k.startsWith('　')?`<div class="ngAct"><button type="button" class="btn quiet" data-gq="${esc(k)}">📝 이 실수 숏 퀴즈</button>${star&&g.some(i=>!i.done)?`<button type="button" class="btn mid" data-gs="${esc(k)}">이 실수 문제 다시 풀기 (${g.filter(i=>!i.done).length})</button>`:''}</div>`:''}<div class="ngrid">${g.map(x=>card(x)+(byM?'':'')).join('')}</div></details>`}).join('')
@@ -5586,6 +5622,7 @@ function wrongSheet(w,inNote){if(!w)return;const S=$('#nSheet'),has=inNote.has(w
     <img src="${w.thumb}" alt="">
     <div style="font-size:15px;line-height:1.7">${wCat(w)} 내 답 <b>${esc(w.ans||'(지난번)')}</b>${w.retry?` → ${esc(w.retry)}`:''} · 정답 <b>${esc(w.keyShow||'')}</b>${(w.tries||1)>1?` · ${w.tries}번 틀림`:''}<br><span class="muted" style="font-size:13px">${esc(w.src)}${w.day?' · '+dayLabel(w.day):''}${w.t!=null?` · ${Math.floor(w.t/60)}분 ${Math.round(w.t%60)}초`:''}</span>
       <div class="tOnly muted" style="font-size:12px">${esc(w.topic||'')}${w.rate!=null?` · 정답률 ${w.rate}%`:''}</div></div>
+    ${clsBox(w)}
     <div class="rs tOnly">${REASONS.map(r=>`<button type="button" class="${r===w.reason?'on':''}" data-r="${r}">${r}</button>`).join('')}</div>
     ${(()=>{let hl=null,qa=null,th='';try{hl=(JSON.parse(localStorage.getItem('njhl:'+w.src)||'{}'))[w.q];qa=(JSON.parse(localStorage.getItem('njhq:'+w.src)||'{}'))[w.q];th=localStorage.getItem('njht:'+bookOf(w.src)+':'+w.q)||''}catch(e){}
       return `${hl||qa?`<div style="font-size:14px">💡 힌트: ${hl?`${['문제 이해','조건을 수식으로','구할 것 정하기','혼자 관찰하기','조건 다시 보기','직접 힌트'][hl.max]||''} 단계까지 · ${hl.n}번 열어 봄`:''}${qa?' · <b style="color:var(--bad)">선생님께 질문 남김</b>':''}</div>`:''}
@@ -5793,6 +5830,73 @@ $('#aFilt').addEventListener('click',e=>{const b=e.target.closest('button');if(b
 $('#aAdd').onclick=async()=>{const ids=[...document.querySelectorAll('#aList .aPick:checked:not(:disabled)')].map(c=>c.dataset.id);const n=await noteAddFromWrongs(ids);$('#aMsg').className='okn';$('#aMsg').textContent=`${n}문항을 오답노트에 담았습니다. 내일부터 데일리 퀴즈로 나옵니다.`;renderAnaTab()};
 $('#again').onclick=()=>{LAST=null;view('home')};$('#dGoAna').onclick=()=>{LAST=null;view('ana')};$('#tchBtn').onclick=toggleTeacher;
 $('#aSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(b){ANAV=b.dataset.s;renderAnaTab()}});
+/* v44.82 오답 분류는 앱이 아니라 학생이 한다. 저장: S.state[q].cls → 오답 기록(w.cls)·오답노트(it.cls)
+   cls = {k:'dir'|'stuck'|'slip', img:형광펜 그림(막혔다), hl:형광펜 획(문제 칸 기준 0~1), cm:한 줄 코멘트, tc:선생님에게 넘김, at} */
+const CLS={dir:{n:'방향을 모르겠다',d:'어디서부터 시작할지 떠오르지 않았다',c:'#8FB4FF',h:'구하는 것이 무엇인지 먼저 써 보세요'},
+  stuck:{n:'여기서 막혔다',d:'풀다가 한 곳에서 멈췄다 · 그곳에 형광펜',c:'#FFE24A',h:'형광펜 칠한 곳부터 다시 읽어 보세요'},
+  slip:{n:'알았는데 틀렸다',d:'풀 줄은 알았는데 답이 틀렸다',c:'#FF9B7A',h:'계산을 한 줄씩 다시 확인해 보세요'}};
+const CLS_CM={dir:['구하는 것을 안 정했다','조건을 식으로 안 바꿨다','처음 보는 유형이었다'],stuck:['이 조건의 뜻을 몰랐다','이 낱말을 놓쳤다','식은 세웠는데 못 풀었다'],slip:['부호 실수','계산 실수','문제를 잘못 읽었다']};
+function clsChip(x){const c=x&&x.cls&&CLS[x.cls.k];return c?`<span class="clsChip" style="color:${c.c}">${c.n}</span>`:(x&&x.cls&&x.cls.tc?'<span class="clsChip" style="color:#8FB4FF">선생님에게</span>':'')}
+async function clsSet(q,patch){if(!S||!S.state||!S.state[q])return;const st=S.state[q];st.cls=Object.assign({},st.cls||{},patch,{at:Date.now()});dlog('cls',q+' '+JSON.stringify(Object.assign({},patch,{img:patch.img?'…':undefined,hl:patch.hl?patch.hl.length:undefined})));
+  try{await logWrongs()}catch(e){console.error(e)}
+  try{if(P){const id=P.name+'#'+q,w=await wrGet(id);if(w){w.cls=st.cls;await wrPut(w)}const it=await dbGet(id);if(it){it.cls=st.cls;await dbPut(it)}}}catch(e){console.error(e)}}
+let CLSV=null;
+function clsClose(){const d=$('#clsSheet');if(d)d.remove();CLSV=null}
+/* GO 직후: 틀린 문제를 하나씩 보여 주고 학생이 이유를 고른다 → 다 고르면 [지금 다시 풀기] */
+function clsStart(W){if(!W||!W.length||!S)return;try{const t=$('#pvToast');if(t)t.hidden=true}catch(e){}CLSV={W:W.slice(),i:0,step:'why',ink:[]};clsRender()}
+function clsShell(){let d=$('#clsSheet');if(!d){d=document.createElement('div');d.id='clsSheet';d.setAttribute('role','dialog');d.setAttribute('aria-modal','true');d.innerHTML='<div class="cIn"></div>';document.body.appendChild(d)}return d.querySelector('.cIn')}
+function clsRender(){const V=CLSV;if(!V)return;const box=clsShell(),r=S.goRes||{},p2=n=>String(n).padStart(2,'0');
+  const top=`<div class="cTop">${r.n?`<span class="cR">${r.ok} <small>/ ${r.n} 정답</small></span>`:''}<span class="cB">BLOCK ${p2(V.W.length)}</span><span class="cDots">${V.W.map((q,k)=>`<i class="${k===V.i&&V.step!=='sum'?'now':S.state[q]&&S.state[q].cls&&S.state[q].cls.k?'ok':''}"></i>`).join('')}</span><button type="button" class="cLater" data-later>나중에</button></div>`;
+  if(V.step==='sum'){const n=V.W.filter(q=>S.state[q]&&S.state[q].cls&&S.state[q].cls.k).length;
+    box.innerHTML=top+`<h3>다시 풀어 볼까요?</h3><div class="cSum">${V.W.map(q=>`<div><b>${QN(q)}번</b>${clsChip(S.state[q])||'<span style="color:#8A93A3">이유 안 고름</span>'}</div>`).join('')}</div>
+      <p class="cHint">지난 풀이는 가리고, 틀린 문제만 하나씩 보여 줘요.${n<V.W.length?' 이유를 안 고른 문제는 다음 GO 때 다시 물어봐요.':''}</p>
+      <div class="cRow"><button type="button" class="cBtn" data-go>지금 다시 풀기</button><button type="button" class="cBtn g" data-later>나중에</button></div>`;
+    box.querySelector('[data-go]').onclick=()=>{const W=V.W.slice();clsClose();rtStart(W)};box.querySelectorAll('[data-later]').forEach(b=>b.onclick=clsClose);return}
+  const q=V.W[V.i],st=S.state[q]||{},c=st.cls||{};
+  const img=st.crop?`<div class="cImg${V.step==='mark'?' draw':''}"><img src="${st.crop}" alt="${QN(q)}번 문제"><canvas></canvas></div>`:'';
+  let body='';
+  if(V.step==='why')body=`<h3>왜 틀렸을까요?</h3><div class="cOpts">${Object.entries(CLS).map(([k,o])=>`<button type="button" class="cOpt${c.k===k?' on':''}" style="--c:${o.c}" data-k="${k}"><i></i><b>${o.n}</b><span>${o.d}</span></button>`).join('')}</div><button type="button" class="cSkip" data-skip>건너뛰기</button>`;
+  else body=`<p class="cHint">막힌 곳을 문제 위에 <b>형광펜</b>으로 그어 주세요. 낱말 하나, 조건 하나여도 좋아요.</p><div class="cRow"><button type="button" class="cBtn g" data-clr>지우기</button><button type="button" class="cBtn" data-mk ${V.ink.length||!st.crop?'':'disabled'}>표시했어요</button></div>`;
+  box.innerHTML=top+`<div class="cQ"><b>${QN(q)}번</b><span>내 답 ${esc(st.retry&&st.retry.ans?fmtQ(q,st.retry.ans):fmtQ(q,st.ans))}</span>${clsChip(st)}</div>`+img+body;
+  box.querySelectorAll('[data-later]').forEach(b=>b.onclick=clsClose);
+  if(V.step==='why'){box.querySelectorAll('.cOpt').forEach(b=>b.onclick=async()=>{const k=b.dataset.k;if(k==='stuck'){V.step='mark';V.ink=[];V.k=k;clsRender();return}await clsSet(q,{k,hl:null,img:null});clsNext()});box.querySelector('[data-skip]').onclick=clsNext}
+  else{box.querySelector('[data-clr]').onclick=()=>{V.ink=[];clsPaint();box.querySelector('[data-mk]').disabled=!!st.crop};box.querySelector('[data-mk]').onclick=async()=>{const im=await clsComposite();await clsSet(q,{k:'stuck',hl:V.ink.map(s=>s.map(([x,y])=>[+x.toFixed(4),+y.toFixed(4)])),img:im});clsNext()}}
+  const cimg=box.querySelector('.cImg img');if(cimg){const go=()=>clsInk();if(cimg.complete)go();else cimg.onload=go}}
+function fmtQ(q,a){try{const p=P.problems.find(z=>z.q===q);return p?fmt(p,a):String(a||'')}catch(e){return String(a||'')}}
+function clsNext(){const V=CLSV;if(!V)return;V.step='why';V.ink=[];if(V.i<V.W.length-1){V.i++;clsRender()}else{V.step='sum';clsRender()}}
+/* 형광펜: 문제 그림 위에 손가락·펜으로. 좌표는 그림 크기 기준 0~1로 저장 */
+function clsInk(){const V=CLSV,w=$('#clsSheet .cImg');if(!V||!w)return;const cv=w.querySelector('canvas'),r=w.getBoundingClientRect(),d=devicePixelRatio||1;cv.width=Math.round(r.width*d);cv.height=Math.round(r.height*d);clsPaint();if(V.step!=='mark')return;
+  let cur=null;const pt=e=>{const b=cv.getBoundingClientRect();return [Math.min(1,Math.max(0,(e.clientX-b.left)/b.width)),Math.min(1,Math.max(0,(e.clientY-b.top)/b.height))]};
+  cv.onpointerdown=e=>{e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(er){}cur=[pt(e)];V.ink.push(cur)};
+  cv.onpointermove=e=>{if(!cur)return;e.preventDefault();cur.push(pt(e));clsPaint()};
+  cv.onpointerup=cv.onpointercancel=()=>{if(!cur)return;if(cur.length<3)V.ink.pop();cur=null;clsPaint();const b=$('#clsSheet [data-mk]');if(b)b.disabled=!V.ink.length}}
+function clsPaint(){const V=CLSV,cv=$('#clsSheet .cImg canvas');if(!V||!cv)return;const g=cv.getContext('2d');g.clearRect(0,0,cv.width,cv.height);clsStroke(g,V.ink,cv.width,cv.height)}
+function clsStroke(g,ink,W,H){g.save();g.strokeStyle='rgba(255,226,74,.45)';g.lineWidth=Math.max(10,Math.min(W,H)*0.035);g.lineCap='round';g.lineJoin='round';for(const s of ink||[]){g.beginPath();s.forEach(([x,y],k)=>k?g.lineTo(x*W,y*H):g.moveTo(x*W,y*H));g.stroke()}g.restore()}
+/* 선생님이 볼 그림: 문제 칸 + 형광펜을 한 장으로 (가로 최대 520px JPEG) */
+async function clsComposite(){const im=$('#clsSheet .cImg img');if(!im||!im.naturalWidth)return null;try{const sc=Math.min(1,520/im.naturalWidth),c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*sc);c.height=Math.round(im.naturalHeight*sc);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);
+  /* 화면의 그림은 object-fit:contain으로 줄었을 수 있어, 그린 좌표를 실제 그림 칸에 맞춘다 */
+  const b=im.getBoundingClientRect(),ar=im.naturalWidth/im.naturalHeight,bw=Math.min(b.width,b.height*ar),bh=bw/ar,ox=(b.width-bw)/2/b.width,oy=(b.height-bh)/2/b.height,fx=b.width/bw,fy=b.height/bh;
+  clsStroke(g,CLSV.ink.map(s=>s.map(([x,y])=>[(x-ox)*fx,(y-oy)*fy])),c.width,c.height);return c.toDataURL('image/jpeg',0.8)}catch(e){console.error(e);return null}}
+/* 다시 풀기(한 문제씩)에서 문제를 열 때: 고른 이유에 맞는 한 줄 안내 */
+function clsHint(){if(!FOC.on||!FOC.retry||!FOC.p||!S||!S.state)return;const st=S.state[FOC.p.q],c=st&&st.cls&&CLS[st.cls.k];let h=$('#clsHint');if(!c){if(h)h.remove();return}
+  if(!h){h=document.createElement('div');h.id='clsHint';document.body.appendChild(h)}h.style.setProperty('--c',c.c);h.style.opacity=1;h.textContent=`${c.n} → ${c.h}`;clearTimeout(h._t);h._t=setTimeout(()=>{h.style.opacity=0},5000)}
+/* 다시 풀기에서 GO 뒤: 맞히면 한 줄 코멘트, 또 틀리면 선생님에게 넘기기 */
+function clsAfter(){if(!FOC.on||!FOC.retry||!FOC.p||!S||!S.state)return;const q=FOC.p.q,st=S.state[q],r=st&&st.retry;if(!r||r.at!==FOC.rt0||r.ok==null)return;const key=FOC.rt0+':'+r.ans+':'+r.ok;if(st.cls&&st.cls.seen===key)return;
+  st.cls=Object.assign({},st.cls||{},{seen:key});CLSV={W:[q],i:0,step:'after'};const box=clsShell(),c=st.cls&&CLS[st.cls.k];
+  if(r.ok){box.innerHTML=`<div class="cQ"><b>${QN(q)}번</b>${clsChip(st)}</div><div class="cRes ok">맞혔어요 · 정답 ${esc(fmtQ(q,r.ans))}</div><h3>무엇을 놓쳤었나요? 한 줄만</h3>
+      <input class="cLine" maxlength="40" placeholder="예: 점근선은 x = −a 였다" value="${esc(st.cls.cm||'')}"><div class="cChips">${(CLS_CM[st.cls.k]||CLS_CM.dir.concat(CLS_CM.slip.slice(0,1))).map(t=>`<button type="button">${t}</button>`).join('')}</div>
+      <div class="cRow"><button type="button" class="cBtn" data-sv>남기기</button><button type="button" class="cBtn g" data-x>건너뛰기</button></div>`;
+    const inp=box.querySelector('.cLine');box.querySelectorAll('.cChips button').forEach(b=>b.onclick=()=>{inp.value=b.textContent});
+    box.querySelector('[data-sv]').onclick=async()=>{const v=inp.value.trim();clsClose();if(v)await clsSet(q,{cm:v,tc:false})};box.querySelector('[data-x]').onclick=clsClose}
+  else{box.innerHTML=`<div class="cQ"><b>${QN(q)}번</b>${clsChip(st)}</div><div class="cRes no">아직 아니에요</div><p class="cHint">괜찮아요. 선생님이 수업에서 같이 봐 줄 거예요.${c?' 고른 이유'+(st.cls.img?'와 형광펜 표시':'')+'도 함께 전달돼요.':''}</p>
+      <div class="cRow"><button type="button" class="cBtn" data-tc>선생님에게 넘기기</button><button type="button" class="cBtn g" data-x>한 번 더 풀기</button></div>`;
+    box.querySelector('[data-tc]').onclick=async()=>{clsClose();await clsSet(q,{tc:true});pvToast('선생님에게 넘겼어요 · 다음 수업에서 같이 봐요')};box.querySelector('[data-x]').onclick=clsClose}}
+/* 오답 기록 보기(BLOCK 탭 카드를 눌렀을 때): 학생이 고른 이유·형광펜·한 줄 코멘트 */
+function clsBox(w){const c=w&&w.cls;if(!c||!(c.k||c.cm||c.tc))return '';const o=CLS[c.k];
+  return `<div class="clsBox"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><b style="font-size:13px">학생이 고른 이유</b>${o?`<span class="clsChip" style="color:${o.c}">${o.n}</span>`:'<span class="muted">안 고름</span>'}${c.tc?'<span class="clsChip" style="color:var(--bad)">선생님에게 넘김</span>':''}</div>${c.img?`<img src="${c.img}" alt="형광펜 표시">`:''}${c.cm?`<div>“${esc(c.cm)}”</div>`:''}</div>`}
+
+/* 시험용: 바깥(콘솔·테스트)에서 분류 시트를 부를 수 있게 */
+window.NJcls={start:clsStart,after:clsAfter,hint:clsHint,box:clsBox,get S(){return S},set S(v){S=v},get P(){return P},set P(v){P=v},FOC,setRt:f=>{rtStart=f}};
 })();
 </script>
 <script>
