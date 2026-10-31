@@ -440,7 +440,8 @@ body:has(#vPdf:not([hidden])) .appbar{display:none}
 .rcPos{color:var(--ink);font-weight:600}
 
 .ssMore{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.ssParts{display:flex;flex-direction:column;gap:8px}.ssPart{display:grid;grid-template-columns:48px 1fr 1fr;gap:10px;align-items:center}.ssPart b{font-size:18px}
+.ssParts{display:flex;flex-direction:column;gap:8px}.ssPart{display:grid;grid-template-columns:48px 1fr 1fr 1fr;gap:10px;align-items:center}
+.ssPart .ssN{background:#64748b;color:#fff;border-color:#64748b;font-size:16px}.ssPart b{font-size:18px}
 .ssPart .btn{font-size:20px;padding:10px;opacity:.45}.ssPart .btn.pick{opacity:1;outline:3px solid var(--ink);outline-offset:1px}
 #ssPartOk:disabled{opacity:.45}
 
@@ -3616,12 +3617,15 @@ function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.cr
     const L=[...qs].sort((a,b)=>a-b).map(q=>S.state[q]||{q,none:1});
     sh.innerHTML=`<div class="sh" role="dialog" aria-label="채점 고치기"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:18px">직접 채점</b><button class="btn quiet sm" type="button" data-x>닫기</button></div>
       <div class="muted" style="font-size:13px">지금 보는 쪽의 문항이에요. 앱이 잘못 채점했거나 채점하지 못한 문항을 ○ 또는 ／로 정해 주세요. ○로 정하면 오답 기록에서 빠져요.</div>
-      ${L.map(x=>{const p=P.problems.find(z=>z.q===x.q),c=x.none?(P.prev&&P.prev[x.q])||null:catOf(x),a=x.retry&&x.retry.ans?x.retry.ans:x.ans;return `<div class="rcAtt"><span><b>${QN(x.q)}번</b> · ${x.none?(c?({O:'○',T:'△',S:'／',X:'／'}[c]||'?')+' (지난번)':'채점 안 됨'):({O:'○',T:'△',S:'／',X:'／'}[c]||'?')}${x.teacher?' (고침)':''}${x.none?'':` · 읽은 답 ${esc(p?fmt(p,a)||'-':a||'-')}`} · 정답 ${esc(p?showKey(p):'')}</span><span class="rcAttB"><button class="btn quiet sm" type="button" data-o="${x.q}" ${c==='O'?'disabled':''}>○로</button><button class="btn quiet sm" type="button" data-w="${x.q}" ${c==='X'||c==='S'?'disabled':''}>／로</button></span></div>`}).join('')||'<p class="muted">아직 채점한 문항이 없어요.</p>'}</div>`;
+      ${L.map(x=>{const p=P.problems.find(z=>z.q===x.q),c=x.none?(P.prev&&P.prev[x.q])||null:catOf(x),a=x.retry&&x.retry.ans?x.retry.ans:x.ans;return `<div class="rcAtt"><span><b>${QN(x.q)}번</b> · ${x.none?(c?({O:'○',T:'△',S:'／',X:'／'}[c]||'?')+' (지난번)':'채점 안 됨'):({O:'○',T:'△',S:'／',X:'／'}[c]||'?')}${x.teacher?' (고침)':''}${x.none?'':` · 읽은 답 ${esc(p?fmt(p,a)||'-':a||'-')}`} · 정답 ${esc(p?showKey(p):'')}</span><span class="rcAttB"><button class="btn quiet sm" type="button" data-o="${x.q}" ${c==='O'?'disabled':''}>○로</button><button class="btn quiet sm" type="button" data-w="${x.q}" ${c==='X'||c==='S'?'disabled':''}>／로</button>${partsOf(p)?`<button class="btn quiet sm" type="button" data-np="${x.q}">소문제별</button>`:''}</span></div>`}).join('')||'<p class="muted">아직 채점한 문항이 없어요.</p>'}</div>`;
     sh.querySelector('[data-x]').onclick=()=>{sh.hidden=true};sh.onclick=e=>{if(e.target===sh)sh.hidden=true};
     const apply=async(q,ok)=>{try{const p=P.problems.find(z=>z.q===q);tlEv('fix',{q,ok,before:tlClean(S.state[q]),read:p&&p._rd||null,key:p&&tlClean(p.key)})}catch(e){}if(!S.state[q]){const p0=P.problems.find(z=>z.q===q);if(!p0)return;S.state[q]={q,ans:'',ok:null,status:'done',at:S.series.length,short:shortOf(p0),wrongs:0,sigs:memInk().filter(s=>inReg(s,p0)).map(s=>s.sig)};if(P.prev)delete P.prev[q]}const x=S.state[q];if(!x)return;const p=P.problems.find(z=>z.q===q);x.ok=ok;x.status='done';if(ok&&p&&keyOf(p)&&!/^✓/.test(keyOf(p)))x.ans=keyOf(p).split('|').join('|');delete x.retry;x.wrongs=ok?0:Math.max(1,x.wrongs||1);x.teacher=ok?'O':'X';
       if(ok){const id=P.name+'#'+q;try{await wrDel(id)}catch(e){}try{await dbDel(id)}catch(e){}try{const t=JSON.parse(localStorage.getItem('njt:'+P.name)||'{}');delete t[q];localStorage.setItem('njt:'+P.name,JSON.stringify(t))}catch(e){}}
       chips();await writeMarks();pvSum();draw()};
-    sh.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>apply(+b.dataset.o,true));sh.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>apply(+b.dataset.w,false))};
+    sh.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>apply(+b.dataset.o,true));
+    // 소문제가 있는 문항: (1)(2)…마다 ○ / ✕ / 못 풂을 고르는 스스로 채점 창으로 넘긴다
+    sh.querySelectorAll('[data-np]').forEach(b=>b.onclick=()=>{const q=+b.dataset.np,p0=P.problems.find(z=>z.q===q);if(!p0)return;if(!S.state[q]){S.state[q]={q,ans:'',ok:null,status:'check',at:S.series.length,short:shortOf(p0),wrongs:0,sigs:memInk().filter(s=>inReg(s,p0)).map(s=>s.sig)};if(P.prev)delete P.prev[q]}
+      const x=S.state[q];x.status='check';x.ok=null;x.self=true;delete x.retry;delete x.pw;delete x.pn;delete x.pr;x.teacher='P';sh.hidden=true;SS={L:[x],i:0,n:0,onDone:null};$('#selfSheet').hidden=false;ssShow();try{ssPosApply()}catch(e){}});sh.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>apply(+b.dataset.w,false))};
   draw();sh.hidden=false}
 async function writeMarks(state){state=state||(S&&S.state)||{};
   if(!P.handle||!window.PDFLib)return '이 방식으로 연 PDF에는 채점 표시를 넣을 수 없습니다.';
@@ -4027,7 +4031,7 @@ async function showQ(){
   const it=QZ.list[QZ.i];QZ.cur={t0:Date.now(),done:false};INK.strokes=[];INK.cur=null;INK.mark=null;
   $('#qzProg').textContent=`${QZ.i+1} / ${QZ.list.length}`;$('#qzBar').style.width=`${QZ.i/QZ.list.length*100}%`;
   try{qzSkin();$('#qzQn').textContent=QN(it.q)+'번';$('#qzSub').textContent=bookOf(it.src)+(it.hist.length?` · 도전 ${it.hist.length+1}회`:'')}catch(e){}
-  $('#qzMeta').textContent=`${it.topic?it.topic+' · ':''}${it.src} ${QN(it.q)}번 · ${it.hist.length+2}번째 풀이${it.pw&&it.pw.length?` · 지난번 ${it.pw.map(i=>'('+i+')').join('')} 틀림`:''}`;
+  $('#qzMeta').textContent=`${it.topic?it.topic+' · ':''}${it.src} ${QN(it.q)}번 · ${it.hist.length+2}번째 풀이${it.pw&&it.pw.length?` · 지난번 ${it.pw.map(i=>'('+i+')').join('')} 틀림`:''}${it.pn&&it.pn.length?` · 지난번 ${pnTxt(it)}`:''}`;
   $('#vQuiz').classList.remove('end');$('#qzFb').className='qzfb';$('#qzFb').textContent='';$('#qzConfirm').innerHTML='';$('#qzNext').hidden=true;$('#qzSubmit').hidden=false;$('#qzTools').hidden=false;$('#qzSkip').hidden=false;$('#qzSkip').textContent=QZ.i+1<QZ.list.length?'건너뛰기 →':'건너뛰고 결과 보기';
   const page=$('#qzPage');QZ.cw0=Math.min(page.clientWidth||600,860);QZ.z=1;QZ.pg=null;page.scrollLeft=0;
   try{const d=await PDFJS.getDocument({data:new Uint8Array(it.pdf).slice()}).promise;QZ.pg=await d.getPage(1)}catch(e){console.error(e)}
@@ -4880,8 +4884,8 @@ async function ssShow(){setTimeout(()=>{try{ssPosApply()}catch(e){}},0);const x=
   $('#ssProg').textContent=`${SS.i+1} / ${SS.L.length}`;
   $('#ssBody').innerHTML=`<div class="ssQ"><b>${QN(x.q)}번</b> ${re?'<span class="cat t">고친 답</span>':''}${(h=>h.n?` <span class="muted" style="font-size:14px">· ${h.first>1?h.first+'번째에 정답 · ':''}지금까지 도전 ${h.n}회</span>`:'')(histOf(x.q))}</div><div class="ssCmp"><div class="ssRow"><div class="lb">정답</div><div class="ssKey" id="ssKey">불러오는 중…</div></div><div class="ssRow"><div class="lb">내 답</div><div class="ssInk"><img id="ssInkImg" alt="${QN(x.q)}번 내가 쓴 답"><span class="muted" id="ssInkNo" hidden>쓴 글씨가 없어요</span></div></div>
       <details class="ssFull"><summary>문제와 같이 보기</summary><img class="ssMine" src="${x.crop||''}" alt="${QN(x.q)}번 내 풀이"></details></div>
-    <p class="ssAsk">${NP?`소문제마다 골라 주세요 <span class="muted">(모두 맞아야 ○)</span>`:`${re?'고친 답이':'내 답이'} 정답과 같나요?`}</p>
-    ${NP?`<div class="ssParts">${Array.from({length:NP},(_,i)=>`<div class="ssPart"><b>(${i+1})</b><button type="button" class="btn ssO" data-p="${i}" data-v="1">○</button><button type="button" class="btn ssX" data-p="${i}" data-v="0">✕</button></div>`).join('')}</div><div class="ssBtns" style="grid-template-columns:1fr"><button type="button" class="btn mid" id="ssPartOk" disabled>채점 반영</button></div>`
+    <p class="ssAsk">${NP?`소문제마다 골라 주세요 <span class="muted">(모두 맞아야 ○ · 못 푼 소문제는 BLOCK으로)</span>`:`${re?'고친 답이':'내 답이'} 정답과 같나요?`}</p>
+    ${NP?`<div class="ssParts">${Array.from({length:NP},(_,i)=>`<div class="ssPart"><b>(${i+1})</b><button type="button" class="btn ssO" data-p="${i}" data-v="1">○</button><button type="button" class="btn ssX" data-p="${i}" data-v="0">✕</button><button type="button" class="btn ssN" data-p="${i}" data-v="n">못 풂</button></div>`).join('')}</div><div class="ssBtns" style="grid-template-columns:1fr"><button type="button" class="btn mid" id="ssPartOk" disabled>채점 반영</button></div>`
      :`<div class="ssBtns"><button type="button" class="btn ssO" data-s="1">○ 맞았어요</button><button type="button" class="btn ssX" data-s="0">✕ 틀렸어요</button></div>`}<div class="ssMore">${NP?`<button type="button" class="ssLater" id="ssNpAdd">＋ 소문제 추가</button><button type="button" class="ssLater" id="ssNpOff">소문제 없음</button>`:`<button type="button" class="ssLater" id="ssNpOn">(1)(2) 소문제별로 채점</button>`}${SS.L.length>1?'<button type="button" class="ssLater" id="ssList">📋 한 번에 보기</button>':''}<button type="button" class="ssLater" id="ssNone">안 푼 문제예요</button><button type="button" class="ssLater" id="ssLater">나중에 할게요</button></div>`;
   const setNp=n=>{SS.np=n;p.np=n||0;recentSave();ssShow()};
   if($('#ssNpOn'))$('#ssNpOn').onclick=()=>setNp(2);if($('#ssNpAdd'))$('#ssNpAdd').onclick=()=>setNp(Math.min(6,NP+1));if($('#ssNpOff'))$('#ssNpOff').onclick=()=>setNp(0);
@@ -4894,10 +4898,10 @@ async function ssShow(){setTimeout(()=>{try{ssPosApply()}catch(e){}},0);const x=
       :`<div style="display:flex;gap:8px;justify-content:center"><input class="txt" id="ssTyped" inputmode="numeric" style="font-size:22px;max-width:200px" value="${esc(x.ans||'')}"><button class="btn mid" type="button" id="ssTypedOk">확인</button></div>`;
     const done=v=>{v=String(v).replace(/\s/g,'');if(!v)return;const k=keyOf(p),ok=normAns(v)===normAns(k);try{tlEv('self',{q:x.q,typed:v,key:k,good:ok,how:'typed',read:p&&p._rd||null})}catch(e){}x.ans=v;x.status='done';x.ok=ok;x.wrongs=ok?0:1;SS.n++;SS.np=0;chips();if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()};
     $('#ssBody').querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>done(b.dataset.pk));const ti=$('#ssTyped');if(ti){$('#ssTypedOk').onclick=()=>done(ti.value);ti.onkeydown=e=>{if(e.key==='Enter')done(ti.value)}}}
-  if(NP){const pv=new Array(NP).fill(null);$('#ssBody').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{pv[+b.dataset.p]=b.dataset.v==='1';
+  if(NP){const pv=new Array(NP).fill(null);$('#ssBody').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{pv[+b.dataset.p]=b.dataset.v==='n'?'n':b.dataset.v==='1';
       $('#ssBody').querySelectorAll(`[data-p="${b.dataset.p}"]`).forEach(y=>y.classList.toggle('pick',y===b));$('#ssPartOk').disabled=pv.some(v=>v===null);
-      $('#ssPartOk').textContent=pv.some(v=>v===null)?'채점 반영':pv.every(v=>v)?'○ 모두 맞음 · 반영':`✕ ${pv.map((v,i)=>v?null:'('+(i+1)+')').filter(Boolean).join(' ')} 틀림 · 반영`});
-    $('#ssPartOk').onclick=()=>{x.pw=pv.map((v,i)=>v?null:i+1).filter(Boolean);x.pr=pv.slice();ssSet(x,p,!x.pw.length)};
+      {const W=pv.map((v,i)=>v===false?'('+(i+1)+')':null).filter(Boolean),N=pv.map((v,i)=>v==='n'?'('+(i+1)+')':null).filter(Boolean);$('#ssPartOk').textContent=pv.some(v=>v===null)?'채점 반영':pv.every(v=>v===true)?'○ 모두 맞음 · 반영':`✕ ${[W.length?W.join(' ')+' 틀림':'',N.length?N.join(' ')+' 못 풂':''].filter(Boolean).join(' · ')} · 반영`}});
+    $('#ssPartOk').onclick=()=>{x.pw=pv.map((v,i)=>v===false?i+1:null).filter(Boolean);x.pn=pv.map((v,i)=>v==='n'?i+1:null).filter(Boolean);if(!x.pn.length)delete x.pn;x.pr=pv.map(v=>v==='n'?null:v);ssSet(x,p,!x.pw.length&&!(x.pn&&x.pn.length))};   /* 못 푼 소문제: 그 칸엔 표시 없이, 문항은 BLOCK(틀림)으로 — 다시 도전할 문제 */
     if(p._pre&&p._pre.length===NP)p._pre.forEach((v,i)=>{if(v===true){const b=$('#ssBody').querySelector(`[data-p="${i}"][data-v="1"]`);if(b){b.click();b.insertAdjacentHTML('beforeend',' <small>자동</small>')}}})}
   try{const inAB=(()=>{const A=p&&p.ab;if(!A||A.none)return false;return memInk().some(s=>{if(s.raster||!inReg(s,p))return false;const cx=(s.b.x0+s.b.x1)/2,cy=(s.b.y0+s.b.y1)/2;return cx>=A.x0&&cx<=A.x1&&cy>=A.y0&&cy<=A.y1})})();const cu=(x.retry&&x.retry.crop)||x.crop;const iu=inAB||!cu?inkOnlyImg(p,x):cu,im=$('#ssInkImg');if(im){if(iu){im.src=iu;im.classList.toggle('withQ',!inAB&&!!cu);if(!inAB&&cu)imgTrim(iu).then(u=>{if(u&&im.src===iu)im.src=u}).catch(()=>{})}else{im.hidden=true;$('#ssInkNo').hidden=false}}}catch(e){console.error(e)}   /* 답란이 아니라 문제 옆에 쓴 답: 필기만 떼어 내면 어느 소문제 답인지 모른다 → 문제 그림 위에 쓴 그대로 (소번호 보이게) */
   const u=await keyImg(p);const kb=$('#ssKey');const kt=p&&p.key&&(p.key.kind!=='self'||p.key.show)?showKey(p):'';if(kb&&u)imgTrim(u,8,150).then(t=>{const ki=kb.querySelector('img');if(t&&ki&&ki.src===u){ki.src=t;ki.classList.add('trim')}}).catch(()=>{});if(kb)kb.innerHTML=u?`<img src="${u}" alt="${QN(x.q)}번 정답">${kt&&p.key.kind!=='nparts'?`<div style="font-size:20px;font-weight:700;margin-top:4px">${esc(kt)}</div>`:''}`:kt?`<div style="font-size:26px;font-weight:800">${esc(kt)}</div>`:`<span class="muted">정답 그림이 없습니다. 해설을 보고 골라 주세요.</span>`;
@@ -4912,7 +4916,7 @@ function ssApply(x,p,good){const k=keyOf(p)||'✓';
   if(x.status==='check'){x.ans=good?k:'✗';x.status='done';x.ok=good;x.wrongs=good?0:1;x.manual=!good}
   else{x.retry.ans=good?k:'✗';x.retry.ok=good;x.retry.sure=true;if(!good){x.wrongs=(x.wrongs||1)+1;x.manual=true}}
   histEvt(x.q,good);setTimeout(pvBadgeAll,0);SS.n++;SS.np=0;chips()}
-function ssSet(x,p,good){try{tlEv('self',{q:x.q,good,pr:x.pr||null,pw:x.pw||null,how:'button',read:p&&p._rd||null,key:p&&tlClean(p.key)})}catch(e){}ssApply(x,p,good);if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()}
+function ssSet(x,p,good){try{tlEv('self',{q:x.q,good,pr:x.pr||null,pw:x.pw||null,pn:x.pn||null,how:'button',read:p&&p._rd||null,key:p&&tlClean(p.key)})}catch(e){}ssApply(x,p,good);if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()}
 /* 내가 쓴 답만: 문제 칸 안의 필기(인쇄된 글자 없이)를 크게 그려 정답과 바로 비교 */
 function inkOnlyImg(p,x){if(!p)return '';let L=memInk().filter(s=>!s.raster&&inReg(s,p));if(!L.length)return '';
   const A=p.ab;if(A){const inA=L.filter(s=>{const cx=(s.b.x0+s.b.x1)/2,cy=(s.b.y0+s.b.y1)/2;return cx>=A.x0&&cx<=A.x1&&cy>=A.y0&&cy<=A.y1});if(inA.length)L=inA}   /* 답란에 쓴 것이 있으면 그것이 답 */
@@ -5207,14 +5211,14 @@ async function logWrongsNow(){   // 지금 학습에서 틀린(고친·여전히
       w={id,src:P0.name,q:p.q,page:p.page,day:dayKey(Date.now()),at:Date.now(),topic:tag.topic,rate:tag.rate,key:p.key,keyShow:showKey(p),keyImg:(isSelf(p)||isMulti(p))?await keyImg(p):'',w:bw,h:bh,pdf:pdfs[k],thumb:thumbOf(p,box),th2:1,
         choices:p.choices.map(c=>({n:c.n,x:c.x-box.left,y:c.y-box.bottom,s:c.s})),ans:x.earlier?'':fmt(p,x.ans),t,auto:dg.s,reason:dg.s,why:dg.why}}
     if(!x.pw&&p.key&&p.key.kind==='nparts'&&x.ans&&x.ans!=='✗'){const A=String(x.ans).split('|');x.pw=p.key.nums.map((v,i)=>v!=null&&A[i]!==v?i+1:null).filter(Boolean)}
-    w.cat=c;if(x.cls)w.cls=x.cls;if(x.pw&&x.pw.length)w.pw=x.pw;w.tries=Math.max(w.tries||1,x.wrongs||1);w.retry=x.retry&&x.retry.ans?fmt(p,x.retry.ans):(w.retry||'');w.upd=Date.now();
+    w.cat=c;if(x.cls)w.cls=x.cls;if(x.pw&&x.pw.length)w.pw=x.pw;if(x.pn&&x.pn.length)w.pn=x.pn;else delete w.pn;w.tries=Math.max(w.tries||1,x.wrongs||1);w.retry=x.retry&&x.retry.ans?fmt(p,x.retry.ans):(w.retry||'');w.upd=Date.now();
     if(LAST&&LAST.ana&&LAST.ana[x.q]&&LAST===R)w.reason=LAST.ana[x.q].pick||w.reason;
     await wrPut(w)}
   if(!$('#vAna').hidden)renderAnaTab();
 }
 function itemFromWrong(w){return {id:w.id,src:w.src,q:w.q,page:w.page,topic:w.topic,rate:w.rate,key:w.key,keyShow:w.keyShow,keyImg:w.keyImg||'',w:w.w,h:w.h,pdf:w.pdf,thumb:w.thumb,ts:w.ts,th2:w.th2,choices:w.choices,
   added:Date.now(),first:{ans:w.ans,t:w.t},cat:w.cat,cls:w.cls,reason:w.reason,auto:w.auto,hist:[],stage:0,done:false,due:today0()+DAY}}
-async function noteAddFromWrongs(ids){let n=0;for(const id of ids){if(await dbGet(id))continue;const w=await wrGet(id);if(!w)continue;const it=itemFromWrong(w);if(w.pw)it.pw=w.pw;await dbPut(it);n++}badge();return n}
+async function noteAddFromWrongs(ids){let n=0;for(const id of ids){if(await dbGet(id))continue;const w=await wrGet(id);if(!w)continue;const it=itemFromWrong(w);if(w.pw)it.pw=w.pw;if(w.pn)it.pn=w.pn;await dbPut(it);n++}badge();return n}
 let ANAF='all';
 async function renderAnaTabOld(){
   const W=(await wrAll()).sort((a,b)=>b.at-a.at),inNote=new Set((await dbAll()).map(i=>i.id)),box=$('#aList');
@@ -5562,12 +5566,13 @@ async function renderAnaTab(){
 /* 오답 목록 (전체 오답 / ★ 오답노트 공통): 위 칩으로 고르고 → 문제집별 폴더로 접고 → 작은 카드로 훑고 → 누르면 자세히 */
 const AL={all:'all',star:'open',open:{},by:'book'};
 function bookOf(src){return String(src||'').replace(/\s*\((?:풀이|과제)[^)]*\)(?:\s*\d+)?\s*$/,'').trim()||'(이름 없음)'}
-const pwTag=x=>x&&x.pw&&x.pw.length?` <span class="chip today">${x.pw.map(i=>'('+i+')').join('')} 틀림</span>`:'';
+const pnTxt=x=>x&&x.pn&&x.pn.length?x.pn.map(i=>'('+i+')').join('')+' 못 풂':'';
+const pwTag=x=>x&&((x.pw&&x.pw.length)||(x.pn&&x.pn.length))?` <span class="chip today">${[x.pw&&x.pw.length?x.pw.map(i=>'('+i+')').join('')+' 틀림':'',pnTxt(x)].filter(Boolean).join(' · ')}</span>`:'';
 /* 오답 단계: 도전 기록으로 — 틀린 뒤 한 번이라도 맞히면 '도전해서 맞춤', 두 번 넘게 틀리고 아직 못 맞히면 '다시 틀림', 한 번만 틀렸으면 '아직 다시 안 풂' */
 function wHist(w){try{return (histLoad(w.src)[w.q])||[]}catch(e){return []}}
 function wStage(w){const L=wHist(w);if(L.length){const i=L.findIndex(a=>!a.ok);if(i>=0&&L.slice(i+1).some(a=>a.ok))return 'T';if(L.filter(a=>!a.ok).length>=2)return 'S';if(i>=0)return 'X'}return w.cat==='T'?'T':w.cat==='S'?'S':'X'}
 const wCat=w=>{const st=wStage(w),L=wHist(w),k=L.findIndex(a=>a.ok);if(st==='T')return `<span class="chip" style="color:var(--ok)">✓ 도전해서 맞춤${k>=0?` · ${k+1}번째`:''}</span>`;if(st==='S')return `<span class="chip today">✗ 다시 틀림${L.length?` · 도전 ${L.length}회`:''}</span>`;return wCatOld(w)};
-const wCatOld=w=>w.cat==='T'?'<span class="chip" style="color:var(--warn)">△ 고침</span>':w.pw&&w.pw.length?`<span class="chip today">${w.pw.map(i=>'('+i+')').join('')} 틀림</span>`:w.cat==='S'?'<span class="chip today">모름</span>':'<span class="chip today">틀림</span>';
+const wCatOld=w=>w.cat==='T'?'<span class="chip" style="color:var(--warn)">△ 고침</span>':(w.pw&&w.pw.length)||(w.pn&&w.pn.length)?`<span class="chip today">${[w.pw&&w.pw.length?w.pw.map(i=>'('+i+')').join('')+' 틀림':'',pnTxt(w)].filter(Boolean).join(' · ')}</span>`:w.cat==='S'?'<span class="chip today">모름</span>':'<span class="chip today">틀림</span>';
 function anaList(W,items,inNote){const SIMS=new Set(simSent().map(x=>x.id)),box=$('#aList'),star=ANAV==='star',rec=w=>!inNote.has(w.id)&&((w.tries||1)>=2||w.cat==='S');
   const isToday=i=>!i.done&&i.due!=null&&i.due<=today0();
   const F=star?{open:i=>!i.done,today:isToday,fin:i=>i.done,all:()=>true}:{all:()=>true,rec,X:w=>wStage(w)==='X',T:w=>wStage(w)==='T',S:w=>wStage(w)==='S'};
@@ -5589,7 +5594,7 @@ function anaList(W,items,inNote){const SIMS=new Set(simSent().map(x=>x.id)),box=
   const chips=byT+`<div class="nfil">${Object.keys(F).filter(k=>k==='all'||k===f||cnt[k]).map(k=>`<button type="button" data-af="${k}" class="${f===k?'on':''}">${LAB[k]}<b>${cnt[k]}</b></button>`).join('')}</div>`;
   if(!src0.length){box.innerHTML=star?'<p class="muted">아직 오답노트가 비어 있어요. [전체 오답]에서 문항을 눌러 ☆ 담기를 해 보세요.</p>':'<p class="muted">아직 오답이 없어요. 문제집을 풀고 [채점하기]를 누르면 틀린 문항이 여기에 문제집별로 모여요.</p>';return}
   const memoLine=x=>byM&&x.memo?`<div class="nmemo">${esc(bookOf(x.src))} · ${esc(String(x.memo).slice(0,40))}</div>`:'';
-  const card=x=>star?`<button type="button" class="ncard" data-nid="${esc(x.id)}"><span class="ncX" role="button" aria-label="지우기" data-xid="${esc(x.id)}">✕</span><div class="th"><img src="${x.ts||x.thumb}" alt="" loading="lazy" decoding="async" data-ts="${x.ts?'':esc(x.id)}"></div>${memoLine(x)}<div class="nh"><span>${QN(x.q)}번</span>${nStat(x)}</div>${x.pw&&x.pw.length?`<div style="font-size:12px;color:var(--omr);font-weight:700">${x.pw.map(i=>'('+i+')').join('')} 틀렸던 문제</div>`:''}${nDots(x)}</button>`
+  const card=x=>star?`<button type="button" class="ncard" data-nid="${esc(x.id)}"><span class="ncX" role="button" aria-label="지우기" data-xid="${esc(x.id)}">✕</span><div class="th"><img src="${x.ts||x.thumb}" alt="" loading="lazy" decoding="async" data-ts="${x.ts?'':esc(x.id)}"></div>${memoLine(x)}<div class="nh"><span>${QN(x.q)}번</span>${nStat(x)}</div>${x.pw&&x.pw.length?`<div style="font-size:12px;color:var(--omr);font-weight:700">${x.pw.map(i=>'('+i+')').join('')} 틀렸던 문제</div>`:''}${x.pn&&x.pn.length?`<div style="font-size:12px;color:var(--omr);font-weight:700">${x.pn.map(i=>'('+i+')').join('')} 못 풀었던 문제</div>`:''}${nDots(x)}</button>`
     :`<button type="button" class="ncard${rec(x)?' rec':''}" data-wid="${esc(x.id)}"><span class="ncX" role="button" aria-label="지우기" data-xid="${esc(x.id)}">✕</span><div class="th"><img src="${x.ts||x.thumb}" alt="" loading="lazy" decoding="async" data-ts="${x.ts?'':esc(x.id)}"></div>${memoLine(x)}<div class="nh"><span>${QN(x.q)}번${inNote.has(x.id)?' <span style="color:#f5b301">★</span>':''}${SIMS.has(x.id)?' 🧩':''}</span>${wCat(x)}</div>${clsChip(x)?`<div>${clsChip(x)}</div>`:''}<div class="muted" style="font-size:12px">${x.memo?'📝 ':''}${(x.tries||1)>1?`${x.tries}번 틀림 · `:''}${x.day?dayLabel(x.day).replace(/\s*\(.\)$/,''):''}</div></button>`;
   box.innerHTML=tabs+chips+(L.length?keys.map((k,gi)=>{const g=grp[k].sort((a,b)=>byM?bookOf(a.src).localeCompare(bookOf(b.src))||a.q-b.q:a.q-b.q||(b.at||0)-(a.at||0)),A=byM?g:src.filter(x=>bookOf(x.src)===k),td=star?g.filter(isToday).length:0,fin=star?A.filter(i=>i.done).length:A.filter(w=>w.cat==='T').length;
       const op=AL.open[ANAV+':'+k]!=null?AL.open[ANAV+':'+k]:(keys.length<=2||td>0||gi===0);
