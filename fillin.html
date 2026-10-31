@@ -4007,13 +4007,29 @@ async function makeTask(list,opt){opt=opt||{};
   }catch(e){console.error(e);msg.className='err';msg.textContent='과제 PDF를 만들지 못했습니다: '+e.message;return false}
 }
 /* --- 과제 PDF를 풀었을 때: 채점 결과를 오답노트에 반영 --- */
+/* 유사 기출 정답지: 화면 표 + A4 PDF (번호 · 정답 · 출처 · 유형 · 난이도) */
+const simAnsTxt=a=>String(a).startsWith('c')?'①②③④⑤'[+String(a).slice(1)-1]:String(a);
+function simAnsTable(items,res){return `<table>${items.map(x=>{const r=res&&res[x.n];return `<tr><td>${String(x.n).padStart(2,'0')}</td>${res?`<td style="font-weight:800;color:${r==null?'var(--muted,#64748b)':r?'var(--ok)':'var(--bad)'}">${r==null?'-':r?'○':'✗'}</td>`:''}<td>${esc(x.label)}<div class="muted" style="font-size:12px">${esc(x.big)}${x.lv?` · ${SIM_LV[x.lv]}`:''}</div></td><td><b>${esc(simAnsTxt(x.a))}</b></td></tr>`}).join('')}</table>`}
+async function simAnsPdf(r,btn){if(!r||!r.simItems)return;const t0=btn&&btn.textContent;if(btn)btn.textContent='만드는 중…';
+  try{const {PDFDocument}=PDFLib,out=await PDFDocument.create(),items=r.simItems,per=26,title=r.name.replace(/\.pdf$/i,'');
+    for(let k=0;k<items.length;k+=per){const pg=out.addPage([A4W,A4H]),part=items.slice(k,k+per),H=A4H-MG*2;
+      const png=await out.embedPng(textPng(A4W-MG*2,H,g=>{let y=0;if(k===0){g.fillStyle='#111';g.font=`700 17px ${FONT}`;g.fillText('정답',0,18);g.fillStyle='#555';g.font=`11px ${FONT}`;let t=title;while(g.measureText(t).width>A4W-MG*2-50&&t.length>4)t=t.slice(0,-2);g.fillText(t,46,17);y=34}
+        g.strokeStyle='#999';g.lineWidth=0.8;g.beginPath();g.moveTo(0,y);g.lineTo(A4W-MG*2,y);g.stroke();
+        for(const x of part){y+=26;g.fillStyle='#1f3a8a';g.font=`700 14px ${FONT}`;g.fillText(String(x.n).padStart(2,'0'),2,y-8);g.fillStyle='#111';g.font=`700 15px ${FONT}`;g.fillText(simAnsTxt(x.a),40,y-8);
+          g.fillStyle='#444';g.font=`11px ${FONT}`;let t=`${x.label} · ${x.big}${x.lv?' · '+SIM_LV[x.lv]:''}`;while(g.measureText(t).width>A4W-MG*2-120&&t.length>4)t=t.slice(0,-2);g.fillText(t,110,y-9);
+          g.strokeStyle='#ddd';g.lineWidth=0.5;g.beginPath();g.moveTo(0,y);g.lineTo(A4W-MG*2,y);g.stroke()}}));
+      pg.drawImage(png,{x:MG,y:MG,width:A4W-MG*2,height:H})}
+    const bytes=await out.save(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));a.download=title.replace(/[\\/:*?"<>|]/g,'')+' 정답.pdf';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},3000);if(btn)btn.textContent=t0}
+  catch(e){console.error(e);if(btn)btn.textContent='만들지 못했어요'}}
 async function applyTask(){
   const R=LAST;if(!R||!P.task)return;R.applied=R.applied||{};const box=$('#dAna');let n=0,ok=0,fin=0;
   for(const p of P.problems){const x=R.state[p.q];if(!x||x.status!=='done'||x.ok==null||R.applied[p.q])continue;
     if(String(p.itemId||'').startsWith('qp:')){simRes(p.itemId.slice(3),x.ok);R.applied[p.q]=1;n++;if(x.ok)ok++;continue}
     const it=await dbGet(p.itemId);if(!it)continue;attempt(it,x.ok,x.ans);await dbPut(it);R.applied[p.q]=1;n++;if(x.ok)ok++;if(it.done)fin++}
   const all=await dbAll(),pct=all.length?Math.round(all.filter(i=>i.done).length/all.length*100):0;R.taskSum=R.taskSum||{n:0,ok:0,fin:0};R.taskSum.n+=n;R.taskSum.ok+=ok;R.taskSum.fin+=fin;const T=R.taskSum;
-  box.hidden=false;if(P.task.sim){box.innerHTML=`<h2>유사 기출 채점</h2><p style="margin:0">${T.n}문항 중 <b style="color:var(--ok)">${T.ok}문항 맞힘</b>${T.n-T.ok?` · 틀린 ${T.n-T.ok}문항은 BLOCK으로 다시 볼 수 있어요`:''}</p>`;return}box.innerHTML=`<h2>오답노트에 반영했습니다</h2><p style="margin:0">${T.n}문항 중 <b style="color:var(--ok)">${T.ok}문항 맞힘</b>${T.fin?` · <b>${T.fin}문항 완료</b>`:''} · 틀린 문항은 내일 다시 나옵니다.</p><p class="muted" style="margin:0">지금 학습률 <b>${pct}%</b></p>`;badge();
+  box.hidden=false;if(P.task.sim){const r=await libMeta(P.name).catch(()=>null),res={};for(const p of P.problems){const x=R.state[p.q];if(x&&x.status==='done'&&x.ok!=null)res[p.q]=x.ok}
+    box.innerHTML=`<h2>유사 기출 채점</h2><p style="margin:0">${T.n}문항 중 <b style="color:var(--ok)">${T.ok}문항 맞힘</b>${T.n-T.ok?` · 틀린 ${T.n-T.ok}문항은 BLOCK으로 다시 볼 수 있어요`:''}</p>${r&&r.simItems?`<div class="simAns">${simAnsTable(r.simItems,res)}<button type="button" class="btn quiet" data-apdf style="margin-top:8px;padding:7px 12px;font-size:14px">📄 정답지 PDF</button></div>`:''}`;
+    {const b=box.querySelector('[data-apdf]');if(b)b.onclick=()=>simAnsPdf(r,b)}return}box.innerHTML=`<h2>오답노트에 반영했습니다</h2><p style="margin:0">${T.n}문항 중 <b style="color:var(--ok)">${T.ok}문항 맞힘</b>${T.fin?` · <b>${T.fin}문항 완료</b>`:''} · 틀린 문항은 내일 다시 나옵니다.</p><p class="muted" style="margin:0">지금 학습률 <b>${pct}%</b></p>`;badge();
 }
 /* --- 백업 --- */
 const b64=u=>{let s='';for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)};
@@ -5909,7 +5925,7 @@ async function renderTask(){const box=$('#aTask')||$('#vTask');if(!box)return;co
     <div><button type="button" class="btn big" id="simGo" ${h&&okN?'':'disabled'}>${okN?`유사 문제 풀기 (${okN*TASK_N}문항 · ${SIM_LV[TASK_LV]})`:'유사 문제 풀기'}</button>${need&&h?`<div class="muted" style="font-size:12px;margin-top:4px">유형을 고르지 않은 ${need}문항은 빼고 만들어요</div>`:''}</div><div id="simMsg" style="font-size:14px"></div>`;
   const row=r=>{const c=loadCats(r.name),v=Object.values(c),o=v.filter(x=>x==='O'||x==='T').length,x=v.length-o,d=new Date(r.at),n=r.n||0,done=r.done===true;
     return `<div class="rc${done?' rcDone':''}"><div class="rcMain"><b class="rcName">${esc(r.name)}</b> <span class="cat ${r.sim?'o':'t'}">${r.sim?'유사 기출':'오답 과제'}</span>${done?' <span class="cat o">완료</span>':''}${r.sim&&r.simFrom?`<div style="font-size:13px">🧩 ${esc([...new Set(r.simFrom.map(x=>qpBigName(x.big)))].join(', '))}</div>`:''}<div class="muted" style="font-size:13px">${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}${n?` · ${n}문항`:''}${r.sim&&r.simLv!=null?` · ${SIM_LV[r.simLv]}`:''}${v.length?` · ○${o} ／${x}`:' · 아직 채점 전'}</div></div>
-      <div class="rcAct"><button class="btn ${done?'quiet':'mid'}" type="button" data-tgo="${esc(r.name)}">${done?'다시 보기':v.length?'이어서 풀기':'풀기'}</button>${r.sim&&r.simItems?`<button class="btn quiet tOnly" type="button" data-tans="${esc(r.name)}">정답</button>`:''}<button class="btn quiet rcDel" type="button" data-trm="${esc(r.name)}">🗑 삭제</button></div>${r.sim&&r.simItems?`<div class="simAns tOnly" data-tansbox="${esc(r.name)}" hidden><table>${r.simItems.map(x=>`<tr><td>${String(x.n).padStart(2,'0')}</td><td>${esc(x.label)}<div class="muted" style="font-size:12px">${esc(x.big)}${x.lv?` · ${SIM_LV[x.lv]}`:''}</div></td><td><b>${String(x.a).startsWith('c')?'①②③④⑤'[+String(x.a).slice(1)-1]:esc(x.a)}</b></td></tr>`).join('')}</table><button type="button" class="linkDel" data-tcopy="${esc(r.name)}">정답 복사</button></div>`:''}</div>`};
+      <div class="rcAct"><button class="btn ${done?'quiet':'mid'}" type="button" data-tgo="${esc(r.name)}">${done?'다시 보기':v.length?'이어서 풀기':'풀기'}</button>${r.sim&&r.simItems?`<button class="btn quiet${v.length?'':' tOnly'}" type="button" data-tans="${esc(r.name)}">정답</button>`:''}<button class="btn quiet rcDel" type="button" data-trm="${esc(r.name)}">🗑 삭제</button></div>${r.sim&&r.simItems?`<div class="simAns" data-tansbox="${esc(r.name)}" hidden>${simAnsTable(r.simItems,null)}<div style="display:flex;gap:12px;align-items:center;margin-top:6px"><button type="button" class="btn quiet" data-tpdf="${esc(r.name)}" style="padding:6px 12px;font-size:13px">📄 정답지 PDF</button><button type="button" class="linkDel" data-tcopy="${esc(r.name)}">정답 복사</button></div></div>`:''}</div>`};
   const packC=`<div class="card" style="display:flex;flex-direction:column;gap:8px">${packHTML}</div>`;
   box.innerHTML=`${h?'':packC}<div class="card" style="display:flex;flex-direction:column;gap:10px">${sentHTML}</div><div class="card"><h2>유사 문제지 · 과제</h2>${L.length?L.map(row).join(''):'<p class="muted" style="margin:0;font-size:14px">아직 과제가 없어요.</p>'}</div>${h?packC:''}`;
   const qi=box.querySelector('#qpIn');if(qi)qi.onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;if(await qpLoad(f,box.querySelector('#qpMsg')))setTimeout(renderTask,900)};
@@ -5927,6 +5943,7 @@ async function renderTask(){const box=$('#aTask')||$('#vTask');if(!box)return;co
   const g=box.querySelector('#simGo');if(g)g.onclick=()=>{g.disabled=true;simMake(TASK_N,box.querySelector('#simMsg'),TASK_LV,true)};
   box.querySelectorAll('[data-tgo]').forEach(b=>b.onclick=()=>{view('solve');openRecent(b.dataset.tgo)});
   box.querySelectorAll('[data-tans]').forEach(b=>b.onclick=()=>{const x=box.querySelector(`[data-tansbox="${CSS.escape(b.dataset.tans)}"]`);if(x){x.hidden=!x.hidden;b.textContent=x.hidden?'정답':'정답 접기'}});
+  box.querySelectorAll('[data-tpdf]').forEach(b=>b.onclick=()=>simAnsPdf(L.find(z=>z.name===b.dataset.tpdf),b));
   box.querySelectorAll('[data-tcopy]').forEach(b=>b.onclick=()=>{const r=L.find(z=>z.name===b.dataset.tcopy);if(!r)return;const t=r.simItems.map(x=>`${String(x.n).padStart(2,'0')}. ${String(x.a).startsWith('c')?'①②③④⑤'[+String(x.a).slice(1)-1]:x.a}  (${x.label})`).join('\n');navigator.clipboard.writeText(t).then(()=>b.textContent='복사했어요').catch(()=>b.textContent='복사하지 못했어요')});
   box.querySelectorAll('[data-trm]').forEach(b=>b.onclick=async()=>{if(!b.dataset.sure){b.dataset.sure=1;b.textContent='한 번 더 누르면 삭제';return}await libDel(b.dataset.trm);renderTask()})}
 
