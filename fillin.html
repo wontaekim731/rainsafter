@@ -2126,19 +2126,32 @@ async function qpdfRun(bytes,args){if(!QPDF_MAKE){const prev=window.Module;await
    → 처음 넣을 때 한 번, 돌림을 쪽 내용에 반영해 '돌리지 않은 쪽'으로 바꿔 저장한다 (보이는 모양은 그대로) */
 /* 무거운 스캔본(600dpi 컬러 등)은 넣을 때 한 번만 200dpi JPEG로 다시 만들어 둔다 — 쪽 열기·번호 읽기·정답 읽기가 몇 배 빨라짐. 글자 PDF는 그대로 */
 const SLIM_DPI=200;
-async function pdfSlim(f,label){let d=null;try{d=await pdfOpenBlob(f);const N=d.numPages;if(!N||f.size/N<450e3)return null;
+/* 빠른 길: 스캐너 PDF(쪽마다 JPEG 그림 하나를 쪽 전체에 깐 것)는 그림을 그대로 꺼내 기기 자체 디코더로 줄인다 — pdf.js로 그리는 것보다 몇 배 빠름. 모양이 다른 쪽만 pdf.js로 */
+async function slimJpeg(src,page){try{const {PDFName,PDFDict,PDFRawStream,PDFArray}=PDFLib,node=page.node,res=node.Resources();if(!res)return null;const xo=res.lookup(PDFName.of('XObject'),PDFDict);if(!xo)return null;const ks=xo.keys();if(ks.length!==1)return null;
+    const st=src.context.lookup(xo.get(ks[0]));if(!(st instanceof PDFRawStream))return null;const D=st.dict,flt=D.lookup(PDFName.of('Filter')),fn=flt instanceof PDFArray?(flt.size()===1?String(flt.get(0)):''):String(flt||'');
+    if(fn!=='/DCTDecode'||D.get(PDFName.of('Decode'))||D.get(PDFName.of('SMask'))||D.get(PDFName.of('Mask')))return null;
+    const cs=node.Contents();if(!cs)return null;let txt='';const one=c=>{const r=src.context.lookup(c);if(!(r instanceof PDFRawStream))return;txt+=new TextDecoder('latin1').decode(PDFLib.decodePDFRawStream(r).decode())+' '};if(cs instanceof PDFArray){for(let i=0;i<cs.size();i++)one(cs.get(i))}else one(node.get(PDFName.of('Contents')));
+    const m=txt.trim().match(/^q\s+([\d.]+)\s+0\s+0\s+([\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+cm\s+\/\S+\s+Do\s+Q$/);const {width:W,height:H}=page.getSize();
+    if(!m||Math.abs(+m[1]-W)>3||Math.abs(+m[2]-H)>3||Math.abs(+m[3])>3||Math.abs(+m[4])>3||page.getRotation().angle%360)return null;
+    const w=Math.round(W*SLIM_DPI/72),h=Math.round(H*SLIM_DPI/72),bm=await createImageBitmap(new Blob([st.contents],{type:'image/jpeg'}),{resizeWidth:w,resizeHeight:h,resizeQuality:'high'});
+    const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,w,h);g.drawImage(bm,0,0);bm.close&&bm.close();const jb=await new Promise(ok=>c.toBlob(ok,'image/jpeg',0.75));c.width=c.height=0;return {jb,W,H}}
+  catch(e){return null}}
+async function pdfSlim(f,label){let d=null;try{const N0=await (async()=>{const x=await pdfOpenBlob(f);const n=x.numPages;d=x;return n})();if(!N0||f.size/N0<450e3)return null;const N=N0;
     {const pg=await d.getPage(Math.min(N,Math.max(1,Math.ceil(N/2))));let tx=0;try{tx=(await pg.getTextContent()).items.filter(i=>String(i.str||'').trim()).length}catch(e){}try{pg.cleanup()}catch(e){}if(tx>=5)return null}   /* 글자가 있는 PDF는 손대지 않음 */
     dlog('slim',(label||'')+' '+MB(f.size)+' '+N+'p');
     const SLIM_WHY=`<div class="slimWhy" style="margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--paper);border:1px solid var(--line);font-size:14px;line-height:1.55">
       <b>⏳ 왜 오래 걸리나요?</b><br>이 PDF는 <b>아주 고화질로 스캔</b>돼 있어서 한 쪽이 큰 사진 한 장만큼 무거워요 (${MB(f.size)} · ${N}쪽, 한 쪽에 약 ${Math.round(f.size/N/1e5)/10}MB).
       그대로 쓰면 쪽을 넘길 때마다, 번호와 정답을 읽을 때마다 매번 느려져요.<br>그래서 <b>처음 한 번만</b> 글씨가 잘 보이는 크기로 가볍게 바꿔 두고 있어요. 끝나면 다음부터는 몇 배 빨리 열려요.
       <div class="muted" style="font-size:13px;margin-top:6px">· 이 화면을 닫거나 다른 앱으로 넘어가면 처음부터 다시 해야 할 수 있어요.<br>· 직접 스캔한다면 스캔 앱에서 <b>300dpi 이하 · 흑백(또는 회색조)</b>으로 하면 이 과정 없이 바로 열려요.</div></div>`;const {PDFDocument}=PDFLib,out=await PDFDocument.create(),info=$('#pdfInfo'),t0=Date.now();
-    for(let i=1;i<=N;i++){const pg=await d.getPage(i),v1=pg.getViewport({scale:1}),vp=pg.getViewport({scale:SLIM_DPI/72}),c=document.createElement('canvas');c.width=Math.round(vp.width);c.height=Math.round(vp.height);
-      const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);await pg.render({canvasContext:g,viewport:vp,annotationMode:0}).promise;
-      const jb=await new Promise(ok=>c.toBlob(ok,'image/jpeg',0.75));c.width=c.height=0;try{pg.cleanup()}catch(e){}
-      const img=await out.embedJpg(new Uint8Array(await jb.arrayBuffer()));out.addPage([v1.width,v1.height]).drawImage(img,{x:0,y:0,width:v1.width,height:v1.height});
+    let src=null;if(window.createImageBitmap&&f.size<600e6){try{src=await PDFDocument.load(new Uint8Array(await f.arrayBuffer()),{ignoreEncryption:true,updateMetadata:false});if(src.getPageCount()!==N)src=null}catch(e){src=null}}
+    const SP=src?src.getPages():null,AHEAD=3,Q={};let fast=0;const job=i=>Q[i]||(Q[i]=SP?slimJpeg(src,SP[i-1]):Promise.resolve(null));
+    for(let i=1;i<=N;i++){for(let k=i;k<=Math.min(N,i+AHEAD-1);k++)job(k);const fr=await job(i);delete Q[i];let jb,W,H;
+      if(fr){({jb,W,H}=fr);fast++}else{const pg=await d.getPage(i),v1=pg.getViewport({scale:1}),vp=pg.getViewport({scale:SLIM_DPI/72}),c=document.createElement('canvas');c.width=Math.round(vp.width);c.height=Math.round(vp.height);
+        const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);await pg.render({canvasContext:g,viewport:vp,annotationMode:0}).promise;
+        jb=await new Promise(ok=>c.toBlob(ok,'image/jpeg',0.75));c.width=c.height=0;try{pg.cleanup()}catch(e){}W=v1.width;H=v1.height}
+      const img=await out.embedJpg(new Uint8Array(await jb.arrayBuffer()));out.addPage([W,H]).drawImage(img,{x:0,y:0,width:W,height:H});
       if(info){const el=(Date.now()-t0)/i*(N-i)/1000;info.innerHTML=progHTML(i/N*100,`${label||'문제집'}을 가볍게 만드는 중 (처음 한 번만)`,`${i}/${N}쪽${i>2?` · 약 ${el<60?Math.ceil(el)+'초':Math.ceil(el/60)+'분'} 남음`:''}`)+SLIM_WHY}}
-    const bytes=await out.save({useObjectStreams:false});dlog('slimDone',MB(f.size)+'→'+MB(bytes.length)+' '+Math.round((Date.now()-t0)/1000)+'s');
+    const bytes=await out.save({useObjectStreams:false});dlog('slimDone',MB(f.size)+'→'+MB(bytes.length)+' '+Math.round((Date.now()-t0)/1000)+'s fast '+fast+'/'+N);src=null;
     if(bytes.length>f.size*0.7)return null;return new File([bytes],f.name,{lastModified:f.lastModified,type:'application/pdf'})}
   catch(e){console.error(e);dlog('slimErr',String(e&&e.message||e));return null}finally{try{d&&d.destroy()}catch(e){}}}
 async function pdfRotFix(f){let d=null;try{d=await pdfOpenBlob(f);const N=d.numPages,S=new Set([Math.ceil(N/2),N]);for(let i=1;i<=Math.min(N,10);i++)S.add(i);let rot=0;
@@ -5156,6 +5169,7 @@ let RECENT_DONE_OPEN=false,RECENT_ORIG_OPEN=false;
 async function renderRecent(){let L=[];try{L=(await libAll()).sort((a,b)=>b.at-a.at)}catch(e){}
   {const hb=$('#howBox');if(hb){hb.innerHTML=window.NJ_BETA?'':howToHTML();hb.querySelectorAll('[data-how]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('njHowHide',b.dataset.how==='0'?'1':'0')}catch(e){}renderRecent()})}}
   L=L.filter(r=>!r.orig).concat(L.filter(r=>r.orig));
+  {const busy=!!(SCANNING||LOADING),as=$('#addStep');if(START_OPEN&&!busy&&as&&as.hidden)START_OPEN=false;if(busy&&$('#addPick'))$('#addPick').hidden=true}   /* 다 읽은 뒤에 '문제집 추가' 칸이 목록의 [＋ 문제집 추가]와 겹쳐 두 번 보이지 않게 */
   $('#vStart').classList.toggle('collapsed',!START_OPEN);
   if(S||$('#vStart').hidden){$('#vRecent').hidden=true;if(!L.length)return}else $('#vRecent').hidden=false;
   if(!L.length){$('#recentList').innerHTML='<p class="muted" style="margin:14px 0 4px">아직 문제집이 없어요.</p>';return}
