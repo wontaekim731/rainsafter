@@ -2118,6 +2118,19 @@ async function qpdfRun(bytes,args){if(!QPDF_MAKE){const prev=window.Module;await
   if(rc!==0&&rc!==3)throw new Error('PDF를 정리하지 못했어요 (qpdf '+rc+')');const o=q.FS.readFile('/o.pdf');try{q.FS.unlink('/i.pdf');q.FS.unlink('/o.pdf')}catch(e){}return o}
 /* 쪽을 90°·270° 돌려 저장한 PDF(스캔 앱에서 흔함): 화면엔 똑바로 보여도 쪽 좌표의 가로·세로가 바뀌어 문제 영역·채점이 틀어진다
    → 처음 넣을 때 한 번, 돌림을 쪽 내용에 반영해 '돌리지 않은 쪽'으로 바꿔 저장한다 (보이는 모양은 그대로) */
+/* 무거운 스캔본(600dpi 컬러 등)은 넣을 때 한 번만 200dpi JPEG로 다시 만들어 둔다 — 쪽 열기·번호 읽기·정답 읽기가 몇 배 빨라짐. 글자 PDF는 그대로 */
+const SLIM_DPI=200;
+async function pdfSlim(f,label){let d=null;try{d=await pdfOpenBlob(f);const N=d.numPages;if(!N||f.size/N<450e3)return null;
+    {const pg=await d.getPage(Math.min(N,Math.max(1,Math.ceil(N/2))));let tx=0;try{tx=(await pg.getTextContent()).items.filter(i=>String(i.str||'').trim()).length}catch(e){}try{pg.cleanup()}catch(e){}if(tx>=5)return null}   /* 글자가 있는 PDF는 손대지 않음 */
+    dlog('slim',(label||'')+' '+MB(f.size)+' '+N+'p');const {PDFDocument}=PDFLib,out=await PDFDocument.create(),info=$('#pdfInfo'),t0=Date.now();
+    for(let i=1;i<=N;i++){const pg=await d.getPage(i),v1=pg.getViewport({scale:1}),vp=pg.getViewport({scale:SLIM_DPI/72}),c=document.createElement('canvas');c.width=Math.round(vp.width);c.height=Math.round(vp.height);
+      const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);await pg.render({canvasContext:g,viewport:vp,annotationMode:0}).promise;
+      const jb=await new Promise(ok=>c.toBlob(ok,'image/jpeg',0.75));c.width=c.height=0;try{pg.cleanup()}catch(e){}
+      const img=await out.embedJpg(new Uint8Array(await jb.arrayBuffer()));out.addPage([v1.width,v1.height]).drawImage(img,{x:0,y:0,width:v1.width,height:v1.height});
+      if(info){const el=(Date.now()-t0)/i*(N-i)/1000;info.innerHTML=progHTML(i/N*100,`${label||'문제집'}을 가볍게 만드는 중 (처음 한 번만)`,`${i}/${N}쪽${i>2?` · 약 ${el<60?Math.ceil(el)+'초':Math.ceil(el/60)+'분'} 남음`:''}`)}}
+    const bytes=await out.save({useObjectStreams:false});dlog('slimDone',MB(f.size)+'→'+MB(bytes.length)+' '+Math.round((Date.now()-t0)/1000)+'s');
+    if(bytes.length>f.size*0.7)return null;return new File([bytes],f.name,{lastModified:f.lastModified,type:'application/pdf'})}
+  catch(e){console.error(e);dlog('slimErr',String(e&&e.message||e));return null}finally{try{d&&d.destroy()}catch(e){}}}
 async function pdfRotFix(f){let d=null;try{d=await pdfOpenBlob(f);const N=d.numPages,S=new Set([Math.ceil(N/2),N]);for(let i=1;i<=Math.min(N,10);i++)S.add(i);let rot=0;
     for(const i of S){const pg=await d.getPage(i);if(pg.rotate%360){rot=pg.rotate;break}}if(!rot)return null;dlog('rotate',rot+' '+MB(f.size));
     if(f.size>150e6){dlog('rotBig','');return null}$('#pdfInfo').textContent='쪽이 돌려 저장된 PDF예요. 바로 세우는 중… (처음 한 번, 몇 초)';
@@ -5118,9 +5131,9 @@ function addDone(){if(P&&keyMiss()&&P.handle&&P.handle.kind==='lib')libGet(P.nam
 async function importPdf(f){START_OPEN=true;$('#vStart').classList.remove('collapsed');$('#addPick').hidden=true;$('#addStep').hidden=false;$('#pick').parentNode.hidden=true;$('#addStepT').textContent='';
   let name=f.name.replace(/\.pdf$/i,'');const ex=await libMeta(name);
   if(ex&&ex.size0!==f.size){let i=2;while(await libMeta(`${name} (${i})`))i++;name=`${name} (${i})`}   // 같은 이름의 다른 파일
-  if(!ex||ex.name!==name||ex.size0!==f.size){const f0=f;try{const fx=await pdfRotFix(f);if(fx)f=new File([fx],f0.name,{lastModified:f0.lastModified})}catch(e){console.error(e)}const E=await storeEst();dlog('store',E?MB(E.u)+'/'+MB(E.q):'?');if(E&&E.q&&E.q-E.u<f.size*1.1+20e6){const er=new Error('공간 부족');er.name='QuotaExceededError';throw er}const big=f.size>BIGB,bytes=big?f:new Uint8Array(await f.arrayBuffer());dlog('import',name+' '+Math.round(f.size/1e6)+'MB'+(big?' big':''));await libPut({name,bytes,size0:f0.size,mod:Date.now(),at:Date.now(),orig:true,big:big?1:undefined})}   // 큰 책: 파일을 메모리에 올리지 않고 그대로 저장
+  if(!ex||ex.name!==name||ex.size0!==f.size){const f0=f;try{const fx=await pdfRotFix(f);if(fx)f=new File([fx],f0.name,{lastModified:f0.lastModified})}catch(e){console.error(e)}{const fs=await pdfSlim(f,'문제집');if(fs)f=fs}const E=await storeEst();dlog('store',E?MB(E.u)+'/'+MB(E.q):'?');if(E&&E.q&&E.q-E.u<f.size*1.1+20e6){const er=new Error('공간 부족');er.name='QuotaExceededError';throw er}const big=f.size>BIGB,bytes=big?f:new Uint8Array(await f.arrayBuffer());dlog('import',name+' '+Math.round(f.size/1e6)+'MB'+(big?' big':''));await libPut({name,bytes,size0:f0.size,mod:Date.now(),at:Date.now(),orig:true,big:big?1:undefined})}   // 큰 책: 파일을 메모리에 올리지 않고 그대로 저장
   const r=await libGet(name),F0=new File([r.bytes],name+'.pdf',{lastModified:r.mod});await loadPdf(F0,vHandle(name),r);if(P)P.orig=!!r.orig;
-  if(PEND_ANS&&P&&P.name===name){const a=PEND_ANS;PEND_ANS=null;try{if(P.scan)await ansPend(F0,P.handle,P.bytes,P.doc,false,a);else await loadSolution(a)}catch(e){console.error(e)}}   /* 이미 읽어 둔 책(그래도 다시 넣기)이나 글자 PDF */
+  if(PEND_ANS&&P&&P.name===name){let a=PEND_ANS;PEND_ANS=null;try{const as=await pdfSlim(a,'답지');if(as)a=as}catch(e){}try{if(P.scan)await ansPend(F0,P.handle,P.bytes,P.doc,false,a);else await loadSolution(a)}catch(e){console.error(e)}}   /* 이미 읽어 둔 책(그래도 다시 넣기)이나 글자 PDF */
   $('#addPick').hidden=true;$('#addStep').hidden=false;$('#addStepT').textContent=ADDMODE==='two'?'① 문제 PDF ✓ → ② 답지 PDF':'';
   if(P&&P.name===name&&!$('#start').disabled&&!$('#scGo')&&!P.extInk&&(P.scan||P.task||(ADDMODE!=='two'&&!keyMiss()))){START_OPEN=false;renderRecent()}
 }
