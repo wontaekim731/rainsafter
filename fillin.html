@@ -2742,14 +2742,14 @@ async function scanLazyInit(file,handle,bytes,doc,solKeys,solRange,replace,colr)
   const old=cur&&cur.name===name?cur:null,base=bytes?await SV.strokes(doc):await sideBase(name),pm=bytes?await prevMarks(doc):{},prev=Object.assign(loadCats(name),pm);if(!bgOff){PM=pm;P_prev=prev}
   const sk=replace?Object.assign({},solKeys||{}):Object.assign({},old&&old.solKeys||{},solKeys||{});
   const Q={name,bytes,doc,handle,problems:old?old.problems:[],base:new Set(base.map(s=>s.sig)),baseStrokes:base,lastMod:file.lastModified,keyFound:true,prev};
-  for(const p of Q.problems){const k=sk[p.q];if(replace&&p.fromKey!==false)p.key=k||{text:'✓',kind:'self'};else if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k}
+  for(const p of Q.problems){const k=sk[p.q];if(replace&&p.fromKey!==false)p.key=k||{text:'✓',kind:'self'};else if(k&&(!p.key||(p.key.kind==='self'&&!p.key.set&&(k.kind!=='self'||!p.key.img||p.key.guess))))p.key=k}
   Q.fname=file.name||name+'.pdf';Q.scan=true;Q.lazy=true;Q.solKeys=sk;Q.qkV=QKV;Q.solRange=solRange||(old&&old.solRange)||null;Q.lazyDone=old&&old.lazyDone||[];Q.ranges=old&&old.ranges||[];Q.pages=doc.numPages;Q.tries=loadTries(name);Q.solColor=colr!=null?!!colr:!!(old&&old.solColor);if(old&&old.seqAns&&!Q.seqAns)Q.seqAns=old.seqAns;if(SEQ_SOON&&SEQ_SOON.seqObj)Q.seqAns=SEQ_SOON.seqObj;   /* 빠른 정답 구역을 첫 저장부터 같이 (바로 [확인]을 눌러도 잃지 않게) */
   if(old&&old.footAns)Q.footAns=1;if(BGQ&&BGQ.name===name)BGQ.P=Q;if(!bgOff){P=Q;showInfo();$('#start').disabled=false}await recentSave(Q);return Q}
 /* 뒤에서 읽은 정답을 지금 푸는 풀이본·저장된 풀이본에도 붙인다 → '이제 자동 채점돼요' */
 let BGQ=null;
 async function bgDeliver(T){try{if(!T)return;const name=T.name,nk=Object.keys(T.solKeys||{}).length,has=nk>=1||(T.seqAns&&T.seqAns.secs&&T.seqAns.secs.length)||T.footAns;if(!has)return;
     const apply=X=>{X.solKeys=Object.assign({},X.solKeys||{},T.solKeys||{});X.solRange=T.solRange;X.solColor=!!T.solColor;X.qkV=T.qkV;if(T.seqAns)X.seqAns=T.seqAns;if(T.footAns)X.footAns=1;
-      for(const p of X.problems||[]){const k=X.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k}if(X.seqAns&&X.doc){try{seqApply(X)}catch(e){}}};
+      for(const p of X.problems||[]){const k=X.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&!p.key.set&&(k.kind!=='self'||!p.key.img||p.key.guess))))p.key=k}   /* 정답 없이 먼저 읽은 문제의 임시 '직접 채점' 표시(정답 그림 없음)도 새로 읽은 정답·그림으로 바꾼다 */if(X.seqAns&&X.doc){try{seqApply(X)}catch(e){}}};
     const act=P&&P!==T&&bookOf(P.name)===name?P:null;if(act){apply(act);await recentSave(act);try{chips()}catch(e){}try{pvSum()}catch(e){}}
     for(const r0 of (await libAll()).filter(r=>!r.orig&&r.from===name&&(!act||r.name!==act.name))){try{const r=await libGet(r0.name);if(!r)continue;const X={problems:r.problems||[],solKeys:r.solKeys,doc:T.doc,pages:r.pages};apply(X);
       Object.assign(r,{solKeys:X.solKeys,solRange:X.solRange,solColor:X.solColor,seqAns:X.seqAns||null,problems:X.problems,qkV:X.qkV||0,footAns:X.footAns||undefined});await libPut(r)}catch(e){console.error(e)}}
