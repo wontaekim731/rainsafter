@@ -619,6 +619,9 @@ body.snOpen #pdfPages{padding-right:var(--snW)}
 .simRow img{width:72px;height:48px;object-fit:cover;object-position:top left;border:1px solid var(--line);border-radius:6px;background:#fff}
 .simBigs button:hover{border-color:var(--omr)}
 #taskBadge{position:absolute;top:2px;right:18%;min-width:16px;height:16px;border-radius:8px;background:var(--omr);color:#fff;font-size:10px;line-height:16px;padding:0 4px}
+
+body{padding-bottom:calc(112px + env(safe-area-inset-bottom))!important}
+.scActs{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}.scActs .scStopB{margin-top:0!important}.scActs .addOpt{margin-top:0!important;flex:1 1 260px;padding:10px 14px!important;gap:2px}.scActs .addOpt b{font-size:15px}
 </style>
 <style>.term{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px;display:flex;flex-direction:column;gap:6px;background:var(--paper)}.term.over{opacity:.7}
 .termHd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.termN{font-size:17px}.termP{font-size:22px;font-weight:800}
@@ -660,7 +663,7 @@ input.txt,select{background:#0E1014;color:var(--ink);border-color:var(--line)}
 .tabs.tabbar{background:color-mix(in srgb,#161920 94%,transparent);box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 1px #262A33}
 .tabs.tabbar button.on{color:var(--omr)}
 .tabs.tabbar button.on svg{fill:none;stroke:var(--omr)}
-.tabs.tabbar #dueBadge,#dueBadge{background:var(--gap);color:#1C1712}
+.tabs.tabbar #dueBadge,#dueBadge{background:var(--gap);color:var(--paper)}
 #pvToast{background:#F2F4F7;color:#0E1014}
 #pvToast button{color:inherit}
 /* GO 버튼: 크게 GO →, 아래 작게 채점하기 */
@@ -2646,7 +2649,7 @@ async function footProbe(doc,step,stop){const N=doc.numPages,C=[];for(const f of
     const ps=A.problems.filter(p=>p.page===pg);if(!ps.length)continue;tried++;const fk=ps.filter(p=>p.key&&p.key.img&&p.key.img.page===pg).length;dlog('footProbe',pg+':'+ps.length+'/'+fk);if(fk)hit++;
     if(hit>=2)return true;if(tried>=3&&!hit)return false}return hit>=1&&tried<=2}
 async function quickFind(file,handle,bytes,doc,textPdf,pages,replace){if(SCANNING)return;try{BG.name=file&&file.name||BG.name}catch(e){}const N=doc.numPages;SCANNING={stop:false};const stQ=SCANNING;
-  $('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div id="scProg" style="font-size:14px;margin-top:8px"></div><button class="btn quiet scStopB" id="scStop" type="button"><span class="sq" aria-hidden="true"></span>읽기 중단</button>${pages?'':`<button type="button" class="addOpt" id="scSkip" style="margin-top:10px"><b>📄 빠른 정답(답지) 파일이 따로 있어요</b><br><span class="muted" style="font-size:13px">책 안에서 찾기를 건너뛰고 답지 파일을 넣어요</span></button>`}`;
+  $('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div id="scProg" style="font-size:14px;margin-top:8px"></div><div class="scActs"><button class="btn quiet scStopB" id="scStop" type="button"><span class="sq" aria-hidden="true"></span>읽기 중단</button>${pages?'':`<button type="button" class="addOpt" id="scSkip"><b>📄 답지 파일이 따로 있어요</b><span class="muted" style="font-size:13px">책 안에서 찾기를 건너뛰고 답지 파일을 넣어요</span></button>`}</div>`;
   $('#scStop').onclick=()=>{if(SCANNING){SCANNING.stop=true;SCANNING.user=true}const b=$('#scStop');b.disabled=true;b.classList.add('ing');b.innerHTML='<span class="spin" aria-hidden="true"></span>멈추는 중… 지금 보는 쪽까지 정리해요';dlog('scStop',file.name.slice(0,40))};
   if($('#scSkip'))$('#scSkip').onclick=()=>{if(SCANNING)SCANNING.stop=true;$('#scSkip').disabled=true;$('#scSkip').textContent='건너뛰는 중…'};
   let A=null,err=null;const t0=Date.now();let QL={msg:'준비 중',nk:0,pct:1};
@@ -5954,20 +5957,22 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 document.addEventListener('toggle',e=>{if(e.target&&e.target.id==='aTaskW'&&e.target.open)renderTask()},true);
 function openTaskBox(){const d=$('#aTaskW');if(!d)return;d.open=true;renderTask();setTimeout(()=>d.scrollIntoView({behavior:'smooth',block:'start'}),120)}
 let TASK_N=LS.get('simN',3),TASK_LV=LS.get('simLv',0);
+/* 기출 팩은 수학Ⅰ·수학Ⅱ(미적분Ⅰ)·확률과 통계만: 공통수학(고1) 책은 고를 유형이 없다 */
+const simNoPack=src=>/공통수학|공수[12]|수학[(]?[상하][)]?(?![가-힣])|고1/.test(String(bookOf(src)||'').replace(/\s/g,''));
 async function renderTask(){const box=$('#aTask')||$('#vTask');if(!box)return;const h=await qpHdr(),S=simSent();let W=[];try{W=await wrAll()}catch(e){}const byId=new Map(W.map(w=>[w.id,w]));
   let L=[];try{L=(await libAll()).filter(r=>r.task).sort((a,b)=>b.at-a.at)}catch(e){}
   const packHTML=h?`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span class="muted" style="font-size:13px">📦 기출 팩 · ${h.items.length.toLocaleString()}문항 (${Object.values(h.subj).join('·')})</span><label class="linkDel" style="cursor:pointer">팩 다시 넣기<input type="file" id="qpIn" accept=".qlpack,application/octet-stream" hidden></label></div><div id="qpMsg" style="font-size:14px"></div>`
     :`<h2>기출 팩 넣기</h2><p class="muted" style="margin:0;font-size:14px">선생님께 받은 <b>QLEAR 기출 팩</b>(.qlpack) 파일을 한 번 넣으면, BLOCK과 같은 유형의 수능·모평·학평 기출로 문제지를 만들 수 있어요. 팩은 이 기기에만 저장돼요.</p><label class="btn mid" style="align-self:flex-start;cursor:pointer">기출 팩 파일 고르기<input type="file" id="qpIn" accept=".qlpack,application/octet-stream" hidden></label><div id="qpMsg" style="font-size:14px"></div>`;
   const bigSel=s=>{if(!h)return '';const by={};for(const b of h.bigs)(by[b.subj]=by[b.subj]||[]).push(b);
     return `<select data-sbig="${esc(s.id)}"><option value="">유형 고르기</option>${Object.entries(h.subj).map(([k,v])=>`<optgroup label="${esc(v)}">${(by[k]||[]).sort((a,b)=>(a.order||0)-(b.order||0)).map(b=>`<option value="${esc(b.id)}"${b.id===s.big?' selected':''}>${esc(b.name)}</option>`).join('')}</optgroup>`).join('')}</select>`};
-  const okN=S.filter(s=>s.big).length,need=S.length-okN;
+  const okN=S.filter(s=>s.big).length,noP=S.filter(s=>!s.big&&simNoPack(s.src)).length,need=S.length-okN-noP;
   const sentHTML=`<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2 style="margin:0">TWIN</h2><span class="muted" style="font-size:13px">${S.length}문항</span></div>
-    <div class="simZone" style="border-radius:12px;padding:6px;min-height:70px">${S.length?`<div class="simList">${S.map(s=>{const w=byId.get(s.id);return `<div class="simRow">${w&&(w.ts||w.thumb)?`<img src="${w.ts||w.thumb}" alt="">`:'<span></span>'}<div style="min-width:0"><b>${esc(bookOf(s.src))} · ${QN(s.q)}번</b><div class="muted" style="font-size:13px">${s.big?`🧩 ${esc(qpBigName(s.big))} <button type="button" class="linkDel" data-sre="${esc(s.id)}">바꾸기</button>`:bigSel(s)||'(기출 팩을 넣으면 유형이 보여요)'}</div></div><button type="button" class="linkDel" data-sdel="${esc(s.id)}">빼기</button></div>`}).join('')}</div>`
+    <div class="simZone" style="border-radius:12px;padding:6px;min-height:70px">${S.length?`<div class="simList">${S.map(s=>{const w=byId.get(s.id);return `<div class="simRow">${w&&(w.ts||w.thumb)?`<img src="${w.ts||w.thumb}" alt="">`:'<span></span>'}<div style="min-width:0"><b>${esc(bookOf(s.src))} · ${QN(s.q)}번</b><div class="muted" style="font-size:13px">${s.big?`🧩 ${esc(qpBigName(s.big))} <button type="button" class="linkDel" data-sre="${esc(s.id)}">바꾸기</button>`:simNoPack(s.src)?'공통수학은 아직 기출 팩에 없어서 TWIN을 만들 수 없어요':bigSel(s)||'(기출 팩을 넣으면 유형이 보여요)'}</div></div><button type="button" class="linkDel" data-sdel="${esc(s.id)}">빼기</button></div>`}).join('')}</div>`
       :'<p class="muted" style="margin:14px 6px;font-size:14px;text-align:center">BLOCK 탭에서 틀린 문제 카드의 <b>→</b>를 누르면<br>여기에 담겨요</p>'}</div>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span style="font-size:14px;min-width:52px">개수</span><div class="seg" id="simN">${[1,2,3,4,5].map(v=>`<button type="button" data-n="${v}" class="${v===TASK_N?'on':''}">${v}</button>`).join('')}</div><span class="muted" style="font-size:13px">문제마다</span></div>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span style="font-size:14px;min-width:52px">난이도</span><div class="seg" id="simLv">${[0,1,2,3].map(v=>`<button type="button" data-lv="${v}" class="${v===TASK_LV?'on':''}">${SIM_LV[v]}</button>`).join('')}</div></div>
     <p class="muted" style="margin:0;font-size:12px">쉬움 = 개념 확인 · 보통 = 3~4점 대표 · 어려움 = 4점 고난도·1등급. 모자라면 가까운 난이도로 채워요.</p>
-    <div><button type="button" class="btn big" id="simGo" ${h&&okN?'':'disabled'}>${okN?`유사 문제 풀기 (${okN*TASK_N}문항 · ${SIM_LV[TASK_LV]})`:'유사 문제 풀기'}</button>${need&&h?`<div class="muted" style="font-size:12px;margin-top:4px">유형을 고르지 않은 ${need}문항은 빼고 만들어요</div>`:''}</div><div id="simMsg" style="font-size:14px"></div>`;
+    <div><button type="button" class="btn big" id="simGo" ${h&&okN?'':'disabled'}>${okN?`유사 문제 풀기 (${okN*TASK_N}문항 · ${SIM_LV[TASK_LV]})`:'유사 문제 풀기'}</button>${(need||noP)&&h?`<div class="muted" style="font-size:12px;margin-top:4px">${[need?`유형을 고르지 않은 ${need}문항`:'',noP?`기출 팩에 없는 과목(공통수학) ${noP}문항`:''].filter(Boolean).join(', ')}은 빼고 만들어요</div>`:''}</div><div id="simMsg" style="font-size:14px"></div>`;
   const row=r=>{const c=loadCats(r.name),v=Object.values(c),o=v.filter(x=>x==='O'||x==='T').length,x=v.length-o,d=new Date(r.at),n=r.n||0,done=r.done===true;
     return `<div class="rc${done?' rcDone':''}"><div class="rcMain"><b class="rcName">${esc(r.name)}</b> <span class="cat ${r.sim?'o':'t'}">${r.sim?'유사 기출':'오답 과제'}</span>${done?' <span class="cat o">완료</span>':''}${r.sim&&r.simFrom?`<div style="font-size:13px">🧩 ${esc([...new Set(r.simFrom.map(x=>qpBigName(x.big)))].join(', '))}</div>`:''}<div class="muted" style="font-size:13px">${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}${n?` · ${n}문항`:''}${r.sim&&r.simLv!=null?` · ${SIM_LV[r.simLv]}`:''}${v.length?` · ○${o} ／${x}`:' · 아직 채점 전'}</div></div>
       <div class="rcAct"><button class="btn ${done?'quiet':'mid'}" type="button" data-tgo="${esc(r.name)}">${done?'다시 보기':v.length?'이어서 풀기':'풀기'}</button>${r.sim&&r.simItems?`<button class="btn quiet${v.length?'':' tOnly'}" type="button" data-tans="${esc(r.name)}">정답</button>`:''}<button class="btn quiet rcDel" type="button" data-trm="${esc(r.name)}">🗑 삭제</button></div>${r.sim&&r.simItems?`<div class="simAns" data-tansbox="${esc(r.name)}" hidden>${simAnsTable(r.simItems,null)}<div style="display:flex;gap:12px;align-items:center;margin-top:6px"><button type="button" class="btn quiet" data-tpdf="${esc(r.name)}" style="padding:6px 12px;font-size:13px">📄 정답지 PDF</button><button type="button" class="linkDel" data-tcopy="${esc(r.name)}">정답 복사</button></div></div>`:''}</div>`};
