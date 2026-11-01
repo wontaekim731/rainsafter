@@ -2307,8 +2307,8 @@ let SCANNING=null;
 /* 문제집·답지를 읽는 동안에는 화면이 저절로 꺼지지 않게 (아이패드 자동 잠금 → 읽기 멈춤 방지). 지원하지 않는 기기는 그냥 넘어간다 */
 const WAKE={l:null,busy:false};setInterval(async()=>{const want=!!SCANNING&&document.visibilityState==='visible';try{if(want&&!WAKE.l&&!WAKE.busy&&navigator.wakeLock){WAKE.busy=true;WAKE.l=await navigator.wakeLock.request('screen');WAKE.l.addEventListener('release',()=>{WAKE.l=null});dlog('wake','on')}
   else if(!want&&WAKE.l){const l=WAKE.l;WAKE.l=null;await l.release();dlog('wake','off')}}catch(e){dlog('wakeErr',e&&e.message)}finally{WAKE.busy=false}},1500);
-async function ansPend(file,handle,bytes,doc,textPdf,a){$('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div style="margin-top:6px">📄 답지 「${esc(a.name)}」에서 빠른 정답 읽는 중… <span class="muted" style="font-size:13px">(처음 한 번만 · 화면을 켜 두세요)</span></div><div id="qkMsg" style="font-size:14px;margin-top:6px"></div>`;
-  await quickFile(file,handle,bytes,doc,textPdf,a);const ok=P&&P.doc===doc&&(P.seqAns||Object.keys(P.solKeys||{}).length>=10);if(!ok&&!SCANNING)quickMiss(file,handle,bytes,doc,textPdf,`답지 「${a.name}」에서 빠른 정답 표를 찾지 못했어요. 아래에서 다른 방법을 골라 주세요.`)}
+async function ansPend(file,handle,bytes,doc,textPdf,a){if(!BGQ){await bgStart(file,handle,bytes,doc);try{return await ansPend(file,handle,bytes,doc,textPdf,a)}finally{BGQ=null;try{renderRecent()}catch(e){}}}$('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div style="margin-top:6px">📄 답지 「${esc(a.name)}」에서 빠른 정답 읽는 중… <span class="muted" style="font-size:13px">(처음 한 번만 · 화면을 켜 두세요)</span></div><div id="qkMsg" style="font-size:14px;margin-top:6px"></div>`;
+  await quickFile(file,handle,bytes,doc,textPdf,a);const T0=BGQ&&BGQ.P||P,ok=T0&&T0.doc===doc&&(T0.seqAns||Object.keys(T0.solKeys||{}).length>=10);if(!ok&&!SCANNING)quickMiss(file,handle,bytes,doc,textPdf,`답지 「${a.name}」에서 빠른 정답 표를 찾지 못했어요. 아래에서 다른 방법을 골라 주세요.`)}
 function scanOffer(file,handle,bytes,doc,more,textPdf){const N=doc.numPages,done=more&&P&&P.ranges?P.ranges:[];
   if(!more&&PEND_ANS){const a=PEND_ANS;PEND_ANS=null;return ansPend(file,handle,bytes,doc,textPdf,a)}   /* 답지를 따로 골랐으면 책 안에서 찾지 않고 바로 답지를 읽는다 */
   if(!more)return quickFind(file,handle,bytes,doc,textPdf);
@@ -2509,8 +2509,8 @@ TBLQ.run=async(doc,o)=>{o=o||{};const N=doc.numPages,tell=m=>o.step&&o.step(m);l
 async function tblTry(file,handle,bytes,doc,o,msgEl){if(SCANNING)return false;SCANNING={stop:false};const t0=Date.now();let A=null;
   try{A=await TBLQ.run(doc,Object.assign({},o,{stop:()=>SCANNING&&SCANNING.stop,step:m=>{const el=msgEl||$('#scProg');if(el)el.innerHTML=`${esc(m)} <span class="muted">(${Math.round((Date.now()-t0)/1000)}초)</span>`}}))}catch(e){console.error(e);dlog('tblErr',e&&e.message)}finally{SCANNING=null}
   if(!A||A.secs.length<1||A.secs.reduce((a,s)=>a+s.n,0)<10)return false;const pg=A.pages;
-  A.seqObj={secs:A.secs,off:null,tbl:1,ansFrom:pg[0]};SEQ_SOON=A;try{await scanLazyInit(file,handle,bytes,doc,{},[pg[0],doc.numPages,'q'])}finally{SEQ_SOON=null}P.seqAns=A.seqObj;
-  try{await seqOffset(P)}catch(e){}seqApply(P);showInfo();await recentSave();const P1=P;seqGapResolve(P1).then(n=>{if(n&&P===P1){showInfo();recentSave()}}).catch(e=>console.error(e));return true}
+  A.seqObj={secs:A.secs,off:null,tbl:1,ansFrom:pg[0]};let T=null;SEQ_SOON=A;try{T=await scanLazyInit(file,handle,bytes,doc,{},[pg[0],doc.numPages,'q'])}finally{SEQ_SOON=null}T.seqAns=A.seqObj;
+  try{await seqOffset(T)}catch(e){}seqApply(T);if(P===T)showInfo();await recentSave(T);bgDeliver(T);const P1=T;seqGapResolve(P1).then(n=>{if(n){if(P===P1)showInfo();recentSave(P1);bgDeliver(P1)}}).catch(e=>console.error(e));return true}
 /* 문제(쪽·번호) → 그 쪽이 들어 있는 STEP의 같은 번호 정답 */
 /* 인쇄된 쪽 번호: 쪽 아래 여백의 바깥쪽 끝 숫자 (오른쪽 쪽은 맨 오른쪽, 왼쪽 쪽은 맨 왼쪽 — '01 함수의 극한 7'에서 01이 아니라 7) */
 async function seqPrinted(doc,pi){try{const page=await doc.getPage(pi),B=await SCAN.render(page,2,0,1),wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;
@@ -2656,37 +2656,43 @@ function seqApply(P0){const A=P0&&P0.seqAns;if(!A)return 0;seqFitOff(P0);let n=0
 async function seqTry(file,handle,bytes,doc,ansDoc,o,kind,msgEl){if(SCANNING)return false;SCANNING={stop:false};const t0=Date.now();let A=null;
   try{A=await SECQ.run(ansDoc,Object.assign({},o,{stop:()=>SCANNING&&SCANNING.stop,step:(msg,np,nk)=>{const el=msgEl||$('#scProg');if(el)el.innerHTML=`${esc(msg)}${nk?` · <b style="color:var(--ok)">번호 ${nk}개</b>`:''} <span class="muted">(${Math.round((Date.now()-t0)/1000)}초)</span>`}}))}catch(e){console.error(e);dlog('seqErr',e&&e.message)}finally{SCANNING=null}
   if(!A||!A.secs.length||A.secs.reduce((a,s)=>a+Object.keys(s.k).length,0)<10)return false;dlog('seqAns',A.secs.length+' secs '+A.pages.join(','));
-  const pg=A.pages;A.seqObj={secs:A.secs,off:kind==='q'?0:null};SEQ_SOON=A;try{await scanLazyInit(file,handle,bytes,doc,{},[pg[0],pg[pg.length-1],kind])}finally{SEQ_SOON=null}P.seqAns=A.seqObj;
-  if(o.file&&ansDoc.numPages>pg[pg.length-1]+2){try{await blobTx('readwrite',st=>{st.put({name:'ans\u0001'+P.name,bytes:o.file})});P.seqAns.sol={from:pg[pg.length-1]+1,to:ansDoc.numPages,key:'ans\u0001'+P.name}}catch(e){dlog('solSaveErr',e&&e.message)}}   /* 답지 뒤쪽 해설: 직접 채점 때 보여 주려고 파일을 보관 */
-  try{await seqOffset(P)}catch(e){}seqApply(P);showInfo();await recentSave();const P1=P;seqGapResolve(P1).then(n=>{if(n&&P===P1){showInfo();recentSave()}}).catch(e=>console.error(e)).finally(()=>{if(P1.seqAns&&P1.seqAns.sol)solIndex(P1)});return true}
+  const pg=A.pages;A.seqObj={secs:A.secs,off:kind==='q'?0:null};let T=null;SEQ_SOON=A;try{T=await scanLazyInit(file,handle,bytes,doc,{},[pg[0],pg[pg.length-1],kind])}finally{SEQ_SOON=null}T.seqAns=A.seqObj;
+  if(o.file&&ansDoc.numPages>pg[pg.length-1]+2){try{await blobTx('readwrite',st=>{st.put({name:'ans\u0001'+T.name,bytes:o.file})});T.seqAns.sol={from:pg[pg.length-1]+1,to:ansDoc.numPages,key:'ans\u0001'+T.name}}catch(e){dlog('solSaveErr',e&&e.message)}}   /* 답지 뒤쪽 해설: 직접 채점 때 보여 주려고 파일을 보관 */
+  try{await seqOffset(T)}catch(e){}seqApply(T);if(P===T)showInfo();await recentSave(T);bgDeliver(T);const P1=T;seqGapResolve(P1).then(n=>{if(n){if(P===P1)showInfo();recentSave(P1);bgDeliver(P1)}}).catch(e=>console.error(e)).finally(()=>{if(P1.seqAns&&P1.seqAns.sol)solIndex(P1)});return true}
 /* 쪽 아래 정답 띠가 있는 책인지: 앞쪽 몇 쪽만 읽어 본다 (그 쪽 문제 번호가 쪽 아래 '정답' 줄에 다시 나오면) */
 async function footProbe(doc,step,stop){const N=doc.numPages,C=[];for(const f of [0.04,0.08,0.12,0.2,0.3])C.push(Math.min(N,Math.max(1,Math.round(N*f))));const L=[...new Set(C)];let hit=0,tried=0;
   for(let i=0;i<L.length;i++){if(stop&&stop())return false;step&&step(i,L.length);const pg=L[i];let A=null;try{A=await SCAN.analyze(doc,{from:pg,to:pg,T:TPL,noSol:true,keep:true,footer:true})}catch(e){console.error(e);continue}
     const ps=A.problems.filter(p=>p.page===pg);if(!ps.length)continue;tried++;const fk=ps.filter(p=>p.key&&p.key.img&&p.key.img.page===pg).length;dlog('footProbe',pg+':'+ps.length+'/'+fk);if(fk)hit++;
     if(hit>=2)return true;if(tried>=3&&!hit)return false}return hit>=1&&tried<=2}
-async function quickFind(file,handle,bytes,doc,textPdf,pages,replace){if(SCANNING)return;try{BG.name=file&&file.name||BG.name}catch(e){}const N=doc.numPages;SCANNING={stop:false};const stQ=SCANNING;
+async function quickFind(file,handle,bytes,doc,textPdf,pages,replace){if(SCANNING)return;
+  if(!pages&&!replace&&!BGQ){await bgStart(file,handle,bytes,doc);try{return await quickFind0(file,handle,bytes,doc,textPdf,pages,replace)}finally{BGQ=null;try{renderRecent()}catch(e){}}}
+  return quickFind0(file,handle,bytes,doc,textPdf,pages,replace)}
+/* 넣자마자 [풀기]: 정답 없이 먼저 문제집으로 저장하고 '문제집 추가' 칸은 닫는다. 정답은 뒤에서 조용히 읽고, 다 읽으면 bgDeliver로 붙인다 */
+async function bgStart(file,handle,bytes,doc){const name=(file.name||'').replace(/\.pdf$/i,'');BGQ={name,P:null};const T=await scanLazyInit(file,handle,bytes,doc,{});BGQ.P=T;dlog('bgStart',name.slice(0,30));
+  START_OPEN=false;PEND_START=false;try{$('#vStart').classList.add('collapsed');$('#addPick').hidden=false;$('#addStep').hidden=true}catch(e){}try{renderRecent()}catch(e){}}
+async function quickFind0(file,handle,bytes,doc,textPdf,pages,replace){if(SCANNING)return;try{BG.name=file&&file.name||BG.name}catch(e){}const N=doc.numPages;SCANNING={stop:false};const stQ=SCANNING;
   $('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div id="scProg" style="font-size:14px;margin-top:8px"></div><div class="scActs"><button class="btn quiet scStopB" id="scStop" type="button"><span class="sq" aria-hidden="true"></span>읽기 중단</button>${pages?'':`<button type="button" class="addOpt" id="scSkip"><b>📄 답지 파일이 따로 있어요</b><span class="muted" style="font-size:13px">책 안에서 찾기를 건너뛰고 답지 파일을 넣어요</span></button>`}</div>`;
   $('#scStop').onclick=()=>{if(SCANNING){SCANNING.stop=true;SCANNING.user=true}const b=$('#scStop');b.disabled=true;b.classList.add('ing');b.innerHTML='<span class="spin" aria-hidden="true"></span>멈추는 중… 지금 보는 쪽까지 정리해요';dlog('scStop',file.name.slice(0,40))};
   if($('#scSkip'))$('#scSkip').onclick=()=>{if(SCANNING)SCANNING.stop=true;$('#scSkip').disabled=true;$('#scSkip').textContent='건너뛰는 중…'};
   let A=null,err=null;const t0=Date.now();let QL={msg:'준비 중',nk:0,pct:1};
   const qRender=()=>{const pr=$('#scProg');const el=Math.round((Date.now()-t0)/1000),pct=QL.pct;if(pr)pr.innerHTML=progHTML(pct,'정답 읽는 중',`${QL.nk?`정답 ${QL.nk}개`:esc(QL.msg.replace(/\(.*\)|…/g,''))}${pct>=8&&el>=3?` · 약 ${(r=>r>=60?Math.round(r/60)+'분':r+'초')(Math.max(1,Math.round(el*(100-pct)/pct)))} 남음`:''}`)};const qT=setInterval(qRender,1000);
   const FOOT_NAME=/마플\s*교과서/;   /* 이름으로 바로 아는 책: 마플교과서는 책 뒤 빠른 정답이 없고 문제마다 아래에 정답 → 찾기 없이 바로 */
-  if(!pages&&!replace&&FOOT_NAME.test(file.name||'')){SCANNING=null;clearInterval(qT);dlog('footAns','name');await scanLazyInit(file,handle,bytes,doc,{});P.footAns=1;showInfo();return}
+  if(!pages&&!replace&&FOOT_NAME.test(file.name||'')){SCANNING=null;clearInterval(qT);dlog('footAns','name');{const T=await scanLazyInit(file,handle,bytes,doc,{});T.footAns=1;if(P===T)showInfo();await recentSave(T);bgDeliver(T)}return}
   if(!pages&&!replace){let fp=false;try{fp=await footProbe(doc,(i,n)=>{QL={msg:'쪽 아래 정답 확인',nk:0,pct:Math.round(2+i/n*6)};qRender()},()=>SCANNING&&SCANNING.stop)}catch(e){console.error(e)}
-    if(fp){SCANNING=null;clearInterval(qT);dlog('footAns',fp+'');await scanLazyInit(file,handle,bytes,doc,{});P.footAns=1;showInfo();return}}   /* 쪽마다 아래에 정답이 있는 책: 그 쪽을 풀 때 같이 읽으면 되니 미리 읽을 것이 없다 */
+    if(fp){SCANNING=null;clearInterval(qT);dlog('footAns',fp+'');{const T=await scanLazyInit(file,handle,bytes,doc,{});T.footAns=1;if(P===T)showInfo();await recentSave(T);bgDeliver(T)}return}}   /* 쪽마다 아래에 정답이 있는 책: 그 쪽을 풀 때 같이 읽으면 되니 미리 읽을 것이 없다 */
   if(!pages&&!replace){let th=0;try{const N0=doc.numPages,L=[];for(let k=0;k<12;k++)L.push(Math.round(N0*(0.55+0.45*k/11)));for(const p of [...new Set(L)]){if(SCANNING&&SCANNING.stop)break;QL={msg:'정답 표 확인',nk:0,pct:9};if(await TBLQ.probe(doc,Math.min(N0,Math.max(1,p))))th++}}catch(e){console.error(e)}dlog('tblPre',th+'');
     if(th>=3){SCANNING=null;clearInterval(qT);$('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div id="scProg" style="font-size:14px;margin-top:8px">정답 표 찾는 중…</div>`;if(await tblTry(file,handle,bytes,doc,{}))return;SCANNING={stop:false}}}   /* 뒤쪽에 회색 정답 표가 여러 쪽이면 표부터 (시냅스 등: 다른 방법으로 몇 분 찾기 전에) */
   try{A=await SCAN.quick(doc,{pages,stop:()=>SCANNING&&SCANNING.stop,step:(msg,np,nk,pct)=>{QL={msg,nk,pct};qRender()}})}
   catch(e){console.error(e);err=e.message||'읽지 못했습니다'}
   finally{SCANNING=null;clearInterval(qT)}
   const n=A?Object.keys(A.keys).length:0;
-  if(n>=10){const pg=A.pages;return scanLazyInit(file,handle,bytes,doc,A.keys,[pg[0],pg[pg.length-1],'q'],replace,A.colr)}
+  if(n>=10){const pg=A.pages;const T=await scanLazyInit(file,handle,bytes,doc,A.keys,[pg[0],pg[pg.length-1],'q'],replace,A.colr);bgDeliver(T);return T}
   if(!err&&!(stQ&&stQ.stop)){const r=await seqTry(file,handle,bytes,doc,doc,{pages,front:false,fp:file.name+':'+(file.size||'')},'q');if(r)return}
   if(!err&&!(stQ&&stQ.stop)){$('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div id="scProg" style="font-size:14px;margin-top:8px">정답 표 찾는 중…</div>`;const r=await tblTry(file,handle,bytes,doc,{pages});if(r)return}   /* 해설 사이사이 Theme별 정답 표 (시냅스 등) */
   if(stQ&&stQ.user&&!err){BG.ended={name:file.name,kind:'stop',at:Date.now()};return quickMiss(file,handle,bytes,doc,textPdf,'',{stopped:true,pct:QL.pct||0,nk:QL.nk||0,again:()=>quickFind(file,handle,bytes,doc,textPdf,pages,replace)})}
   if(err)BG.ended={name:file.name,kind:'err',at:Date.now()};
   return quickMiss(file,handle,bytes,doc,textPdf,err||(pages?`${pages[0]}–${pages[pages.length-1]}쪽에서 빠른 정답 표를 읽지 못했어요. 쪽 번호를 다시 확인해 주세요.`:''))}
-function quickMiss(file,handle,bytes,doc,textPdf,why,st){const N=doc.numPages;
+function quickMiss(file,handle,bytes,doc,textPdf,why,st){const N=doc.numPages;if(BGQ&&BGQ.name===(file.name||'').replace(/\.pdf$/i,'')&&!(st&&st.stopped)){dlog('bgMiss',String(why||'').slice(0,60));return}   /* 뒤에서 읽다 정답을 못 찾으면: 학생 화면은 그대로 (그 책은 정답 그림 없이 직접 채점) */
   $('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b>${st&&st.stopped?`<div class="scStopped" role="status"><span class="sq" aria-hidden="true"></span><div><b>읽기를 중단했어요</b><span>${st.pct?`전체의 약 ${Math.min(99,Math.round(st.pct))}%까지 살펴봤어요`:'시작하자마자 멈췄어요'}${st.nk?` · 정답 ${st.nk}개는 읽었어요`:''}</span></div><button class="btn mid" id="scAgain" type="button">처음부터 다시 읽기</button></div>`:''}<div class="keyAsk"><b>${st&&st.stopped?'아래 방법으로 정답을 넣을 수도 있어요':'⚠ 빠른 정답을 못 찾았어요'}</b>
       <div class="addPick" style="margin-top:6px">
       <div class="addOpt" style="cursor:default"><b>📗 이 PDF 안에 있어요 → 쪽 번호 넣기</b>
@@ -2710,7 +2716,7 @@ async function quickFile(file,handle,bytes,doc,textPdf,f){if(SCANNING)return;con
       try{const A=await SCAN.quick(d,{all:true,front:true,guess:Math.max(2,Math.round(d.numPages*0.1)),stop:()=>SCANNING&&SCANNING.stop,step:(msg,np,nk)=>{m.innerHTML=`${esc(msg)}${nk?` · <b style="color:var(--ok)">정답 ${nk}개</b>`:''} <span class="muted">(${Math.round((Date.now()-t0)/1000)}초)</span>`}});K=A.keys}finally{SCANNING=null}
       for(const q in K){const k=K[q];if(k&&k.img)K[q]=Object.assign({},k,{img:null})}}
     if(Object.keys(K).length<10){m.innerHTML='<span class="err">이 파일에서 빠른 정답 표를 찾지 못했어요. 빠른 정답 쪽이 맞는지 확인해 주세요.</span>';return}
-    return scanLazyInit(file,handle,bytes,doc,K,[1,d.numPages,'f'])}
+    {const T=await scanLazyInit(file,handle,bytes,doc,K,[1,d.numPages,'f']);bgDeliver(T);return T}}
   catch(e){console.error(e);m.innerHTML='<span class="err">답지 PDF를 열 수 없어요</span>'}}
 async function scanRun(file,handle,bytes,doc,from,to,mode){if(SCANNING)return;from=Math.max(1,Math.min(from,doc.numPages));to=Math.max(from,Math.min(to,doc.numPages));
   SCANNING={stop:false};const goB=$('#scGo')||$('#slGo');if(goB)goB.disabled=true;$('#scStop').hidden=false;const pr=$('#scProg');pr.textContent='글자 인식 도구를 준비하는 중… (처음엔 조금 걸려요)';
@@ -2732,12 +2738,24 @@ async function scanRun(file,handle,bytes,doc,from,to,mode){if(SCANNING)return;fr
 const keyAsk=r=>{if(!P||P.scan||P.task||r.keySkip||P.seqAns||r.seqAns||r.ansName)return false;const n=P.problems.length,m=keyMiss();return n>0&&m===n};
 const keyMiss=()=>P&&!P.scan&&!P.task?P.problems.filter(p=>!(p.key&&p.key.text)).length:0;
 async function scanLazyInit(file,handle,bytes,doc,solKeys,solRange,replace,colr){const name=(file.name||'').replace(/\.pdf$/i,'')||P.name;
-  const old=P&&P.name===name?P:null,base=bytes?await SV.strokes(doc):await sideBase(name);P_prev=Object.assign(loadCats(name),PM=bytes?await prevMarks(doc):{});
+  const bgOff=!!(BGQ&&BGQ.name===name&&BGQ.P&&P!==BGQ.P),cur=bgOff?BGQ.P:P;   /* 뒤에서 정답을 읽는 중 학생이 다른 화면(풀이본·다른 책)으로 갔으면, 지금 화면의 P·채점 상태는 건드리지 않는다 */
+  const old=cur&&cur.name===name?cur:null,base=bytes?await SV.strokes(doc):await sideBase(name),pm=bytes?await prevMarks(doc):{},prev=Object.assign(loadCats(name),pm);if(!bgOff){PM=pm;P_prev=prev}
   const sk=replace?Object.assign({},solKeys||{}):Object.assign({},old&&old.solKeys||{},solKeys||{});
-  P={name,bytes,doc,handle,problems:old?old.problems:[],base:new Set(base.map(s=>s.sig)),baseStrokes:base,lastMod:file.lastModified,keyFound:true,prev:P_prev};
-  for(const p of P.problems){const k=sk[p.q];if(replace&&p.fromKey!==false)p.key=k||{text:'✓',kind:'self'};else if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k}
-  P.fname=file.name||name+'.pdf';P.scan=true;P.lazy=true;P.solKeys=sk;P.qkV=QKV;P.solRange=solRange||(old&&old.solRange)||null;P.lazyDone=old&&old.lazyDone||[];P.ranges=old&&old.ranges||[];P.pages=doc.numPages;P.tries=loadTries(name);P.solColor=colr!=null?!!colr:!!(old&&old.solColor);if(old&&old.seqAns&&!P.seqAns)P.seqAns=old.seqAns;if(SEQ_SOON&&SEQ_SOON.seqObj)P.seqAns=SEQ_SOON.seqObj;   /* 빠른 정답 구역을 첫 저장부터 같이 (바로 [확인]을 눌러도 잃지 않게) */
-  showInfo();$('#start').disabled=false;await recentSave()}
+  const Q={name,bytes,doc,handle,problems:old?old.problems:[],base:new Set(base.map(s=>s.sig)),baseStrokes:base,lastMod:file.lastModified,keyFound:true,prev};
+  for(const p of Q.problems){const k=sk[p.q];if(replace&&p.fromKey!==false)p.key=k||{text:'✓',kind:'self'};else if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k}
+  Q.fname=file.name||name+'.pdf';Q.scan=true;Q.lazy=true;Q.solKeys=sk;Q.qkV=QKV;Q.solRange=solRange||(old&&old.solRange)||null;Q.lazyDone=old&&old.lazyDone||[];Q.ranges=old&&old.ranges||[];Q.pages=doc.numPages;Q.tries=loadTries(name);Q.solColor=colr!=null?!!colr:!!(old&&old.solColor);if(old&&old.seqAns&&!Q.seqAns)Q.seqAns=old.seqAns;if(SEQ_SOON&&SEQ_SOON.seqObj)Q.seqAns=SEQ_SOON.seqObj;   /* 빠른 정답 구역을 첫 저장부터 같이 (바로 [확인]을 눌러도 잃지 않게) */
+  if(old&&old.footAns)Q.footAns=1;if(BGQ&&BGQ.name===name)BGQ.P=Q;if(!bgOff){P=Q;showInfo();$('#start').disabled=false}await recentSave(Q);return Q}
+/* 뒤에서 읽은 정답을 지금 푸는 풀이본·저장된 풀이본에도 붙인다 → '이제 자동 채점돼요' */
+let BGQ=null;
+async function bgDeliver(T){try{if(!T)return;const name=T.name,nk=Object.keys(T.solKeys||{}).length,has=nk>=1||(T.seqAns&&T.seqAns.secs&&T.seqAns.secs.length)||T.footAns;if(!has)return;
+    const apply=X=>{X.solKeys=Object.assign({},X.solKeys||{},T.solKeys||{});X.solRange=T.solRange;X.solColor=!!T.solColor;X.qkV=T.qkV;if(T.seqAns)X.seqAns=T.seqAns;if(T.footAns)X.footAns=1;
+      for(const p of X.problems||[]){const k=X.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k}if(X.seqAns&&X.doc){try{seqApply(X)}catch(e){}}};
+    const act=P&&P!==T&&bookOf(P.name)===name?P:null;if(act){apply(act);await recentSave(act);try{chips()}catch(e){}try{pvSum()}catch(e){}}
+    for(const r0 of (await libAll()).filter(r=>!r.orig&&r.from===name&&(!act||r.name!==act.name))){try{const r=await libGet(r0.name);if(!r)continue;const X={problems:r.problems||[],solKeys:r.solKeys,doc:T.doc,pages:r.pages};apply(X);
+      Object.assign(r,{solKeys:X.solKeys,solRange:X.solRange,solColor:X.solColor,seqAns:X.seqAns||null,problems:X.problems,qkV:X.qkV||0,footAns:X.footAns||undefined});await libPut(r)}catch(e){console.error(e)}}
+    dlog('bgDeliver',name.slice(0,30)+' keys '+nk+(act?' →'+act.name.slice(-12):''));
+    try{if(act||(P&&bookOf(P.name)===name))pvToast('📘 정답을 다 읽었어요 — 이제 자동 채점돼요');else if(!$('#pvToast').closest('[hidden]'))pvToast(`📘 「${esc(name)}」 정답을 다 읽었어요 — 이제 자동 채점돼요`)}catch(e){}
+    try{renderRecent()}catch(e){}}catch(e){console.error(e)}}
 /* 처음 푸는 쪽의 문제 번호 읽기: 학생이 그 쪽에 쓰기 시작하면 뒤에서 미리 읽어 둔다 → 채점 버튼을 누를 때는 이미 끝나 있다 */
 const LZ={q:Promise.resolve(),m:{},n:0};
 /* 예전 버전으로 읽어 둔 빠른 정답 다시 읽기 (QKV 2: 줄 끝 칸·흐린 ③·밀린 스캔을 고친 읽기): 책을 열면 뒤에서 정답 쪽만 다시 읽어,
@@ -5163,13 +5181,13 @@ async function importPdf(f){START_OPEN=true;$('#vStart').classList.remove('colla
   $('#addPick').hidden=true;$('#addStep').hidden=false;$('#addStepT').textContent=ADDMODE==='two'?'① 문제 PDF ✓ → ② 답지 PDF':'';
   if(P&&P.name===name&&!$('#start').disabled&&!$('#scGo')&&!P.extInk&&(P.scan||P.task||(ADDMODE!=='two'&&!keyMiss()))){START_OPEN=false;renderRecent()}
 }
-async function recentSave(){try{if(!P||!P.handle||P.handle.kind!=='lib')return;const r=await libMeta(P.name);if(!r)return;
-  Object.assign(r,{qkV:P.qkV||0,rotV:P.rotV||0,lzV:P.lzV||0});Object.assign(r,{anaV:5,origRef:P.origRef||null,at:Date.now(),pages:P.pages,problems:P.problems,keyFound:P.keyFound,generic:P.generic,scan:!!P.scan,lazy:!!P.lazy,solKeys:P.solKeys||null,solRange:P.solRange||null,solColor:!!P.solColor,seqAns:P.seqAns||null,lazyDone:P.lazyDone||null,miss:keyMiss(),ranges:P.ranges||null,n:P.problems.length,task:!!P.task});await libPut(r);renderRecent()}catch(e){console.error(e)}}
+async function recentSave(P0){try{P0=P0||P;if(!P0||!P0.handle||P0.handle.kind!=='lib')return;const r=await libMeta(P0.name);if(!r)return;
+  Object.assign(r,{qkV:P0.qkV||0,rotV:P0.rotV||0,lzV:P0.lzV||0});Object.assign(r,{anaV:5,origRef:P0.origRef||null,at:Date.now(),pages:P0.pages,problems:P0.problems,keyFound:P0.keyFound,generic:P0.generic,scan:!!P0.scan,lazy:!!P0.lazy,solKeys:P0.solKeys||null,solRange:P0.solRange||null,solColor:!!P0.solColor,seqAns:P0.seqAns||null,lazyDone:P0.lazyDone||null,miss:P0===P?keyMiss():r.miss,ranges:P0.ranges||null,n:P0.problems.length,task:!!P0.task,footAns:P0.footAns||undefined});await libPut(r);renderRecent()}catch(e){console.error(e)}}
 let RECENT_DONE_OPEN=false,RECENT_ORIG_OPEN=false;
 async function renderRecent(){let L=[];try{L=(await libAll()).sort((a,b)=>b.at-a.at)}catch(e){}
   {const hb=$('#howBox');if(hb){hb.innerHTML=window.NJ_BETA?'':howToHTML();hb.querySelectorAll('[data-how]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('njHowHide',b.dataset.how==='0'?'1':'0')}catch(e){}renderRecent()})}}
   L=L.filter(r=>!r.orig).concat(L.filter(r=>r.orig));
-  {const busy=!!(SCANNING||LOADING),as=$('#addStep');if(START_OPEN&&!busy&&as&&as.hidden)START_OPEN=false;if(busy&&$('#addPick'))$('#addPick').hidden=true}   /* 다 읽은 뒤에 '문제집 추가' 칸이 목록의 [＋ 문제집 추가]와 겹쳐 두 번 보이지 않게 */
+  {const busy=!!((SCANNING&&!BGQ)||LOADING),as=$('#addStep');if(START_OPEN&&!busy&&as&&as.hidden)START_OPEN=false;if(busy&&$('#addPick'))$('#addPick').hidden=true}   /* 다 읽은 뒤에 '문제집 추가' 칸이 목록의 [＋ 문제집 추가]와 겹쳐 두 번 보이지 않게 */
   $('#vStart').classList.toggle('collapsed',!START_OPEN);
   if(S||$('#vStart').hidden){$('#vRecent').hidden=true;if(!L.length)return}else $('#vRecent').hidden=false;
   if(!L.length){$('#recentList').innerHTML='<p class="muted" style="margin:14px 0 4px">아직 문제집이 없어요.</p>';return}
@@ -5867,7 +5885,7 @@ function fmt(p,a){if(a==='✗')return '틀림';if(isSelf(p)&&a==='✓')return '�
 /* 문제집을 읽는 동안 다른 탭으로 가도 읽기는 계속된다: 화면 아래에 진행 상황을 띄우고, 누르면 돌아간다 */
 /* 무슨 책을 몇 분째 읽는지, 그만두기(✕)도 같이: '계속 위에 뜨는 것'이 무엇인지 알 수 있게 */
 const BG={t0:0,name:''};
-setInterval(()=>{let b=$('#bgJob');const run=!!(SCANNING||LOADING);if(run&&!BG.t0)BG.t0=Date.now();if(!run){BG.t0=0;JOB=null}const on=run&&(CURV!=='solve'||$('#vStart').classList.contains('collapsed')||$('#vStart').hidden);
+setInterval(()=>{let b=$('#bgJob');const run=!!((SCANNING&&!BGQ)||(LOADING&&!BGQ));if(run&&!BG.t0)BG.t0=Date.now();if(!run){BG.t0=0;JOB=null}const on=run&&(CURV!=='solve'||$('#vStart').classList.contains('collapsed')||$('#vStart').hidden);
   const E=BG.ended,showE=!run&&E&&Date.now()-E.at<15*60e3&&(CURV!=='solve'||$('#vStart').hidden);
   if(showE){if(!b){b=document.createElement('div');b.id='bgJob';b.setAttribute('role','status');document.body.appendChild(b)}b.classList.add('stop');b.onclick=e=>{if(e.target.closest('[data-bjx]')){BG.ended=null;b.hidden=true;return}BG.ended=null;view('solve')};
     b.innerHTML=`<span class="sq" aria-hidden="true"></span><b style="max-width:22vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:bottom">${esc(E.name.replace(/\.pdf$/i,''))}</b> ${E.kind==='stop'?'읽기 중단됨':'읽다가 멈췄어요'} <b style="cursor:pointer;text-decoration:underline">이어서 정하기</b> <b data-bjx style="cursor:pointer;margin-left:6px;opacity:.85" title="닫기">✕</b>`;b.hidden=false;return}
@@ -6019,7 +6037,7 @@ async function renderTask(){const box=$('#aTask')||$('#vTask');if(!box)return;co
 
 function view(v){if(window.NJ_BETA){v='solve';setTimeout(betaBar,0)}CURV=v;$('#tabs').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
   ['vHome','vAna','vNote','vStart','vDone','vRecent','vTask'].forEach(id=>$('#'+id).hidden=true);
-  if(v==='solve'){LAST=null;START_OPEN=!!(SCANNING||LOADING);$('#vStart').hidden=false;renderRecent();if(START_OPEN){$('#vRecent').hidden=true;$('#vStart').classList.remove('collapsed')}return}   // 공부 탭은 늘 내 PDF 목록부터
+  if(v==='solve'){LAST=null;START_OPEN=!!((SCANNING&&!BGQ)||LOADING);$('#vStart').hidden=false;renderRecent();if(START_OPEN){$('#vRecent').hidden=true;$('#vStart').classList.remove('collapsed')}return}   // 공부 탭은 늘 내 PDF 목록부터
   const m={home:'vHome',ana:'vAna',note:'vNote',task:'vTask'};$('#'+m[v]).hidden=false;v==='home'?renderHome():v==='ana'?renderAnaTab():v==='task'?renderTask():renderNote()}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)view(b.dataset.v)});
 $('#bkSave').onclick=backup;$('#bkLoad').onclick=()=>$('#bkIn').click();$('#bkIn').addEventListener('change',e=>{const f=e.target.files[0];if(f)restore(f);e.target.value=''});
