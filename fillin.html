@@ -923,7 +923,8 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
   </section>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})}catch(e){}</script>
+<script src="lib/pdf.min.js"></script>
 <script>
 /* PDF 글자 조각 합치기: 같은 줄·같은 크기로 바로 붙어 있는 숫자 조각("00"+"6" → "006") */
 window.mergeTC=tc=>{const it=tc.items,out=[];for(const x of it){const p=out[out.length-1];
@@ -2075,7 +2076,7 @@ const hms=s=>{s=Math.floor(s);return Math.floor(s/3600)+':'+String(Math.floor(s%
 const hm=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?`${h}시간 ${m}분`:m?`${m}분 ${s%60}초`:`${s}초`};
 const split=r=>{r=(r||'').trim();return r?r.split(r.includes(',')?',':/\s+/).map(x=>x.trim()):[]};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const PDFJS=window.pdfjsLib;if(PDFJS)PDFJS.GlobalWorkerOptions.workerSrc=new URL('lib/pdf.worker.min.js',location.href).href;
 /* 진단 기록: 학생 기기(아이패드 등)에서 무엇이 왜 안 되는지 그대로 받아 보기 위해. ⋯ 메뉴·여는 화면의 [진단 정보 복사] */
 const DG={t0:Date.now(),L:[]};function dlog(k,v){try{DG.L.push([Math.round((Date.now()-DG.t0)/100)/10,k,typeof v==='string'?v.slice(0,160):v]);if(DG.L.length>400)DG.L.splice(0,100)}catch(e){}}
 window.addEventListener('error',e=>{dlog('err',(e.message||'')+' @'+(e.lineno||''));if(e.error||e.message)window.NJERR&&NJERR(e.error||{message:e.message})},true);window.addEventListener('unhandledrejection',e=>{dlog('rej',String(e.reason&&(e.reason.message||e.reason)||''));window.NJERR&&NJERR(e.reason)});
