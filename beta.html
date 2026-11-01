@@ -1,9 +1,8 @@
 <!doctype html>
 <html lang="ko">
-<head>
+<head><script>window.NJ_BETA=1</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<script>window.NJ_BETA=1</script>
 <title>러닝메이트 채점 베타</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <meta name="theme-color" content="#0E1014"><meta name="apple-mobile-web-app-capable" content="yes">
@@ -1973,7 +1972,7 @@ SCAN.nparts=async(doc,img)=>{const wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;
     if(lx<0)return null;const hm=Math.max(12,ly1-ly0+1),cy=(ly0+ly1)/2,Y0=Math.max(0,Math.round(cy-hm*0.8)),Y1=Math.min(R.h-1,Math.round(cy+hm*0.8)),T0=Math.max(0,Math.round(cy-hm*1.9)),T1=Math.min(R.h-1,Math.round(cy+hm*1.9)),X0b=Math.round(lx+hm*0.25);
     const dark=(x,y)=>R.gray[y*W+x]<160;
     const segs=[];let cur=null,gap=0;for(let x=X0b;x<=X1;x++){let dk=0;for(let y=Y0;y<Y1;y++)if(dark(x,y)){dk=1;break}if(dk){if(cur&&gap<hm*0.22)cur.x1=x;else{cur={x0:x,x1:x};segs.push(cur)}gap=0}else gap++}
-    if(segs.length<4||segs.length>16)return null;
+    if(segs.length>16||!segs.length)return null;
     const crop=async(x0,x1,ya,yb,wl,psm,clean)=>{const p=Math.round(hm*0.3),w=x1-x0+1+p*2,h=yb-ya+p*2,z=Math.max(3,Math.min(6,Math.round(hm*3/Math.max(8,yb-ya)))),cv=document.createElement('canvas');cv.width=w*z;cv.height=h*z;const g=cv.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,cv.width,cv.height);g.imageSmoothingEnabled=true;
       if(clean)g.drawImage(R.c,x0,ya,x1-x0+1,yb-ya+1,p*z,p*z,(x1-x0+1)*z,(yb-ya+1)*z);else g.drawImage(R.c,x0-p,ya-p,w,h,0,0,w*z,h*z);await wk.setParameters({tessedit_pageseg_mode:psm||'8',tessedit_char_whitelist:wl});try{const o=await wk.recognize(cv);const t=(o.data.text||'').replace(/\s+/g,'');return t}finally{await wk.setParameters({tessedit_char_whitelist:''});cv.width=cv.height=0}};
     // 분수: 칸의 잉크가 위아래로 번지고 가운데에 가로줄이 있으면 위(분자)·아래(분모)를 따로 읽는다
@@ -1999,14 +1998,17 @@ SCAN.nparts=async(doc,img)=>{const wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;
       return /^-?\d{1,3}$/.test(n)&&/^\d{1,3}$/.test(d)&&+d>0?n+'/'+d:'?'};
     // 위아래로 길게 이어진 칸(분수 등)은 숫자로 믿지 않는다
     const tallSeg=sg=>{const ext=(dir)=>{let y=Math.round(cy),f=y,g=0;for(let k=0;k<hm*2;k++,y+=dir){if(y<=T0||y>=T1)break;if(cnt(y,sg)>0){f=y;g=0}else if(++g>hm*0.3)break}return f};return ext(-1)<cy-hm*0.85||ext(1)>cy+hm*0.85};
+    const exprOr=async()=>{try{const t=(await crop(segs[0].x0,X1,Y0,Y1,'0123456789xyzab=+-,.()','7')).replace(/\s+/g,'');return /=/.test(t)&&/[xyzab]/.test(t)?{expr:t}:null}catch(e){return null}};   /* 정답이 식(x, y와 =)인지라도 알아 둔다: 정수 답은 확실히 틀림 */
+    if(segs.length<4){const fs=[];for(const sg of segs)fs.push(await frac(sg));const fi=fs.findIndex(f=>f);if(fi<0)return await exprOr();   /* 소문제 없는 답 하나가 위아래로 쌓인 분수: 분수라는 것만 알아도 정수 답은 틀림 */
+      const neg=segs.slice(0,fi).some(sg=>sg.x1-sg.x0<hm*0.9&&!tallSeg(sg));const v=fs[fi]==='?'?'F':(neg?'-':'')+fs[fi];return {single:v}}
     const tx=[],fr=[];for(const sg of segs){let f=await frac(sg);if(!f&&tallSeg(sg))f='?';fr.push(f);tx.push(f?f:await crop(sg.x0,sg.x1,Y0,Y1,'()0123456789-'))}
     const ty=tx.map((t,i)=>{if(fr[i])return 'A';const w=segs[i].x1-segs[i].x0;if(t===''&&w>hm*1.4)return '?';if(w<=hm*0.18||/[()]/.test(t)||t==='')return 'L';return /^-?\d+$|^-$/.test(t)&&w<=t.length*hm*0.75+hm*0.3?'A':'?'});
     for(let i=1;i<ty.length-1;i++)if(ty[i]==='A'&&!fr[i]&&/\($/.test(tx[i-1])&&/^\)/.test(tx[i+1]))ty[i]='L';
     const runs=[];ty.forEach((t,i)=>{const r=runs[runs.length-1];if(r&&r.t===t)r.i.push(i);else runs.push({t,i:[i]})});
     const Ls=runs.filter(r=>r.t==='L'),dgs=Ls.map(r=>r.i.map(i=>tx[i]).join('').replace(/\D/g,''));
-    if(!(runs.length>=4&&runs.length%2===0&&runs.every((r,k)=>r.t===(k%2?'A':'L'))&&(()=>{const bad=dgs.filter((d,k)=>d&&d!==String(k+1)&&!(k===0&&d==='0')).length;return bad===0||(bad===1&&dgs.length>=2)})()))return null;   // 소문제 번호는 하나 이상 맞게 읽혀야 (작은 '1'을 '2'로 읽는 정도는 봐준다)
+    if(!(runs.length>=4&&runs.length%2===0&&runs.every((r,k)=>r.t===(k%2?'A':'L'))&&(()=>{const bad=dgs.filter((d,k)=>d&&d!==String(k+1)&&!(k===0&&d==='0')).length;return bad===0||(bad===1&&dgs.length>=2)})()))return await exprOr();   // 소문제 번호는 하나 이상 맞게 읽혀야 (작은 '1'을 '2'로 읽는 정도는 봐준다)
     const out=runs.filter(r=>r.t==='A').map(r=>{const v=r.i.map(i=>tx[i]).join('');return /^-?\d{1,4}$/.test(v)||/^-?\d{1,3}\/\d{1,3}$/.test(v)?v:null});
-    if(out.length<2)return null;
+    if(out.length<2)return await exprOr();
     // 정수 소문제는 칸 전체를 한 번 더 읽어 숫자 순서가 맞을 때만 믿는다 (분수 칸은 따로 두 번 읽었으므로 건너뜀)
     const whole=(await crop(segs[0].x0,X1,Y0,Y1,'()-0123456789','7')).replace(/[^0-9]/g,'');
     const ints=out.map(v=>v&&!v.includes('/')?v:null);const ok=seqOk2(whole,ints);
@@ -2996,7 +2998,10 @@ async function selfNumTry(p,ink){const K=keyNums(p);if(!K||!window.SCAN)return f
   dlog('selfNum',p.q+' '+K.join(',')+' ← '+out.join(','));return out.length===K.length&&out.every((v,i)=>v===K[i])}
 /* 그림에서 읽어 낸 소문제 정답: 맞을 때만 믿는다 */
 /* 정답 소문제가 분수인데 학생이 정수를 썼으면 정답 그림을 조금 잘못 읽었더라도 확실히 틀림 (한 소문제라도 틀리면 문제 전체가 틀림) */
-const fracWrong=(p,ans)=>{const k=p&&p.key;if(!k||k.kind!=='nparts'||!k.nums||!ans)return false;const A=String(ans).split('|');if(A.length!==k.nums.length||A.some(a=>!a||/\//.test(a)))return false;   /* 학생 답 어디에도 분수가 없을 때만 (소문제 칸이 밀려 읽힌 경우는 직접 채점) */
+/* 정답이 분수·식(x, y, = 들어간 것)인데 학생이 정수만 썼으면 확실히 틀림 */
+const keyNonNum=p=>{const k=p&&p.key;if(!k)return false;if(k.kind==='frac'||k.expr)return true;if(k.kind!=='self')return false;const r=String(k.raw||'');return /[a-zA-Z]\s*[-+=]|=\s*-?\d|√|π/.test(r)&&/=|√|π/.test(r)};
+const nonNumWrong=(p,r)=>!!(r&&r.ans&&r.sure!==false&&/^-?\d+$/.test(String(r.ans))&&keyNonNum(p));
+const fracWrong=(p,ans)=>{const k=p&&p.key;if(k&&k.kind==='frac'&&ans&&/^-?\d+$/.test(String(ans)))return true;if(!k||k.kind!=='nparts'||!k.nums||!ans)return false;const A=String(ans).split('|');if(A.length!==k.nums.length||A.some(a=>!a||/\//.test(a)))return false;   /* 학생 답 어디에도 분수가 없을 때만 (소문제 칸이 밀려 읽힌 경우는 직접 채점) */
   return k.nums.some((v,i)=>v!=null&&/^-?\d+\/\d+$/.test(String(v))&&A[i]!=null&&/^-?\d+$/.test(A[i]))};
 const imgKey=p=>{const k=p&&p.key;if(!k)return false;if(k.fromImg)return true;return k.kind==='nparts'&&!!k.img&&(k.nums||[]).some(v=>v==null||!/^-?\d{1,4}$/.test(String(v)))};   /* 빠른 정답 표에서 읽은 정수 소문제 답은 믿는다 */
 async function readA(p,ink){const r=await readA0(p,ink);try{p._rd=r?{ans:r.ans,how:r.how,sure:r.sure}:null}catch(e){}return r}
@@ -3083,8 +3088,8 @@ async function gradeFile(file,auto,mem){
           try{if(!P._qp[m]){const pg=[];if(m==='all')for(let i=P.solRange[0];i<=P.solRange[1];i++)pg.push(i);else pg.push(m);P._qp[m]=(await SCAN.quick(P.doc,{pages:pg})).keys}const nk=P._qp[m][p.q];if(window.NJPROF)console.log('PROF qk2',p.q,JSON.stringify(nk&&{t:nk.text,k:nk.kind}));
           if(nk&&nk.kind!=='self'&&nk.text){p.key=Object.assign({},nk,{qkV:QKV});if(P.solKeys)P.solKeys[p.q]=p.key;ch++}else p.key.qkV=QKV}catch(e){console.error(e);delete P._qp[m]}}
         await recentSave()}}
-    if(P.scan&&window.SCAN&&SCAN.nparts&&P.solRange&&P.solRange[2]==='q'){const tgt=P.problems.filter(p=>p.key&&p.key.img&&!p.key.ebs&&((p.key.kind==='self'&&(p.key.npTried||0)<2)||(p.key.kind==='nparts'&&p.key.nums&&p.key.nums.includes(null)&&(p.key.npTried||0)<3))&&fresh.some(s=>inReg(s,p)));
-      if(tgt.length){fb('nk','소문제 정답을 확인하는 중…');if(S.app)pvSum();let ch=0;for(const p of tgt){const old=p.key;p.key.npTried=3;if(window.NJPROF)console.log('PROF g:np',p.q);try{const r=await SCAN.nparts(P.doc,p.key.img);if(r&&r.nums&&r.nums.some(v=>v!=null)&&!(old.kind==='nparts'&&r.nums.filter(v=>v!=null).length<old.nums.filter(v=>v!=null).length)){p.key={text:r.nums.map(v=>v==null?'?':v).join('|'),kind:'nparts',nums:r.nums,img:p.key.img,npTried:3,fromImg:1};ch++}else if(r&&r.np)p.key.np=r.np;if(P.solKeys)P.solKeys[p.q]=p.key}catch(e){console.error(e)}}await recentSave()}}
+    if(P.scan&&window.SCAN&&SCAN.nparts&&P.solRange&&P.solRange[2]==='q'){const tgt=P.problems.filter(p=>p.key&&p.key.img&&!p.key.ebs&&((p.key.kind==='self'&&(p.key.npTried||0)<4)||(p.key.kind==='nparts'&&p.key.nums&&p.key.nums.includes(null)&&(p.key.npTried||0)<3))&&fresh.some(s=>inReg(s,p)));
+      if(tgt.length){fb('nk','소문제 정답을 확인하는 중…');if(S.app)pvSum();let ch=0;for(const p of tgt){const old=p.key;p.key.npTried=4;if(window.NJPROF)console.log('PROF g:np',p.q);try{const r=await SCAN.nparts(P.doc,p.key.img);if(r&&r.nums&&r.nums.some(v=>v!=null)&&!(old.kind==='nparts'&&r.nums.filter(v=>v!=null).length<old.nums.filter(v=>v!=null).length)){p.key={text:r.nums.map(v=>v==null?'?':v).join('|'),kind:'nparts',nums:r.nums,img:p.key.img,npTried:3,fromImg:1};ch++}else if(r&&r.expr){p.key.expr=1;p.key.raw=((p.key.raw||'')+' '+r.expr).trim();dlog('exprKey',p.q+' '+r.expr)}else if(r&&r.single){p.key={text:r.single,kind:'frac',img:p.key.img,npTried:4,fromImg:1,raw:old.raw};ch++;dlog('fracKey',p.q+' '+r.single)}else if(r&&r.np)p.key.np=r.np;if(P.solKeys)P.solKeys[p.q]=p.key}catch(e){console.error(e)}}await recentSave()}}
     // 답을 다 지운 문항: 채점 표시와 판정을 없앤다 (다시 풀 수 있게). 틀린 기록(오답 기록)은 그대로 둔다
     const clr=[];for(const p of P.problems){const st0=S.state[p.q],pv=P.prev&&P.prev[p.q];if(!st0&&!pv)continue;if(cur.some(s=>inReg(s,p)))continue;
       if(!((P.baseStrokes||[]).some(s=>inReg(s,p))||(st0&&st0.sigs&&st0.sigs.length)))continue;clr.push(p.q)}
@@ -3112,7 +3117,7 @@ async function gradeFile(file,auto,mem){
         const res=k?SV.same(r.ans,k):null;S.state[p.q]=Object.assign(base0,{retry:{ans:r.ans,ok:res,sure:true}});histEvt(p.q,res);if(res===false){S.state[p.q].wrongs=1;re++}continue}
       if(!st){                                                              // 처음 채점
         const r=await readA(p,ug?cur:all);if(r.how==='none')continue;if(!r.ans&&!abInk(p,all)&&smallInk(all.filter(s=>inReg(s,p)))){if(window.NJPROF)console.log('PROF stray',p.q);continue}   /* 답란에 쓴 것은 짧아도 답 */   // 답으로 읽히지 않는 짧은 낙서뿐이면 안 푼 문제
-        let sk=isSelf(p)||r.how==='self'||(isMulti(p)&&!(r.ans&&r.sure!==false));
+        let sk=isSelf(p)||r.how==='self'||(isMulti(p)&&!(r.ans&&r.sure!==false));if(sk&&isSelf(p)&&nonNumWrong(p,r)){sk=false;dlog('nonNum',p.q+' '+r.ans)}
         if(sk||k.includes(',')){let hit=false;try{hit=await selfNumTry(p,ug?cur:all)}catch(e){console.error(e)}if(hit){S.state[p.q]={q:p.q,ans:keyNums(p).join(', '),ok:true,status:'done',at,crop:await cropUrl(doc,p,IK),short:shortOf(p),wrongs:0,self:false,auto:'nums'};nw++;histEvt(p.q,true);ok++;continue}}   /* 숫자 여러 개 정답을 다 맞게 썼으면 묻지 않는다 */
         let sure=!sk&&!!r.ans&&r.sure!==false&&!(k.includes(',')&&!(p.key&&p.key.kind==='syms'));let res=sure&&k?SV.same(r.ans,k):null;if(res===false&&imgKey(p)&&!fracWrong(p,r.ans)){sure=false;res=null;dlog('imgKeyAsk',p.q+' '+r.ans+' vs '+k)}   /* 정답 그림에서 읽어 낸 소문제 답(분수·근호는 잘못 읽힘)은 맞을 때만 믿고, 다르면 틀림 대신 직접 채점 */
         S.state[p.q]={q:p.q,ans:sk?'':r.ans,ok:res,status:sure?'done':'check',at,crop:await cropUrl(doc,p,IK),short:shortOf(p),wrongs:res===false?1:0,self:sk};nw++;if(sure)histEvt(p.q,res);
@@ -3122,7 +3127,7 @@ async function gradeFile(file,auto,mem){
         const np=p.key&&p.key.kind==='nparts';
         // 새로 쓴 획만으로 확실히 읽히면 그것, 아니면(일부만 고쳤거나 지우고 다시 씀) 지금 남아 있는 필기 전체로 다시 읽는다
         let r=np||erased?await readA(p,all):await readA(p,fresh);if(!np&&!(r.ans&&r.sure!==false)){const r2=await readA(p,all);if(r2.ans)r=r2}
-        if(!np&&k&&r.ans&&!SV.same(r.ans,k)&&!erased){const r2=await readA(p,all);if(r2.ans&&r2.sure!==false&&(SV.same(r2.ans,k)||(String(r2.ans).length>String(r.ans).length&&String(r2.ans).includes(String(r.ans))))){dlog('redoAll',p.q+' '+r.ans+'→'+r2.ans);r=r2}}   /* 앞에 쓴 3 옆에 2를 더 써서 32: 새 획만 읽으면 2 → 칸의 필기 전체로 다시 읽는다 */if(window.NJPROF)console.log('PROF redo',p.q,JSON.stringify(r),fresh.filter(s=>inReg(s,p)).length,erased);if(r.how==='none'&&!erased)continue;const sk=isSelf(p)||r.how==='self'||(isMulti(p)&&!(r.ans&&r.sure!==false));
+        if(!np&&k&&r.ans&&!SV.same(r.ans,k)&&!erased){const r2=await readA(p,all);if(r2.ans&&r2.sure!==false&&(SV.same(r2.ans,k)||(String(r2.ans).length>String(r.ans).length&&String(r2.ans).includes(String(r.ans))))){dlog('redoAll',p.q+' '+r.ans+'→'+r2.ans);r=r2}}   /* 앞에 쓴 3 옆에 2를 더 써서 32: 새 획만 읽으면 2 → 칸의 필기 전체로 다시 읽는다 */if(window.NJPROF)console.log('PROF redo',p.q,JSON.stringify(r),fresh.filter(s=>inReg(s,p)).length,erased);if(r.how==='none'&&!erased)continue;const sk=(isSelf(p)||r.how==='self'||(isMulti(p)&&!(r.ans&&r.sure!==false)))&&!(isSelf(p)&&nonNumWrong(p,r));
         if(sk){st.retry={ans:'',ok:null,self:true};st.crop=await cropUrl(doc,p,IK);re++;continue}
         if(!r.ans)continue;const res=k?SV.same(r.ans,k):null;if(res===false&&imgKey(p)&&!fracWrong(p,r.ans)){st.retry={ans:'',ok:null,self:true};st.crop=await cropUrl(doc,p,IK);re++;continue}st.crop=await cropUrl(doc,p,IK);
         st.retry={ans:r.ans,ok:res,sure:r.sure!==false,at:FOC.retry?FOC.rt0:undefined};if(p._pr&&p._pr.length>1)st.retry.parts=p._pr.slice();histEvt(p.q,res);if(st.ok===false&&res===false)st.wrongs=(st.wrongs||1)+1;re++;if(res)reOk++;   // 틀린 횟수
