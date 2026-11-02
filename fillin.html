@@ -318,6 +318,7 @@ body:has(#vPdf:not([hidden])) .appbar{display:none}
 .spin{display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:spn .8s linear infinite;flex:none;vertical-align:-2px;margin-right:6px}@keyframes spn{to{transform:rotate(360deg)}}@media (prefers-reduced-motion:reduce){.spin{animation:none}}
 .scStopped{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--paper)}.scStopped>.sq{color:var(--bad,#ef4444);width:12px;height:12px}.scStopped>div{flex:1;min-width:180px;display:flex;flex-direction:column}.scStopped span{color:var(--muted);font-size:13px}
 #bgJob.stop{background:#3a1d1d}#bgJob .sq{margin-right:8px;color:#f87171;vertical-align:0}
+html body #pvGrade.keyWait,html body .pvRail .rlIn #pvGrade.keyWait,html body #fGrade.keyWait{background:var(--line,#3a3f48)!important;color:var(--muted,#8a93a3)!important;box-shadow:none!important;cursor:not-allowed}
 .stemBox{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;font-size:14px}.stemT{color:var(--muted)}.stemT b{color:var(--ink)}.stemD{display:flex;flex-direction:column;gap:1px}.stemD span{color:var(--muted);font-size:13px;line-height:1.5}
 .blkHero{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.blkHero .nowT b{color:var(--omr)}
 .blkBar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:12px}.blkBar i{display:block;height:100%;background:var(--ok)}
@@ -3155,7 +3156,11 @@ async function ebsFill(p){if(!ebsNeed(p))return;try{const k=p.key.xi?await xiKey
 function ebsPrefetch(P0,pg){if(!P0||!(P0.ebs||P0.xi))return;const L=P0.problems.filter(p=>p.page===pg&&ebsNeed(p));if(!L.length)return;
   EBS.pre=(EBS.pre||Promise.resolve()).then(async()=>{if(P!==P0)return;const t=performance.now();for(const p of L){if(P!==P0)return;await ebsFill(p)}dlog('ebsPre',pg+'쪽 '+L.length+'개 '+Math.round(performance.now()-t)+'ms');try{await recentSave()}catch(e){}}).catch(e=>console.error(e))}
 let GT0=0;
+/* 문제집을 넣자마자 풀 때: 빠른 정답을 뒤에서 다 읽기 전에는 GO(채점)를 막는다 → 다 읽으면 초록색으로 */
+function keysPending(){try{return !!(BGQ&&P&&bookOf(P.name)===BGQ.name)}catch(e){return false}}
+setInterval(()=>{const w=keysPending();for(const id of ['pvGrade','fGrade']){const b=document.getElementById(id);if(!b)continue;b.classList.toggle('keyWait',w);b.setAttribute('aria-disabled',w?'true':'false');const sm=b.querySelector('.goS');if(sm){if(w&&sm.textContent!=='정답 읽는 중')sm.textContent='정답 읽는 중';else if(!w&&sm.textContent==='정답 읽는 중')sm.textContent='채점하기'}}},700);
 async function gradeFile(file,auto,mem){
+  if(keysPending()){if(!auto)try{pvToast('📘 아직 정답을 읽는 중이에요. 다 읽으면 GO가 초록색으로 바뀌고 채점할 수 있어요')}catch(e){}dlog('goWait',auto?'auto':'tap');return}
   if(S.busy)return;GT0=performance.now();dlog('GO',(typeof FOC!=='undefined'&&FOC.on?'focus ':'page ')+(GRADE_ONLY!=null?GRADE_ONLY:'')+(typeof FOC!=='undefined'&&FOC.retry?' retry':''));
   if(!mem&&P.handle&&file.lastModified===P.lastMod){if(auto)return;fb('nk',Object.keys(S.state).length?'새로 저장된 필기가 없습니다. PDF에서 고친 뒤 꼭 Ctrl+S로 저장하고 다시 누르세요.':'아직 저장된 필기가 없습니다. PDF에서 Ctrl+S로 저장한 뒤 누르세요.');return}
   fb('nk',auto?'저장을 확인해 자동 채점 중…':'저장된 필기를 읽는 중…');$('#grade').disabled=true;S.busy=true;
@@ -5018,7 +5023,7 @@ function fShowTitle(){const p=FOC.p;if(!p)return;const i=FOC.list.indexOf(p);$('
 function goResult(){const r=S&&S.goRes;if(!r||!r.n)return;const p2=n=>String(n).padStart(2,'0');
   pvToast(`<div class="goRes"><div><b>${r.ok} / ${r.n}</b><small>정답</small></div>${r.gap?`<div><b class="gp">BLOCK ${p2(r.gap)}</b><small>교정할 문제 ${r.gap}개</small></div>`:''}<small>푼 문제만 채점했어요 · 안 푼 문제는 그대로${r.chk?` · 직접 확인 ${r.chk}`:''}</small></div>`,r.gap?[['BLOCK 확인 →',async()=>{await pvEnd();view('ana')}]]:[])}
 function goHtml(){return '<span class="goT">GO</span><small class="goS">채점하기</small>'}
-async function pvGrade(){GRADE_ONLY=FOC.on&&FOC.p?FOC.p.q:null;try{regFix();abIndex();regStale()}catch(e){}try{setTimeout(()=>{if(!S||!S.state||!P)return;for(const p of P.problems){const st=S.state[p.q];if(st&&p._pr&&p.ab&&!st.parts)st.parts=p._pr.slice()}},0)}catch(e){}
+async function pvGrade(){if(keysPending()){try{pvToast('📘 아직 정답을 읽는 중이에요. 다 읽으면 GO가 초록색으로 바뀌고 채점할 수 있어요')}catch(e){}dlog('goWait','tap');return}GRADE_ONLY=FOC.on&&FOC.p?FOC.p.q:null;try{regFix();abIndex();regStale()}catch(e){}try{setTimeout(()=>{if(!S||!S.state||!P)return;for(const p of P.problems){const st=S.state[p.q];if(st&&p._pr&&p.ab&&!st.parts)st.parts=p._pr.slice()}},0)}catch(e){}
   if(PV.review){const ug=ungraded().length;pvResume();if(!ug&&!FOC.on)return}   /* 집중 모드는 다시 쓴 답(이미 표시가 있는 문제)도 바로 다시 채점 */   // 채점 안 된 답이 남아 있으면 이어서 학습하기 대신 바로 채점
   if(!S||PV.busy)return;PV.busy=true;pvStatus();$('#pvGrade').disabled=true;
   try{const job=pvCommit();if(job)pvPersist(job);const saved=!!job;
@@ -5732,7 +5737,7 @@ async function renderAnaTab(){try{await qpHdr()}catch(e){}
     }}
   try{renderTch(W)}catch(e){console.error(e)}
   if(teacherOn())await renderAnaSum(W,inNote);
-  anaList(W,items,inNote);return
+  anaList(W,items,inNote);setTimeout(()=>{try{clsBackground(W.filter(w=>wStage(w)!=='T'))}catch(e){}},1500);return
   box.querySelectorAll('[data-star]').forEach(b=>b.onclick=async()=>{const id=b.dataset.star;if(await dbGet(id))await dbDel(id);else await noteAddFromWrongs([id]);badge();renderAnaTab()});
   box.querySelectorAll('[data-unstar]').forEach(b=>b.onclick=async()=>{if(!b.dataset.sure){b.dataset.sure=1;b.textContent='빼기?';return}await dbDel(b.dataset.unstar);badge();renderAnaTab()});
 }
@@ -5986,12 +5991,21 @@ function simSubjOf(src){const m=LS.get('simBookSubj',{})[bookOf(src)];if(m)retur
 /* 자이스토리 고3 문제(번호 'A32')는 팩에 같은 문제가 있어 큰 유형이 바로 정해진다 */
 const simIsXi=w=>{const q=+w.q;return q>=100000&&q<1000000&&!simBookOf(w.src)};
 function simCode(w){const q=+w.q;if(!(q>=100000&&q<1000000))return null;const sj=simSubjOf(w.src);if(!sj)return null;const code=String.fromCharCode(64+Math.floor(q/100000))+String(q%100000).padStart(2,'0');return (sj==='M2'?'M2-':sj==='PS'?'PS-':'')+code}
-function simAuto(w){const bk=simBookOf(w.src);if(bk){const b=bk.map[+w.q],est=(bk.est||[]).some(r=>+w.q>=r[0]&&+w.q<=r[1]);return b?{big:b,code:'',book:bk.name,est}:null}const c=simCode(w),it=c&&QP.by&&QP.by.get(c);return it?{big:it.b,code:c}:null}
+/* 분류는 여기 한 곳에서: ① 책 지도(문항 번호 → 유형) ② 자이스토리 번호 ③ 선생님이 이 문제에 고른 유형(기억) ④ 유형 엔진(글자 인식 추천, 확신할 때만).
+   유사 문제는 고른 유형과 같은 '묶음'(CLS_B2T)에서 고르고, 발문 포인트도 같은 기록을 쓴다 */
+function simAuto(w){if(!w)return null;const bk=simBookOf(w.src);if(bk){const b=bk.map[+w.q],est=(bk.est||[]).some(r=>+w.q>=r[0]&&+w.q<=r[1]);if(b&&!est)return {big:b,code:'',book:bk.name,src:'book'};if(b){const m=clsMem(w);return m||{big:b,code:'',book:bk.name,est:true,src:'book'}}}
+  const c=simCode(w),it=c&&QP.by&&QP.by.get(c);if(it)return {big:it.b,code:c,src:'xi'};
+  const m=clsMem(w);if(m)return m;
+  const e=w.engTop&&w.engTop[0];if(e&&e.p>=0.55&&(!w.engTop[1]||e.p-w.engTop[1].p>=0.25))return {big:e.big,code:'',est:true,src:'engine'};return null}
+function clsMem(w){try{const L=(ENG.memAll()[bookOf(w.src)]||[]);const m=L.filter(x=>x.q===+w.q).pop();return m?{big:m.b,code:'',src:'chosen'}:null}catch(e){return null}}
+/* 책 지도·번호로 모르는 틀린 문제는 BLOCK을 열 때 뒤에서 한 문제씩 유형 엔진으로 읽어 둔다 (한 번 읽으면 기록에 남음) */
+let CLS_BG=false;async function clsBackground(W){if(CLS_BG)return;CLS_BG=true;try{for(const w of W){if(simAuto(w)||w.engTop||!w.pdf)continue;if(typeof SCANNING!=='undefined'&&SCANNING)break;let r=null;try{r=await ENG.guess(w,simSubjOf?simSubjOf(w.src):null)}catch(e){console.error(e);break}
+    const x=await wrGet(w.id);if(!x)continue;x.engTop=(r&&r.top||[]).map(t=>({big:t.big,p:+t.p.toFixed(3)}));if(w.ocr&&!x.ocr)x.ocr=w.ocr;await wrPut(x);w.engTop=x.engTop;dlog('clsBg',bookOf(w.src).slice(0,16)+' '+w.q+' '+(x.engTop[0]?x.engTop[0].big+':'+x.engTop[0].p:'-'));await new Promise(r=>setTimeout(r,300))}}finally{CLS_BG=false}}
 function simLabel(it){const y=it.y||'',g=it.g==='대비'?'학년도':it.g==='실시'?'년':'';return `${y}${g} ${it.m?it.m+'월 ':''}${it.e||''}${it.k?'('+it.k+')':''} ${it.n||''}번`.replace(/\s+/g,' ').trim()}
 /* 발문 포인트: 문제 본문(발문)에서 '조건 장치'와 '구하는 것'을 찾아 읽는 법을 알려 준다. 고쟁이 대수·확통은 책 지도에 문항별로 미리 넣어 두었다 */
 const STEM_R={"dev":[["cond","다음 조건 (가)(나)","다음조건|조건을만족","조건 하나를 식 하나로 옮겨 적어요. 보통 (가)로 틀을 잡고 (나)로 값을 결정해요."],["fig","그림이 주어짐","그림과같","그림의 길이·좌표를 문자로 놓아요. 그림은 개형만 믿고, 눈금이나 비율은 조건으로만 판단해요."],["box","〈보기〉 판단","보기","ㄱ부터 참·거짓을 따져요. 거짓은 반례 하나로 충분하고, 앞 보기가 뒤 보기의 힌트인 경우가 많아요."],["all","모든 실수에서 성립","모든실수|항상성립|모든양수|모든자연수","'항상 성립'은 최솟값(최댓값)으로 바꿔 읽어요. 이차식이면 판별식, 그래프면 위아래 관계예요."],["roots","서로 다른 실근·해의 개수","서로다른.{0,6}(실근|근|해)|실근의개수|해의개수","방정식을 두 그래프의 교점으로 바꿔요. 상수는 한쪽으로 분리해서 직선(수평선)을 움직여 봐요."],["meet","만나는 점·교점","만나는점|교점|만날때|만나도록","두 식을 연립한 방정식의 근이 곧 교점이에요. 근과 계수의 관계가 자주 쓰여요."],["tan","접선·접한다","접선|접하","접점을 (t, f(t))로 놓고 시작해요. 접한다 = 중근, 원이면 중심과의 거리 = 반지름이에요."],["int","자연수·정수 조건","자연수|정수","범위를 먼저 구하고 그 안의 정수를 세요. 경우가 적으면 하나씩 대입해 확인해요."],["opt","최대·최소가 되도록","최대가되|최소가되|최대일|최소일|최대인|최소인","무엇이 변하는지(변수) 하나를 정하고, 구하는 양을 그 변수의 식으로 써요."],["make","~가 되도록 정하기","되도록","원하는 결과를 식으로 먼저 쓰고 거꾸로 미지수를 정해요."],["cont","연속·미분가능","연속(이|인|일|함수)|미분가능","경계(이어 붙인 점)에서 좌극한 = 우극한 = 함숫값, 미분가능이면 미분계수까지 같게 놓아요."],["move","평행·대칭이동","평행이동|대칭이동","이동한 식을 바로 쓰기보다, 점 하나가 어디로 가는지 먼저 따라가요."],["geo","삼각형·원 도형","삼각형|사각형|반지름|원의(중심|넓이|둘레|방정식)|원과|원이|원위","도형 조건(길이·각·넓이)을 좌표나 문자 식으로 옮겨요. 넓이는 밑변·높이를 고정해 봐요."],["seq","수열","등차|등비|수열|귀납","첫째항과 공차(공비)로 모두 써요. 귀납적 정의는 앞 몇 항을 직접 나열해 규칙을 봐요."],["ineq","부등식","부등식","부등식의 해를 그래프의 위아래로 읽어요. 등호가 들어가는지 끝까지 확인해요."],["write","서술형","서술하시오|과정을","풀이 단계를 '조건 → 식 → 결과' 순서로 문장으로 남겨요."]],"tgt":[["box","옳은 것 고르기","고른것|옳은것|옳지않은것"],["sum2","최댓값과 최솟값의 합·곱","최댓값과최솟값의(합|곱)"],["max","최댓값","최댓값|가장큰"],["min","최솟값","최솟값|가장작은"],["range","값의 범위","범위"],["cnt","개수","개수|몇개|경우의수"],["sum","값의 합·곱","값의합|값들의합|모든.{0,10}합|값의곱|모든.{0,10}곱"],["area","넓이","넓이"],["len","길이·거리","길이|거리|둘레"],["coord","좌표","좌표"],["eq","식·방정식","방정식|식을구|식은"],["prob","확률","확률"],["val","값","값"]]};
 function stemTags(text){const n=String(text||'').replace(/\s+/g,'');const ds=STEM_R.dev.filter(d=>new RegExp(d[2]).test(n)).map(d=>d[0]);const m=/(\?|구하시오|서술하시오)/.exec(n),e=m?m.index+m[0].length:n.length,tail=n.slice(Math.max(0,e-40),e);const t=(STEM_R.tgt.find(x=>new RegExp(x[2]).test(tail))||[''])[0];return {ds,t}}
-function stemOf(w){const bk=simBookOf(w.src),v=bk&&bk.stem&&bk.stem[+w.q];if(!v)return null;const [a,t]=v.split('|');return {ds:a?a.split(','):[],t}}
+function stemOf(w){const bk=simBookOf(w.src),v=bk&&bk.stem&&bk.stem[+w.q];if(!v){if(w&&w.ocr){const t=stemTags(w.ocr);return (t.ds.length||t.t)?t:null}return null}const [a,t]=v.split('|');return {ds:a?a.split(','):[],t}}
 function stemHTML(w){const s=stemOf(w);if(!s||(!s.ds.length&&!s.t))return '';const D=new Map(STEM_R.dev.map(d=>[d[0],d])),T=new Map(STEM_R.tgt.map(x=>[x[0],x[1]]));const ds=s.ds.filter(id=>id!=='write').slice(0,3);
   return `<div class="stemBox"><div class="label">발문 포인트</div>${s.t&&s.t!=='val'?`<div class="stemT">구하는 것 · <b>${esc(T.get(s.t)||'')}</b></div>`:''}${ds.map(id=>{const d=D.get(id);return d?`<div class="stemD"><b>${esc(d[1])}</b><span>${esc(d[3])}</span></div>`:''}).join('')}</div>`}
 async function simSheet(w,box){if(!box)return;if(box._engId!==w.id){box._eng=null;box._engId=w.id}const hdr=await qpHdr();
