@@ -6197,7 +6197,7 @@ async function twinRec(it,ok){try{const w=await wrGet(it.twinOf);if(!w)return;co
 /* BLOCK 맨 위 '내가 몰랐던 것': 학생이 고른 이유 · 최근 막힌 곳(형광펜) · 약한 유형 (최근 2주) */
 function knowHtml(W){const since=Date.now()-14*DAY,R=W.filter(w=>(w.at||0)>=since),cnt={dir:0,stuck:0,slip:0};for(const w of R){const k=w.cls&&w.cls.k;if(k in cnt)cnt[k]++}
   const n=cnt.dir+cnt.stuck+cnt.slip,hl=R.filter(w=>w.cls&&w.cls.k==='stuck'&&(w.cls.cimg||w.cls.img)).slice(0,2);
-  const by={};for(const w of W){if(wStage(w)==='T')continue;let a=null;try{a=simAuto(w)}catch(e){}if(!a)continue;(by[a.big]=by[a.big]||{big:a.big,w,n:0}).n++}
+  const by={};for(const w of R){if(wStage(w)==='T')continue;   /* 제목대로 최근 2주 오답만 (예전에 다른 책에서 틀린 유형이 섞이지 않게) */let a=null;try{a=simAuto(w)}catch(e){}if(!a)continue;(by[a.big]=by[a.big]||{big:a.big,w,n:0}).n++}
   const weak=Object.values(by).sort((a,b)=>b.n-a.n).slice(0,2);if(!n&&!weak.length)return '';
   const bar=n?`<div class="kwBar">${['stuck','dir','slip'].filter(k=>cnt[k]).map(k=>`<i style="flex:${cnt[k]};background:${CLS[k].c}"></i>`).join('')}</div><div class="kwLeg">${['stuck','dir','slip'].map(k=>`<span style="color:${CLS[k].c}">${({stuck:'막혔다',dir:'방향 모름',slip:'실수'})[k]} <b>${cnt[k]}</b></span>`).join('')}</div>`:'';
   return `<div class="kw"><div class="kwH"><b>내가 몰랐던 것</b><span>최근 2주 · 이유 고른 ${n}문제</span></div>${bar}
