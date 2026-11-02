@@ -3159,7 +3159,7 @@ async function gradeFile(file,auto,mem){
   fb('nk',auto?'저장을 확인해 자동 채점 중…':'저장된 필기를 읽는 중…');$('#grade').disabled=true;S.busy=true;
   try{
     const doc=mem?P.doc:await PDFJS.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;if(!mem)P.lastMod=file.lastModified;
-    const cur=mem?mem.all:await SV.strokes(doc),all=cur.filter(s=>!P.base.has(s.sig)&&!(FOC.on&&FOC.retry&&FOC.rt0&&s.t&&s.t<FOC.rt0)),IK=mem?mem.all:null;      // 학습 시작 뒤에 쓴 획
+    const cur=mem?mem.all:await SV.strokes(doc),all=cur.filter(s=>!P.base.has(s.sig)&&!(FOC.on&&FOC.retry&&FOC.rt0&&s.t&&s.t<FOC.rt0)),IK=mem?mem.all.filter(s=>!(FOC.on&&FOC.retry&&FOC.rt0&&s.t&&s.t<FOC.rt0)):null;   /* 다시 풀기: 채점 창 '내 답' 그림에도 화면처럼 이번에 쓴 획만 (지난번 답이 겹쳐 보이지 않게) */      // 학습 시작 뒤에 쓴 획
     const fresh=all.filter(s=>!S.seen.has(s.sig));                         // 지난 채점 뒤에 새로 쓴 획
     if(P.scan&&P.lazy&&window.SCAN){const need=[...new Set(fresh.map(s=>s.page))].filter(pg=>!P.problems.some(p=>p.page===pg)&&!(P.lazyDone||[]).includes(pg)).sort((a,b)=>a-b);
       if(need.length){fb('nk',`처음 푸는 쪽(${need.join(', ')}쪽)의 문제 번호를 읽는 중… 쪽마다 몇 초 걸려요`);if(S.app)pvSum();await lazyRead(need)}}
@@ -5081,7 +5081,7 @@ function ssApply(x,p,good){const k=keyOf(p)||'✓';
   histEvt(x.q,good);setTimeout(pvBadgeAll,0);SS.n++;SS.np=0;chips()}
 function ssSet(x,p,good){try{tlEv('self',{q:x.q,good,pr:x.pr||null,pw:x.pw||null,pn:x.pn||null,how:'button',read:p&&p._rd||null,key:p&&tlClean(p.key)})}catch(e){}ssApply(x,p,good);if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()}
 /* 내가 쓴 답만: 문제 칸 안의 필기(인쇄된 글자 없이)를 크게 그려 정답과 바로 비교 */
-function inkOnlyImg(p,x){if(!p)return '';let L=memInk().filter(s=>!s.raster&&inReg(s,p));if(!L.length)return '';
+function inkOnlyImg(p,x){if(!p)return '';let L=memInk().filter(s=>!s.raster&&inReg(s,p)&&!(FOC.on&&FOC.retry&&FOC.rt0&&s.t&&s.t<FOC.rt0));if(!L.length)return '';
   const A=p.ab;if(A){const inA=L.filter(s=>{const cx=(s.b.x0+s.b.x1)/2,cy=(s.b.y0+s.b.y1)/2;return cx>=A.x0&&cx<=A.x1&&cy>=A.y0&&cy<=A.y1});if(inA.length)L=inA}   /* 답란에 쓴 것이 있으면 그것이 답 */
   let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const s of L){x0=Math.min(x0,s.b.x0);x1=Math.max(x1,s.b.x1);y0=Math.min(y0,s.b.y0);y1=Math.max(y1,s.b.y1)}
   const pad=6,bw=x1-x0+pad*2,bh=y1-y0+pad*2,sc=Math.min(6,720/bw,300/bh),c=document.createElement('canvas');c.width=Math.max(40,Math.round(bw*sc));c.height=Math.max(30,Math.round(bh*sc));
