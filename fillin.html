@@ -2842,11 +2842,13 @@ async function scanLazyInit(file,handle,bytes,doc,solKeys,solRange,replace,colr)
 /* 뒤에서 읽은 정답을 지금 푸는 풀이본·저장된 풀이본에도 붙인다 → '이제 자동 채점돼요' */
 let BGQ=null;
 async function bgDeliver(T){try{if(!T)return;const name=T.name,nk=Object.keys(T.solKeys||{}).length,has=nk>=1||(T.seqAns&&T.seqAns.secs&&T.seqAns.secs.length)||T.footAns;if(!has)return;
-    const apply=X=>{X.solKeys=Object.assign({},X.solKeys||{},T.solKeys||{});X.solRange=T.solRange;X.solColor=!!T.solColor;X.qkV=T.qkV;if(T.seqAns)X.seqAns=T.seqAns;if(T.footAns)X.footAns=1;
+    const apply=X=>{/* 정답 표·STEP 책(번호가 Theme마다 1부터): 정답을 읽기 전에 학생이 먼저 연 쪽은 보통 번호(1, 11, 21, 254…)로 읽혀 엉뚱한 '직접 채점'이 됐다 → 그런 문제는 지우고 그 쪽은 다음에 볼 때 Theme 번호로 다시 읽는다 */
+      if(T.seqAns&&T.seqAns.secs&&T.seqAns.secs.length){const bad=(X.problems||[]).filter(p=>!(p.q>=3000000&&p.q<4000000));if(bad.length){const pg=new Set(bad.map(p=>p.page));X.problems=X.problems.filter(p=>!bad.includes(p));X.lazyDone=(X.lazyDone||[]).filter(x=>!pg.has(x));try{for(const p of bad)if(X===P&&S&&S.state)delete S.state[p.q]}catch(e){}dlog('seqDrop',bad.length+'개 · 쪽 '+[...pg].join(','))}}
+      X.solKeys=Object.assign({},X.solKeys||{},T.solKeys||{});X.solRange=T.solRange;X.solColor=!!T.solColor;X.qkV=T.qkV;if(T.seqAns)X.seqAns=T.seqAns;if(T.footAns)X.footAns=1;
       for(const p of X.problems||[]){const k=X.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&!p.key.set&&(k.kind!=='self'||!p.key.img||p.key.guess))))p.key=k}   /* 정답 없이 먼저 읽은 문제의 임시 '직접 채점' 표시(정답 그림 없음)도 새로 읽은 정답·그림으로 바꾼다 */if(X.seqAns&&X.doc){try{seqApply(X)}catch(e){}}};
     const act=P&&P!==T&&bookOf(P.name)===name?P:null;if(act){apply(act);await recentSave(act);try{chips()}catch(e){}try{pvSum()}catch(e){}}
-    for(const r0 of (await libAll()).filter(r=>!r.orig&&r.from===name&&(!act||r.name!==act.name))){try{const r=await libGet(r0.name);if(!r)continue;const X={problems:r.problems||[],solKeys:r.solKeys,doc:T.doc,pages:r.pages};apply(X);
-      Object.assign(r,{solKeys:X.solKeys,solRange:X.solRange,solColor:X.solColor,seqAns:X.seqAns||null,problems:X.problems,qkV:X.qkV||0,footAns:X.footAns||undefined});await libPut(r)}catch(e){console.error(e)}}
+    for(const r0 of (await libAll()).filter(r=>!r.orig&&r.from===name&&(!act||r.name!==act.name))){try{const r=await libGet(r0.name);if(!r)continue;const X={problems:r.problems||[],solKeys:r.solKeys,doc:T.doc,pages:r.pages,lazyDone:r.lazyDone};apply(X);
+      Object.assign(r,{solKeys:X.solKeys,solRange:X.solRange,solColor:X.solColor,seqAns:X.seqAns||null,problems:X.problems,lazyDone:X.lazyDone||r.lazyDone,qkV:X.qkV||0,footAns:X.footAns||undefined});await libPut(r)}catch(e){console.error(e)}}
     dlog('bgDeliver',name.slice(0,30)+' keys '+nk+(act?' →'+act.name.slice(-12):''));
     /* 스캔 품질 알림: 정답을 읽은 비율이 낮으면(흐린 스캔) 더 선명한 스캔본을 권한다 */
     {let tot=0,got=0;if(T.seqAns&&T.seqAns.secs&&T.seqAns.secs.length){for(const s of T.seqAns.secs){tot+=s.m||s.n||0;got+=Object.values(s.k||{}).filter(k=>k&&k.kind!=='self').length}}else{const v=Object.values(T.solKeys||{});tot=v.length;got=v.filter(k=>k&&k.kind!=='self').length}
