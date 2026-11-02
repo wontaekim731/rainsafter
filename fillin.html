@@ -2848,6 +2848,9 @@ async function bgDeliver(T){try{if(!T)return;const name=T.name,nk=Object.keys(T.
     for(const r0 of (await libAll()).filter(r=>!r.orig&&r.from===name&&(!act||r.name!==act.name))){try{const r=await libGet(r0.name);if(!r)continue;const X={problems:r.problems||[],solKeys:r.solKeys,doc:T.doc,pages:r.pages};apply(X);
       Object.assign(r,{solKeys:X.solKeys,solRange:X.solRange,solColor:X.solColor,seqAns:X.seqAns||null,problems:X.problems,qkV:X.qkV||0,footAns:X.footAns||undefined});await libPut(r)}catch(e){console.error(e)}}
     dlog('bgDeliver',name.slice(0,30)+' keys '+nk+(act?' →'+act.name.slice(-12):''));
+    /* 스캔 품질 알림: 정답을 읽은 비율이 낮으면(흐린 스캔) 더 선명한 스캔본을 권한다 */
+    {let tot=0,got=0;if(T.seqAns&&T.seqAns.secs&&T.seqAns.secs.length){for(const s of T.seqAns.secs){tot+=s.m||s.n||0;got+=Object.values(s.k||{}).filter(k=>k&&k.kind!=='self').length}}else{const v=Object.values(T.solKeys||{});tot=v.length;got=v.filter(k=>k&&k.kind!=='self').length}
+     const rt=tot>=10?got/tot:1;dlog('keyRate',got+'/'+tot);if(rt<0.7){try{pvToast(`📘 「${esc(name)}」 정답을 ${Math.round(rt*100)}%만 읽었어요 — 스캔이 흐리거나 작아서 그래요. 못 읽은 문제는 직접 채점으로 넘어가요. 더 선명한 스캔본(300dpi 이상)을 넣으면 자동 채점이 늘어나요`)}catch(e){}try{renderRecent()}catch(e){}return}}
     try{if(act||(P&&bookOf(P.name)===name))pvToast('📘 정답을 다 읽었어요 — 이제 자동 채점돼요');else if(!$('#pvToast').closest('[hidden]'))pvToast(`📘 「${esc(name)}」 정답을 다 읽었어요 — 이제 자동 채점돼요`)}catch(e){}
     try{renderRecent()}catch(e){}}catch(e){console.error(e)}}
 /* 처음 푸는 쪽의 문제 번호 읽기: 학생이 그 쪽에 쓰기 시작하면 뒤에서 미리 읽어 둔다 → 채점 버튼을 누를 때는 이미 끝나 있다 */
