@@ -1451,16 +1451,18 @@ SCAN.seqLabs=async(wk,B,ws,bodyH,o)=>{const W=B.w,H=B.h,SC=B.c.width/(B.w||1)*2|
      단 왼쪽 띠에서 줄마다 맨 앞 글자 덩어리를 보고: 굵고, 좁고(두 자리까지), 뒤에 빈칸이 있으면 숫자로 읽는다. 세로 줄(단 나눔 선)은 뺀다 */
   try{const Lh1=SCAN._seqH||(()=>{const o=cand.filter(l=>(l.ink||0)>=0.45).map(l=>l.y1-l.y0).sort((a,b)=>a-b);return o.length?o[o.length>>1]:Math.round(hMed*1.15)})();
     if(Lh1)for(const c of two?[0,1]:[0]){const m=marg[c];if(m==null)continue;const X0=Math.max(0,Math.round(m-W*0.065)),X1=Math.min(W-1,Math.round(m+Lh1*2.6)),bw=X1-X0,Y0=Math.round(H*0.03),bh=Math.round(bodyH-Y0);if(bw<6||bh<6)continue;
-      const G=B.gray,dk=(x,y)=>G[(Y0+y)*W+X0+x]<150,colD=new Uint32Array(bw);for(let x=0;x<bw;x++){let k=0;for(let y=0;y<bh;y++)if(dk(x,y))k++;colD[x]=k}const vline=x=>colD[x]>bh*0.35;
+      const G=B.gray,dk0=(x,y)=>G[(Y0+y)*W+X0+x]<150,LN=new Uint8Array(bw*bh);{const LL=Math.round(Lh1*2.5);for(let x=0;x<bw;x++){let y=0;while(y<bh){if(!dk0(x,y)){y++;continue}const a=y;while(y<bh&&(dk0(x,y)||(x>0&&dk0(x-1,y))||(x<bw-1&&dk0(x+1,y))))y++;if(y-a>=LL)for(let yy=a;yy<y;yy++)LN[yy*bw+x]=1}}}   /* 길게 이어진 세로줄(단 나눔 선·흔들린 선)은 글자가 아니다 */
+      const dk=(x,y)=>dk0(x,y)&&!LN[y*bw+x],colD=new Uint32Array(bw);for(let x=0;x<bw;x++){let k=0;for(let y=0;y<bh;y++)if(dk(x,y))k++;colD[x]=k}const vline=x=>colD[x]>bh*0.35||colD[x]+Math.max(x>0?colD[x-1]:0,x<bw-1?colD[x+1]:0)>bh*0.5;   /* 조금 기운 단 나눔 선(두 칸에 걸침)도 */
       const Zx=Math.min(bw,Math.round(m+Lh1*0.9)-X0),row=[];for(let y=0;y<bh;y++){let k=0;for(let x=0;x<Zx;x++)if(!vline(x)&&dk(x,y))k++;row.push(k)}   /* 줄 높이는 번호 자리(단 왼쪽 끝 근처)만 보고 잰다: 아래 줄 문장과 붙지 않게 */
-      let y=0;while(y<bh){if(row[y]<2){y++;continue}const a=y;while(y<bh&&row[y]>=2)y++;const hh=y-a;if(hh<Lh1*0.8||hh>Lh1*1.45)continue;
-        const cp=[];for(let x=0;x<bw;x++){let k=0;if(!vline(x))for(let yy=a;yy<y;yy++)if(dk(x,yy))k++;cp.push(k)}
+      let y=0;while(y<bh){if(row[y]<2){y++;continue}const a=y;while(y<bh&&row[y]>=2)y++;let hh=y-a,a1=a,y1b=y;if(hh>Lh1*1.45&&hh<Lh1*3){const Lx=Math.round(m-X0)-2;let f=null;if(Lx>Lh1*0.4)for(let yy=a;yy<y;){let k=0;for(let x=0;x<Lx;x++)if(!vline(x)&&dk(x,yy))k++;if(k<2){yy++;continue}const b0=yy;for(;yy<y;yy++){let k2=0;for(let x=0;x<Lx;x++)if(!vline(x)&&dk(x,yy))k2++;if(k2<2)break}if(yy-b0>=Lh1*0.8&&yy-b0<=Lh1*1.45){f=[b0,yy];break}}if(f){a1=f[0];y1b=f[1];hh=y1b-a1}}   /* 번호를 본문보다 왼쪽에 내어 쓴 책: 번호 줄이 옆 글자·위아래 줄과 붙어 너무 높으면 본문 왼쪽 끝보다 왼쪽만 보고 번호 높이를 다시 잰다 (시냅스 7번) */
+        if(hh<Lh1*0.8||hh>Lh1*1.45)continue;
+        const cp=[];for(let x=0;x<bw;x++){let k=0;if(!vline(x))for(let yy=a1;yy<y1b;yy++)if(dk(x,yy))k++;cp.push(k)}
         let s0=0,e=0;for(let tr=0;tr<4;tr++){while(s0<bw&&cp[s0]===0)s0++;if(s0>=bw)break;e=s0;let gap=0;for(let x=s0;x<bw;x++){if(cp[x]>0){e=x;gap=0}else if(++gap>Lh1*0.18)break}if(e-s0+1>=Lh1*0.25)break;s0=e+1}if(s0>=bw)continue;   /* 맨 앞 가는 세로줄(단 나눔 선 조각)은 건너뛴다 */
         let g2=0;for(let x=e+1;x<bw&&cp[x]===0;x++)g2++;const wdt=e-s0+1;if(wdt>Lh1*1.6||wdt<Lh1*0.25||(e+1+g2<bw&&g2<Lh1*0.32))continue;
         if(X0+s0>m+Lh1*0.8)continue;let k=0;for(let x=s0;x<=e;x++)k+=cp[x];const ink=k/(wdt*hh);if(ink<0.35)continue;
-        const cy=Y0+(a+y)/2,near=l=>l.col===c&&Math.abs((l.y0+l.y1)/2-cy)<Lh1*0.7;if(cand.some(l=>near(l)&&(l.ink||0)>=Math.max(0.45,ink*0.85)))continue;
-        let t='';try{t=await SCAN.ocrBox(wk,B,X0+s0-8,Y0+a-8,X0+e+8,Y0+y+8,'0123456789')}catch(er){}t=String(t||'').replace(/\s+/g,'');if(window.SQD)(window.SQDB=window.SQDB||[]).push(c+':'+(Y0+a)+'w'+wdt+'h'+hh+'i'+ink.toFixed(2)+'='+t);if(!/^\d{1,2}$/.test(t))continue;cand=cand.filter(l=>!near(l));   /* 같은 줄의 가는 글자(본문 첫 글자를 숫자로 읽은 것)는 버린다 */
-        cand.push({n:+t,disp:+t,x0:X0+s0,y0:Y0+a,x1:X0+e,y1:Y0+y,c:60,col:c,seq:1,roi:1,ink})}}}catch(e){if(window.SQD)(window.SQDB=window.SQDB||[]).push('ERR '+e.message)}
+        const cy=Y0+(a1+y1b)/2,near=l=>l.col===c&&Math.abs((l.y0+l.y1)/2-cy)<Lh1*0.7;if(cand.some(l=>near(l)&&(l.ink||0)>=Math.max(0.45,ink*0.85)))continue;
+        let t='';try{t=await SCAN.ocrBox(wk,B,X0+s0-8,Y0+a1-8,X0+e+8,Y0+y1b+8,'0123456789')}catch(er){}t=String(t||'').replace(/\s+/g,'');if(window.SQD)(window.SQDB=window.SQDB||[]).push(c+':'+(Y0+a1)+'w'+wdt+'h'+hh+'i'+ink.toFixed(2)+'='+t);if(!/^\d{1,2}$/.test(t))continue;cand=cand.filter(l=>!near(l));   /* 같은 줄의 가는 글자(본문 첫 글자를 숫자로 읽은 것)는 버린다 */
+        cand.push({n:+t,disp:+t,x0:X0+s0,y0:Y0+a1,x1:X0+e,y1:Y0+y1b,c:60,col:c,seq:1,roi:1,ink})}}}catch(e){if(window.SQD)(window.SQDB=window.SQDB||[]).push('ERR '+e.message)}
   {const ik=cand.map(l=>l.ink).sort((a,b)=>b-a),top=ik.slice(0,Math.max(1,Math.ceil(ik.length/2))),mi=top[top.length>>1]||0;if(mi>0.25)cand=cand.filter(l=>l.roi||l.ink>=mi*0.6)}   /* 굵은 번호만 (보기 숫자·식 속 숫자는 가늘다) */
   if(window.SQD)window.SQDO={marg,hMed,two,cand:cand.map(l=>l.n+'@'+Math.round(l.x0)+','+Math.round(l.y0)+'h'+Math.round(l.y1-l.y0)+'i'+(l.ink||0).toFixed(2))};
   if(!cand.length)return [];
@@ -2794,12 +2796,12 @@ const QKV=2;function qkUpgrade(P0){try{if(!P0||!P0.scan||!P0.solRange||P0.solRan
   setTimeout(()=>{LZ.q=LZ.q.then(async()=>{if(P!==P0||(P0.qkV||0)>=QKV)return;const t=performance.now(),ps=[];for(let i=a;i<=b;i++)ps.push(i);let R=null;try{R=await SCAN.quick(P0.doc,{pages:ps})}catch(e){console.error(e);return}if(P!==P0||!R||!R.keys)return;
     let n=0;for(const [q,k] of Object.entries(R.keys)){if(!k||k.kind==='self')continue;const o=P0.solKeys[q];if(o&&o.kind!=='self')continue;P0.solKeys[q]=k;n++;const pr=P0.problems.find(x=>String(x.q)===String(q));if(pr&&(!pr.key||pr.key.kind==='self'||pr.key===o))pr.key=k}
     P0.qkV=QKV;dlog('qkUp','정답 '+n+'개 새로 읽음 '+Math.round(performance.now()-t)+'ms');if(n)try{pvToast(`📘 빠른 정답 ${n}개를 새로 읽었어요 (직접 채점하던 문제가 자동 채점돼요)`)}catch(e){}try{await recentSave()}catch(e){}}).catch(e=>console.error(e))},6000)}catch(e){console.error(e)}}
-/* LZV 4: 자이스토리·EBS 쪽은 새 규칙으로 통째로 다시 읽는다 (예전 버전에서 번호를 밀려 읽은 쪽 바로잡기) */ const LZV=4;function lazyOne(pg){const P0=P;if(!P0||!P0.scan||!window.SCAN)return Promise.resolve();const LZY=!!(P0.lazy||P0.xi||P0.ebs);   /* 자이스토리·EBS는 처음에 통째로 읽었어도 예전 버전 결과면 다시 읽는다 */const key=P0.name+'#'+pg;
+/* LZV 4: 자이스토리·EBS 쪽은 새 규칙으로 통째로 다시 읽는다 (예전 버전에서 번호를 밀려 읽은 쪽 바로잡기) */ const LZV=4,GAPV=2;   /* GAPV: 번호 하나를 놓쳐 영역이 늘어난 쪽 다시 읽기 — 읽는 방법이 나아지면 올려서, 예전 버전에서 한 번 시도하고 포기한 쪽도 다시 읽게 */function lazyOne(pg){const P0=P;if(!P0||!P0.scan||!window.SCAN)return Promise.resolve();const LZY=!!(P0.lazy||P0.xi||P0.ebs);   /* 자이스토리·EBS는 처음에 통째로 읽었어도 예전 버전 결과면 다시 읽는다 */const key=P0.name+'#'+pg;
   // 객관식인데 보기 자리를 못 찾은 문항(예전 버전에서 읽음, 보기 하나가 가려짐)은 그 쪽을 한 번 다시 읽어 보기 자리만 채운다
   const fix=!LZY?[]:P0.problems.filter(p=>p.page===pg&&((!(p.choices&&p.choices.length)&&!p.chTried&&p.key&&p.key.kind==='circled')||(p.lv||0)<(P0.xi||P0.ebs?LZV:(p.q>=3000000&&p.q<4000000?6:3))))
   /* 번호를 하나 놓쳐 앞 문제 영역이 다음 문제까지 길게 늘어난 쪽(예전 읽기 결과): 같은 단의 다른 문제보다 훨씬 길거나 번호가 하나 비면 그 쪽을 한 번 다시 읽는다 */
-  {const L=P0.problems.filter(p=>p.page===pg&&(p.gapTried||0)<2&&p.y1>p.y0);if(L.length>=3){const hs=L.map(p=>p.y1-p.y0).sort((x,y)=>x-y),md=hs[hs.length>>1],has=new Set(P0.problems.map(p=>p.q));
-    for(const p of L){const tall=p.y1-p.y0>md*1.7,gap=p.q<1000&&!has.has(p.q+1)&&(has.has(p.q+2)||has.has(p.q+3));if((tall||gap)&&!fix.includes(p)){p.gapTried=2;p._gap=1;fix.push(p);dlog('lzGap',pg+' '+p.q+(tall?' tall':'')+(gap?' gap':''))}}}}
+  {const L=P0.problems.filter(p=>p.page===pg&&(p.gapV===GAPV?(p.gapTried||0):0)<2&&p.y1>p.y0);if(L.length>=3){const hs=L.map(p=>p.y1-p.y0).sort((x,y)=>x-y),md=hs[hs.length>>1],has=new Set(P0.problems.map(p=>p.q));
+    for(const p of L){const tall=p.y1-p.y0>md*1.7,gap=p.q<1000&&!has.has(p.q+1)&&(has.has(p.q+2)||has.has(p.q+3));if((tall||gap)&&!fix.includes(p)){p.gapTried=2;p.gapV=GAPV;p._gap=1;fix.push(p);dlog('lzGap',pg+' '+p.q+(tall?' tall':'')+(gap?' gap':''))}}}}
   if(!LZY&&!fix.length)return Promise.resolve();   /* 처음에 통째로 읽은 책: 늘어난 문제가 있는 쪽만 다시 읽는다 */
   if(!fix.length&&((P0.lazyDone||[]).includes(pg)||P0.problems.some(p=>p.page===pg)))return Promise.resolve();if(LZ.m[key])return LZ.m[key];
   LZ.n++;const pr=LZ.q=LZ.q.then(async()=>{if(P!==P0)return;const T0=performance.now();if(window.NJPROF)console.log('PROF lzstart',pg,fix.length);
@@ -6209,7 +6211,7 @@ async function twinRec(it,ok){try{const w=await wrGet(it.twinOf);if(!w)return;co
 /* BLOCK 맨 위 '내가 몰랐던 것': 학생이 고른 이유 · 최근 막힌 곳(형광펜) · 약한 유형 (최근 2주) */
 function knowHtml(W){const since=Date.now()-14*DAY,R=W.filter(w=>(w.at||0)>=since),cnt={dir:0,stuck:0,slip:0};for(const w of R){const k=w.cls&&w.cls.k;if(k in cnt)cnt[k]++}
   const n=cnt.dir+cnt.stuck+cnt.slip,hl=R.filter(w=>w.cls&&w.cls.k==='stuck'&&(w.cls.cimg||w.cls.img)).slice(0,2);
-  const by={};for(const w of W){if(wStage(w)==='T')continue;let a=null;try{a=simAuto(w)}catch(e){}if(!a)continue;(by[a.big]=by[a.big]||{big:a.big,w,n:0}).n++}
+  const by={};for(const w of R){if(wStage(w)==='T')continue;   /* 제목대로 최근 2주 오답만 (예전에 다른 책에서 틀린 유형이 섞이지 않게) */let a=null;try{a=simAuto(w)}catch(e){}if(!a)continue;(by[a.big]=by[a.big]||{big:a.big,w,n:0}).n++}
   const weak=Object.values(by).sort((a,b)=>b.n-a.n).slice(0,2);if(!n&&!weak.length)return '';
   const bar=n?`<div class="kwBar">${['stuck','dir','slip'].filter(k=>cnt[k]).map(k=>`<i style="flex:${cnt[k]};background:${CLS[k].c}"></i>`).join('')}</div><div class="kwLeg">${['stuck','dir','slip'].map(k=>`<span style="color:${CLS[k].c}">${({stuck:'막혔다',dir:'방향 모름',slip:'실수'})[k]} <b>${cnt[k]}</b></span>`).join('')}</div>`:'';
   return `<div class="kw"><div class="kwH"><b>내가 몰랐던 것</b><span>최근 2주 · 이유 고른 ${n}문제</span></div>${bar}
