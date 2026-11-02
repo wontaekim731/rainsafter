@@ -4351,7 +4351,8 @@ async function nextQ(){if(QZ.i+1<QZ.list.length){QZ.i++;showQ();return}
     <p style="margin:8px 0 0;font-weight:500">${QZ.fin?`<b>${QZ.fin}문항 완료</b> · `:''}지금 학습률 <b>${pct}%</b></p>
     <div style="margin-top:14px;text-align:left;font-weight:500">${QZ.res.map((r,i)=>`<div class="tb2"><span>${i+1}. ${esc(r.it.src)} ${QN(r.it.q)}번</span><em>${r.skip?'<span class="muted">건너뜀</span>':`${r.ok===true?'<b style="color:var(--omr)">○</b>':r.ok===false?'<b style="color:var(--omr)">／</b>':'—'} · ${r.secs}초`}</em></div>`).join('')}</div></div>`;
   if(QZ.twin)$('#qzFb').innerHTML=`<div style="text-align:center;padding:16px 0"><div class="label">TWIN</div><div class="clock" style="font-size:52px">${QZ.ok} / ${graded.length}</div><p style="margin:8px 0 0;font-weight:500">${QZ.ok?`BLOCK <b>${QZ.ok}개 클리어</b>`:'다음엔 다른 TWIN으로 다시 도전해요'}</p></div>`;
-  $('#qzNext').hidden=true;$('#qzSubmit').hidden=true;$('#qzSkip').hidden=true;$('#qzQuit').textContent='BLOCK으로 돌아가기';badge()}
+  $('#qzNext').hidden=true;$('#qzSubmit').hidden=true;$('#qzSkip').hidden=true;$('#qzQuit').textContent='BLOCK으로 돌아가기';
+  /* 끝 화면에서는 위 검은 막대(나가기 버튼이 있는 곳)가 숨겨지므로 결과 아래에 돌아가기 버튼을 따로 둔다 */$('#qzFb').insertAdjacentHTML('beforeend','<div style="text-align:center;margin:18px 0 6px"><button class="btn big" type="button" id="qzBack">BLOCK으로 돌아가기</button></div>');$('#qzBack').onclick=quitQuiz;badge()}
 function quitQuiz(){QZ=null;$('#vQuiz').classList.remove('end');$('#vQuiz').hidden=true;$('#tabs').hidden=false;$('#qzQuit').textContent='그만하기';document.querySelector('.wrap').style.maxWidth='';view('ana')}
 
 /* ================= 앱 안에서 PDF 풀기: 쪽마다 펜으로 쓰고 [채점하기] = 저장 + 채점 + 표시 ================= */
