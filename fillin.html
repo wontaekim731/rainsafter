@@ -814,7 +814,7 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 #clsPanel .cpSkip{align-self:center;background:none;border:0;color:#8A93A3;font:inherit;font-size:12px;text-decoration:underline;cursor:pointer;padding:2px}
 #clsPanel .cpRow{display:flex;gap:8px}#clsPanel .cpBtn{flex:1;font:inherit;font-size:16px;font-weight:900;border:0;border-radius:14px;padding:13px 16px;background:#7CF2B0;color:#0B1A12;cursor:pointer}#clsPanel .cpBtn.g{flex:0 0 auto;background:#1A1D24;color:#F2F4F7;border:1px solid #232733;font-weight:700}#clsPanel .cpBtn[disabled]{opacity:.35;cursor:default}
 #clsPanel button:focus-visible{outline:2px solid #7CF2B0;outline-offset:2px}
-#clsCap{position:fixed;z-index:84;touch-action:none}#clsCap.mark{cursor:crosshair;outline:2px dashed rgba(250,204,21,.7);outline-offset:2px;border-radius:6px}
+#clsCap{position:fixed;z-index:84;touch-action:none}#clsCap.cap-mark{cursor:crosshair;outline:2px dashed rgba(250,204,21,.7);outline-offset:2px;border-radius:6px}
 .clsChip{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .clsBox{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
 .clsBox img{width:100%;border-radius:8px;background:#fff}
@@ -6230,14 +6230,14 @@ function cpEl(){let d=$('#clsPanel');if(!d){d=document.createElement('div');d.id
 function cpOff(){const d=$('#clsPanel');if(d)d.remove();capOff()}
 /* 확인·이유 고르는 동안 문제 위에 펜으로 쓰지 않게 막고, 형광펜 단계에서는 그 막이 형광펜을 받는다 (좌표는 쪽(PDF) 좌표로 저장) */
 function capOn(mode){let c=$('#clsCap');if(!c){c=document.createElement('div');c.id='clsCap';document.body.appendChild(c)}const b=$('#fProb');if(!b)return;const r=b.getBoundingClientRect();
-  Object.assign(c.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});c.className=mode;c.onpointerdown=c.onpointermove=c.onpointerup=c.onpointercancel=null;
+  Object.assign(c.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});c.className='cap-'+mode;c.dataset.mode=mode;c.onpointerdown=c.onpointermove=c.onpointerup=c.onpointercancel=null;
   if(mode!=='mark'){c.onpointerdown=e=>e.preventDefault();return}
   const pt=e=>{const R=b.getBoundingClientRect(),w=parseFloat(b.style.width)||R.width,h=parseFloat(b.style.height)||R.height;return {x:FOC.X0+((e.clientX-R.left)/R.width)*(w/FOC.zf),y:FOC.Yt-((e.clientY-R.top)/R.height)*(h/FOC.zf)}};
   let cur=null;c.onpointerdown=e=>{e.preventDefault();try{c.setPointerCapture(e.pointerId)}catch(er){}cur=[pt(e)];FOC.hlTmp.push(cur)};
   c.onpointermove=e=>{if(!cur)return;e.preventDefault();cur.push(pt(e));fDrawSoon()};
   c.onpointerup=c.onpointercancel=()=>{if(!cur)return;if(cur.length<3)FOC.hlTmp.pop();cur=null;fDraw();const m=$('#clsPanel [data-mk]');if(m)m.disabled=!FOC.hlTmp.length}}
 function capOff(){const c=$('#clsCap');if(c)c.remove()}
-addEventListener('resize',()=>{const c=$('#clsCap');if(c)capOn(c.className)});
+addEventListener('resize',()=>{const c=$('#clsCap');if(c)capOn(c.dataset.mode||'block')});
 function clsEnter(){if(!FOC.on||!FOC.retry||!FOC.cls||!FOC.p||!S||!S.state)return;const q=FOC.p.q;FOC.clsR=FOC.clsR||{};const R=FOC.clsR[q]=FOC.clsR[q]||{phase:'why'};
   if(R.phase==='solve'){clsSolve(q);return}clsWhy(q)}
 function clsWhy(q){const st=S.state[q]||{},r=st.retry&&st.retry.ans?st.retry:null;FOC.peek=true;FOC.hlTmp=null;fDraw();capOn('block');FOC.clsR[q].phase='why';
