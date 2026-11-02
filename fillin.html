@@ -3361,6 +3361,8 @@ const CATN={O:'정답',T:'고친 문제',S:'여전히 모름',X:'틀림'},CATM={
 async function prevMarks(doc){const m={};for(let pi=1;pi<=doc.numPages;pi++){for(const a of await (await doc.getPage(pi)).getAnnotations()){const c=(a.contentsObj&&a.contentsObj.str)||a.contents||'',r=/^NJ:(\d+):([OXTS])$/.exec(c);if(r)m[+r[1]]=r[2]}}return m}
 function saveCats(){try{if(!P||!S)return;const k='njm:'+P.name,o=JSON.parse(localStorage.getItem(k)||'{}'),t=JSON.parse(localStorage.getItem('njt:'+P.name)||'{}');for(const x of Object.values(S.state)){const c=catOf(x);if(c)o[x.q]=c;if(x.wrongs)t[x.q]=x.wrongs}localStorage.setItem(k,JSON.stringify(o));localStorage.setItem('njt:'+P.name,JSON.stringify(t))}catch(e){}}
 /* 도전 기록: 문제마다 채점할 때마다 맞음/틀림을 남긴다 (원본·풀이본을 합쳐 한 책으로). 몇 번째 도전인지, 몇 번째에 맞혔는지 보여 준다 */
+/* 책을 지우면 그 책의 도전 기록(문제 번호 위 '도전 n회')·날짜별 채점 표시도 지운다 — 같은 책을 다시 넣었을 때 안 푼 문제에 '도전 1회'가 뜨지 않게 (오답노트·BLOCK은 그대로) */
+function bookForget(n){try{const k=histKey(n);localStorage.removeItem(k);delete HC[k];const b=bookOf(n);for(const x of Object.keys(localStorage))if(x.startsWith('njd:'+b+':'))localStorage.removeItem(x)}catch(e){}}
 const histKey=n=>'njh:'+String(n||'').replace(/\s*\(풀이[^)]*\)\s*$/,'');
 const HC={};function histLoad(n){const k=histKey(n);if(HC[k])return HC[k];try{return HC[k]=JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return {}}}   /* 오답 목록에서 여러 번 읽어도 빠르게 */
 function histEvt(q,ok){try{if(!P||!S||ok==null)return;delete HC[histKey(P.name)];const H=histLoad(P.name);(H[q]=H[q]||[]).push({s:S.wall,ok:!!ok,t:Date.now()});localStorage.setItem(histKey(P.name),JSON.stringify(H))}catch(e){}}   /* 새 필기로 채점할 때마다 한 번의 도전 */
@@ -5369,12 +5371,12 @@ async function renderRecent(){let L=[];try{L=(await libAll()).sort((a,b)=>b.at-a
   {const db=$('#recentList .doneBox:not(.origBox)');if(db)db.ontoggle=()=>{RECENT_DONE_OPEN=db.open}}{const ob=$('#recentList .origBox');if(ob)ob.ontoggle=()=>{RECENT_ORIG_OPEN=ob.open}}
   {const ft=document.createElement('div');ft.style.cssText='text-align:right;margin-top:14px';ft.innerHTML=`<button type="button" class="linkDel" id="rmAll">내 문제집 ${Bs.length+tasks.length}개 모두 지우기</button>`;$('#recentList').appendChild(ft);
     const b=$('#rmAll');b.onclick=async()=>{if(!b.dataset.sure){b.dataset.sure=1;b.textContent='모든 문제집과 회차를 지워요 (오답노트는 남음). 한 번 더 누르면 삭제';b.classList.add('sure');setTimeout(()=>{if(b.isConnected&&b.dataset.sure){delete b.dataset.sure;b.textContent=`내 문제집 ${Bs.length+tasks.length}개 모두 지우기`;b.classList.remove('sure')}},5000);return}
-      b.disabled=true;b.textContent='지우는 중…';for(const r of L){try{await libDel(r.name)}catch(e){}try{for(const pf of ['njm:','njt:','njs:','njink:'])localStorage.removeItem(pf+r.name)}catch(e){}}if(P&&!S)P=null;renderRecent();try{if(typeof renderHome==='function')renderHome()}catch(e){}}}
+      b.disabled=true;b.textContent='지우는 중…';for(const r of L){try{await libDel(r.name)}catch(e){}try{for(const pf of ['njm:','njt:','njs:','njink:'])localStorage.removeItem(pf+r.name);bookForget(r.name)}catch(e){}}if(P&&!S)P=null;renderRecent();try{if(typeof renderHome==='function')renderHome()}catch(e){}}}
   $('#recentList').querySelectorAll('[data-atts]').forEach(b=>b.onclick=()=>{const a=b.closest('.rc').querySelector('.rcAtts');if(a)a.hidden=!a.hidden;b.closest('.rcAct').classList.remove('open')});
   $('#recentList').querySelectorAll('[data-fresh]').forEach(b=>b.onclick=()=>{FRESH=true;openRecent(b.dataset.fresh)});
   $('#recentList').querySelectorAll('[data-wx]').forEach(b=>b.onclick=()=>{b.closest('.rcAct').classList.remove('open');wrongRange(b.dataset.wx)});
   $('#recentList').querySelectorAll('[data-rmbook]').forEach(b=>b.onclick=async()=>{if(!b.dataset.sure){b.dataset.sure=1;b.textContent='한 번 더 누르면 삭제';b.classList.add('sure');setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.textContent='🗑 삭제';b.classList.remove('sure')}},5000);return}
-    const B=BK[b.dataset.rmbook];if(!B)return;for(const r of [B.orig,...B.att].filter(Boolean)){await libDel(r.name);try{for(const pf of ['njm:','njt:','njs:','njink:'])localStorage.removeItem(pf+r.name)}catch(e){}if(P&&P.name===r.name&&!S)P=null}
+    const B=BK[b.dataset.rmbook];if(!B)return;for(const r of [B.orig,...B.att].filter(Boolean)){await libDel(r.name);try{for(const pf of ['njm:','njt:','njs:','njink:'])localStorage.removeItem(pf+r.name);bookForget(r.name)}catch(e){}if(P&&P.name===r.name&&!S)P=null}
     renderRecent();try{if(typeof renderHome==='function')renderHome()}catch(e){}});
   const setDone=async(nm,val)=>{const r=await libMeta(nm);if(!r)return;r.done=val;r.doneAt=val?Date.now():null;await libPut(r);renderRecent();try{if(typeof renderHome==='function')renderHome()}catch(e){}};
   $('#recentList').querySelectorAll('[data-done]').forEach(b=>b.onclick=()=>setDone(b.dataset.done,true));
