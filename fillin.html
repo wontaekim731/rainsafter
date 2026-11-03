@@ -820,15 +820,41 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 .clsChip{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .clsBox{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
 .clsBox img{width:100%;border-radius:8px;background:#fff}
+/* ===== v46 덱 · N회독 · 세모/별표 ===== */
+.dk .dkH{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dk .dkH h2{margin:0}.dk .dkH .sub{flex:1}
+.dk .fiGo{margin:0 0 6px}.dk .fiGo small{font-size:13px;font-weight:600;opacity:.7;margin-left:8px}
+.dkB{border-top:1px solid var(--line);padding:12px 0 6px}
+.dkT{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.dkT b{font-size:16px;overflow-wrap:anywhere}
+.dkR{font-size:12px;font-weight:700;color:var(--omr);border:1px solid var(--omr);border-radius:99px;padding:1px 8px}
+.dkT .dd{font-size:12px;color:var(--warn)}
+.dkBar{position:relative;height:8px;border-radius:99px;background:var(--line);margin:10px 0 6px}.dkBar i{display:block;height:100%;border-radius:99px;background:var(--omr);transition:width .4s}
+.dkBar s{position:absolute;top:-4px;bottom:-4px;width:2px;border-radius:2px;background:var(--ink);opacity:.8}
+.dkM{display:flex;gap:14px;font-size:13px;color:var(--muted)}.dkM b{color:var(--ink)}
+.dkSteps{display:flex;flex-direction:column;gap:5px;margin:10px 0 8px}
+.dkStep{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.dkStep.now{color:var(--ink)}
+.dkBl{display:flex;flex-wrap:wrap;gap:3px;min-width:0}.dkBl i{display:block;width:10px;height:10px;border-radius:2px;box-sizing:border-box;flex:none}
+.dkBl i.dkW{background:#E8913F}.dkBl i.dkU{border:1.5px solid var(--muted)}.dkBl i.dkO{background:var(--omr);opacity:.22}
+.dkA{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;align-items:center}.dkOk{font-size:13px;font-weight:700;color:var(--omr)}
+#dkSheet{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45)}#dkSheet[hidden]{display:none}
+#dkSheet .sh{background:var(--paper);color:var(--ink);width:min(560px,100%);max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 16px 24px;display:flex;flex-direction:column;gap:10px;box-sizing:border-box}
+.dkSh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dkPick{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--line)}.dkPick span{min-width:0;overflow-wrap:anywhere}
+.dkPick .sb[disabled]{opacity:.5;cursor:default}
+#dkSheet .sb,#mkAsk .sb{flex:none;overflow:visible;position:static;font:inherit;font-size:14px;font-weight:600;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;padding:8px 14px;cursor:pointer}#dkSheet .sb.pri,#mkAsk .sb.pri{background:var(--omr);border-color:var(--omr);color:#0E1014}#dkSheet .sb[disabled],#mkAsk .sb[disabled]{opacity:.45;cursor:default}
+.tryB.rdB{background:#e7fbef;color:#11653a;border:1px solid #6ee7a8}.tryB.mkB{background:#fff7d6;color:#7a5a00;border:1px solid #f5c84b}
+.chip.amb{color:var(--warn)}
+#mkAsk{position:fixed;left:12px;bottom:84px;z-index:65;width:min(360px,calc(100vw - 24px));box-sizing:border-box;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:12px 14px;box-shadow:0 10px 28px rgba(0,0,0,.4);font-size:14px}
+#mkAsk[hidden]{display:none}#mkAsk .h{display:flex;justify-content:space-between;align-items:center;gap:8px}#mkAsk .x{background:none;border:0;color:var(--muted);font-size:16px;cursor:pointer;padding:4px}
+#mkAsk .r{display:flex;align-items:center;gap:6px;margin-top:8px}#mkAsk .r span{flex:1;min-width:0}#mkAsk .sb{padding:6px 10px;font-size:13px}
 </style>
 </head>
 <body>
 <div id="qlSplash" aria-hidden="true"><svg class="qlBig" width="120" height="140" viewBox="0 0 120 140" aria-hidden="true"><rect style="--i:1" x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:2" x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:3" x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:4" x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:5" x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:6" x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:7" x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:8" x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:9" x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:10" x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:11" x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:12" x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:13" x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:14" x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:15" x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:16" x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:17" x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:18" x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:19" x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlAcc"/></svg><div class="qlWord">QLEAR</div></div>
 <script>window.QL_T0=performance.now()</script>
 <div class="wrap">
-  <header class="appbar"><div class="brand"><span class="qlMark"><svg class="qlQ" width="26" height="31" viewBox="0 0 26 31" aria-hidden="true"><rect style="--i:1" x="4.80" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:2" x="9.20" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:3" x="13.60" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:4" x="18.00" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:5" x="0.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:6" x="22.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:7" x="0.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:8" x="22.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:9" x="0.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:10" x="22.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:11" x="0.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:12" x="13.60" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:13" x="22.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:14" x="0.40" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:15" x="18.00" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:16" x="4.80" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:17" x="9.20" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:18" x="13.60" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:19" x="22.40" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlAcc"/></svg></span><span>QLEAR</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v45.00</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.81)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand"><span class="qlMark"><svg class="qlQ" width="26" height="31" viewBox="0 0 26 31" aria-hidden="true"><rect style="--i:1" x="4.80" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:2" x="9.20" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:3" x="13.60" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:4" x="18.00" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:5" x="0.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:6" x="22.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:7" x="0.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:8" x="22.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:9" x="0.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:10" x="22.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:11" x="0.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:12" x="13.60" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:13" x="22.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:14" x="0.40" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:15" x="18.00" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:16" x="4.80" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:17" x="9.20" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:18" x="13.60" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:19" x="22.40" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlAcc"/></svg></span><span>QLEAR</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px">v46.00</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.81)" aria-label="선생님 모드">⚙</button></header>
 
-  <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>Today</span></button><button type="button" data-v="solve"><svg class="tabQ" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 2.8a8.6 8.6 0 1 0 0 17.2a8.6 8.6 0 1 0 0-17.2zm0 4.1a4.5 4.5 0 1 1 0 9a4.5 4.5 0 1 1 0-9z"/><path d="M13.6 15.9l2.9-2.9 5 5-2.9 2.9z"/></svg><span>Q</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>BLOCK</span><span id="dueBadge" hidden></span></button><button type="button" data-v="task" class="tOnly" style="position:relative"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5h6v2.5H9z"/><path d="M8.5 12h7M8.5 16h5"/></svg><span>TWIN</span><span id="taskBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
+  <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15.5h16V20H4zM6 10h12v4.5H6zM8 4.5h8V9H8z"/></svg><span>STACK</span></button><button type="button" data-v="solve"><svg class="tabQ" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 2.8a8.6 8.6 0 1 0 0 17.2a8.6 8.6 0 1 0 0-17.2zm0 4.1a4.5 4.5 0 1 1 0 9a4.5 4.5 0 1 1 0-9z"/><path d="M13.6 15.9l2.9-2.9 5 5-2.9 2.9z"/></svg><span>Q</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>BLOCK</span><span id="dueBadge" hidden></span></button><button type="button" data-v="task" class="tOnly" style="position:relative"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5h6v2.5H9z"/><path d="M8.5 12h7M8.5 16h5"/></svg><span>TWIN</span><span id="taskBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
     <div id="hHell"></div>
     <div class="hello hOld" id="hHead"></div>
@@ -3357,7 +3383,7 @@ async function gradeFile(file,auto,mem){
 const shortOf=p=>!(p.choices.length===5||(p.key&&p.key.kind==='circled'));
 // 결과 구분: O 정답 · T 고친 문제(틀렸다가 다시 풀어 맞힘, △) · S 여전히 모름(다시 풀어도 틀림) · X 틀림(아직 다시 안 풂)
 const catOf=x=>!x||x.status!=='done'||x.ok==null?null:x.ok?(x.retry&&x.retry.ans&&x.retry.ok===false?'S':'O'):x.retry&&x.retry.ans?(x.retry.ok===true?'T':x.retry.ok===false?'S':'X'):'X';
-const CATN={O:'정답',T:'고친 문제',S:'여전히 모름',X:'틀림'},CATM={O:'○',T:'△',S:'／',X:'／'};
+const CATN={O:'정답',T:'고친 문제',S:'여전히 모름',X:'틀림',A:'애매'},CATM={O:'○',T:'△',S:'／',X:'／',A:'△'};
 async function prevMarks(doc){const m={};for(let pi=1;pi<=doc.numPages;pi++){for(const a of await (await doc.getPage(pi)).getAnnotations()){const c=(a.contentsObj&&a.contentsObj.str)||a.contents||'',r=/^NJ:(\d+):([OXTS])$/.exec(c);if(r)m[+r[1]]=r[2]}}return m}
 function saveCats(){try{if(!P||!S)return;const k='njm:'+P.name,o=JSON.parse(localStorage.getItem(k)||'{}'),t=JSON.parse(localStorage.getItem('njt:'+P.name)||'{}');for(const x of Object.values(S.state)){const c=catOf(x);if(c)o[x.q]=c;if(x.wrongs)t[x.q]=x.wrongs}localStorage.setItem(k,JSON.stringify(o));localStorage.setItem('njt:'+P.name,JSON.stringify(t))}catch(e){}}
 /* 도전 기록: 문제마다 채점할 때마다 맞음/틀림을 남긴다 (원본·풀이본을 합쳐 한 책으로). 몇 번째 도전인지, 몇 번째에 맞혔는지 보여 준다 */
@@ -3370,7 +3396,7 @@ function histSave(){}
 function histOf(q){const L=(P&&histLoad(P.name)[q])||[],k=L.findIndex(a=>a.ok);return {n:L.length,first:k<0?null:k+1}}
 function pvBadge(pg){try{if(!P||!pg||!pg.wrap)return;pg.wrap.querySelectorAll('.tryB').forEach(e=>e.remove());const H=histLoad(P.name);
   for(const p of P.problems){if(p.page!==pg.n)continue;const L=H[p.q];if(!L||!L.length)continue;const k=L.findIndex(a=>a.ok),x=(p.lx-(pg.ox||0))*pg.k,y=(pg.H-p.ly)*pg.k,b=document.createElement('div');b.className='tryB '+(k<0?'no':'ok');
-    {const t=qtOf(p.q),tt=t>=5?`⏱${mmss(t)}`:'';b.textContent=k===0?tt:[k<0?`도전 ${L.length}회`:(L.length>k+1?`${k+1}번째 정답 · 도전 ${L.length}회`:`${k+1}번째 정답`),tt].filter(Boolean).join(' · ');if(!b.textContent)continue}   /* 한 번에 맞힌 문제는 '1번째 정답' 표시 안 함 (시간만) */b.style.left=Math.round(x-(p.ls||12)*pg.k*0.2)+'px';b.style.top=Math.max(0,Math.round(y-(p.ls||12)*pg.k*1.1-30))+'px';   /* 번호 바로 위 빈칸에 */pg.wrap.appendChild(b)}}catch(e){}}
+    {const t=qtOf(p.q),tt=t>=5?`⏱${mmss(t)}`:'';b.textContent=k===0?tt:[k<0?`도전 ${L.length}회`:(L.length>k+1?`${k+1}번째 정답 · 도전 ${L.length}회`:`${k+1}번째 정답`),tt].filter(Boolean).join(' · ');if(!b.textContent)continue}   /* 한 번에 맞힌 문제는 '1번째 정답' 표시 안 함 (시간만) */b.style.left=Math.round(x-(p.ls||12)*pg.k*0.2)+'px';b.style.top=Math.max(0,Math.round(y-(p.ls||12)*pg.k*1.1-30))+'px';   /* 번호 바로 위 빈칸에 */pg.wrap.appendChild(b)}try{deckBadge(pg)}catch(e){}}catch(e){}}
 /* 문제별 시간: 펜으로 쓰고 있는 문제(없으면 화면 가운데 문제)에 1초씩 더한다. 일시정지·채점 후·5분 넘게 손 안 대면 멈춤 */
 /* 문항 방문 기록 (선생님 분석용): 문제마다 [처음 본 시각, 머문 초, 그날 풀이 시작 후 초]를 방문마다 하나씩. 학생 화면에는 보이지 않는다 */
 const qvKey=n=>'njqv:'+String(n||'').replace(/\s*\(풀이[^)]*\)\s*$/,'');const QV={k:null,m:{},cur:null,dirty:0};
@@ -3864,7 +3890,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v45.00 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v46.00 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
@@ -5145,7 +5171,7 @@ async function pvGrade(){if(keysPending()){try{pvToast('📘 아직 정답을 �
     if(!S.frozen){if(S.paused)pause();tick();S.frozen=true;S.frozenAt=performance.now();S.frozenEl=(S.frozenAt-S.t0)/1000;$('#clock').classList.add('frozen');$('#pvClock').classList.add('frozen');$('#pause').hidden=true}   // 채점하면 시계는 멈춤
     const pend=(P.baseStrokes||[]).some(s=>!S.seen.has(s.sig))||rinkAll().some(s=>!S.seen.has(s.sig))||ungraded().length||memInk().some(s=>!s.raster&&!S.seen.has(s.sig));   // 자동 저장으로 이미 파일에 옮겨진 새 필기도 채점   
     const lateK=selfPending().some(x=>{if(x.status!=='check'||!x.self||x.teacher||x.retry)return false;const p=P.problems.find(z=>z.q===x.q);return !!(p&&!isSelf(p)&&p.key&&p.key.text)});   /* 정답 없이 미뤄 둔 직접 채점 문항에 정답이 늦게 읽혔으면 새 필기가 없어도 채점 */
-    if(saved||PV.forceGrade||pend||lateK||selfPending().some(x=>x.status==='check'&&!x.self)){PV.forceGrade=false;S.goRes=null;RT_SNAP=rtSnap();GFRESH=new Set();await gradeFile(null,false,{all:memInk()});goResult()}else fb('nk','새로 쓴 필기가 없습니다. 틀린 문제를 고친 뒤 다시 누르세요.');
+    if(saved||PV.forceGrade||pend||lateK||selfPending().some(x=>x.status==='check'&&!x.self)){PV.forceGrade=false;S.goRes=null;RT_SNAP=rtSnap();GFRESH=new Set();await gradeFile(null,false,{all:memInk()});goResult();try{await mkGo()}catch(e){console.error(e)}}else fb('nk','새로 쓴 필기가 없습니다. 틀린 문제를 고친 뒤 다시 누르세요.');
     if(selfPending().some(x=>GFRESH.has(x.q)))setTimeout(()=>selfSheet(()=>setTimeout(retryAsk,300),true),50);else setTimeout(retryAsk,900);setTimeout(clsAfter,700);
   }catch(e){console.error(e);fb('bad','저장하거나 채점하지 못했습니다: '+e.message)}
   finally{PV.busy=false;$('#pvGrade').disabled=false;if(S&&S.frozen){PV.review=true;const b=$('#pvGrade');if(ungraded().length)b.innerHTML=goHtml();else b.textContent='이어서 풀기';b.classList.add('resume');$('#pvPause').hidden=true}pvStatus();pvSum()}}
@@ -5487,18 +5513,19 @@ async function fixThumbs(){try{if(localStorage.getItem('njTh2'))return}catch(e){
 setTimeout(()=>{fixThumbs().catch(e=>console.error(e))},6000);
 async function logWrongsNow(){   // 지금 학습에서 틀린(고친·여전히 모름 포함) 문항을 기록. 문제 그림도 같이 보관해서 나중에 오답노트에 바로 담을 수 있게
   if(!P||P.task)return;const R=S||LAST;if(!R)return;const P0=P;
-  const list=Object.values(R.state).filter(x=>{const c=catOf(x);return c&&c!=='O'});if(!list.length)return;
+  const MK=mkLoad(P0.name),mkOk=q=>{const m=MK[q];return m&&m.ok&&m.doc===P0.name?m:null};const list=Object.values(R.state).filter(x=>{const c=catOf(x);return c&&(c!=='O'||mkOk(x.q))});   /* 맞혔어도 △·★를 확정한 문제는 '애매'(A)로 */
+  for(const q in MK){const m=mkOk(q),p=m&&m.k==='star'&&!catOf(R.state[q])&&P0.problems.find(z=>+z.q===+q);if(p)list.push({q:p.q,status:'done',ok:false,ans:'',earlier:true,star:1})}   /* ★만 치고 안 푼 문제도 BLOCK으로 (모름) */if(!list.length)return;
   let TM=null,med=null;const need=[];
   for(const x of list){const p=P0.problems.find(z=>z.q===x.q);if(!p)continue;const id=P0.name+'#'+x.q;if(!(await wrGet(id)))need.push({x,p,id,box:await contentBox(p)})}
   let pdfs=[];if(need.length){const items=need.map(n=>({page:n.p.page,box:n.box}));if(!P0.bytes){for(const it of items)pdfs.push(await clipImg(P0,it))}else{try{pdfs=await pdfClipsOff(P0.bytes.slice(),items)}catch(e){console.error(e);pdfs=await pdfClips(P0.bytes.slice(),items)}}}
   for(const x of list){const p=P0.problems.find(z=>z.q===x.q);if(!p)continue;const id=P0.name+'#'+x.q,c=catOf(x);let w=await wrGet(id);
     if(!w){const k=need.findIndex(n=>n.id===id);if(k<0||!pdfs[k])continue;const box=need[k].box,bw=box.right-box.left,bh=box.top-box.bottom;
       if(!TM){TM=perQ(R);const vals=Object.values(TM.T).map(v=>v/1000).sort((a,b)=>a-b);med=vals.length>=2?vals[vals.length>>1]:null}
-      const tag=await tagOf(p),t=TM.T[p.q]!=null?TM.T[p.q]/1000:null,dg=diagnose(p,x,t,med,tag);
+      const tag=await tagOf(p),t=TM.T[p.q]!=null?TM.T[p.q]/1000:null,dg=(()=>{try{return diagnose(p,x,t,med,tag)}catch(e){return {s:'',why:''}}})();
       w={id,src:P0.name,q:p.q,page:p.page,day:dayKey(Date.now()),at:Date.now(),topic:tag.topic,rate:tag.rate,key:p.key,keyShow:showKey(p),keyImg:(isSelf(p)||isMulti(p))?await keyImg(p):'',w:bw,h:bh,pdf:pdfs[k],thumb:thumbOf(p,box),th2:1,
         choices:p.choices.map(c=>({n:c.n,x:c.x-box.left,y:c.y-box.bottom,s:c.s})),ans:x.earlier?'':fmt(p,x.ans),t,auto:dg.s,reason:dg.s,why:dg.why}}
     if(!x.pw&&p.key&&p.key.kind==='nparts'&&x.ans&&x.ans!=='✗'){const A=String(x.ans).split('|');x.pw=p.key.nums.map((v,i)=>v!=null&&A[i]!==v?i+1:null).filter(Boolean)}
-    w.cat=c;if(x.cls)w.cls=x.cls;if(x.pw&&x.pw.length)w.pw=x.pw;if(x.pn&&x.pn.length)w.pn=x.pn;else delete w.pn;w.tries=Math.max(w.tries||1,x.wrongs||1);w.retry=x.retry&&x.retry.ans?fmt(p,x.retry.ans):(w.retry||'');w.upd=Date.now();
+    w.cat=c==='O'?'A':c;if(x.cls)w.cls=x.cls;if(x.star){w.star=1;w.ans='★ 모름';if(!(w.cls&&w.cls.k))w.cls={k:'dir',auto:'star',at:Date.now()}}else delete w.star;if(x.pw&&x.pw.length)w.pw=x.pw;if(x.pn&&x.pn.length)w.pn=x.pn;else delete w.pn;w.tries=Math.max(w.tries||1,x.wrongs||1);w.retry=x.retry&&x.retry.ans?fmt(p,x.retry.ans):(w.retry||'');w.upd=Date.now();
     if(LAST&&LAST.ana&&LAST.ana[x.q]&&LAST===R)w.reason=LAST.ana[x.q].pick||w.reason;
     await wrPut(w)}
   if(!$('#vAna').hidden)renderAnaTab();
@@ -5647,16 +5674,16 @@ async function homeSimple(){const box=$('#hHell');try{await qpHdr()}catch(e){}co
   const imp=items.slice().sort((a,b)=>(a.done-b.done)||((b.added||0)-(a.added||0)));   /* 중요 오답: 아직 못 끝낸 것 먼저, 최근에 담은 순 */
   const left=imp.filter(i=>!i.done);
   const card=i=>`<button type="button" class="impC" data-iid="${esc(i.id)}"><div class="th">${i.thumb?`<img src="${i.ts||i.thumb}" alt="" loading="lazy" decoding="async">`:''}</div><div class="nm">${(()=>{const t=QN(i.q);return typeof t==='number'&&t>=1000?'':`<b>${t}번</b>`})()}<span>${esc(String(i.src||'').replace(/\s*\(풀이[^)]*\)\s*$/,''))}</span></div><div class="st">${i.done?'<em class="ok">해결</em>':`<em>${(i.hist||[]).length?'다시 도전':'다시 풀기'}</em>`}</div></button>`;
-  const REPS=teacherOn()?await rpAll().catch(()=>[]):[];
-  box.innerHTML=`<div class="fiHero"><div class="who">Today · ${esc(LS.get('name',''))}</div><div class="big">${td.n?`${td.n}문제 풀었어요`:'오늘 시작해요'}</div><div class="sub2">${td.n?`맞음 ${td.ok}`:''}${open?`${td.n?' · ':''}<b>BLOCK ${open}</b>`:''}</div></div>
-   <div class="fiCard">${gate.t?`<div class="bk"><span>${esc(gate.t)}</span></div>`:''}<button class="fiGo" type="button" data-gate>${esc(gate.a)} <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></button>
-     <div class="sub" style="margin-top:8px;text-align:center">문제집 풀기 → GO 채점 → 틀린 문제는 BLOCK에서 클리어</div></div>
-   <div class="cc ocW"><div class="impH"><h2>오늘의 오답 카드</h2>${deck.length?`<span class="sub">${deck.length}장</span>`:''}</div>
-     ${deck.length?`<button type="button" class="ocPrev" data-oc><img src="${deck[0].cls.cimg||deck[0].cls.img}" alt="형광펜으로 표시한 줄"><span>무슨 뜻이었는지 떠올려 보세요</span></button><button class="sb pri" type="button" data-oc style="margin-top:8px">카드 ${deck.length}장 넘기기</button>`
-       :wr.some(w=>w.cls&&w.cls.k==='stuck'&&(w.cls.cimg||w.cls.img))?`<p class="sub" style="margin:0">오늘 카드는 다 넘겼어요. 내일 다시 나와요.</p>`:`<p class="sub" style="margin:0">틀린 문제에서 '여기서 막혔다'를 고르고 형광펜을 그으면, 그 줄이 카드가 돼요.</p>`}</div>
+  const DK=await deckGet().catch(()=>({key:DECK_KEY,books:[]}));const REPS=teacherOn()?await rpAll().catch(()=>[]):[];
+  box.innerHTML=`<div class="fiHero"><div class="who">오늘 · ${esc(LS.get('name',''))}</div><div class="big">${td.n?`${td.n}문제 풀었어요`:'오늘 시작해요'}</div><div class="sub2">${td.n?`맞음 ${td.ok}`:''}${open?`${td.n?' · ':''}<b>BLOCK ${open}</b>`:''}</div></div>
+   ${DK.books.length?deckHtml(DK,docs):`<div class="fiCard">${gate.t?`<div class="bk"><span>${esc(gate.t)}</span></div>`:''}<button class="fiGo" type="button" data-gate>${esc(gate.a)} <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></button>
+     <div class="sub" style="margin-top:8px;text-align:center">문제집 풀기 → GO 채점 → 틀린 문제는 BLOCK에서 클리어</div></div>${deckHtml(DK,docs)}`}
+   <div class="cc ocW"><div class="impH"><h2>오늘의 막힌 줄</h2>${deck.length?`<span class="sub">${deck.length}장</span>`:''}</div>
+     ${deck.length?`<button type="button" class="ocPrev" data-oc><img src="${deck[0].cls.cimg||deck[0].cls.img}" alt="형광펜으로 표시한 줄"><span>무슨 뜻이었는지 떠올려 보세요</span></button><button class="sb pri" type="button" data-oc style="margin-top:8px">막힌 줄 ${deck.length}개 넘겨 보기</button>`
+       :wr.some(w=>w.cls&&w.cls.k==='stuck'&&(w.cls.cimg||w.cls.img))?`<p class="sub" style="margin:0">오늘 막힌 줄은 다 봤어요. 내일 다시 나와요.</p>`:`<p class="sub" style="margin:0">틀린 문제에서 '여기서 막혔다'를 고르고 형광펜을 그으면, 그 줄이 여기에 모여요.</p>`}</div>
    <button type="button" class="cc blkRow" data-gapgo><b class="bk">BLOCK ${String(open).padStart(2,'0')}</b><span>남은 틀린 문제</span><span aria-hidden="true">→</span></button>
    ${teacherOn()?`<div class="cc"><h2>선생님</h2><div class="ln" style="border:0;margin:0;padding:0"><span>채점 신고 <b>${REPS.length}</b>건</span><span style="display:flex;gap:6px">${REPS.length?'<button class="sb pri" data-rexp>파일로 내보내기</button><button class="sb" data-rclr>비우기</button>':''}</span></div></div>`:''}`;
-  const q=x=>box.querySelector(x);q('[data-gate]').onclick=gate.go;box.querySelectorAll('[data-oc]').forEach(b=>b.onclick=()=>ocOpen(deck,homeSimple));{const g=q('[data-gapgo]');if(g)g.onclick=()=>view('ana');const bk=q('[data-books]');if(bk)bk.onclick=()=>view('solve')}
+  const q=x=>box.querySelector(x);{const g0=q('[data-gate]');if(g0)g0.onclick=gate.go}deckBind(box,DK,docs,homeSimple);box.querySelectorAll('[data-oc]').forEach(b=>b.onclick=()=>ocOpen(deck,homeSimple));{const g=q('[data-gapgo]');if(g)g.onclick=()=>view('ana');const bk=q('[data-books]');if(bk)bk.onclick=()=>view('solve')}
   box.querySelectorAll('[data-iid]').forEach(b=>b.onclick=()=>{const it=imp.find(i=>String(i.id)===b.dataset.iid);if(it)itemRetry([it])});
   {const a=q('[data-impall]');if(a)a.onclick=()=>itemRetry(left)}
   {const e=q('[data-rexp]');if(e)e.onclick=()=>rpExport();const c=q('[data-rclr]');if(c)c.onclick=async()=>{if(!confirm(`채점 신고 ${REPS.length}건을 지울까요?`))return;for(const r of REPS)await plDel(r.key);homeSimple()}}}
@@ -5827,6 +5854,157 @@ async function renderTerm(docs){const box=$('#hTerm');if(!box)return;docs=docs||
     q('[data-gdel]').onclick=async()=>{if(TERM.sure!==g.key){TERM.sure=g.key;renderTerm(docs);return}TERM.edit=null;TERM.sure=null;await plDel(g.key);renderHome()};
     q('[data-done]').onclick=async()=>{TERM.edit=null;await keep(g);renderHome()}});
 }
+/* ================= STACK(덱) · N회독 · 세모/별표 (v46) =================
+   STACK: plan 저장소 'deck:main' = {key,name,books:[{name,from,to,end,start,at,rounds:[{at,qs?,copy?}]}]}
+   - 덱에 올릴 수 있는 문제집: [Q]에서 추가가 끝난(문항·정답을 읽은) 원본만, 최대 3권
+   - 회독: 1회독 = 범위 전체. 범위를 다 풀어야 '1회독 완료'. 다음 회독 = 앞 회독에서 틀렸거나 △·★를 확정한 문제만
+   - 오답 다시 풀기(BLOCK)는 회독과 상관없이 언제든 할 수 있다 (회독 '완료' 기준만 엄격하게)
+   - 진행률은 둘로: 진도율(이번 회독 범위 중 처음 풀어 본 비율) · 첫 시도 정답률 */
+const DECK_KEY='deck:main',DECK_MAX=3;let DKRUN=null;
+async function deckGet(){const g=(await plAll().catch(()=>[])).find(x=>x.key===DECK_KEY);return g||{key:DECK_KEY,name:'STACK',books:[],at:Date.now()}}
+const deckPut=g=>plPut(g);
+function deckOrigs(docs){return docs.filter(d=>(d.orig||!d.from&&d.orig!==false)&&!d.task).sort((a,b)=>b.at-a.at)}
+/* [Q]에서 추가가 끝난 문제집: 문항을 읽었고 빠른 정답도 읽었다 (지금 뒤에서 읽는 중이면 아직) */
+function bookReady(r){if(!r)return false;const ps=r.problems||[];if(!(r.n||ps.length))return false;try{if(typeof BGQ!=='undefined'&&BGQ&&BGQ.name===r.name)return false}catch(e){}return !!(r.keyFound||ps.some(p=>p.key)||(r.solKeys&&Object.keys(r.solKeys).length))}
+function deckQs(b,o){const a=+b.from||0,z=+b.to||0,inR=q=>(!a||q>=a)&&(!z||q<=z);
+  const qs=[...new Set(((o&&o.problems)||[]).map(p=>+p.q).filter(q=>q>0&&inR(q)))];
+  if(!qs.length&&a&&z&&z>=a)for(let q=a;q<=z;q++)qs.push(q);return qs.sort((x,y)=>x-y)}
+function deckCats(name,docs){const cat={};for(const d of docs.filter(d=>d.name===name||d.from===name)){const c=loadCats(d.name);for(const q in c)(cat[q]=cat[q]||[]).push(c[q])}return cat}
+const dkQN=q=>+q<1000?`${+q}번`:'';
+/* 한 권의 회독 상태. 1회독은 그 문제의 첫 채점(도전 기록 첫 번째)으로, 2회독부터는 그 회독을 시작한 뒤의 첫 채점으로 판단 */
+function deckState(b,docs){const o=docs.find(d=>d.name===b.name);if(!o)return {miss:true};
+  const all=deckQs(b,o),H=histLoad(b.name),C=deckCats(b.name,docs),M=mkLoad(b.name),today=dayKey(Date.now());
+  const R=b.rounds&&b.rounds.length?b.rounds:[{at:b.at||0}];
+  const ev=(i,set)=>{const at=i?R[i].at||0:0,res={set,ok:[],wr:[],un:[],td:0};
+    for(const q of set){const L=(H[q]||[]).filter(a=>(a.t||0)>=at),m=M[q],mk=m&&m.ok&&(!i||(m.t||0)>=at)?m:null;let done=false,wrong=false;
+      if(L.length){done=true;wrong=!L[0].ok||!!mk;if(dayKey(L[0].t||0)===today)res.td++}
+      else if(!i&&C[q]){done=true;wrong=C[q].some(v=>v!=='O')||!!mk}
+      else if(mk&&mk.k==='star'){done=true;wrong=true;if(dayKey(mk.t||0)===today)res.td++}   /* ★(모름)만 쳐도 '풀어 본 문제'로 세고 다음 회독에 넣는다 */
+      (done?(wrong?res.wr:res.ok):res.un).push(q)}
+    return res};
+  const rows=[];for(let i=0;i<R.length;i++)rows.push(ev(i,i?(R[i].qs||[]):all));
+  const cur=rows[rows.length-1],complete=cur.set.length>0&&!cur.un.length;
+  return {o,all,rows,r:rows.length,cur,complete,next:complete?cur.wr.slice():null,clear:complete&&!cur.wr.length,R}}
+/* 목표일이 있으면: 오늘까지 와 있어야 할 지점(막대 위 얇은 선) + 오늘 분량 */
+function deckPace(b,st){if(!b.end)return null;const dl=dLeft(b.end);if(dl==null)return null;const i=st.r-1,s0=i?dayKey(st.R[i].at):(b.start||dayKey(b.at||Date.now()));
+  const d0=new Date(s0+'T00:00:00').getTime(),d1=new Date(b.end+'T00:00:00').getTime(),t=new Date(dayKey(Date.now())+'T00:00:00').getTime();
+  const tot=Math.max(1,Math.round((d1-d0)/864e5)+1),el=Math.round((t-d0)/864e5)+1,E=Math.max(0,Math.min(1,el/tot));
+  const rem0=st.cur.un.length+st.cur.td,quota=dl>=0&&rem0>0?Math.ceil(rem0/(dl+1)):0;return {dl,E,quota,td:st.cur.td}}
+function deckSteps(st){const cap=40;return `<div class="dkSteps">${st.rows.map((x,i)=>{const n=x.set.length,sc=n>cap?cap/n:1,W=Math.round(x.wr.length*sc),U=Math.round(x.un.length*sc),O=Math.max(0,Math.round(n*sc)-W-U),last=i===st.rows.length-1,fin=!x.un.length&&n>0;
+    return `<div class="dkStep${last?' now':''}"><span class="l">${i+1}회독</span><span class="dkBl" role="img" aria-label="${i+1}회독 ${n}문제 중 다시 풀 문제 ${x.wr.length}, 안 푼 문제 ${x.un.length}">${'<i class="dkW"></i>'.repeat(W)}${'<i class="dkU"></i>'.repeat(U)}${'<i class="dkO"></i>'.repeat(O)}</span><span class="r">${fin?(x.wr.length?`완료 · 다시 풀 ${x.wr.length}`:'완료 · 클리어'):`${n-x.un.length}/${n}`}</span></div>`}).join('')}</div>`}
+function deckBookHtml(b,i,st){if(st.miss)return `<div class="dkB" data-dk="${i}"><div class="dkT"><b>${esc(b.name)}</b></div><p class="sub" style="margin:4px 0">이 기기에서 문제집을 찾지 못했어요.</p><div class="dkA"><button class="sb" type="button" data-dkset="${i}">설정</button></div></div>`;
+  const c=st.cur,n=c.set.length,dn=n-c.un.length,P1=n?Math.round(dn/n*100):0,acc=dn?Math.round(c.ok.length/dn*100):null,pc=deckPace(b,st),rg=b.from||b.to?`${b.from||'처음'}~${b.to||'끝'}번`:'전체 범위';
+  return `<div class="dkB" data-dk="${i}"><div class="dkT"><b>${esc(b.name)}</b><span class="dkR">${st.r}회독</span>${pc?`<span class="dd">${dTag(pc.dl)}</span>`:''}</div>
+    <div class="sub">${rg}${pc&&pc.quota?` · 오늘 <b>${Math.min(pc.td,pc.quota)}/${pc.quota}</b>문제`:''}</div>
+    <div class="dkBar" role="img" aria-label="진도율 ${P1}%"><i style="width:${P1}%"></i>${pc?`<s style="left:calc(${(pc.E*100).toFixed(1)}% - 1px)" title="오늘까지 와 있어야 할 지점"></s>`:''}</div>
+    <div class="dkM"><span>진도 <b>${P1}%</b></span><span>첫 시도 정답 <b>${acc==null?'—':acc+'%'}</b></span></div>
+    ${deckSteps(st)}
+    <div class="dkA">${st.clear?'<span class="dkOk">모든 회독 클리어</span>':st.complete?`<button class="sb pri" type="button" data-dknext="${i}">${st.r+1}회독 시작 · ${st.next.length}문제</button>`:`<button class="sb" type="button" data-dkgo="${i}">이어 풀기 ›</button>`}<button class="sb" type="button" data-dkset="${i}">설정</button></div></div>`}
+/* 홈 덱 카드: 문제집이 있으면 맨 위 '이어 풀기'는 STACK에서 마지막으로 푼 문제집으로 */
+function deckActive(g,docs,S){let best=-1,bt=-1;g.books.forEach((b,i)=>{const st=S[i];if(st.miss||st.clear||st.complete)return;let t=0;for(const d of docs)if(d.from===b.name||d.name===b.name&&!d.orig)t=Math.max(t,d.at||0);const H=histLoad(b.name);for(const q in H)for(const a of H[q])t=Math.max(t,a.t||0);if(t>bt){bt=t;best=i}});return best}
+function deckHtml(g,docs){const S=g.books.map(b=>deckState(b,docs)),ai=deckActive(g,docs,S),A=ai>=0?g.books[ai]:null;
+  return `<div class="cc dk"><div class="dkH"><h2>STACK</h2><span class="sub">${g.books.length}/${DECK_MAX}권</span>${g.books.length<DECK_MAX?'<button class="sb" type="button" data-dkadd>＋ 문제집 쌓기</button>':''}</div>
+    ${A?`<button class="fiGo" type="button" data-dkgo="${ai}">이어 풀기 <small>${esc(A.name)} · ${S[ai].r}회독</small></button>`:''}
+    ${g.books.map((b,i)=>deckBookHtml(b,i,S[i])).join('')||'<p class="sub" style="margin:0">[Q]에서 추가를 마친 문제집을 최대 3권까지 쌓아 두고, 여기서 바로 이어 풀어요. 범위와 목표일은 나중에 [설정]에서 정해도 돼요.</p>'}</div>`}
+function deckBind(box,g,docs,again){const on=(s,f)=>box.querySelectorAll(s).forEach(b=>b.onclick=()=>f(b));
+  on('[data-dkadd]',()=>deckAddSheet(again));on('[data-dkgo]',b=>deckGo(+b.dataset.dkgo));on('[data-dkset]',b=>deckSetSheet(+b.dataset.dkset,again));
+  on('[data-dknext]',async b=>{const i=+b.dataset.dknext,G=await deckGet(),bk=G.books[i];if(!bk)return;const st=deckState(bk,await libAll());if(!st.complete||!st.next||!st.next.length)return;
+    bk.rounds=st.R.slice();bk.rounds.push({at:Date.now(),qs:st.next});await deckPut(G);again()})}
+function dkShell(html){let d=$('#dkSheet');if(!d){d=document.createElement('div');d.id='dkSheet';document.body.appendChild(d);d.onclick=e=>{if(e.target===d)d.hidden=true}}d.innerHTML=`<div class="sh" role="dialog" aria-modal="true">${html}</div>`;d.hidden=false;return d}
+async function deckAddSheet(again){const g=await deckGet(),docs=await libAll().catch(()=>[]),O=deckOrigs(docs),full=g.books.length>=DECK_MAX,inD=new Set(g.books.map(b=>b.name));
+  const d=dkShell(`<div class="dkSh"><b style="font-size:18px">STACK에 문제집 쌓기</b><button class="sb" type="button" data-x>닫기</button></div>
+    <p class="sub" style="margin:0">${full?`STACK에는 최대 ${DECK_MAX}권까지 쌓을 수 있어요. 한 권을 빼면 새로 쌓을 수 있어요.`:'[Q]에서 문항·정답 읽기가 끝난 문제집만 쌓을 수 있어요.'}</p>
+    ${O.map(r=>{const ok=bookReady(r),has=inD.has(r.name);return `<div class="dkPick"><span><b>${esc(r.name)}</b>${r.n?` <span class="sub">${r.n}문항</span>`:''}</span>${has?'<span class="sub">쌓음</span>':ok?`<button class="sb pri" type="button" data-up="${esc(r.name)}"${full?' disabled':''}>쌓기</button>`:'<button class="sb" type="button" disabled title="[Q]에서 정답 읽기가 끝나면 쌓을 수 있어요">준비 중</button>'}</div>`}).join('')||'<p class="sub">아직 넣은 문제집이 없어요. [Q] 탭에서 문제집 PDF를 먼저 넣어 주세요.</p>'}`);
+  d.querySelector('[data-x]').onclick=()=>{d.hidden=true};
+  d.querySelectorAll('[data-up]').forEach(b=>b.onclick=async()=>{const G=await deckGet();if(G.books.length>=DECK_MAX||G.books.some(x=>x.name===b.dataset.up))return;const now=Date.now();G.books.push({name:b.dataset.up,start:dayKey(now),at:now,rounds:[{at:now}]});await deckPut(G);d.hidden=true;again()})}
+async function deckSetSheet(i,again){const g=await deckGet(),b=g.books[i];if(!b)return;const today=dayKey(Date.now());
+  const d=dkShell(`<div class="dkSh"><b style="font-size:18px">${esc(b.name)}</b><button class="sb" type="button" data-x>닫기</button></div>
+    <label class="sub">범위 (문항 번호, 비우면 전체)</label><div style="display:flex;gap:8px;align-items:center"><input class="txt" inputmode="numeric" placeholder="시작 번호" data-f value="${esc(b.from||'')}" style="width:110px"> ~ <input class="txt" inputmode="numeric" placeholder="끝 번호" data-t value="${esc(b.to||'')}" style="width:110px"></div>
+    <label class="sub">목표일 (예: 중간고사 전날)</label><input class="txt" type="date" data-e min="${today}" value="${esc(b.end||'')}" style="max-width:200px">
+    <p class="sub" style="margin:0">목표일을 넣으면 오늘 분량과 '오늘까지 와 있어야 할 지점'을 보여 줘요.</p>
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-top:6px"><button class="sb" type="button" data-rm>STACK에서 빼기</button><button class="sb pri" type="button" data-ok>저장</button></div>`);
+  d.querySelector('[data-x]').onclick=()=>{d.hidden=true};
+  d.querySelector('[data-ok]').onclick=async()=>{const G=await deckGet(),B=G.books[i];if(!B)return;const f=parseInt(d.querySelector('[data-f]').value,10),t=parseInt(d.querySelector('[data-t]').value,10),e=d.querySelector('[data-e]').value;
+    if(f>0)B.from=f;else delete B.from;if(t>0)B.to=t;else delete B.to;if(B.from&&B.to&&B.to<B.from){const x=B.from;B.from=B.to;B.to=x}if(e)B.end=e;else delete B.end;await deckPut(G);d.hidden=true;again()};
+  const rm=d.querySelector('[data-rm]');rm.onclick=async()=>{if(!rm.dataset.sure){rm.dataset.sure=1;rm.textContent='한 번 더 누르면 빼요 (풀이 기록은 남아요)';return}const G=await deckGet();G.books.splice(i,1);await deckPut(G);d.hidden=true;again()}}
+/* 이어 풀기: 1회독은 풀던 풀이본에서 안 푼 첫 문제 쪽으로. 2회독부터는 새 풀이본(지난 필기가 안 보이게)에서 이번 회독 문제만 표시 */
+async function deckGo(i){const g=await deckGet(),b=g.books[i];if(!b)return;const docs=await libAll().catch(()=>[]),st=deckState(b,docs);if(st.miss)return;
+  const R=st.R,cr=R[R.length-1],target=st.cur.un.length?st.cur.un[0]:st.cur.set[0];view('solve');
+  try{if(R.length>1){if(cr.copy&&docs.some(d=>d.name===cr.copy))await openRecent(cr.copy);else{FRESH=true;await openRecent(b.name);FRESH=false;if(P&&P.name!==b.name&&bookOf(P.name)===b.name){b.rounds=R;cr.copy=P.name;await deckPut(g)}}}
+    else{const pr=pdfProgress(b.name,docs);await openRecent(pr.work||b.name)}}finally{FRESH=false}
+  if(!P||bookOf(P.name)!==b.name)return;DKRUN={book:b.name,doc:P.name,r:R.length,qs:new Set(st.cur.un.map(Number))};
+  const p=target!=null&&P.problems.find(z=>+z.q===+target);setTimeout(()=>{try{if(p)pvGo(p.page);pvBadgeAll()}catch(e){}},350);
+  if(R.length>1&&st.cur.un.length)setTimeout(()=>{try{pvToast(`<b>${R.length}회독</b> · 이번에 풀 문제 ${st.cur.un.length}개<br><small>번호 옆에 '${R.length}회독' 표시가 있는 문제만 풀고 GO</small>`)}catch(e){}},500)}
+/* 쪽 위 표시: 이번 회독에 풀 문제 · 확정한 △/★ */
+function deckBadge(pg){if(!P||!pg||!pg.wrap)return;const M=mkLoad(P.name),run=DKRUN&&DKRUN.r>1&&bookOf(P.name)===DKRUN.book?DKRUN:null;
+  for(const p of P.problems){if(p.page!==pg.n||p.lx==null)continue;const m=M[p.q],own=m&&m.ok&&m.doc===P.name,st=S&&S.state&&S.state[p.q],need=run&&run.qs.has(+p.q)&&!(st&&st.status==='done');if(!own&&!need)continue;
+    const x=(p.lx-(pg.ox||0))*pg.k,y=(pg.H-p.ly)*pg.k,ls=(p.ls||12)*pg.k,b=document.createElement('div');b.className='tryB '+(own?'mkB':'rdB');b.textContent=own?(m.k==='star'?'★ 모름':'△ 애매'):`${run.r}회독`;
+    b.style.left=Math.max(0,Math.round(x-ls*0.2-(own?64:58)))+'px';b.style.top=Math.max(0,Math.round(y-ls*1.1))+'px';pg.wrap.appendChild(b)}}
+
+/* ===== 세모(△ 애매)·별표(★ 모름): 학생이 문제 번호 옆 여백에 펜으로 그린 표시를 찾고, 학생이 한 번 눌러 확정 =====
+   저장: localStorage 'njmk:'+책 = {q:{k:'tri'|'star', t, doc, ok:1 | no:1}} — no = '아니에요'를 눌러 다시 묻지 않음
+   번호 옆 여백만 보고, 크기도 작은 것만: 풀이 속 삼각형·그래프는 표시로 보지 않는다 */
+const mkKey=n=>'njmk:'+bookOf(n);
+function mkLoad(n){try{return JSON.parse(localStorage.getItem(mkKey(n))||'{}')}catch(e){return {}}}
+function mkSave(n,o){try{localStorage.setItem(mkKey(n),JSON.stringify(o))}catch(e){}}
+function mkNorm(pts){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const p of pts){x0=Math.min(x0,p.x);y0=Math.min(y0,p.y);x1=Math.max(x1,p.x);y1=Math.max(y1,p.y)}const s=120/(Math.hypot(x1-x0,y1-y0)||1);return pts.map(p=>({x:(p.x-x0)*s,y:(p.y-y0)*s}))}
+function mkRes(Q,m){if(Q.length<2)return Q;let L=0;for(let i=1;i<Q.length;i++)L+=Math.hypot(Q[i].x-Q[i-1].x,Q[i].y-Q[i-1].y);const st=L/(m-1),out=[Q[0]];let acc=0,prev=Q[0];
+  for(let i=1;i<Q.length;i++){let a=prev,b=Q[i],d=Math.hypot(b.x-a.x,b.y-a.y);while(acc+d>=st&&d>0){const t=(st-acc)/d,np={x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t};out.push(np);a=np;d=Math.hypot(b.x-a.x,b.y-a.y);acc=0}acc+=d;prev=b}
+  if(out.length<m)out.push(Q[Q.length-1]);return out}
+function mkLen(Q){let L=0;for(let i=1;i<Q.length;i++)L+=Math.hypot(Q[i].x-Q[i-1].x,Q[i].y-Q[i-1].y);return L}
+function mkSegX(a,b,c,d){const o=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x);return o(a,b,c)*o(a,b,d)<0&&o(c,d,a)*o(c,d,b)<0}
+function mkCross(Q){const R=mkRes(Q,48);let n=0;for(let i=0;i+1<R.length;i++)for(let j=i+2;j+1<R.length;j++){if(i===0&&j+1===R.length-1)continue;if(mkSegX(R[i],R[i+1],R[j],R[j+1]))n++}return n}
+function mkIsLine(pts){if(pts.length<2)return false;const Q=mkNorm(pts),A=Q[0],Z=Q[Q.length-1];if(Math.hypot(Z.x-A.x,Z.y-A.y)<90)return false;let m=0;for(const q of Q)m=Math.max(m,shpSegD(q,A,Z));return m<14}
+function mkTri(pts){if(pts.length<6)return false;const Q=mkNorm(pts),A=Q[0],Z=Q[Q.length-1];if(Math.hypot(Z.x-A.x,Z.y-A.y)>45||mkCross(Q)>1)return false;const L=mkLen(Q);if(L<200||L>360)return false;
+  const f=shapeFit(mkRes(Q,90));return !!(f&&f.k==='poly'&&f.closed&&f.V.length===3)}
+function mkStar(pts){if(pts.length<10)return false;const Q=mkNorm(pts),A=Q[0],Z=Q[Q.length-1];return mkLen(Q)>330&&Math.hypot(Z.x-A.x,Z.y-A.y)<55&&mkCross(Q)>=4}
+/* 번호 옆 여백: 번호 가운데에서 가로로 조금 더 넓게. 표시 크기는 번호 글자의 몇 배 이내 */
+function mkZone(p,s){if(s.page!==p.page||p.lx==null||p.ly==null)return null;const ls=p.ls||11,cx=(s.b.x0+s.b.x1)/2,cy=(s.b.y0+s.b.y1)/2,nx=p.lx+ls*0.5,ny=p.ly+ls*0.35,sz=Math.hypot(s.b.w,s.b.h);
+  if(sz<4||sz>Math.max(48,ls*4.5))return null;const d=Math.hypot((cx-nx)/1.6,cy-ny);return d<=Math.max(26,ls*2.6)?d:null}
+/* 필기 전체에서 표시 찾기 → {q:{k,t}}. 별표는 한 획 별(☆) 또는 서로 엇갈린 짧은 직선 3개(✱) */
+function mkFind(strokes,problems){const out={},best={};
+  const put=(p,k,t,d)=>{const o=out[p.q];if(o&&!(k==='star'&&o.k==='tri')&&((o.k==='star'&&k==='tri')||best[p.q]<=d))return;best[p.q]=d;out[p.q]={k,t:t||Date.now()}};   /* 한 문제에 여러 개면 별표 우선, 같으면 번호에 더 가까운 것 */
+  const near=s=>{let bp=null,bd=1e9;for(const p of problems){const d=mkZone(p,s);if(d!=null&&d<bd){bd=d;bp=p}}return bp?{p:bp,d:bd}:null};
+  const lines={};
+  for(const s of strokes){if(!s||!s.pts||s.pts.length<2||!s.b)continue;const z=near(s);if(!z)continue;
+    if(mkStar(s.pts))put(z.p,'star',s.t,z.d);else if(mkTri(s.pts))put(z.p,'tri',s.t,z.d);else if(mkIsLine(s.pts))(lines[z.p.q]=lines[z.p.q]||{p:z.p,L:[]}).L.push(s)}
+  for(const q in lines){const {p,L}=lines[q];if(L.length<3)continue;
+    for(let a=0;a<L.length;a++)for(let b=a+1;b<L.length;b++)for(let c=b+1;c<L.length;c++){const T=[L[a],L[b],L[c]],seg=s=>[s.pts[0],s.pts[s.pts.length-1]];
+      const ok=[[0,1],[0,2],[1,2]].every(([i,j])=>{const u=seg(T[i]),v=seg(T[j]);return mkSegX(u[0],u[1],v[0],v[1])});
+      if(ok){put(p,'star',Math.max(...T.map(s=>s.t||0))||Date.now(),0);a=b=c=L.length}}}
+  return out}
+let MKASK=null;
+/* GO 뒤: 새로 찾은 표시를 학생에게 묻는다. 지운 표시는 기록에서도 지운다 */
+async function mkGo(){if(!P||!S||!S.state||P.task)return;let found={};try{found=mkFind(memInk(),P.problems)}catch(e){console.error(e);return}
+  const all=mkLoad(P.name),now=Date.now(),gone=[];
+  for(const q in all){const m=all[q];if(m.doc===P.name&&!found[q]){delete all[q];if(m.ok)gone.push(q)}}
+  const ask=[];for(const q in found){const f=found[q],m=all[q];if(m&&m.doc===P.name&&m.k===f.k)continue;all[q]={k:f.k,t:f.t||now,doc:P.name};ask.push(+q)}
+  mkSave(P.name,all);
+  for(const q of gone){try{const id=P.name+'#'+q,w=await wrGet(id);if(w&&(w.cat==='A'||w.star))await wrDel(id)}catch(e){}}
+  if(gone.length)try{if(!$('#vAna').hidden)renderAnaTab()}catch(e){}
+  try{pvBadgeAll()}catch(e){}
+  if(ask.length)mkAsk(ask)}
+function mkAsk(qs){const box=(()=>{let d=$('#mkAsk');if(!d){d=document.createElement('div');d.id='mkAsk';d.setAttribute('role','dialog');d.setAttribute('aria-label','표시 확인');document.body.appendChild(d)}return d})();
+  const all=mkLoad(P.name),list=qs.filter(q=>all[q]&&!all[q].ok&&!all[q].no);MKASK={doc:P.name,qs:list};if(!list.length){box.hidden=true;return}
+  const lab=k=>k==='star'?'★ 모름':'△ 애매';
+  box.innerHTML=`<div class="h"><b>번호 옆 표시를 찾았어요</b><button type="button" class="x" data-x aria-label="닫기">✕</button></div>
+    ${list.map(q=>`<div class="r" data-q="${q}"><span><b>${esc(QN(q))}${+q<1000?'번':''}</b> ${lab(all[q].k)}로 표시할까요?</span><button class="sb pri" type="button" data-y>네</button><button class="sb" type="button" data-n>아니에요</button></div>`).join('')}
+    ${list.length>1?'<div class="r"><span></span><button class="sb pri" type="button" data-ally>모두 네</button></div>':''}<div class="f" data-f></div>`;box.hidden=false;
+  box.querySelector('[data-x]').onclick=()=>{box.hidden=true};
+  const done=async(q,yes)=>{const A=mkLoad(P.name),m=A[q];if(!m)return;if(yes){m.ok=1;delete m.no}else{m.no=1;delete m.ok}mkSave(P.name,A);const row=box.querySelector(`.r[data-q="${q}"]`);if(row)row.remove();
+    if(yes)await mkApply(q,m);try{pvBadgeAll()}catch(e){}
+    if(!box.querySelector('.r[data-q]')){const amb=Object.keys(mkLoad(P.name)).filter(k=>{const v=mkLoad(P.name)[k],st=S&&S.state&&S.state[k];return v.ok&&v.doc===P.name&&catOf(st)==='O'});
+      if(amb.length){box.innerHTML=`<div class="h"><b>맞혔지만 애매했던 문제 ${amb.length}개</b><button type="button" class="x" data-x aria-label="닫기">✕</button></div><p class="sub" style="margin:4px 0 8px">풀이를 한번 확인해 보세요. 다음 회독에도 다시 나와요.</p><div class="r"><span></span><button class="sb pri" type="button" data-sol>풀이 보기</button></div>`;
+        box.querySelector('[data-x]').onclick=()=>{box.hidden=true};box.querySelector('[data-sol]').onclick=()=>{box.hidden=true;try{FOC.on?fSolToggle():solMode(true)}catch(e){console.error(e)}}}
+      else box.hidden=true}};
+  box.querySelectorAll('.r[data-q]').forEach(r=>{const q=+r.dataset.q;r.querySelector('[data-y]').onclick=()=>done(q,true);r.querySelector('[data-n]').onclick=()=>done(q,false)});
+  const ay=box.querySelector('[data-ally]');if(ay)ay.onclick=async()=>{for(const q of list)await done(q,true)}}
+/* 확정한 표시 반영: ★ + 틀림 → 이유 '시작이 안 됐어요' 미리 고름 / △·★ + 맞음 → 애매(BLOCK에 따로) / ★ + 안 풂 → 모름(BLOCK) */
+async function mkApply(q,m){if(!S||!S.state)return;const st=S.state[q],c=catOf(st);
+  if(m.k==='star'&&c&&c!=='O'&&!(st.cls&&st.cls.k)){try{await clsSet(q,{k:'dir',auto:'star'})}catch(e){console.error(e)}return}
+  try{await logWrongs()}catch(e){console.error(e)}}
+/* 시험용: 바깥(콘솔·테스트)에서 STACK·표시 인식을 확인할 수 있게 */
+window.NJdeck={mkFind,strokeOf,deckGet,deckPut,deckState,deckPace,bookReady,libPut,libAll,homeSimple,view:v=>view(v),wOrig:w=>wOrig(w),wCat:w=>wCat(w),dayKey,histReset:k=>{delete HC[k]}};
 /* 오답 퀴즈를 한 날: 도장 */
 function quizDays(items){const q={};for(const it of items||[])for(const h of it.hist||[]){if(!h||!h.d)continue;const k=dayKey(h.d);q[k]=(q[k]||0)+1}return q}
 function quizStreak(q){let n=0;const d=new Date();if(!q[dayKey(d.getTime())])d.setDate(d.getDate()-1);while(q[dayKey(d.getTime())]){n++;d.setDate(d.getDate()-1)}return n}
@@ -5865,8 +6043,9 @@ const pwTag=x=>x&&((x.pw&&x.pw.length)||(x.pn&&x.pn.length))?` <span class="chip
 /* 오답 단계: 도전 기록으로 — 틀린 뒤 한 번이라도 맞히면 '도전해서 맞춤', 두 번 넘게 틀리고 아직 못 맞히면 '다시 틀림', 한 번만 틀렸으면 '아직 다시 안 풂' */
 function wHist(w){try{return (histLoad(w.src)[w.q])||[]}catch(e){return []}}
 function wStage(w){const s=wOrig(w);return s==='T'&&twinNeed(w)&&!(w.twin&&w.twin.ok)?'H':s}
-function wOrig(w){const L=wHist(w);if(L.length){const i=L.findIndex(a=>!a.ok);if(i>=0&&L.slice(i+1).some(a=>a.ok))return 'T';if(L.filter(a=>!a.ok).length>=2)return 'S';if(i>=0)return 'X'}return w.cat==='T'?'T':w.cat==='S'?'S':'X'}
-const wCat=w=>{const st=wStage(w),L=wHist(w),k=L.findIndex(a=>a.ok);if(st==='H')return '<span class="chip" style="color:var(--warn)">원래 ✓ · TWIN 남음</span>';if(st==='T')return `<span class="chip" style="color:var(--ok)">✓ 도전해서 맞춤${k>=0?` · ${k+1}번째`:''}</span>`;if(st==='S')return `<span class="chip today">✗ 다시 틀림${L.length?` · 도전 ${L.length}회`:''}</span>`;return wCatOld(w)};
+function wOrig(w){if(w.cat==='A'){const L=wHist(w).filter(a=>(a.t||0)>(w.at||0));if(!L.length)return 'A';if(L.some(a=>a.ok))return 'T';return L.length>=2?'S':'X'}   /* 애매: 표시한 뒤 다시 맞히면 클리어 */
+  const L=wHist(w);if(L.length){const i=L.findIndex(a=>!a.ok);if(i>=0&&L.slice(i+1).some(a=>a.ok))return 'T';if(L.filter(a=>!a.ok).length>=2)return 'S';if(i>=0)return 'X'}return w.cat==='T'?'T':w.cat==='S'?'S':'X'}
+const wCat=w=>{const st=wStage(w),L=wHist(w),k=L.findIndex(a=>a.ok);if(st==='A')return '<span class="chip amb">△ 애매 · 풀이 확인</span>';if(st==='H')return '<span class="chip" style="color:var(--warn)">원래 ✓ · TWIN 남음</span>';if(st==='T')return `<span class="chip" style="color:var(--ok)">✓ 도전해서 맞춤${k>=0?` · ${k+1}번째`:''}</span>`;if(st==='S')return `<span class="chip today">✗ 다시 틀림${L.length?` · 도전 ${L.length}회`:''}</span>`;return wCatOld(w)};
 const wCatOld=w=>w.cat==='T'?'<span class="chip" style="color:var(--warn)">△ 고침</span>':(w.pw&&w.pw.length)||(w.pn&&w.pn.length)?`<span class="chip today">${[w.pw&&w.pw.length?w.pw.map(i=>'('+i+')').join('')+' 틀림':'',pnTxt(w)].filter(Boolean).join(' · ')}</span>`:w.cat==='S'?'<span class="chip today">모름</span>':'<span class="chip today">틀림</span>';
 function anaList(W,items,inNote){const SIMS=new Set(simSent().map(x=>x.id)),box=$('#aList'),star=ANAV==='star',simple=!star&&!teacherOn(),AK=simple?'sall':ANAV,rec=w=>!inNote.has(w.id)&&((w.tries||1)>=2||w.cat==='S');
   const isToday=i=>!i.done&&i.due!=null&&i.due<=today0();
@@ -6375,7 +6554,7 @@ function ocDeck(W){const td=dayKey(Date.now());return W.filter(w=>w.cls&&w.cls.k
 function ocOpen(deck,onEnd){if(!deck||!deck.length)return;const Q=deck.slice(),again=new Set();let i=0,flip=false,know=0,miss=0;CLSV={W:[],i:0,step:'card'};
   const draw=()=>{const box=clsShell();if(i>=Q.length){box.innerHTML=`<div class="cTop"><span class="cR">오늘 카드 끝</span><button type="button" class="cLater" data-x>닫기</button></div><p class="cHint">알았다 <b style="color:#7CF2B0">${know}</b> · 몰랐다 <b style="color:#FF9B7A">${miss}</b></p><div class="cRow"><button type="button" class="cBtn" data-x>닫기</button></div>`;box.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{clsClose();if(onEnd)onEnd()});return}
     const w=Q[i],c=w.cls||{},src=c.cimg||c.img;
-    box.innerHTML=`<div class="cTop"><span class="cB">오답 카드</span><span class="cDots">${Q.map((_,k)=>`<i class="${k<i?'ok':k===i?'now':''}"></i>`).join('')}</span><button type="button" class="cLater" data-x>그만하기</button></div>
+    box.innerHTML=`<div class="cTop"><span class="cB">막힌 줄</span><span class="cDots">${Q.map((_,k)=>`<i class="${k<i?'ok':k===i?'now':''}"></i>`).join('')}</span><button type="button" class="cLater" data-x>그만하기</button></div>
       <div class="cImg"><img src="${src}" alt="형광펜으로 표시한 줄"></div>
       ${flip?`<div class="ocBack"><span>내 코멘트</span><b>${c.cm?esc(c.cm):'아직 코멘트가 없어요'}</b><small>${esc(bookOf(w.src))} · ${QN(w.q)}번</small></div>
         <div class="cRow"><button type="button" class="cBtn g" data-ok="0" style="color:#FF9B7A">몰랐다</button><button type="button" class="cBtn" data-ok="1">알았다</button></div>`
@@ -6415,7 +6594,7 @@ function clsWhy(q){const st=S.state[q]||{},r=st.retry&&st.retry.ans?st.retry:nul
   d.querySelector('[data-skip]').onclick=()=>clsSolve(q);d.querySelector('[data-later]').onclick=()=>{cpOff();fClose()}}
 function clsMarkF(q){FOC.hlTmp=[];capOn('mark');fDraw();const d=cpEl();
   d.innerHTML=`<div class="cpTop"><b>${QN(q)}번 · 여기서 막혔다</b><span></span><button type="button" class="cpLater" data-back>뒤로</button></div>
-    <div class="cpQ">막힌 낱말·조건 위에 <em style="color:#FFE24A;font-style:normal">형광펜</em>을 그어 주세요. 이 줄이 오답 카드가 돼요.</div>
+    <div class="cpQ">막힌 낱말·조건 위에 <em style="color:#FFE24A;font-style:normal">형광펜</em>을 그어 주세요. 이 줄이 '오늘의 막힌 줄'에 모여요.</div>
     <div class="cpRow"><button type="button" class="cpBtn g" data-clr>지우기</button><button type="button" class="cpBtn" data-mk disabled>표시했어요 · 다시 풀기</button></div>`;
   d.querySelector('[data-back]').onclick=()=>clsWhy(q);d.querySelector('[data-clr]').onclick=()=>{FOC.hlTmp=[];fDraw();d.querySelector('[data-mk]').disabled=true};
   d.querySelector('[data-mk]').onclick=async e=>{e.target.disabled=true;e.target.textContent='저장하는 중…';const hl=FOC.hlTmp.map(s=>s.map(p=>({x:+p.x.toFixed(1),y:+p.y.toFixed(1)}))),im=await clsHLImgs(FOC.p,hl);FOC.hlTmp=null;
