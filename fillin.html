@@ -2054,7 +2054,7 @@ const seqOk=(whole,out)=>{const tk=[];out.forEach((v,i)=>{tk.push({c:String(i+1)
   const go=(i,j)=>{if(i===whole.length)return tk.slice(j).every(t=>t.o);if(j>=tk.length)return false;if(tk[j].c===whole[i]&&go(i+1,j+1))return true;return tk[j].o?go(i,j+1):false};return go(0,0)};
 // 이미 읽어 둔 빠른 정답 칸 하나만 다시 읽어 소문제 "(1) 2 (2) 1/7"로 쪼갠다 (위아래로 쌓인 분수도 읽음, 못 읽은 소문제는 null)
 SCAN.nparts=async(doc,img)=>{const wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;const SC=2.5,page=await doc.getPage(img.page),vp=page.getViewport({scale:SC}),a=vp.convertToViewportPoint(img.x0,img.y1),b=vp.convertToViewportPoint(img.x1,img.y0);
-  const y0=Math.min(a[1],b[1]),y1=Math.max(a[1],b[1]),f0=Math.max(0,(y0-40)/vp.height),f1=Math.min(1,(y1+40)/vp.height),R=await SCAN.render(page,SC,f0,f1),W=R.w;
+  const y0=Math.min(a[1],b[1]),y1=Math.max(a[1],b[1]),f0=Math.max(0,(y0-90)/vp.height),f1=Math.min(1,(y1+90)/vp.height),R=await SCAN.render(page,SC,f0,f1),W=R.w;   /* 정답 칸 그림 상자가 분수 분모를 잘라 먹는다(1/7의 7): 위아래를 넉넉히 그려서 읽는다 */
   try{const BX0=Math.max(0,Math.round(Math.min(a[0],b[0]))),X1=Math.min(W-1,Math.round(Math.max(a[0],b[0]))),BY0=Math.max(0,Math.round(y0-R.Y0)),BY1=Math.min(R.h-1,Math.round(y1-R.Y0)),bh=BY1-BY0;
     const D=R.g.getImageData(0,0,W,R.h).data;let lx=-1,ly0=1e9,ly1=-1;
     for(let x=BX0;x<Math.min(X1,BX0+bh*2.5);x++)for(let y=BY0;y<=BY1;y++){const i=(y*W+x)*4,mx=Math.max(D[i],D[i+1],D[i+2]),mn=Math.min(D[i],D[i+1],D[i+2]);if(mn<190&&mx-mn>20){lx=x;if(y<ly0)ly0=y;if(y>ly1)ly1=y}}
@@ -2063,7 +2063,7 @@ SCAN.nparts=async(doc,img)=>{const wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;
     const segs=[];let cur=null,gap=0;for(let x=X0b;x<=X1;x++){let dk=0;for(let y=Y0;y<Y1;y++)if(dark(x,y)){dk=1;break}if(dk){if(cur&&gap<hm*0.22)cur.x1=x;else{cur={x0:x,x1:x};segs.push(cur)}gap=0}else gap++}
     if(segs.length>16||!segs.length)return null;
     const crop=async(x0,x1,ya,yb,wl,psm,clean)=>{const p=Math.round(hm*0.3),w=x1-x0+1+p*2,h=yb-ya+p*2,z=Math.max(3,Math.min(6,Math.round(hm*3/Math.max(8,yb-ya)))),cv=document.createElement('canvas');cv.width=w*z;cv.height=h*z;const g=cv.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,cv.width,cv.height);g.imageSmoothingEnabled=true;
-      if(clean)g.drawImage(R.c,x0,ya,x1-x0+1,yb-ya+1,p*z,p*z,(x1-x0+1)*z,(yb-ya+1)*z);else g.drawImage(R.c,x0-p,ya-p,w,h,0,0,w*z,h*z);await wk.setParameters({tessedit_pageseg_mode:psm||'8',tessedit_char_whitelist:wl});try{const o=await wk.recognize(cv);const t=(o.data.text||'').replace(/\s+/g,'');return t}finally{await wk.setParameters({tessedit_char_whitelist:''});cv.width=cv.height=0}};
+      if(clean)g.drawImage(R.c,x0,ya,x1-x0+1,yb-ya+1,p*z,p*z,(x1-x0+1)*z,(yb-ya+1)*z);else g.drawImage(R.c,x0-p,ya-p,w,h,0,0,w*z,h*z);if(clean===2){const im=g.getImageData(0,0,cv.width,cv.height),d=im.data;for(let i=0;i<d.length;i+=4){const v=Math.min(d[i],d[i+1],d[i+2])<205?0:255;d[i]=d[i+1]=d[i+2]=v}g.putImageData(im,0,0)}   /* 흐리게 찍힌 작은 숫자(분모 7): 연한 회색까지 검게 */await wk.setParameters({tessedit_pageseg_mode:psm||'8',tessedit_char_whitelist:wl});try{const o=await wk.recognize(cv);const t=(o.data.text||'').replace(/\s+/g,'');return t}finally{await wk.setParameters({tessedit_char_whitelist:''});cv.width=cv.height=0}};
     // 분수: 칸의 잉크가 위아래로 번지고 가운데에 가로줄이 있으면 위(분자)·아래(분모)를 따로 읽는다
     const rowInk=(y,sg)=>{for(let x=sg.x0;x<=sg.x1;x++)if(dark(x,y))return true;return false};
     const cnt=(y,sg)=>{let r=0;for(let x=sg.x0;x<=sg.x1;x++)if(dark(x,y))r++;return r};
@@ -2078,11 +2078,11 @@ SCAN.nparts=async(doc,img)=>{const wk=SCAN._wk||await SCAN.worker();SCAN._wk=wk;
       const vote=async(ya,yb,wl)=>{let gl=[];let cur=null,gp=0;for(let x=sg.x0;x<=sg.x1;x++){let d=0;for(let y=ya;y<=yb;y++)if(dark(x,y)){d=1;break}if(d){if(cur&&gp<=1)cur.x1=x;else{cur={x0:x,x1:x};gl.push(cur)}gp=0}else gp++}
         gl=gl.filter(g=>{let n=0;for(let x=g.x0;x<=g.x1;x++)for(let y=ya;y<=yb;y++)if(dark(x,y))n++;return n>=hm*0.6});   // 가로줄 끝 같은 부스러기는 빼고
         if(!gl.length||gl.length>3)return '';let P='',one=0;
-        for(const g of gl){let t=await crop(g.x0,g.x1,ya,yb,wl,'10',1);
+        let bz=false;for(const g of gl){let t=await crop(g.x0,g.x1,ya,yb,wl,'10',1);if(!/^[-\d]$/.test(t)){let t2=await crop(g.x0,g.x1,ya,yb,wl,'10',2);if(!/^[-\d]$/.test(t2))t2=await crop(g.x0,g.x1,ya,yb,wl,'8',2);if(!/^[-\d]$/.test(t2)){const dd=SECQ.digit((x,y)=>R.gray[y*W+x]<205,g.x0,ya,g.x1,yb);if(dd&&wl.includes(dd)){t2=dd;one++}}   /* 모양 본보기로 읽은 한 글자: 통째 읽기가 비어 있으면 그대로 믿는다 (아래) */if(root.QDBG)root.QDBG.push({t2});if(/^[-\d]$/.test(t2)){t=t2;bz=true}}
           if(!/^[-\d]$/.test(t)){let gy0=1e9,gy1=-1,col=0;for(let y=ya;y<=yb;y++)for(let x=g.x0;x<=g.x1;x++)if(dark(x,y)){if(y<gy0)gy0=y;if(y>gy1)gy1=y}const gh=gy1-gy0+1;
             for(let x=g.x0;x<=g.x1;x++){let n=0;for(let y=gy0;y<=gy1;y++)if(dark(x,y))n++;col=Math.max(col,n)}if(gh>=hm*0.35&&(g.x1-g.x0+1)<gh*0.6&&col>=gh*0.8){t='1';one++}else return ''}   // 세리프 '1'은 글자 인식이 놓치기 쉽다: 가늘고 긴 세로획이면 1
           P+=t}
-        const w8=await crop(sg.x0,sg.x1,ya,yb,wl,'8',1),w7=await crop(sg.x0,sg.x1,ya,yb,wl,'7',1);return (P===w8||P===w7||(one&&P.length===1&&!w8&&!w7))?P:''};
+        const w8=await crop(sg.x0,sg.x1,ya,yb,wl,'8',bz?2:1),w7=await crop(sg.x0,sg.x1,ya,yb,wl,'7',bz?2:1);return (P===w8||P===w7||(one&&P.length===1&&!w8&&!w7))?P:''};
       const n=await vote(top,bt-1,'-0123456789'),d=await vote(bb+1,bot,'0123456789');if(root.QDBG)root.QDBG.push({fr:[n,d]});if(!n||!d)return '?';
       return /^-?\d{1,3}$/.test(n)&&/^\d{1,3}$/.test(d)&&+d>0?n+'/'+d:'?'};
     // 위아래로 길게 이어진 칸(분수 등)은 숫자로 믿지 않는다
@@ -2409,6 +2409,11 @@ function scanOffer(file,handle,bytes,doc,more,textPdf){const N=doc.numPages,done
    동그라미 숫자는 책 안의 같은 모양끼리 묶어 다수결, 숫자는 세 번 읽어 같을 때만. 애매하면 직접 채점 */
 const SECQ={};window.SECQ=SECQ;
 SECQ.grid=(get,x0,y0,x1,y1)=>{const GX=10,GY=14,v=[],w=x1-x0+1,h=y1-y0+1;for(let j=0;j<GY;j++)for(let i=0;i<GX;i++){let n=0,t=0;for(let y=Math.floor(y0+j*h/GY);y<y0+(j+1)*h/GY;y++)for(let x=Math.floor(x0+i*w/GX);x<x0+(i+1)*w/GX;x++){t++;n+=get(x,y)}v.push(t?n/t:0)}return v};
+/* 숫자 0~9 모양 본보기 (글자 인식이 깨끗한 작은 숫자를 못 읽을 때: 분모 7) */
+SECQ.tpl10=()=>{if(SECQ.T10)return SECQ.T10;const T=[];for(const f of ['100px serif','100px sans-serif','bold 100px serif','bold 100px sans-serif','100px Times New Roman','100px Georgia'])for(const dg of '0123456789'){const c=document.createElement('canvas');c.width=c.height=140;const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,140,140);g.fillStyle='#000';g.font=f;g.fillText(dg,20,115);
+  const d=g.getImageData(0,0,140,140).data,dk=(x,y)=>d[(y*140+x)*4]<128?1:0;let a=140,b=140,c2=-1,e=-1;for(let y=0;y<140;y++)for(let x=0;x<140;x++)if(dk(x,y)){a=Math.min(a,x);b=Math.min(b,y);c2=Math.max(c2,x);e=Math.max(e,y)}c.width=c.height=0;if(c2>=0)T.push({dg,v:SECQ.grid(dk,a,b,c2,e),ar:(c2-a+1)/(e-b+1)})}return SECQ.T10=T};
+SECQ.digit=(get,x0,y0,x1,y1)=>{let a=1e9,b=1e9,c=-1,e=-1;for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)if(get(x,y)){if(x<a)a=x;if(x>c)c=x;if(y<b)b=y;if(y>e)e=y}if(c<0||e-b<4)return null;const v=SECQ.grid(get,a,b,c,e),ar=(c-a+1)/(e-b+1),sc={};
+  for(const t of SECQ.tpl10()){if(Math.abs(t.ar-ar)>0.35&&t.dg!=='1')continue;let s=0;for(let i=0;i<v.length;i++)s+=Math.abs(v[i]-t.v[i]);if(sc[t.dg]==null||s<sc[t.dg])sc[t.dg]=s}const o=Object.entries(sc).sort((p,q)=>p[1]-q[1]);if(!o.length)return null;if(o[1]&&o[0][1]>o[1][1]*0.8)return null;return o[0][1]<40?o[0][0]:null};
 SECQ.tpl=()=>{if(SECQ.T)return SECQ.T;const T=[];for(const f of ['100px serif','100px sans-serif','bold 100px serif','bold 100px sans-serif'])for(const dg of '12345'){const c=document.createElement('canvas');c.width=c.height=140;const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,140,140);g.fillStyle='#000';g.font=f;g.fillText(dg,20,115);
   const d=g.getImageData(0,0,140,140).data,dk=(x,y)=>d[(y*140+x)*4]<128?1:0;let a=140,b=140,c2=-1,e=-1;for(let y=0;y<140;y++)for(let x=0;x<140;x++)if(dk(x,y)){a=Math.min(a,x);b=Math.min(b,y);c2=Math.max(c2,x);e=Math.max(e,y)}c.width=c.height=0;if(c2>=0)T.push({dg,v:SECQ.grid(dk,a,b,c2,e)})}return SECQ.T=T};
 SECQ.rng=t=>{t=String(t||'').replace(/[^\d~\-]/g,'');let m=/^(\d{1,3})[~\-]+(\d{1,4})$/.exec(t),best=null;const ok=(a,b)=>a>0&&b>=a&&b-a<30;
@@ -3248,7 +3253,12 @@ const fracWrong=(p,ans)=>{const k=p&&p.key;if(k&&k.kind==='frac'&&ans&&/^-?\d+$/
   return k.nums.some((v,i)=>v!=null&&/^-?\d+\/\d+$/.test(String(v))&&A[i]!=null&&/^-?\d+$/.test(A[i]))};
 const imgKey=p=>{const k=p&&p.key;if(!k)return false;if(k.fromImg)return true;return k.kind==='nparts'&&!!k.img&&(k.nums||[]).some(v=>v==null||!/^-?\d{1,4}$/.test(String(v)))};   /* 빠른 정답 표에서 읽은 정수 소문제 답은 믿는다 */
 async function readA(p,ink){const r=await readA0(p,ink);try{p._rd=r?{ans:r.ans,how:r.how,sure:r.sure}:null}catch(e){}return r}
-async function readA0(p,ink){{const A=abInk(p,ink);if(A){p._used=null;p._kc=null;let r=null;if(fParts(p)>1&&p._lab===undefined&&p.key&&p.key.kind==='nparts'){try{p._lab=await subLabels(p)}catch(e){p._lab=null}}   /* 소번호 자리: 채점 표시를 (1)(2) 위에 */try{r=readAB(p,A)}catch(e){dlog('abErr',String(e).slice(0,80));r={ans:'',how:'self'}}if(!p._used)p._used=A;if(window.NJPROF)console.log('PROF ab',p.q,JSON.stringify(r));return r||{ans:'',how:'self'}}}p._used=null;p._kc=null;if(p.key&&p.key.kind==='nparts'&&p.key.nums&&p._lab===undefined)p._lab=await subLabels(p);const r=SV.readAnswer(p,ink);if(window.NJPROF)console.log('PROF rl',p.q,JSON.stringify(r),p._used&&p._used.length);const k=keyOf(p),st=p._used,num=v=>/^-?\d{1,4}$/.test(v||'');
+/* 답 앞에 쓴 '=' (=4, =1/7): 짧은 가로획 두 개가 위아래로 겹쳐 있고 그 오른쪽에 다른 글씨가 있으면 답이 아니다 (11로 읽혀 틀림/직접 채점이 되던 것) */
+function dropEq(ink){try{const fl=ink.filter(s=>s.b&&s.b.w>=3&&s.b.h<=Math.max(2.5,s.b.w*0.3)),rm=new Set();
+  for(const a of fl)for(const b of fl){if(a===b||rm.has(a)||rm.has(b))continue;const ov=Math.min(a.b.x1,b.b.x1)-Math.max(a.b.x0,b.b.x0),dy=Math.abs((a.b.y0+a.b.y1)/2-(b.b.y0+b.b.y1)/2),w=Math.max(a.b.w,b.b.w);if(a.page!==b.page||ov<Math.min(a.b.w,b.b.w)*0.5||dy<1||dy>w*1.2)continue;
+    const x1=Math.max(a.b.x1,b.b.x1),cy=((a.b.y0+a.b.y1)/2+(b.b.y0+b.b.y1)/2)/2;if(ink.some(s=>s!==a&&s!==b&&s.page===a.page&&s.b.x0>=x1-w*0.3&&s.b.x0<=x1+w*3&&Math.abs((s.b.y0+s.b.y1)/2-cy)<w*2.5)){rm.add(a);rm.add(b)}}
+  return rm.size?ink.filter(s=>!rm.has(s)):ink}catch(e){return ink}}
+async function readA0(p,ink0){const ink=dropEq(ink0);{const A=abInk(p,ink);if(A){p._used=null;p._kc=null;let r=null;if(fParts(p)>1&&p._lab===undefined&&p.key&&p.key.kind==='nparts'){try{p._lab=await subLabels(p)}catch(e){p._lab=null}}   /* 소번호 자리: 채점 표시를 (1)(2) 위에 */try{r=readAB(p,A)}catch(e){dlog('abErr',String(e).slice(0,80));r={ans:'',how:'self'}}if(!p._used)p._used=A;if(window.NJPROF)console.log('PROF ab',p.q,JSON.stringify(r));return r||{ans:'',how:'self'}}}p._used=null;p._kc=null;if(p.key&&p.key.kind==='nparts'&&p.key.nums&&p._lab===undefined)p._lab=await subLabels(p);const r=SV.readAnswer(p,ink);if(window.NJPROF)console.log('PROF rl',p.q,JSON.stringify(r),p._used&&p._used.length);const k=keyOf(p),st=p._used,num=v=>/^-?\d{1,4}$/.test(v||'');
   if(r&&r.ans&&p.key&&p.key.kind==='circled'&&!(p.choices&&p.choices.length)&&!/^[1-5]$/.test(r.ans))return Object.assign({},r,{sure:false});
   if(!(r&&r.how==='written'&&num(k)&&st&&st.length&&st.length<=14&&window.SCAN&&SCAN.worker))return r;
   const wrong=r.sure!==false&&num(r.ans)&&r.ans!==k&&Math.abs(r.ans.length-k.length)<=1,unsure=r.sure===false&&!(p.choices&&p.choices.length)&&!/^0+$/.test(r.ans||'');if(!wrong&&!unsure)return r;
@@ -3308,7 +3318,7 @@ async function gradeFile(file,auto,mem){
   fb('nk',auto?'저장을 확인해 자동 채점 중…':'저장된 필기를 읽는 중…');$('#grade').disabled=true;S.busy=true;
   try{
     const doc=mem?P.doc:await PDFJS.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;if(!mem)P.lastMod=file.lastModified;
-    const cur=mem?mem.all:await SV.strokes(doc),all=cur.filter(s=>!P.base.has(s.sig)&&!(FOC.on&&FOC.retry&&FOC.rt0&&s.t&&s.t<FOC.rt0)),IK=mem?mem.all.filter(s=>!(FOC.on&&FOC.retry&&FOC.rt0&&s.t&&s.t<FOC.rt0)):null;   /* 다시 풀기: 채점 창 '내 답' 그림에도 화면처럼 이번에 쓴 획만 (지난번 답이 겹쳐 보이지 않게) */      // 학습 시작 뒤에 쓴 획
+    const cur0=mem?mem.all:await SV.strokes(doc),MKS=mkSigs(cur0,P.problems),cur=cur0.filter(s=>!MKS.has(s.sig)),all=cur.filter(s=>!P.base.has(s.sig)&&!(FOC.on&&FOC.retry&&FOC.rt0&&s.t&&s.t<FOC.rt0)),IK=mem?mem.all.filter(s=>!(FOC.on&&FOC.retry&&FOC.rt0&&s.t&&s.t<FOC.rt0)):null;   /* 다시 풀기: 채점 창 '내 답' 그림에도 화면처럼 이번에 쓴 획만 (지난번 답이 겹쳐 보이지 않게) */      // 학습 시작 뒤에 쓴 획
     const fresh=all.filter(s=>!S.seen.has(s.sig));                         // 지난 채점 뒤에 새로 쓴 획
     if(P.scan&&P.lazy&&window.SCAN){const need=[...new Set(fresh.map(s=>s.page))].filter(pg=>!P.problems.some(p=>p.page===pg)&&!(P.lazyDone||[]).includes(pg)).sort((a,b)=>a-b);
       if(need.length){fb('nk',`처음 푸는 쪽(${need.join(', ')}쪽)의 문제 번호를 읽는 중… 쪽마다 몇 초 걸려요`);if(S.app)pvSum();await lazyRead(need)}}
@@ -3343,8 +3353,8 @@ async function gradeFile(file,auto,mem){
           try{if(!P._qp[m]){const pg=[];if(m==='all')for(let i=P.solRange[0];i<=P.solRange[1];i++)pg.push(i);else pg.push(m);P._qp[m]=(await SCAN.quick(P.doc,{pages:pg})).keys}const nk=P._qp[m][p.q];if(window.NJPROF)console.log('PROF qk2',p.q,JSON.stringify(nk&&{t:nk.text,k:nk.kind}));
           if(nk&&nk.kind!=='self'&&nk.text){p.key=Object.assign({},nk,{qkV:QKV});if(P.solKeys)P.solKeys[p.q]=p.key;ch++}else p.key.qkV=QKV}catch(e){console.error(e);delete P._qp[m]}}
         await recentSave()}}
-    if(P.scan&&window.SCAN&&SCAN.nparts&&P.solRange&&P.solRange[2]==='q'){const tgt=P.problems.filter(p=>p.key&&p.key.img&&!p.key.ebs&&((p.key.kind==='self'&&(p.key.npTried||0)<4)||(p.key.kind==='nparts'&&p.key.nums&&p.key.nums.includes(null)&&(p.key.npTried||0)<3))&&fresh.some(s=>inReg(s,p)));
-      if(tgt.length){fb('nk','소문제 정답을 확인하는 중…');if(S.app)pvSum();let ch=0;for(const p of tgt){const old=p.key;p.key.npTried=4;if(window.NJPROF)console.log('PROF g:np',p.q);try{const r=await SCAN.nparts(P.doc,p.key.img);if(r&&r.nums&&r.nums.some(v=>v!=null)&&!(old.kind==='nparts'&&r.nums.filter(v=>v!=null).length<old.nums.filter(v=>v!=null).length)){p.key={text:r.nums.map(v=>v==null?'?':v).join('|'),kind:'nparts',nums:r.nums,img:p.key.img,npTried:3,fromImg:1};ch++}else if(r&&r.expr){p.key.expr=1;p.key.raw=((p.key.raw||'')+' '+r.expr).trim();dlog('exprKey',p.q+' '+r.expr)}else if(r&&r.single){p.key={text:r.single,kind:'frac',img:p.key.img,npTried:4,fromImg:1,raw:old.raw};ch++;dlog('fracKey',p.q+' '+r.single)}else if(r&&r.np)p.key.np=r.np;if(P.solKeys)P.solKeys[p.q]=p.key}catch(e){console.error(e)}}await recentSave()}}
+    if(P.scan&&window.SCAN&&SCAN.nparts&&P.solRange&&P.solRange[2]==='q'){const NPV=2,tgt=P.problems.filter(p=>p.key&&p.key.img&&!p.key.ebs&&((p.key.kind==='self'&&((p.key.npTried||0)<4||(p.key.npV||0)<NPV))||(p.key.kind==='nparts'&&p.key.nums&&p.key.nums.includes(null)&&((p.key.npTried||0)<3||(p.key.npV||0)<NPV)))&&fresh.some(s=>inReg(s,p)));   /* NPV: 분수(흐린 분모)·소문제 읽기를 고친 뒤 예전에 못 읽은 정답도 한 번 더 */
+      if(tgt.length){fb('nk','소문제 정답을 확인하는 중…');if(S.app)pvSum();let ch=0;for(const p of tgt){const old=p.key;p.key.npTried=4;p.key.npV=NPV;if(window.NJPROF)console.log('PROF g:np',p.q);try{const r=await SCAN.nparts(P.doc,p.key.img);if(r&&r.nums&&r.nums.some(v=>v!=null)&&!(old.kind==='nparts'&&r.nums.filter(v=>v!=null).length<old.nums.filter(v=>v!=null).length)){p.key={text:r.nums.map(v=>v==null?'?':v).join('|'),kind:'nparts',nums:r.nums,img:p.key.img,npTried:3,npV:NPV,fromImg:1};ch++}else if(r&&r.expr){p.key.expr=1;p.key.raw=((p.key.raw||'')+' '+r.expr).trim();dlog('exprKey',p.q+' '+r.expr)}else if(r&&r.single){p.key={text:r.single,kind:'frac',img:p.key.img,npTried:4,npV:NPV,fromImg:1,raw:old.raw};ch++;dlog('fracKey',p.q+' '+r.single)}else if(r&&r.np)p.key.np=r.np;if(P.solKeys)P.solKeys[p.q]=p.key}catch(e){console.error(e)}}await recentSave()}}
     // 답을 다 지운 문항: 채점 표시와 판정을 없앤다 (다시 풀 수 있게). 틀린 기록(오답 기록)은 그대로 둔다
     const clr=[];for(const p of P.problems){const st0=S.state[p.q],pv=P.prev&&P.prev[p.q];if(!st0&&!pv)continue;if(cur.some(s=>inReg(s,p)))continue;
       if(!((P.baseStrokes||[]).some(s=>inReg(s,p))||(st0&&st0.sigs&&st0.sigs.length)))continue;clr.push(p.q)}
@@ -5195,7 +5205,7 @@ async function pvGrade(){if(keysPending()){try{pvToast('📘 아직 정답을 �
     const pend=(P.baseStrokes||[]).some(s=>!S.seen.has(s.sig))||rinkAll().some(s=>!S.seen.has(s.sig))||ungraded().length||memInk().some(s=>!s.raster&&!S.seen.has(s.sig));   // 자동 저장으로 이미 파일에 옮겨진 새 필기도 채점   
     const lateK=selfPending().some(x=>{if(x.status!=='check'||!x.self||x.teacher||x.retry)return false;const p=P.problems.find(z=>z.q===x.q);return !!(p&&!isSelf(p)&&p.key&&p.key.text)});   /* 정답 없이 미뤄 둔 직접 채점 문항에 정답이 늦게 읽혔으면 새 필기가 없어도 채점 */
     if(saved||PV.forceGrade||pend||lateK||selfPending().some(x=>x.status==='check'&&!x.self)){PV.forceGrade=false;S.goRes=null;RT_SNAP=rtSnap();GFRESH=new Set();await gradeFile(null,false,{all:memInk()});goResult();try{await mkGo()}catch(e){console.error(e)}}else fb('nk','새로 쓴 필기가 없습니다. 틀린 문제를 고친 뒤 다시 누르세요.');
-    if(selfPending().some(x=>GFRESH.has(x.q)))setTimeout(()=>selfSheet(()=>setTimeout(retryAsk,300),true),50);else setTimeout(retryAsk,900);setTimeout(clsAfter,700);
+    {const pn=selfPending().filter(x=>GFRESH.has(x.q)).length;setTimeout(()=>{retryAsk();if(pn&&$('#pvToast').hidden)pvToast(`✏️ 답을 확실히 못 읽은 문제 ${pn}개 — 나머지는 채점했어요`,[['직접 확인',()=>selfSheet(null,true)]])},900)}   /* 채점 뒤 '스스로 채점' 창을 저절로 띄우지 않는다 (막지 않게): 알림의 [직접 확인]이나 ⋯ 메뉴에서 */setTimeout(clsAfter,700);
   }catch(e){console.error(e);fb('bad','저장하거나 채점하지 못했습니다: '+e.message)}
   finally{PV.busy=false;$('#pvGrade').disabled=false;if(S&&S.frozen){PV.review=true;const b=$('#pvGrade');if(ungraded().length)b.innerHTML=goHtml();else b.textContent='이어서 풀기';b.classList.add('resume');$('#pvPause').hidden=true}pvStatus();pvSum()}}
 /* 스스로 채점: 정답 그림을 보고 학생이 ○/／를 고른다 (서술형·여러 소문항 등 자동으로 못 읽는 문항) */
@@ -6059,6 +6069,10 @@ function mkFind(strokes,problems){const out={},best={};
       const ok=[[0,1],[0,2],[1,2]].every(([i,j])=>{const u=seg(T[i]),v=seg(T[j]);return mkSegX(u[0],u[1],v[0],v[1])});
       if(ok){put(p,'star',Math.max(...T.map(s=>s.t||0))||Date.now(),0);a=b=c=L.length}}}
   return out}
+/* 채점할 때 답으로 읽지 않을 획: 문제 번호 옆의 △(애매)·☆(모름) 표시 (번호에 세모를 쳤는데 답으로 읽어 '고른 번호'를 묻던 것) */
+function mkSigs(strokes,problems){const S0=new Set();try{const near=s=>{for(const p of problems){if(mkZone(p,s)!=null)return p}return null};const lines={};
+  for(const s of strokes){if(!s||!s.pts||s.pts.length<2||!s.b)continue;const p=near(s);if(!p)continue;if(mkStar(s.pts)||mkTri(s.pts))S0.add(s.sig);else if(mkIsLine(s.pts))(lines[p.q]=lines[p.q]||[]).push(s)}
+  for(const q in lines){const L=lines[q];if(L.length<3)continue;const seg=s=>[s.pts[0],s.pts[s.pts.length-1]];for(const a of L){const n=L.filter(b=>b!==a&&(()=>{const u=seg(a),v=seg(b);return mkSegX(u[0],u[1],v[0],v[1])})()).length;if(n>=2)S0.add(a.sig)}}}catch(e){}return S0}
 let MKASK=null;
 /* GO 뒤: 새로 찾은 표시를 학생에게 묻는다. 지운 표시는 기록에서도 지운다 */
 async function mkGo(){if(!P||!S||!S.state||P.task)return;let found={};try{found=mkFind(memInk(),P.problems)}catch(e){console.error(e);return}
