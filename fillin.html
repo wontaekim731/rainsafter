@@ -840,6 +840,9 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 .dkSh{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .dkPick{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--line)}.dkPick span{min-width:0;overflow-wrap:anywhere}
 .dkPick .sb[disabled]{opacity:.5;cursor:default}
+label.dkPick{justify-content:flex-start;cursor:pointer}label.dkPick input{width:20px;height:20px;flex:none;accent-color:var(--omr)}label.dkPick span{flex:1}label.dkPick em{font-style:normal;font-size:13px;color:var(--muted)}label.dkPick.off{cursor:default}label.dkPick.off span{opacity:.55}
+.dkDay{font-size:14px;margin-top:4px;color:var(--omr)}.dkDay span{color:var(--muted);font-weight:500}
+.dkPrev{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
 #dkSheet .sb,#mkAsk .sb{flex:none;overflow:visible;position:static;font:inherit;font-size:14px;font-weight:600;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;padding:8px 14px;cursor:pointer}#dkSheet .sb.pri,#mkAsk .sb.pri{background:var(--omr);border-color:var(--omr);color:#0E1014}#dkSheet .sb[disabled],#mkAsk .sb[disabled]{opacity:.45;cursor:default}
 .tryB.rdB{background:#e7fbef;color:#11653a;border:1px solid #6ee7a8}.tryB.mkB{background:#fff7d6;color:#7a5a00;border:1px solid #f5c84b}
 .chip.amb{color:var(--warn)}
@@ -5870,14 +5873,18 @@ function bookInfo(name,docs){const ms=docs.filter(d=>d.name===name||d.from===nam
     if(d.keyFound||(d.solKeys&&Object.keys(d.solKeys).length)||(d.seqAns&&Object.keys(d.seqAns).length)||(d.problems||[]).some(p=>p.key))keyed=true;
     if(!graded&&Object.keys(loadCats(d.name)).length)graded=true}
   try{const H=histLoad(name);if(Object.keys(H).length)graded=true}catch(e){}
-  return {problems:[...pm.values()],n:Math.max(pm.size,...ms.map(d=>d.n||0),0),keyed,graded,lazy:ms.some(d=>d.lazy)}}
+  return {problems:[...pm.values()],n:Math.max(pm.size,...ms.map(d=>d.n||0),0),pages:Math.max(0,...ms.map(d=>d.pages||0)),keyed,graded,lazy:ms.some(d=>d.lazy)}}
 /* STACK에 쌓을 수 있는 문제집: 정답을 읽었거나(빠른 정답·해설) 이미 GO로 채점한 적이 있는 책. 지금 뒤에서 정답을 읽는 중이면 아직 */
 function bookReady(r,docs){if(!r)return false;try{if(typeof BGQ!=='undefined'&&BGQ&&BGQ.name===r.name)return false}catch(e){}const I=bookInfo(r.name,docs||[r]);return I.graded||(I.keyed&&(I.n>0||I.lazy))}
-function deckQs(b,o,docs){const a=+b.from||0,z=+b.to||0,inR=q=>(!a||q>=a)&&(!z||q<=z);const I=bookInfo(b.name,docs||[o]),S=new Set(I.problems.map(p=>+p.q));
+function deckQs(b,o,docs){const I=bookInfo(b.name,docs||[o]);
+  if(b.pf||b.pt){const a=+b.pf||1,z=+b.pt||1e9;return [...new Set(I.problems.filter(p=>p.page>=a&&p.page<=z).map(p=>+p.q))].sort((x,y)=>x-y)}   /* 범위 = 쪽 (PDF 쪽 번호). 아직 안 읽은 쪽의 문제는 읽히는 대로 들어온다 */
+  const a=+b.from||0,z=+b.to||0,inR=q=>(!a||q>=a)&&(!z||q<=z),S=new Set(I.problems.map(p=>+p.q));
   for(const d of (docs||[]).filter(d=>d.name===b.name||d.from===b.name))for(const q in loadCats(d.name))S.add(+q);   /* 아직 안 읽은 쪽이 있는 큰 책: 채점한 문제는 범위에 넣는다 */
   try{for(const q in histLoad(b.name))S.add(+q)}catch(e){}
-  const qs=[...S].filter(q=>q>0&&inR(q));if(a&&z&&z>=a&&z-a<600){const n=I.n;for(let q=a;q<=z;q++)if(!n||q<=Math.max(n,...qs))qs.push(q)}   /* 범위를 번호로 정했으면 그 번호는 모두 */
+  const qs=[...S].filter(q=>q>0&&inR(q));if(a&&z&&z>=a&&z-a<600){const n=I.n;for(let q=a;q<=z;q++)if(!n||q<=Math.max(n,...qs))qs.push(q)}   /* (예전 버전) 범위를 번호로 정했으면 그 번호는 모두 */
   return [...new Set(qs)].sort((x,y)=>x-y)}
+const dkRange=(b,st)=>{const qs=(st&&st.all)||[],nq=qs.filter(q=>q<1000),qr=nq.length?` · ${nq[0]}~${nq[nq.length-1]}번`:'';
+  return b.pf||b.pt?(b.pf&&b.pf===b.pt?`${b.pf}쪽${qr}`:`${b.pf||1}~${b.pt?b.pt+'쪽':'끝'}${b.pt?'':'까지'}${qr}`.replace('~끝까지','쪽부터 끝까지')):b.from||b.to?`${b.from||'처음'}~${b.to||'끝'}번`:'전체 범위'};
 function deckCats(name,docs){const cat={};for(const d of docs.filter(d=>d.name===name||d.from===name)){const c=loadCats(d.name);for(const q in c)(cat[q]=cat[q]||[]).push(c[q])}return cat}
 const dkQN=q=>+q<1000?`${+q}번`:'';
 /* 한 권의 회독 상태. 1회독은 그 문제의 첫 채점(도전 기록 첫 번째)으로, 2회독부터는 그 회독을 시작한 뒤의 첫 채점으로 판단 */
@@ -5891,20 +5898,22 @@ function deckState(b,docs){const o=docs.find(d=>d.name===b.name);if(!o)return {m
       else if(mk&&mk.k==='star'){done=true;wrong=true;if(dayKey(mk.t||0)===today)res.td++}   /* ★(모름)만 쳐도 '풀어 본 문제'로 세고 다음 회독에 넣는다 */
       (done?(wrong?res.wr:res.ok):res.un).push(q)}
     return res};
-  const rows=[];for(let i=0;i<R.length;i++)rows.push(ev(i,i?(R[i].qs||[]):all));
+  const inAll=new Set(all),ranged=!!(b.pf||b.pt||b.from||b.to);   /* 범위를 바꾸면 2회독부터도 그 범위 안의 문제만 */
+  const rows=[];for(let i=0;i<R.length;i++)rows.push(ev(i,i?(R[i].qs||[]).filter(q=>!ranged||inAll.has(q)):all));
   const cur=rows[rows.length-1],complete=cur.set.length>0&&!cur.un.length;
   return {o,all,rows,r:rows.length,cur,complete,next:complete?cur.wr.slice():null,clear:complete&&!cur.wr.length,R}}
 /* 목표일이 있으면: 오늘까지 와 있어야 할 지점(막대 위 얇은 선) + 오늘 분량 */
 function deckPace(b,st){if(!b.end)return null;const dl=dLeft(b.end);if(dl==null)return null;const i=st.r-1,s0=i?dayKey(st.R[i].at):(b.start||dayKey(b.at||Date.now()));
-  const d0=new Date(s0+'T00:00:00').getTime(),d1=new Date(b.end+'T00:00:00').getTime(),t=new Date(dayKey(Date.now())+'T00:00:00').getTime();
-  const tot=Math.max(1,Math.round((d1-d0)/864e5)+1),el=Math.round((t-d0)/864e5)+1,E=Math.max(0,Math.min(1,el/tot));
-  const rem0=st.cur.un.length+st.cur.td,quota=dl>=0&&rem0>0?Math.ceil(rem0/(dl+1)):0;return {dl,E,quota,td:st.cur.td}}
+  const day=k=>new Date(k+'T00:00:00').getTime(),d0=day(s0),d1=day(b.end),t=day(dayKey(Date.now()));
+  const tot=Math.max(1,Math.round((d1-d0)/864e5)+1),el=Math.round((t-d0)/864e5)+1,E=Math.max(0,Math.min(1,el/tot)),wait=Math.max(0,Math.round((d0-t)/864e5));
+  const days=dl+1-wait,rem0=st.cur.un.length+(wait?0:st.cur.td),quota=dl>=0&&rem0>0&&days>0?Math.ceil(rem0/days):0;   /* 하루 분량 = (오늘 아침 기준 남은 문제) ÷ (목표일까지 남은 날, 오늘·목표일 포함) */
+  return {dl,E,quota,td:wait?0:st.cur.td,wait,days:Math.max(0,days)}}
 function deckSteps(st){const cap=40;return `<div class="dkSteps">${st.rows.map((x,i)=>{const n=x.set.length,sc=n>cap?cap/n:1,W=Math.round(x.wr.length*sc),U=Math.round(x.un.length*sc),O=Math.max(0,Math.round(n*sc)-W-U),last=i===st.rows.length-1,fin=!x.un.length&&n>0;
     return `<div class="dkStep${last?' now':''}"><span class="l">${i+1}회독</span><span class="dkBl" role="img" aria-label="${i+1}회독 ${n}문제 중 다시 풀 문제 ${x.wr.length}, 안 푼 문제 ${x.un.length}">${'<i class="dkW"></i>'.repeat(W)}${'<i class="dkU"></i>'.repeat(U)}${'<i class="dkO"></i>'.repeat(O)}</span><span class="r">${fin?(x.wr.length?`완료 · 다시 풀 ${x.wr.length}`:'완료 · 클리어'):`${n-x.un.length}/${n}`}</span></div>`}).join('')}</div>`}
 function deckBookHtml(b,i,st){if(st.miss)return `<div class="dkB" data-dk="${i}"><div class="dkT"><b>${esc(b.name)}</b></div><p class="sub" style="margin:4px 0">이 기기에서 문제집을 찾지 못했어요.</p><div class="dkA"><button class="sb" type="button" data-dkset="${i}">설정</button></div></div>`;
-  const c=st.cur,n=c.set.length,dn=n-c.un.length,P1=n?Math.round(dn/n*100):0,acc=dn?Math.round(c.ok.length/dn*100):null,pc=deckPace(b,st),rg=b.from||b.to?`${b.from||'처음'}~${b.to||'끝'}번`:'전체 범위';
+  const c=st.cur,n=c.set.length,dn=n-c.un.length,P1=n?Math.round(dn/n*100):0,acc=dn?Math.round(c.ok.length/dn*100):null,pc=deckPace(b,st),rg=dkRange(b,st);
   return `<div class="dkB" data-dk="${i}"><div class="dkT"><b>${esc(b.name)}</b><span class="dkR">${st.r}회독</span>${pc?`<span class="dd">${dTag(pc.dl)}</span>`:''}</div>
-    <div class="sub">${rg}${pc&&pc.quota?` · 오늘 <b>${Math.min(pc.td,pc.quota)}/${pc.quota}</b>문제`:''}</div>
+    <div class="sub">${rg}</div>${pc?`<div class="dkDay">${pc.quota?`<b>하루 ${pc.quota}문제씩</b>${pc.wait?` <span>· ${pc.wait}일 뒤 시작</span>`:` <span>· 오늘 ${Math.min(pc.td,pc.quota)}/${pc.quota}${pc.td>=pc.quota?' 끝':''}</span>`}`:pc.dl<0?'<span>목표일이 지났어요</span>':c.un.length?'':'<span>이번 회독 범위를 다 풀었어요</span>'}</div>`:''}
     <div class="dkBar" role="img" aria-label="진도율 ${P1}%"><i style="width:${P1}%"></i>${pc?`<s style="left:calc(${(pc.E*100).toFixed(1)}% - 1px)" title="오늘까지 와 있어야 할 지점"></s>`:''}</div>
     <div class="dkM"><span>진도 <b>${P1}%</b></span><span>첫 시도 정답 <b>${acc==null?'—':acc+'%'}</b></span></div>
     ${deckSteps(st)}
@@ -5913,28 +5922,38 @@ function deckBookHtml(b,i,st){if(st.miss)return `<div class="dkB" data-dk="${i}"
 function deckActive(g,docs,S){let best=-1,bt=-1;g.books.forEach((b,i)=>{const st=S[i];if(st.miss||st.clear||st.complete)return;let t=0;for(const d of docs)if(d.from===b.name||d.name===b.name&&!d.orig)t=Math.max(t,d.at||0);const H=histLoad(b.name);for(const q in H)for(const a of H[q])t=Math.max(t,a.t||0);if(t>bt){bt=t;best=i}});return best}
 function deckHtml(g,docs){const S=g.books.map(b=>deckState(b,docs)),ai=deckActive(g,docs,S),A=ai>=0?g.books[ai]:null;
   return `<div class="cc dk"><div class="dkH"><h2>STACK</h2><span class="sub">${g.books.length}/${DECK_MAX}권</span>${g.books.length<DECK_MAX?'<button class="sb" type="button" data-dkadd>＋ 문제집 쌓기</button>':''}</div>
-    ${A?`<button class="fiGo" type="button" data-dkgo="${ai}">이어 풀기 <small>${esc(A.name)} · ${S[ai].r}회독</small></button>`:''}
+    ${A?`<button class="fiGo" type="button" data-dkgo="${ai}">이어 풀기 <small>${esc(A.name)} · ${S[ai].r}회독${(()=>{const p=deckPace(A,S[ai]);return p&&p.quota&&!p.wait?` · 오늘 ${Math.min(p.td,p.quota)}/${p.quota}`:''})()}</small></button>`:''}
     ${g.books.map((b,i)=>deckBookHtml(b,i,S[i])).join('')||'<p class="sub" style="margin:0">[Q]에서 추가를 마친 문제집을 최대 3권까지 쌓아 두고, 여기서 바로 이어 풀어요. 범위와 목표일은 나중에 [설정]에서 정해도 돼요.</p>'}</div>`}
 function deckBind(box,g,docs,again){const on=(s,f)=>box.querySelectorAll(s).forEach(b=>b.onclick=()=>f(b));
   on('[data-dkadd]',()=>deckAddSheet(again));on('[data-dkgo]',b=>deckGo(+b.dataset.dkgo));on('[data-dkset]',b=>deckSetSheet(+b.dataset.dkset,again));
   on('[data-dknext]',async b=>{const i=+b.dataset.dknext,G=await deckGet(),bk=G.books[i];if(!bk)return;const st=deckState(bk,await libAll());if(!st.complete||!st.next||!st.next.length)return;
     bk.rounds=st.R.slice();bk.rounds.push({at:Date.now(),qs:st.next});await deckPut(G);again()})}
 function dkShell(html){let d=$('#dkSheet');if(!d){d=document.createElement('div');d.id='dkSheet';document.body.appendChild(d);d.onclick=e=>{if(e.target===d)d.hidden=true}}d.innerHTML=`<div class="sh" role="dialog" aria-modal="true">${html}</div>`;d.hidden=false;return d}
-async function deckAddSheet(again){const g=await deckGet(),docs=await libAll().catch(()=>[]),O=deckOrigs(docs),full=g.books.length>=DECK_MAX,inD=new Set(g.books.map(b=>b.name));
+async function deckAddSheet(again){const g=await deckGet(),docs=await libAll().catch(()=>[]),O=deckOrigs(docs),left=DECK_MAX-g.books.length,inD=new Set(g.books.map(b=>b.name));
+  const busy=r=>{try{return typeof BGQ!=='undefined'&&BGQ&&BGQ.name===r.name}catch(e){return false}};
   const d=dkShell(`<div class="dkSh"><b style="font-size:18px">STACK에 문제집 쌓기</b><button class="sb" type="button" data-x>닫기</button></div>
-    <p class="sub" style="margin:0">${full?`STACK에는 최대 ${DECK_MAX}권까지 쌓을 수 있어요. 한 권을 빼면 새로 쌓을 수 있어요.`:'정답을 읽었거나 GO로 채점해 본 문제집을 쌓을 수 있어요.'}</p>
-    ${O.map(r=>{const ok=bookReady(r,docs),has=inD.has(r.name),nn=bookInfo(r.name,docs).n;return `<div class="dkPick"><span><b>${esc(r.name)}</b>${nn?` <span class="sub">${nn}문항</span>`:''}</span>${has?'<span class="sub">쌓음</span>':ok?`<button class="sb pri" type="button" data-up="${esc(r.name)}"${full?' disabled':''}>쌓기</button>`:`<button class="sb" type="button" disabled title="[Q]에서 정답 읽기가 끝나면 쌓을 수 있어요">${(()=>{try{return typeof BGQ!=='undefined'&&BGQ&&BGQ.name===r.name}catch(e){return false}})()?'정답 읽는 중':'정답 없음'}</button>`}</div>`}).join('')||'<p class="sub">아직 넣은 문제집이 없어요. [Q] 탭에서 문제집 PDF를 먼저 넣어 주세요.</p>'}`);
-  d.querySelector('[data-x]').onclick=()=>{d.hidden=true};
-  d.querySelectorAll('[data-up]').forEach(b=>b.onclick=async()=>{const G=await deckGet();if(G.books.length>=DECK_MAX||G.books.some(x=>x.name===b.dataset.up))return;const now=Date.now();G.books.push({name:b.dataset.up,start:dayKey(now),at:now,rounds:[{at:now}]});await deckPut(G);d.hidden=true;again()})}
-async function deckSetSheet(i,again){const g=await deckGet(),b=g.books[i];if(!b)return;const today=dayKey(Date.now());
+    <p class="sub" style="margin:0">${left>0?`쌓을 문제집을 모두 고르세요 · ${left}권 더 쌓을 수 있어요 (최대 ${DECK_MAX}권)`:`STACK에는 최대 ${DECK_MAX}권까지 쌓을 수 있어요. 한 권을 빼면 새로 쌓을 수 있어요.`}</p>
+    ${O.map(r=>{const ok=bookReady(r,docs),has=inD.has(r.name),nn=bookInfo(r.name,docs).n;
+      return `<label class="dkPick${ok&&!has?'':' off'}"><input type="checkbox" value="${esc(r.name)}"${has?' checked disabled':ok&&left>0?'':' disabled'}><span><b>${esc(r.name)}</b>${nn?` <span class="sub">${nn}문항</span>`:''}</span><em>${has?'쌓음':ok?'':busy(r)?'정답 읽는 중':'정답 없음'}</em></label>`}).join('')||'<p class="sub">아직 넣은 문제집이 없어요. [Q] 탭에서 문제집 PDF를 먼저 넣어 주세요.</p>'}
+    <div class="dkSh"><span class="sub" data-msg></span><button class="sb pri" type="button" data-go disabled>쌓기</button></div>`);
+  const pick=()=>[...d.querySelectorAll('.dkPick input:checked:not(:disabled)')],go=d.querySelector('[data-go]'),msg=d.querySelector('[data-msg]');
+  const upd=e=>{let L=pick();if(L.length>left&&e&&e.target){e.target.checked=false;L=pick();msg.textContent=`최대 ${DECK_MAX}권까지예요`}else msg.textContent='';go.disabled=!L.length;go.textContent=L.length?`${L.length}권 쌓기`:'쌓기'};
+  d.querySelectorAll('.dkPick input').forEach(c=>c.onchange=upd);d.querySelector('[data-x]').onclick=()=>{d.hidden=true};
+  go.onclick=async()=>{const G=await deckGet(),now=Date.now();for(const c of pick()){if(G.books.length>=DECK_MAX)break;if(G.books.some(x=>x.name===c.value))continue;G.books.push({name:c.value,start:dayKey(now),at:now,rounds:[{at:now}]})}await deckPut(G);d.hidden=true;again()}}
+async function deckSetSheet(i,again){const g=await deckGet(),b=g.books[i];if(!b)return;const docs=await libAll().catch(()=>[]),I=bookInfo(b.name,docs),today=dayKey(Date.now()),st0=b.start||dayKey(b.at||Date.now());
   const d=dkShell(`<div class="dkSh"><b style="font-size:18px">${esc(b.name)}</b><button class="sb" type="button" data-x>닫기</button></div>
-    <label class="sub">범위 (문항 번호, 비우면 전체)</label><div style="display:flex;gap:8px;align-items:center"><input class="txt" inputmode="numeric" placeholder="시작 번호" data-f value="${esc(b.from||'')}" style="width:110px"> ~ <input class="txt" inputmode="numeric" placeholder="끝 번호" data-t value="${esc(b.to||'')}" style="width:110px"></div>
-    <label class="sub">목표일 (예: 중간고사 전날)</label><input class="txt" type="date" data-e min="${today}" value="${esc(b.end||'')}" style="max-width:200px">
-    <p class="sub" style="margin:0">목표일을 넣으면 오늘 분량과 '오늘까지 와 있어야 할 지점'을 보여 줘요.</p>
+    <label class="sub">범위 (쪽, 비우면 전체)</label><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><input class="txt" inputmode="numeric" placeholder="시작 쪽" data-f value="${esc(b.pf||'')}" style="width:100px"> ~ <input class="txt" inputmode="numeric" placeholder="끝 쪽" data-t value="${esc(b.pt||'')}" style="width:100px"><span class="sub">${I.pages?`전체 ${I.pages}쪽`:''}</span></div>
+    <p class="sub" style="margin:0">PDF 쪽 번호 기준이에요. 책에 인쇄된 쪽 번호와 다를 수 있어서, 아래에 몇 번 문제부터인지 같이 보여 줘요.</p>
+    <label class="sub">기간</label><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><input class="txt" type="date" data-s value="${esc(st0)}" style="max-width:170px"> ~ <input class="txt" type="date" data-e min="${today}" value="${esc(b.end||'')}" style="max-width:170px"></div>
+    <div class="dkPrev" data-prev></div>
     <div style="display:flex;justify-content:space-between;gap:8px;margin-top:6px"><button class="sb" type="button" data-rm>STACK에서 빼기</button><button class="sb pri" type="button" data-ok>저장</button></div>`);
+  const v=k=>d.querySelector(k).value,num=k=>{const n=parseInt(v(k),10);return n>0?n:0};
+  const tmp=()=>{const B=Object.assign({},b,{rounds:b.rounds});delete B.from;delete B.to;let f=num('[data-f]'),t=num('[data-t]');if(f&&t&&t<f){const x=f;f=t;t=x}if(f)B.pf=f;else delete B.pf;if(t)B.pt=t;else delete B.pt;const s0=v('[data-s]'),e=v('[data-e]');if(s0)B.start=s0;if(e)B.end=e;else delete B.end;return B};
+  const prev=()=>{const B=tmp(),st=deckState(B,docs);if(st.miss)return;const pc=deckPace(B,st),n=st.cur.set.length;
+    d.querySelector('[data-prev]').innerHTML=`<b>${dkRange(B,st)}</b> · ${n}문제${st.r>1?` (${st.r}회독)`:''}${st.cur.un.length<n?` · 남은 ${st.cur.un.length}문제`:''}`+(pc?(pc.quota?`<div class="dkDay"><b>하루 ${pc.quota}문제씩</b> <span>· ${pc.days}일${pc.wait?` (${pc.wait}일 뒤 시작)`:''}</span></div>`:pc.dl<0?'<div class="sub">목표일이 지났어요</div>':''):'<div class="sub">목표일을 넣으면 하루에 몇 문제씩 풀면 되는지 알려 줘요.</div>')+(I.lazy&&(B.pf||B.pt)?'<div class="sub">큰 책은 아직 안 읽은 쪽의 문제가 읽히는 대로 범위에 들어와요.</div>':'')};
+  d.querySelectorAll('input').forEach(x=>x.oninput=x.onchange=prev);prev();
   d.querySelector('[data-x]').onclick=()=>{d.hidden=true};
-  d.querySelector('[data-ok]').onclick=async()=>{const G=await deckGet(),B=G.books[i];if(!B)return;const f=parseInt(d.querySelector('[data-f]').value,10),t=parseInt(d.querySelector('[data-t]').value,10),e=d.querySelector('[data-e]').value;
-    if(f>0)B.from=f;else delete B.from;if(t>0)B.to=t;else delete B.to;if(B.from&&B.to&&B.to<B.from){const x=B.from;B.from=B.to;B.to=x}if(e)B.end=e;else delete B.end;await deckPut(G);d.hidden=true;again()};
+  d.querySelector('[data-ok]').onclick=async()=>{const G=await deckGet(),B=G.books[i];if(!B)return;const T=tmp();for(const k of ['from','to','pf','pt','end'])delete B[k];for(const k of ['pf','pt','end','start'])if(T[k])B[k]=T[k];await deckPut(G);d.hidden=true;again()};
   const rm=d.querySelector('[data-rm]');rm.onclick=async()=>{if(!rm.dataset.sure){rm.dataset.sure=1;rm.textContent='한 번 더 누르면 빼요 (풀이 기록은 남아요)';return}const G=await deckGet();G.books.splice(i,1);await deckPut(G);d.hidden=true;again()}}
 /* 이어 풀기: 1회독은 풀던 풀이본에서 안 푼 첫 문제 쪽으로. 2회독부터는 새 풀이본(지난 필기가 안 보이게)에서 이번 회독 문제만 표시 */
 async function deckGo(i){const g=await deckGet(),b=g.books[i];if(!b)return;const docs=await libAll().catch(()=>[]),st=deckState(b,docs);if(st.miss)return;
