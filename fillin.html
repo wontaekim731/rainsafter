@@ -5678,7 +5678,7 @@ async function homeSimple(){const box=$('#hHell');try{await qpHdr()}catch(e){}co
   box.innerHTML=`<div class="fiHero"><div class="who">오늘 · ${esc(LS.get('name',''))}</div><div class="big">${td.n?`${td.n}문제 풀었어요`:'오늘 시작해요'}</div><div class="sub2">${td.n?`맞음 ${td.ok}`:''}${open?`${td.n?' · ':''}<b>BLOCK ${open}</b>`:''}</div></div>
    ${DK.books.length?deckHtml(DK,docs):`<div class="fiCard">${gate.t?`<div class="bk"><span>${esc(gate.t)}</span></div>`:''}<button class="fiGo" type="button" data-gate>${esc(gate.a)} <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></button>
      <div class="sub" style="margin-top:8px;text-align:center">문제집 풀기 → GO 채점 → 틀린 문제는 BLOCK에서 클리어</div></div>${deckHtml(DK,docs)}`}
-   <div class="cc ocW"><div class="impH"><h2>오늘의 막힌 줄</h2>${deck.length?`<span class="sub">${deck.length}장</span>`:''}</div>
+   <div class="cc ocW"><div class="impH"><h2>오늘의 막힌 줄</h2>${deck.length?`<span class="sub">${deck.length}개</span>`:''}</div>
      ${deck.length?`<button type="button" class="ocPrev" data-oc><img src="${deck[0].cls.cimg||deck[0].cls.img}" alt="형광펜으로 표시한 줄"><span>무슨 뜻이었는지 떠올려 보세요</span></button><button class="sb pri" type="button" data-oc style="margin-top:8px">막힌 줄 ${deck.length}개 넘겨 보기</button>`
        :wr.some(w=>w.cls&&w.cls.k==='stuck'&&(w.cls.cimg||w.cls.img))?`<p class="sub" style="margin:0">오늘 막힌 줄은 다 봤어요. 내일 다시 나와요.</p>`:`<p class="sub" style="margin:0">틀린 문제에서 '여기서 막혔다'를 고르고 형광펜을 그으면, 그 줄이 여기에 모여요.</p>`}</div>
    <button type="button" class="cc blkRow" data-gapgo><b class="bk">BLOCK ${String(open).padStart(2,'0')}</b><span>남은 틀린 문제</span><span aria-hidden="true">→</span></button>
@@ -5864,16 +5864,25 @@ const DECK_KEY='deck:main',DECK_MAX=3;let DKRUN=null;
 async function deckGet(){const g=(await plAll().catch(()=>[])).find(x=>x.key===DECK_KEY);return g||{key:DECK_KEY,name:'STACK',books:[],at:Date.now()}}
 const deckPut=g=>plPut(g);
 function deckOrigs(docs){return docs.filter(d=>(d.orig||!d.from&&d.orig!==false)&&!d.task).sort((a,b)=>b.at-a.at)}
-/* [Q]에서 추가가 끝난 문제집: 문항을 읽었고 빠른 정답도 읽었다 (지금 뒤에서 읽는 중이면 아직) */
-function bookReady(r){if(!r)return false;const ps=r.problems||[];if(!(r.n||ps.length))return false;try{if(typeof BGQ!=='undefined'&&BGQ&&BGQ.name===r.name)return false}catch(e){}return !!(r.keyFound||ps.some(p=>p.key)||(r.solKeys&&Object.keys(r.solKeys).length))}
-function deckQs(b,o){const a=+b.from||0,z=+b.to||0,inR=q=>(!a||q>=a)&&(!z||q<=z);
-  const qs=[...new Set(((o&&o.problems)||[]).map(p=>+p.q).filter(q=>q>0&&inR(q)))];
-  if(!qs.length&&a&&z&&z>=a)for(let q=a;q<=z;q++)qs.push(q);return qs.sort((x,y)=>x-y)}
+/* 한 권의 정보: 원본 + 풀이본을 합쳐서 본다. 큰 책(쪽을 볼 때마다 읽는 책)은 문항·정답이 원본이 아니라 풀이본에 쌓이기 때문 */
+function bookInfo(name,docs){const ms=docs.filter(d=>d.name===name||d.from===name),pm=new Map();let keyed=false,graded=false;
+  for(const d of ms){for(const p of d.problems||[]){const q=+p.q;if(!(q>0))continue;const o=pm.get(q);if(!o||(!o.key&&p.key))pm.set(q,p)}
+    if(d.keyFound||(d.solKeys&&Object.keys(d.solKeys).length)||(d.seqAns&&Object.keys(d.seqAns).length)||(d.problems||[]).some(p=>p.key))keyed=true;
+    if(!graded&&Object.keys(loadCats(d.name)).length)graded=true}
+  try{const H=histLoad(name);if(Object.keys(H).length)graded=true}catch(e){}
+  return {problems:[...pm.values()],n:Math.max(pm.size,...ms.map(d=>d.n||0),0),keyed,graded,lazy:ms.some(d=>d.lazy)}}
+/* STACK에 쌓을 수 있는 문제집: 정답을 읽었거나(빠른 정답·해설) 이미 GO로 채점한 적이 있는 책. 지금 뒤에서 정답을 읽는 중이면 아직 */
+function bookReady(r,docs){if(!r)return false;try{if(typeof BGQ!=='undefined'&&BGQ&&BGQ.name===r.name)return false}catch(e){}const I=bookInfo(r.name,docs||[r]);return I.graded||(I.keyed&&(I.n>0||I.lazy))}
+function deckQs(b,o,docs){const a=+b.from||0,z=+b.to||0,inR=q=>(!a||q>=a)&&(!z||q<=z);const I=bookInfo(b.name,docs||[o]),S=new Set(I.problems.map(p=>+p.q));
+  for(const d of (docs||[]).filter(d=>d.name===b.name||d.from===b.name))for(const q in loadCats(d.name))S.add(+q);   /* 아직 안 읽은 쪽이 있는 큰 책: 채점한 문제는 범위에 넣는다 */
+  try{for(const q in histLoad(b.name))S.add(+q)}catch(e){}
+  const qs=[...S].filter(q=>q>0&&inR(q));if(a&&z&&z>=a&&z-a<600){const n=I.n;for(let q=a;q<=z;q++)if(!n||q<=Math.max(n,...qs))qs.push(q)}   /* 범위를 번호로 정했으면 그 번호는 모두 */
+  return [...new Set(qs)].sort((x,y)=>x-y)}
 function deckCats(name,docs){const cat={};for(const d of docs.filter(d=>d.name===name||d.from===name)){const c=loadCats(d.name);for(const q in c)(cat[q]=cat[q]||[]).push(c[q])}return cat}
 const dkQN=q=>+q<1000?`${+q}번`:'';
 /* 한 권의 회독 상태. 1회독은 그 문제의 첫 채점(도전 기록 첫 번째)으로, 2회독부터는 그 회독을 시작한 뒤의 첫 채점으로 판단 */
 function deckState(b,docs){const o=docs.find(d=>d.name===b.name);if(!o)return {miss:true};
-  const all=deckQs(b,o),H=histLoad(b.name),C=deckCats(b.name,docs),M=mkLoad(b.name),today=dayKey(Date.now());
+  const all=deckQs(b,o,docs),H=histLoad(b.name),C=deckCats(b.name,docs),M=mkLoad(b.name),today=dayKey(Date.now());
   const R=b.rounds&&b.rounds.length?b.rounds:[{at:b.at||0}];
   const ev=(i,set)=>{const at=i?R[i].at||0:0,res={set,ok:[],wr:[],un:[],td:0};
     for(const q of set){const L=(H[q]||[]).filter(a=>(a.t||0)>=at),m=M[q],mk=m&&m.ok&&(!i||(m.t||0)>=at)?m:null;let done=false,wrong=false;
@@ -5913,8 +5922,8 @@ function deckBind(box,g,docs,again){const on=(s,f)=>box.querySelectorAll(s).forE
 function dkShell(html){let d=$('#dkSheet');if(!d){d=document.createElement('div');d.id='dkSheet';document.body.appendChild(d);d.onclick=e=>{if(e.target===d)d.hidden=true}}d.innerHTML=`<div class="sh" role="dialog" aria-modal="true">${html}</div>`;d.hidden=false;return d}
 async function deckAddSheet(again){const g=await deckGet(),docs=await libAll().catch(()=>[]),O=deckOrigs(docs),full=g.books.length>=DECK_MAX,inD=new Set(g.books.map(b=>b.name));
   const d=dkShell(`<div class="dkSh"><b style="font-size:18px">STACK에 문제집 쌓기</b><button class="sb" type="button" data-x>닫기</button></div>
-    <p class="sub" style="margin:0">${full?`STACK에는 최대 ${DECK_MAX}권까지 쌓을 수 있어요. 한 권을 빼면 새로 쌓을 수 있어요.`:'[Q]에서 문항·정답 읽기가 끝난 문제집만 쌓을 수 있어요.'}</p>
-    ${O.map(r=>{const ok=bookReady(r),has=inD.has(r.name);return `<div class="dkPick"><span><b>${esc(r.name)}</b>${r.n?` <span class="sub">${r.n}문항</span>`:''}</span>${has?'<span class="sub">쌓음</span>':ok?`<button class="sb pri" type="button" data-up="${esc(r.name)}"${full?' disabled':''}>쌓기</button>`:'<button class="sb" type="button" disabled title="[Q]에서 정답 읽기가 끝나면 쌓을 수 있어요">준비 중</button>'}</div>`}).join('')||'<p class="sub">아직 넣은 문제집이 없어요. [Q] 탭에서 문제집 PDF를 먼저 넣어 주세요.</p>'}`);
+    <p class="sub" style="margin:0">${full?`STACK에는 최대 ${DECK_MAX}권까지 쌓을 수 있어요. 한 권을 빼면 새로 쌓을 수 있어요.`:'정답을 읽었거나 GO로 채점해 본 문제집을 쌓을 수 있어요.'}</p>
+    ${O.map(r=>{const ok=bookReady(r,docs),has=inD.has(r.name),nn=bookInfo(r.name,docs).n;return `<div class="dkPick"><span><b>${esc(r.name)}</b>${nn?` <span class="sub">${nn}문항</span>`:''}</span>${has?'<span class="sub">쌓음</span>':ok?`<button class="sb pri" type="button" data-up="${esc(r.name)}"${full?' disabled':''}>쌓기</button>`:`<button class="sb" type="button" disabled title="[Q]에서 정답 읽기가 끝나면 쌓을 수 있어요">${(()=>{try{return typeof BGQ!=='undefined'&&BGQ&&BGQ.name===r.name}catch(e){return false}})()?'정답 읽는 중':'정답 없음'}</button>`}</div>`}).join('')||'<p class="sub">아직 넣은 문제집이 없어요. [Q] 탭에서 문제집 PDF를 먼저 넣어 주세요.</p>'}`);
   d.querySelector('[data-x]').onclick=()=>{d.hidden=true};
   d.querySelectorAll('[data-up]').forEach(b=>b.onclick=async()=>{const G=await deckGet();if(G.books.length>=DECK_MAX||G.books.some(x=>x.name===b.dataset.up))return;const now=Date.now();G.books.push({name:b.dataset.up,start:dayKey(now),at:now,rounds:[{at:now}]});await deckPut(G);d.hidden=true;again()})}
 async function deckSetSheet(i,again){const g=await deckGet(),b=g.books[i];if(!b)return;const today=dayKey(Date.now());
