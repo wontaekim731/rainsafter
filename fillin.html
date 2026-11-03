@@ -823,14 +823,16 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 /* ===== v46 덱 · N회독 · 세모/별표 ===== */
 .dk .dkH{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dk .dkH h2{margin:0}.dk .dkH .sub{flex:1}
 .dk .fiGo{margin:0 0 6px}.dk .fiGo small{font-size:13px;font-weight:600;opacity:.7;margin-left:8px}
-.dkB{border:2px solid var(--line);border-radius:16px;padding:12px 14px 8px;margin-top:10px;cursor:pointer;transition:border-color .15s}.dkB.on{border-color:var(--omr);box-shadow:0 0 0 3px rgba(124,242,176,.12)}.dkB:focus-visible{outline:3px solid var(--omr);outline-offset:2px}
+.dkB{border:2px solid var(--line);border-radius:16px;padding:12px 14px 8px;margin-top:10px;cursor:pointer;transition:border-color .15s}.dkB{position:relative;opacity:.72}.dkB.on{opacity:1;border-color:var(--omr);background:var(--ok-soft,#17241D);box-shadow:0 0 0 3px rgba(124,242,176,.14)}
+.dkB.on::after{content:'✓';position:absolute;top:-10px;right:-10px;width:26px;height:26px;border-radius:50%;background:var(--omr);color:#0E1014;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.35)}.dkB:focus-visible{outline:3px solid var(--omr);outline-offset:2px}
 .dk .fiGo[disabled]{opacity:.45;cursor:default}
 .dkT{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.dkT b{font-size:16px;overflow-wrap:anywhere}
 .dkR{font-size:12px;font-weight:700;color:var(--omr);border:1px solid var(--omr);border-radius:99px;padding:1px 8px}
 .dkT .dd{font-size:12px;color:var(--warn)}
 .dkBar{position:relative;height:8px;border-radius:99px;background:var(--line);margin:10px 0 6px}.dkBar i{display:block;height:100%;border-radius:99px;background:var(--omr);transition:width .4s}
 .dkBar s{position:absolute;top:-4px;bottom:-4px;width:2px;border-radius:2px;background:var(--ink);opacity:.8}
-.dkM{display:flex;gap:14px;align-items:baseline;font-size:14px;color:var(--muted)}.dkM b{color:var(--ink)}.dkM .dkBk{margin-left:auto;font-family:var(--mono);letter-spacing:.02em}.dkM .dkBk b{color:#E8913F;font-size:16px}
+.dkF{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:2px}.dkF .dkA{margin-left:auto}
+.dkM{display:flex;gap:28px;align-items:flex-end}.dkM>div{display:flex;flex-direction:column;gap:1px}.dkM small{font-size:12px;color:var(--muted);font-weight:600}.dkM b{font-size:22px;line-height:1.1;color:var(--ink);font-weight:800}.dkM .dkBk small,.dkM .dkBk b{font-family:var(--mono)}.dkM .dkBk b{color:#E8913F}
 .dkSteps{display:flex;flex-direction:column;gap:5px;margin:10px 0 8px}
 .dkStep{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.dkStep.now{color:var(--ink)}
 .dkBl{display:flex;flex-wrap:wrap;gap:3px;min-width:0}.dkBl i{display:block;width:10px;height:10px;border-radius:2px;box-sizing:border-box;flex:none}
@@ -5933,8 +5935,8 @@ function deckBookHtml(b,i,st,on,bn){if(st.miss)return `<div class="dkB${on?' on'
   return `<div class="dkB${on?' on':''}" data-dk="${i}" role="button" tabindex="0" aria-pressed="${on?'true':'false'}"><div class="dkT"><b>${esc(b.name)}</b>${pc&&pc.quota&&!st.complete&&!pc.wait?`<span class="dkTd${pc.td>=pc.quota?' fin':''}">${pc.td>=pc.quota?'오늘 끝':`오늘 ${pc.quota-pc.td}문제`}</span>`:''}<span class="dkR">${st.r}회독</span>${pc?`<span class="dd">${dTag(pc.dl)}</span>`:''}</div>
     <div class="sub">${rg}${b.end?` · ${+b.end.slice(5,7)}/${+b.end.slice(8)}까지`:''}</div>${pc&&pc.dl<0?'<div class="dkDay"><span>목표일이 지났어요 · [설정]에서 다시 정해 주세요</span></div>':!b.end&&!st.complete?`<button class="dkSetQ" type="button" data-dkset="${i}">목표일을 정하면 오늘 몇 문제 풀면 되는지 알려 줘요 ›</button>`:''}
     <div class="dkBar" role="img" aria-label="진도율 ${P1}%"><i style="width:${P1}%"></i>${pc?`<s style="left:calc(${(pc.E*100).toFixed(1)}% - 1px)" title="오늘까지 와 있어야 할 지점"></s>`:''}</div>
-    <div class="dkM"><span>진도 <b>${P1}%</b></span><span class="dkBk">BLOCK <b>${String(bn||0).padStart(2,'0')}</b></span></div>
-    <div class="dkA">${st.clear?'<span class="dkOk">모든 회독 클리어</span>':st.complete?`<button class="sb pri" type="button" data-dknext="${i}">${st.r+1}회독 시작 · ${st.next.length}문제</button>`:''}<button class="sb" type="button" data-dkset="${i}">설정</button><button class="sb" type="button" data-dkrm="${i}">빼기</button></div></div>`}
+    <div class="dkF"><div class="dkM"><div><small>진도</small><b>${P1}%</b></div><div class="dkBk"><small>BLOCK</small><b>${String(bn||0).padStart(2,'0')}</b></div></div>
+    <div class="dkA">${st.clear?'<span class="dkOk">모든 회독 클리어</span>':st.complete?`<button class="sb pri" type="button" data-dknext="${i}">${st.r+1}회독 시작 · ${st.next.length}문제</button>`:''}<button class="sb" type="button" data-dkset="${i}">설정</button><button class="sb" type="button" data-dkrm="${i}">빼기</button></div></div></div>`}
 /* 홈 덱 카드: 문제집이 있으면 맨 위 '이어 풀기'는 STACK에서 마지막으로 푼 문제집으로 */
 function deckActive(g,docs,S){let best=-1,bt=-1;g.books.forEach((b,i)=>{const st=S[i];if(st.miss||st.clear||st.complete)return;let t=0;for(const d of docs)if(d.from===b.name||d.name===b.name&&!d.orig)t=Math.max(t,d.at||0);const H=histLoad(b.name);for(const q in H)for(const a of H[q])t=Math.max(t,a.t||0);if(t>bt){bt=t;best=i}});return best}
 function deckToday(g,docs){let q=0,t=0,has=false;for(const b of g.books){const st=deckState(b,docs);if(st.miss||st.complete)continue;const p=deckPace(b,st);if(p&&p.quota&&!p.wait){has=true;q+=p.quota;t+=Math.min(p.td,p.quota)}}return has?{q,t}:null}
