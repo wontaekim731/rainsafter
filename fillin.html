@@ -2959,7 +2959,21 @@ const QKV=2;function qkUpgrade(P0){try{if(!P0||!P0.scan||!P0.solRange||P0.solRan
     for(const p of A.problems){if(P0.xi&&p.q<100000)continue;if((P0.xi||P0.ebs)&&P0.problems.some(x=>x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV))P0.problems=P0.problems.filter(x=>!(x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV));if(P0.problems.some(x=>x.q===p.q))continue;p.chTried=1;p.lv=p.q>=3000000&&p.q<4000000?6:LZV;const k=!P0.ebs&&P0.solKeys&&P0.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k;if(!p.key||P0.ebs)p.key={text:'✓',kind:'self',ebs:P0.ebs?1:undefined,xi:P0.xi&&p.q>=100000?1:undefined};P0.problems.push(p)}
     if(P0.xi)P0.problems=xiClean(P0.problems);if(P0.seqAns&&!P0.seqAns.tbl&&P0.seqAns.offV!==2){try{await seqOffset(P0,true)}catch(e){}}if(P0.seqAns&&P0.seqAns.tbl&&A.problems.some(p=>p.page===pg)){seqApply(P0);await seqPPRead(P0,pg)}if(P0.seqAns)seqApply(P0);{const pv=(PV.pages||[]).find(x=>x.n===pg);if(pv&&pv.live&&P===P0)setTimeout(()=>pvBadge(pv),0)}if(P0.seqAns&&P0.seqAns.sol&&!P0.seqAns.sol.done)setTimeout(()=>solIndex(P0),3000);P0.problems.sort((a,b)=>a.q-b.q);if(window.NJPROF)console.log('PROF lazy',pg,Math.round(performance.now()-T0));if(P===P0)await recentSave()}).catch(e=>console.error(e)).finally(()=>{delete LZ.m[key];LZ.n--});
   LZ.m[key]=pr;return pr}
-let LZ_T=0;function lazySoon(pg,ms){if(!S||!P||!(P.lazy||P.xi||P.ebs))return;clearTimeout(LZ_T);LZ_T=setTimeout(()=>{const P0=P;lazyOne(pg).then(()=>ebsPrefetch(P0,pg))},ms||300)}
+let LZ_T=0;function lazySoon(pg,ms){if(!S||!P)return;clearTimeout(LZ_T);LZ_T=setTimeout(()=>{const P0=P;((P.lazy||P.xi||P.ebs)?lazyOne(pg):Promise.resolve()).then(()=>{if(P0.lazy||P0.xi||P0.ebs)ebsPrefetch(P0,pg);keyPrep(P0,pg)})},ms||300)}
+/* 지금 보고 있는 쪽의 정답을 미리 맞춰 둔다: GO 때 하던 무거운 확인(보기 자리 찾기·동그라미 정답 다시 읽기·소문제/분수 정답 다시 읽기·빠른 정답 다시 읽기)을
+   학생이 그 쪽에 머무는 동안 뒤에서 해 두어, GO는 필기만 읽고 바로 채점한다 (쪽마다 한 번) */
+const KP=new Set();
+function keyPrep(P0,pg){if(!P0||P!==P0||!P0.scan||!window.SCAN||!P0.doc||!pg)return;const kk=P0.name+'#'+pg;if(KP.has(kk))return;KP.add(kk);
+  LZ.q=LZ.q.then(async()=>{if(P!==P0)return;const t0=performance.now(),L=P0.problems.filter(p=>p.page===pg&&p.key);let ch=0;
+    for(const p of L){if(P!==P0)return;try{
+      if((p.key.kind==='self'||p.key.kind==='circled')&&(!p.choices||p.choices.length<5)&&!p.chV3){p.chV3=1;const C=await choicesFromCrop(p);if(C.length>(p.choices||[]).length&&C.length>=4){p.choices=C;ch++}}
+      if(p.key.kind==='self'&&!p.key.ck2&&(p.key.img||p.key.png)&&p.choices&&p.choices.length>=4){const im=p.key.img,dg=await keyCircFromCrop(p,im);if(dg){p.key={text:dg,kind:'circled',img:im,ck2:1};if(P0.solKeys)P0.solKeys[p.q]=p.key;ch++;continue}else p.key.ck2=1}
+      if(SCAN.nparts&&P0.solRange&&P0.solRange[2]==='q'&&p.key.img&&!p.key.ebs&&(p.key.npV||0)<2&&(p.key.kind==='self'||(p.key.kind==='nparts'&&p.key.nums&&p.key.nums.includes(null)))){const old=p.key;p.key.npTried=4;p.key.npV=2;
+        const r=await SCAN.nparts(P0.doc,p.key.img);if(r&&r.nums&&r.nums.some(v=>v!=null)&&!(old.kind==='nparts'&&r.nums.filter(v=>v!=null).length<old.nums.filter(v=>v!=null).length)){p.key={text:r.nums.map(v=>v==null?'?':v).join('|'),kind:'nparts',nums:r.nums,img:old.img,npTried:3,npV:2,fromImg:1};ch++}
+        else if(r&&r.expr){p.key.expr=1;p.key.raw=((p.key.raw||'')+' '+r.expr).trim()}else if(r&&r.single){p.key={text:r.single,kind:'frac',img:old.img,npTried:4,npV:2,fromImg:1,raw:old.raw};ch++}else if(r&&r.np)p.key.np=r.np;if(P0.solKeys)P0.solKeys[p.q]=p.key;if(p.key.kind!=='self')continue}
+      if(p.key.kind==='self'&&!p.key.ebs&&(p.key.qkV||0)<3&&!(P0.solRange&&P0.solRange[2]==='f')){const im=p.key.img||quickGuessImg(p.q);if(im&&im.page){const ck=await keyFromCrop(p,im);if(ck){p.key={text:ck,kind:'number',img:im,qkV:3};if(P0.solKeys)P0.solKeys[p.q]=p.key;ch++}}}
+    }catch(e){console.error(e)}}
+    dlog('keyPrep',pg+'쪽 '+L.length+'문항 · 고침 '+ch+' · '+Math.round(performance.now()-t0)+'ms');if(ch&&P===P0){try{await recentSave()}catch(e){}try{pvSum()}catch(e){}}}).catch(e=>console.error(e))}
 async function lazyRead(pages){await Promise.all(pages.map(pg=>lazyOne(pg)))}
 async function countXi(P0){P0._xiCounting=1;try{const sr=P0.solRange,by={};let cur=null,etc=0;
   for(let pi=sr[0];pi<=sr[1];pi++){const R=await xiPage(pi);for(const x of R.items){if(x.box){cur=x.L||'?';continue}if(!cur)continue;if(cur==='?')etc++;else by[cur]=(by[cur]||0)+1}}
@@ -3482,7 +3496,7 @@ function fTop(){const b=$('.pvBar');document.documentElement.style.setProperty('
 /* 문제 목록: 쪽 순서대로. 자이스토리·절대등급처럼 쪽을 볼 때 문제를 읽는 책은, 아직 안 읽은 쪽을 그때그때 읽어 온다 */
 const fList=()=>P.problems.filter(p=>(!FOC.only||FOC.only.includes(p.q))&&p.x1>p.x0&&p.y1>p.y0&&(PV.pages||[]).some(g=>g.n===p.page)).sort((a,b)=>a.page-b.page||a.q-b.q);
 const fRead=n=>(P.lazyDone||[]).includes(n)||P.problems.some(p=>p.page===n);
-async function fEnsure(n){if(n<1||n>(PV.pages||[]).length||fRead(n))return;try{await lazyOne(n)}catch(e){}}
+async function fEnsure(n){if(n<1||n>(PV.pages||[]).length)return;if(!fRead(n)){try{await lazyOne(n)}catch(e){}}try{keyPrep(P,n)}catch(e){}}   /* 한 문제씩 화면도 그 쪽 정답을 미리 맞춰 둔다 */
 function fCenterPage(){const cy=innerHeight*0.45;for(const g of PV.pages||[]){const r=g.wrap.getBoundingClientRect();if(r.top<=cy&&r.bottom>=cy)return g.n}return 1}
 async function fOpen(){try{snClose()}catch(e){}if(!P||!P.problems){pvToast('이 문제집은 문제 위치를 아직 못 읽었어요');return}
   const n0=fCenterPage();$('#fQn').textContent='읽는 중…';FOC.on=true;FOC.und=[];if(PV.solMode)solMode(false);fTop();$('#focus').hidden=false;$('#rlFocus').classList.add('on');$('#pvRail').classList.add('foc');$('#rlFocus').innerHTML='📄<small>쪽으로 보기</small>';$('#pvFocus').textContent='📄 쪽으로 보기';
