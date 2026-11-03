@@ -820,6 +820,11 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 .clsChip{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
 .clsBox{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
 .clsBox img{width:100%;border-radius:8px;background:#fff}
+.fiNow{all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;width:100%;padding:14px 4px 4px;cursor:pointer;color:var(--ink)}.fiNow[disabled]{cursor:default}
+.fiNow .who{display:flex;justify-content:space-between;align-items:center;gap:8px}.fiNow .sk{font-size:14px;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 10px}.fiNow .sk.on{color:var(--omr);border-color:var(--omr)}
+.fiNow .big{font-size:40px;overflow-wrap:anywhere}.fiNow .big i{font-style:normal;color:var(--omr);margin-left:10px}.fiNow.blk .big{color:#E8913F}.fiNow.blk .big i{color:#E8913F}.fiNow.clr .big{color:var(--omr)}
+.fiNow:focus-visible{outline:3px solid var(--omr);outline-offset:4px;border-radius:12px}
+@media (max-width:520px){.fiNow .big{font-size:30px}}
 /* ===== v46 덱 · N회독 · 세모/별표 ===== */
 .dk .dkH{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dk .dkH h2{margin:0}.dk .dkH .sub{flex:1}
 .dk .fiGo{margin:0 0 6px}.dk .fiGo small{font-size:13px;font-weight:600;opacity:.7;margin-left:8px}
@@ -5689,8 +5694,8 @@ async function homeSimple(){const box=$('#hHell');try{await qpHdr()}catch(e){}co
   const imp=items.slice().sort((a,b)=>(a.done-b.done)||((b.added||0)-(a.added||0)));   /* 중요 오답: 아직 못 끝낸 것 먼저, 최근에 담은 순 */
   const left=imp.filter(i=>!i.done);
   const card=i=>`<button type="button" class="impC" data-iid="${esc(i.id)}"><div class="th">${i.thumb?`<img src="${i.ts||i.thumb}" alt="" loading="lazy" decoding="async">`:''}</div><div class="nm">${(()=>{const t=QN(i.q);return typeof t==='number'&&t>=1000?'':`<b>${t}번</b>`})()}<span>${esc(String(i.src||'').replace(/\s*\(풀이[^)]*\)\s*$/,''))}</span></div><div class="st">${i.done?'<em class="ok">해결</em>':`<em>${(i.hist||[]).length?'다시 도전':'다시 풀기'}</em>`}</div></button>`;
-  const DK=await deckGet().catch(()=>({key:DECK_KEY,books:[]})),DT=DK.books.length?deckToday(DK,docs):null;const REPS=teacherOn()?await rpAll().catch(()=>[]):[];
-  box.innerHTML=`<div class="fiHero"><div class="who">오늘 · ${esc(LS.get('name',''))}</div>${DT?`<div class="big">${DT.t>=DT.q?'오늘 분량 끝':`오늘 ${DT.q-DT.t}문제 남음`}</div>`:`<div class="big">${td.n?`${td.n}문제 풀었어요`:'오늘 시작해요'}</div>`}<div class="sub2">${td.n?`맞음 ${td.ok}`:''}${open?`${td.n?' · ':''}<b>BLOCK ${open}</b>`:''}</div></div>
+  const DK=await deckGet().catch(()=>({key:DECK_KEY,books:[]})),DT=DK.books.length?deckToday(DK,docs):null,NW=nowTask(DK,docs,wr,td,open),SK=streak(ses);const REPS=teacherOn()?await rpAll().catch(()=>[]):[];
+  box.innerHTML=`${nowHtml(NW,SK)}
    ${DK.books.length?deckHtml(DK,docs,wr):`<div class="fiCard">${gate.t?`<div class="bk"><span>${esc(gate.t)}</span></div>`:''}<button class="fiGo" type="button" data-gate>${esc(gate.a)} <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></button>
      <div class="sub" style="margin-top:8px;text-align:center">문제집 풀기 → GO 채점 → 틀린 문제는 BLOCK에서 클리어</div></div>${deckHtml(DK,docs,wr)}`}
    <div class="cc ocW"><div class="impH"><h2>오늘의 막힌 줄</h2>${deck.length?`<span class="sub">${deck.length}개</span>`:''}</div>
@@ -5698,7 +5703,7 @@ async function homeSimple(){const box=$('#hHell');try{await qpHdr()}catch(e){}co
        :wr.some(w=>w.cls&&w.cls.k==='stuck'&&(w.cls.cimg||w.cls.img))?`<p class="sub" style="margin:0">오늘 막힌 줄은 다 봤어요. 내일 다시 나와요.</p>`:`<p class="sub" style="margin:0">틀린 문제에서 '여기서 막혔다'를 고르고 형광펜을 그으면, 그 줄이 여기에 모여요.</p>`}</div>
    <button type="button" class="cc blkRow" data-gapgo><b class="bk">BLOCK ${String(open).padStart(2,'0')}</b><span>남은 틀린 문제</span><span aria-hidden="true">→</span></button>
    ${teacherOn()?`<div class="cc"><h2>선생님</h2><div class="ln" style="border:0;margin:0;padding:0"><span>채점 신고 <b>${REPS.length}</b>건</span><span style="display:flex;gap:6px">${REPS.length?'<button class="sb pri" data-rexp>파일로 내보내기</button><button class="sb" data-rclr>비우기</button>':''}</span></div></div>`:''}`;
-  const q=x=>box.querySelector(x);{const g0=q('[data-gate]');if(g0)g0.onclick=gate.go}deckBind(box,DK,docs,homeSimple);box.querySelectorAll('[data-oc]').forEach(b=>b.onclick=()=>ocOpen(deck,homeSimple));{const g=q('[data-gapgo]');if(g)g.onclick=()=>view('ana');const bk=q('[data-books]');if(bk)bk.onclick=()=>view('solve')}
+  const q=x=>box.querySelector(x);{const g0=q('[data-gate]');if(g0)g0.onclick=gate.go}deckBind(box,DK,docs,homeSimple);{const nb=q('[data-now]');if(nb&&NW.go)nb.onclick=()=>NW.go(homeSimple)}box.querySelectorAll('[data-oc]').forEach(b=>b.onclick=()=>ocOpen(deck,homeSimple));{const g=q('[data-gapgo]');if(g)g.onclick=()=>view('ana');const bk=q('[data-books]');if(bk)bk.onclick=()=>view('solve')}
   box.querySelectorAll('[data-iid]').forEach(b=>b.onclick=()=>{const it=imp.find(i=>String(i.id)===b.dataset.iid);if(it)itemRetry([it])});
   {const a=q('[data-impall]');if(a)a.onclick=()=>itemRetry(left)}
   {const e=q('[data-rexp]');if(e)e.onclick=()=>rpExport();const c=q('[data-rclr]');if(c)c.onclick=async()=>{if(!confirm(`채점 신고 ${REPS.length}건을 지울까요?`))return;for(const r of REPS)await plDel(r.key);homeSimple()}}}
@@ -5939,6 +5944,24 @@ function deckBookHtml(b,i,st,on,bn){if(st.miss)return `<div class="dkB${on?' on'
     <div class="dkA">${st.clear?'<span class="dkOk">모든 회독 클리어</span>':st.complete?`<button class="sb pri" type="button" data-dknext="${i}">${st.r+1}회독 시작 · ${st.next.length}문제</button>`:''}<button class="sb" type="button" data-dkset="${i}">설정</button><button class="sb" type="button" data-dkrm="${i}">빼기</button></div></div></div>`}
 /* 홈 덱 카드: 문제집이 있으면 맨 위 '이어 풀기'는 STACK에서 마지막으로 푼 문제집으로 */
 function deckActive(g,docs,S){let best=-1,bt=-1;g.books.forEach((b,i)=>{const st=S[i];if(st.miss||st.clear||st.complete)return;let t=0;for(const d of docs)if(d.from===b.name||d.name===b.name&&!d.orig)t=Math.max(t,d.at||0);const H=histLoad(b.name);for(const q in H)for(const a of H[q])t=Math.max(t,a.t||0);if(t>bt){bt=t;best=i}});return best}
+/* 맨 위 '지금 할 일' 한 줄: 오늘 진도 → BLOCK → CLEAR 순서. BLOCK이 오늘 남은 진도보다 많이 쌓였으면 BLOCK 먼저 */
+function nowTask(g,docs,wr,td,open){const S=g.books.map(b=>deckState(b,docs)),sel=deckSel(g,S,docs),rows=[];
+  g.books.forEach((b,i)=>{const st=S[i];if(st.miss||st.complete)return;const p=deckPace(b,st);rows.push({i,b,st,p,rem:p&&p.quota&&!p.wait?Math.max(0,p.quota-p.td):null})});
+  const left=rows.filter(r=>r.rem>0),tot=left.reduce((a,r)=>a+r.rem,0),pick=left.find(r=>r.i===sel)||left[0];
+  const toBlock={go:()=>view('ana')},toBook=i=>({go:()=>deckGo(i)});
+  if(!g.books.length)return {t:docs.length?'STACK에 문제집을 쌓아요':'첫 문제집을 넣어요',sub:docs.length?'풀 문제집을 쌓아 두면 여기서 바로 이어 풀어요':'[Q]에서 문제집 PDF를 넣으면 시작돼요',go:docs.length?(again=>deckAddSheet(again)):(()=>{view('solve');try{addOpen()}catch(e){}})};
+  if(tot&&open>tot)return Object.assign({t:`BLOCK ${open}개부터 깨고 가요`,sub:`오늘 진도 ${tot}문제는 그다음에`,k:'blk'},toBlock);
+  if(pick)return Object.assign({t:`오늘 ${pick.b.name} ${pick.rem}문제 남았어요`,sub:tot>pick.rem?`STACK 전체 ${tot}문제 남음`:open?`그다음 BLOCK ${open}개`:'',k:'go'},toBook(pick.i));
+  if(open)return Object.assign({t:`BLOCK ${open}개만 깨면 오늘 끝`,sub:rows.some(r=>r.p&&r.p.quota)?'오늘 진도는 다 했어요':'',k:'blk'},toBlock);
+  if(rows.length&&!rows.some(r=>r.p&&r.p.quota)&&!(td&&td.n)){const r=rows.find(x=>x.i===sel)||rows[0];return Object.assign({t:`${r.b.name} 이어 풀기`,sub:'목표일을 정하면 오늘 몇 문제인지 알려 줘요',k:'go'},toBook(r.i))}
+  return {t:'오늘 CLEAR!',sub:td&&td.n?`오늘 ${td.n}문제 풀었어요`:'',k:'clr'}}
+/* 연속 학습일: 하루에 한 문제라도 채점한 날. 오늘 아직이면 어제까지 이어진 날을 보여 주고, 끊겼다 다시 하면 '다시 1일째' */
+function streak(ses){const D=new Set();for(const x of ses||[])if((x.n||0)>0&&x.day)D.add(x.day);
+  try{for(let k=0;k<localStorage.length;k++){const key=localStorage.key(k);if(!key||!key.startsWith('njh:'))continue;const H=JSON.parse(localStorage.getItem(key)||'{}');for(const q in H)for(const a of H[q]||[])if(a&&a.t)D.add(dayKey(a.t))}}catch(e){}
+  if(!D.size)return null;const d=new Date(),today=dayKey(d.getTime()),on=D.has(today);if(!on)d.setDate(d.getDate()-1);let n=0;while(D.has(dayKey(d.getTime()))){n++;d.setDate(d.getDate()-1)}
+  return {n,on,again:on&&n===1&&D.size>1}}
+function nowHtml(NW,SK){const sk=!SK||!SK.n?'':SK.on?(SK.again?'다시 1일째':`연속 ${SK.n}일째`):`연속 ${SK.n}일 · 오늘도 이어 가요`;
+  return `<button type="button" class="fiHero fiNow ${NW.k||''}" data-now${NW.go?'':' disabled'}><div class="who"><span>지금 할 일</span>${sk?`<span class="sk${SK.on?' on':''}">${sk}</span>`:''}</div><div class="big">${esc(NW.t)}${NW.go?'<i aria-hidden="true">›</i>':''}</div>${NW.sub?`<div class="sub2">${esc(NW.sub)}</div>`:''}</button>`}
 function deckToday(g,docs){let q=0,t=0,has=false;for(const b of g.books){const st=deckState(b,docs);if(st.miss||st.complete)continue;const p=deckPace(b,st);if(p&&p.quota&&!p.wait){has=true;q+=p.quota;t+=Math.min(p.td,p.quota)}}return has?{q,t}:null}
 function deckSel(g,S,docs){let k=g.books.findIndex((b,i)=>b.name===g.sel&&!S[i].miss);if(k<0)k=deckActive(g,docs,S);if(k<0)k=g.books.findIndex((b,i)=>!S[i].miss);return k}
 function deckHtml(g,docs,wr){const BN={};for(const w of wr||[])if(wStage(w)!=='T'){const k=bookOf(w.src);BN[k]=(BN[k]||0)+1}   /* 책마다 남은 BLOCK (BLOCK 탭과 같은 기준) */
@@ -6064,7 +6087,7 @@ async function mkApply(q,m){if(!S||!S.state)return;const st=S.state[q],c=catOf(s
   if(m.k==='star'&&c&&c!=='O'&&!(st.cls&&st.cls.k)){try{await clsSet(q,{k:'dir',auto:'star'})}catch(e){console.error(e)}return}
   try{await logWrongs()}catch(e){console.error(e)}}
 /* 시험용: 바깥(콘솔·테스트)에서 STACK·표시 인식을 확인할 수 있게 */
-window.NJdeck={wrPut:o=>wrPut(o),mkFind,strokeOf,deckGet,deckPut,deckState,deckPace,bookReady,libPut,libAll,homeSimple,view:v=>view(v),wOrig:w=>wOrig(w),wCat:w=>wCat(w),dayKey,histReset:k=>{delete HC[k]}};
+window.NJdeck={streak:s=>streak(s),wrPut:o=>wrPut(o),mkFind,strokeOf,deckGet,deckPut,deckState,deckPace,bookReady,libPut,libAll,homeSimple,view:v=>view(v),wOrig:w=>wOrig(w),wCat:w=>wCat(w),dayKey,histReset:k=>{delete HC[k]}};
 /* 오답 퀴즈를 한 날: 도장 */
 function quizDays(items){const q={};for(const it of items||[])for(const h of it.hist||[]){if(!h||!h.d)continue;const k=dayKey(h.d);q[k]=(q[k]||0)+1}return q}
 function quizStreak(q){let n=0;const d=new Date();if(!q[dayKey(d.getTime())])d.setDate(d.getDate()-1);while(q[dayKey(d.getTime())]){n++;d.setDate(d.getDate()-1)}return n}
