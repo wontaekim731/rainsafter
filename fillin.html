@@ -6771,10 +6771,10 @@ const SCR={el:null,drag:false};
 function scrInit(){if(SCR.el)return;const d=document.createElement('div');d.id='pvScrub';d.setAttribute('aria-hidden','true');d.innerHTML='<i class="tr"></i><i class="th"></i><b class="bb"></b>';document.body.appendChild(d);SCR.el=d;
   const max=()=>Math.max(1,document.documentElement.scrollHeight-innerHeight),N=()=>(PV.pages||[]).length||1;
   const at=e=>{const r=d.getBoundingClientRect(),th=d.querySelector('.th').offsetHeight||48;return Math.max(0,Math.min(1,(e.clientY-r.top-th/2)/Math.max(1,r.height-th)))};
-  const go=f=>{window.scrollTo(0,f*max());const pg=Math.max(1,Math.min(N(),Math.round(f*(N()-1))+1));d.querySelector('.bb').textContent=pg+'쪽';scrDraw(f)};
+  const go=f=>{SCR.f=f;const pg=Math.max(1,Math.min(N(),Math.round(f*(N()-1))+1));d.querySelector('.bb').textContent=pg+'쪽';scrDraw(f)};
   d.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();SCR.drag=true;d.classList.add('on');try{d.setPointerCapture(e.pointerId)}catch(er){}go(at(e))});
   d.addEventListener('pointermove',e=>{if(!SCR.drag)return;e.preventDefault();go(at(e))});
-  const up=e=>{if(!SCR.drag)return;SCR.drag=false;d.classList.remove('on');const f=at(e),pg=Math.max(1,Math.min(N(),Math.round(f*(N()-1))+1));try{pvGo(pg)}catch(er){}};
+  const up=e=>{if(!SCR.drag)return;SCR.drag=false;d.classList.remove('on');const f=SCR.f!=null?SCR.f:at(e),pg=Math.max(1,Math.min(N(),Math.round(f*(N()-1))+1));try{pvGo(pg)}catch(er){}};
   d.addEventListener('pointerup',up);d.addEventListener('pointercancel',up);
   window.addEventListener('scroll',()=>{if(SCR.drag||SCR.raf)return;SCR.raf=requestAnimationFrame(()=>{SCR.raf=0;scrDraw()})},{passive:true});setInterval(()=>scrDraw(),1500)}
 function scrDraw(f){const d=SCR.el;if(!d)return;const show=!$('#vPdf').hidden&&!FOC.on&&(PV.pages||[]).length>1;d.hidden=!show;if(!show)return;
