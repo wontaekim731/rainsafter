@@ -3453,7 +3453,7 @@ function histEvt(q,ok){try{if(!P||!S||ok==null)return;delete HC[histKey(P.name)]
 function histSave(){}
 function histOf(q){const L=(P&&histLoad(P.name)[q])||[],k=L.findIndex(a=>a.ok);return {n:L.length,first:k<0?null:k+1}}
 function pvBadge(pg){try{if(!P||!pg||!pg.wrap)return;pg.wrap.querySelectorAll('.tryB').forEach(e=>e.remove());const H=histLoad(P.name);
-  for(const p of P.problems){if(p.page!==pg.n)continue;const L=H[p.q];if(!L||!L.length)continue;const k=L.findIndex(a=>a.ok),x=(p.lx-(pg.ox||0))*pg.k,y=(pg.H-p.ly)*pg.k,b=document.createElement('div');b.className='tryB '+(k<0?'no':'ok');
+  for(const p of P.problems){if(p.page!==pg.n)continue;const L=H[p.q];if(!L||!L.length)continue;if(!(S&&S.state&&S.state[p.q]))continue;   /* 이번에 채점한 문제에만 '도전 n회' (책을 다시 열자마자 예전 기록이 뜨지 않게) */const k=L.findIndex(a=>a.ok),x=(p.lx-(pg.ox||0))*pg.k,y=(pg.H-p.ly)*pg.k,b=document.createElement('div');b.className='tryB '+(k<0?'no':'ok');
     {const t=qtOf(p.q),tt=t>=5?`⏱${mmss(t)}`:'';b.textContent=k===0?tt:[k<0?`도전 ${L.length}회`:(L.length>k+1?`${k+1}번째 정답 · 도전 ${L.length}회`:`${k+1}번째 정답`),tt].filter(Boolean).join(' · ');if(!b.textContent)continue}   /* 한 번에 맞힌 문제는 '1번째 정답' 표시 안 함 (시간만) */b.style.left=Math.round(x-(p.ls||12)*pg.k*0.2)+'px';b.style.top=Math.max(0,Math.round(y-(p.ls||12)*pg.k*1.1-30))+'px';   /* 번호 바로 위 빈칸에 */pg.wrap.appendChild(b)}try{deckBadge(pg)}catch(e){}}catch(e){}}
 /* 문제별 시간: 펜으로 쓰고 있는 문제(없으면 화면 가운데 문제)에 1초씩 더한다. 일시정지·채점 후·5분 넘게 손 안 대면 멈춤 */
 /* 문항 방문 기록 (선생님 분석용): 문제마다 [처음 본 시각, 머문 초, 그날 풀이 시작 후 초]를 방문마다 하나씩. 학생 화면에는 보이지 않는다 */
