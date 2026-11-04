@@ -307,6 +307,7 @@ body:has(#vPdf:not([hidden])) .appbar{display:none}
 .moreMenu .del[data-rm]{color:var(--bad)}
 .prog{flex-basis:100%;display:flex;height:6px;border-radius:3px;background:var(--bg);overflow:hidden}
 .prog i{display:block;height:100%}.prog .o{background:var(--ok)}.prog .x{background:var(--omr)}
+#qpAuto{position:fixed;left:16px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:39;border-radius:999px;background:#1f2937;color:#fff;padding:7px 12px;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.2);pointer-events:none}#qpAuto[hidden]{display:none}
 #bgJob{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:80;max-width:calc(100% - 32px);border:0;border-radius:999px;background:#1f2937;color:#fff;padding:10px 16px;font:inherit;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bgJob[hidden]{display:none}#bgJob b{color:#93c5fd;margin-left:6px}
 .aDel{border:0;background:none;color:var(--muted,#888);font-size:18px;cursor:pointer;padding:4px 8px;align-self:flex-start}.aDel:hover{color:var(--bad,#dc2626)}.linkDel{border:0;background:none;color:var(--muted,#888);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer;padding:2px 4px}.linkDel.sure{color:var(--bad,#dc2626);font-weight:700}
 .jprog{margin:6px 0;display:flex;flex-direction:column;gap:6px}.jpT{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}.jpT span{font-size:22px;font-weight:800;color:var(--ok,#16a34a);font-variant-numeric:tabular-nums}.jpB{height:10px;border-radius:5px;background:var(--bg,#eef2f7);overflow:hidden}.jpB i{display:block;height:100%;background:var(--ok,#16a34a);border-radius:5px;transition:width .4s}.jpD{font-size:13px;color:var(--muted,#64748b);line-height:1.6}
@@ -6474,6 +6475,7 @@ async function qpLoad(file,msg){const say=t=>{if(msg)msg.innerHTML=t};
     const len=buf[6]|buf[7]<<8|buf[8]<<16|buf[9]<<24,hdr=JSON.parse(new TextDecoder().decode(buf.subarray(10,10+len))),base=10+len,L=hdr.items;
     for(let i=0;i<L.length;i+=250){const part=L.slice(i,i+250);await qpTx('img','readwrite',st=>{for(const it of part)st.put(new Blob([buf.subarray(base+it.o,base+it.o+it.l)],{type:'image/png'}),it.c)});say(progHTML((i+part.length)/L.length*100,'기출 팩 넣는 중',`${i+part.length}/${L.length}문항`))}
     const h2=Object.assign({},hdr,{items:L.map(it=>{const o=Object.assign({},it);delete o.o;delete o.l;return o}),at:Date.now()});await qpTx('kv','readwrite',st=>{st.put(h2,'hdr')});QP.hdr=null;await qpHdr();
+    try{const keep=new Set(L.map(it=>it.c)),ks=await qpTx('img','readonly',st=>st.getAllKeys());const gone=(ks||[]).filter(k=>!keep.has(k));if(gone.length)await qpTx('img','readwrite',st=>{for(const k of gone)st.delete(k)})}catch(e){}   /* 예전 팩에만 있던 그림은 지운다 */
     say(`<span class="okn">기출 팩을 넣었어요 · ${L.length.toLocaleString()}문항</span>`);return true}
   catch(e){console.error(e);say(`<span class="err">기출 팩을 넣지 못했어요: ${esc(e.message)}</span>`);return false}}
 /* 유형 엔진: 틀린 문제 그림을 글자로 읽고(수식은 깨져도 발문은 남는다) 큰 유형 후보 3개를 낸다.
@@ -6635,7 +6637,7 @@ const simNoPack=src=>!(QP.hdr&&QP.hdr.subj&&QP.hdr.subj.C1)&&/공통수학|공�
 async function renderTask(){const box=$('#aTask')||$('#vTask');if(!box)return;const h=await qpHdr(),S=simSent();let W=[];try{W=await wrAll()}catch(e){}const byId=new Map(W.map(w=>[w.id,w]));
   let L=[];try{L=(await libAll()).filter(r=>r.task).sort((a,b)=>b.at-a.at)}catch(e){}
   const packHTML=h?`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span class="muted" style="font-size:13px">📦 기출 팩 · ${h.items.length.toLocaleString()}문항 (${Object.values(h.subj).join('·')})</span><span style="display:flex;gap:12px;align-items:center">${ENG.count()?`<button type="button" class="linkDel tOnly" data-engx title="엔진을 다시 학습할 때 쓰는 파일이에요">고친 유형 내보내기 · ${ENG.count()}개</button>`:''}<button type="button" class="linkDel" data-qpget title="사이트에서 최신 기출 팩을 다시 받아요">새로 받기</button><label class="linkDel" style="cursor:pointer">팩 파일로 넣기<input type="file" id="qpIn" accept=".qlpack,application/octet-stream" hidden></label></span></div><div id="qpMsg" style="font-size:14px"></div>`
-    :`<h2>기출 팩 받기</h2><p class="muted" style="margin:0;font-size:14px"><b>QLEAR 기출 팩</b>(수능·모평·학평 기출, 고3 + 공통수학)을 한 번 받으면, BLOCK과 같은 유형의 기출로 문제지를 만들 수 있어요. 약 80MB라 와이파이에서 받아 주세요. 팩은 이 기기에 저장돼서 인터넷이 없어도 써요.</p><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="btn mid" data-qpget>기출 팩 받기 (약 80MB)</button><label class="linkDel" style="cursor:pointer">팩 파일로 넣기<input type="file" id="qpIn" accept=".qlpack,application/octet-stream" hidden></label></div><div id="qpMsg" style="font-size:14px"></div>`;
+    :`<h2>기출 팩 받기</h2><p class="muted" style="margin:0;font-size:14px"><b>QLEAR 기출 팩</b>(수능·모평·학평 기출, 고3 + 공통수학)을 한 번 받으면, BLOCK과 같은 유형의 기출로 문제지를 만들 수 있어요. 앱을 열면 알아서 받아요(약 80MB). 한 번 받으면 이 기기에 저장돼서 인터넷이 없어도 써요.</p><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="btn mid" data-qpget>지금 받기 (약 80MB)</button><label class="linkDel" style="cursor:pointer">팩 파일로 넣기<input type="file" id="qpIn" accept=".qlpack,application/octet-stream" hidden></label></div><div id="qpMsg" style="font-size:14px"></div>`;
   const bigSel=s=>{if(!h)return '';const by={};for(const b of h.bigs)(by[b.subj]=by[b.subj]||[]).push(b);
     return `<select data-sbig="${esc(s.id)}"><option value="">유형 고르기</option>${Object.entries(h.subj).map(([k,v])=>`<optgroup label="${esc(v)}">${(by[k]||[]).sort((a,b)=>(a.order||0)-(b.order||0)).map(b=>`<option value="${esc(b.id)}"${b.id===s.big?' selected':''}>${esc(b.name)}</option>`).join('')}</optgroup>`).join('')}</select>`};
   const okN=S.filter(s=>s.big).length,noP=S.filter(s=>!s.big&&simNoPack(s.src)).length,need=S.length-okN-noP;
@@ -6858,13 +6860,30 @@ function ocOpen(deck,onEnd){if(!deck||!deck.length)return;const Q=deck.slice(),a
 
 /* 개인 학생 모드: 학생이 직접 기출 팩(.qlpack)을 넣는다 */
 /* 기출 팩을 이 사이트(lib/pack)에서 받기: 조각 파일을 차례로 받아 합친 뒤 넣는다 (평가원·교육청 기출만) */
-async function qpFetch(msg){const say=t=>{if(msg)msg.innerHTML=t};
-  try{say('기출 팩 정보를 받는 중…');const r0=await fetch('lib/pack/manifest.json',{cache:'no-store'});if(!r0.ok)throw new Error('목록 '+r0.status);const m=await r0.json();const parts=[];let got=0;
+/* 하나만 받는다: 자동 받기·[기출 팩 받기]·TWIN이 같은 받기를 함께 본다 */
+QP.dl=null;QP.lis=new Set();
+async function qpMf(){try{const r=await fetch('lib/pack/manifest.json',{cache:'no-store'});return r.ok?await r.json():null}catch(e){return null}}
+async function qpFetch(msg){const f=t=>{if(msg)msg.innerHTML=t};QP.lis.add(f);try{if(!QP.dl)QP.dl=qpDown().finally(()=>{QP.dl=null});return await QP.dl}finally{QP.lis.delete(f)}}
+async function qpDown(m){const say=t=>{for(const f of QP.lis)try{f(t)}catch(e){}},J0=JOB,sink={set innerHTML(t){say(t)}};
+  try{say('기출 팩 정보를 받는 중…');if(!m)m=await qpMf();if(!m)throw new Error('목록을 받지 못했어요');const parts=[];let got=0;
+    const tick=()=>say(progHTML(Math.min(99,got/m.bytes*100),'기출 팩 받는 중',`${Math.round(got/1048576)} / ${Math.round(m.bytes/1048576)}MB`));
     for(const p of m.parts){const r=await fetch('lib/pack/'+p,{cache:'no-store'});if(!r.ok)throw new Error('조각 '+r.status);
-      if(r.body&&r.body.getReader){const rd=r.body.getReader(),ch=[];for(;;){const {done,value}=await rd.read();if(done)break;ch.push(value);got+=value.length;say(progHTML(Math.min(99,got/m.bytes*100),'기출 팩 받는 중',`${Math.round(got/1048576)} / ${Math.round(m.bytes/1048576)}MB`))}parts.push(new Blob(ch))}
-      else{const b=await r.blob();got+=b.size;parts.push(b);say(progHTML(Math.min(99,got/m.bytes*100),'기출 팩 받는 중',`${Math.round(got/1048576)} / ${Math.round(m.bytes/1048576)}MB`))}}
-    return await qpLoad(new Blob(parts),msg)}
-  catch(e){console.error(e);say(`<span class="err">기출 팩을 받지 못했어요 (${esc(e.message)}). 인터넷 연결을 확인하거나, 팩 파일이 있으면 직접 넣어 주세요.</span>`);return false}}
+      if(r.body&&r.body.getReader){const rd=r.body.getReader(),ch=[];for(;;){const {done,value}=await rd.read();if(done)break;ch.push(value);got+=value.length;tick()}parts.push(new Blob(ch))}
+      else{const b=await r.blob();got+=b.size;parts.push(b);tick()}}
+    const ok=await qpLoad(new Blob(parts),sink);if(ok)try{await qpTx('kv','readwrite',st=>{st.put(m.sha1||String(m.made),'mf')})}catch(e){}return ok}
+  catch(e){console.error(e);say(`<span class="err">기출 팩을 받지 못했어요 (${esc(e.message)}). 인터넷 연결을 확인하거나, 팩 파일이 있으면 직접 넣어 주세요.</span>`);return false}
+  finally{JOB=J0}}
+/* 앱을 열면 기출 팩을 알아서 받는다: 없거나 사이트의 팩이 새것이면 뒤에서 전체를 받아 넣는다(데이터 절약 모드면 건너뜀). 실패하면 다음에 열 때 다시 */
+async function qpAuto(){try{if(QP.dl)return;const c=navigator.connection;if(c&&c.saveData)return;
+  const m=await qpMf();if(!m)return;const want=m.sha1||String(m.made),h=await qpHdr();let cur=null;try{cur=await qpTx('kv','readonly',st=>st.get('mf'))}catch(e){}
+  if(h&&cur===want)return;
+  if(h&&!cur&&h.items.length===m.items){try{await qpTx('kv','readwrite',st=>{st.put(want,'mf')})}catch(e){}return}
+  let el=document.getElementById('qpAuto');if(!el){el=document.createElement('div');el.id='qpAuto';el.setAttribute('role','status');document.body.appendChild(el)}
+  const f=t=>{const pm=/<span>(\d+)%<\/span>/.exec(t),lb=/<b>([^<]+)<\/b>/.exec(t);el.textContent=pm?`📦 ${lb?lb[1]:'기출 팩'} ${pm[1]}%`:'📦 기출 팩 준비 중…';el.hidden=false};
+  f('');QP.lis.add(f);if(!QP.dl)QP.dl=qpDown(m).finally(()=>{QP.dl=null});const ok=await QP.dl;QP.lis.delete(f);
+  if(ok){el.textContent='📦 기출 팩 준비 완료 · '+(QP.hdr?QP.hdr.items.length.toLocaleString():'')+'문항';setTimeout(()=>{el.hidden=true},3500);const tb=document.querySelector('[data-qpget]');if(tb&&typeof renderTask==='function')try{renderTask()}catch(e){}}
+  else el.hidden=true}catch(e){console.error(e)}}
+setTimeout(qpAuto,3000);
 function packPick(after){CLSV={W:[],i:0,step:'pack'};const box=clsShell();box.innerHTML='<div class="cTop"><span class="cR">기출 팩</span></div><div class="cHint" data-m>기출 팩을 받는 중…</div><div class="cRow" data-fb hidden><button type="button" class="cBtn g" data-file>팩 파일로 넣기</button><button type="button" class="cBtn g" data-cl>닫기</button></div>';
   qpFetch(box.querySelector('[data-m]')).then(ok=>{if(ok){setTimeout(()=>{clsClose();if(after)after()},900);return}const fb=box.querySelector('[data-fb]');if(fb){fb.hidden=false;box.querySelector('[data-file]').onclick=()=>packPickFile(after);box.querySelector('[data-cl]').onclick=clsClose}})}
 function packPickFile(after){const inp=document.createElement('input');inp.type='file';inp.accept='.qlpack,application/octet-stream';inp.hidden=true;document.body.appendChild(inp);
