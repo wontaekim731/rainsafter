@@ -308,6 +308,7 @@ body:has(#vPdf:not([hidden])) .appbar{display:none}
 .prog{flex-basis:100%;display:flex;height:6px;border-radius:3px;background:var(--bg);overflow:hidden}
 .prog i{display:block;height:100%}.prog .o{background:var(--ok)}.prog .x{background:var(--omr)}
 .qzKeyB{margin-left:8px;font:inherit;font-size:14px;font-weight:700;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;vertical-align:middle}.qzKeyC{margin:10px 0 4px;max-width:420px;border:1.5px solid var(--line);border-radius:16px;background:var(--paper);padding:12px 16px;color:var(--ink)}.qzKeyC .qkH{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.qzKeyC .qkT{font-weight:900;letter-spacing:.04em;font-size:14px}.qzKeyC .qkM{font-size:13px;font-weight:800}.qzKeyC .qkM.ok{color:var(--ok)}.qzKeyC .qkM.bad{color:var(--bad)}.qzKeyC .qkA{display:flex;align-items:baseline;gap:12px;padding:8px 0 10px;border-bottom:1px dashed var(--line);margin-bottom:6px}.qzKeyC .qkA small{font-size:13px;color:var(--muted);font-weight:700}.qzKeyC .qkA b{font-size:30px;font-weight:900;color:#E8913F}.qzKeyC .qkR{display:flex;gap:12px;font-size:14px;padding:3px 0}.qzKeyC .qkR span{min-width:64px;color:var(--muted)}.qzKeyC .qkR b{font-weight:600}
+#qzTno.gut{position:absolute;left:0;top:8px;margin:0;text-align:center;font-size:26px;z-index:1}#qzPage{position:relative}
 #qpAuto{position:fixed;left:16px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:39;border-radius:999px;background:#1f2937;color:#fff;padding:7px 12px;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.2);pointer-events:none}#qpAuto[hidden]{display:none}
 #bgJob{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:80;max-width:calc(100% - 32px);border:0;border-radius:999px;background:#1f2937;color:#fff;padding:10px 16px;font:inherit;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bgJob[hidden]{display:none}#bgJob b{color:#93c5fd;margin-left:6px}
 .aDel{border:0;background:none;color:var(--muted,#888);font-size:18px;cursor:pointer;padding:4px 8px;align-self:flex-start}.aDel:hover{color:var(--bad,#dc2626)}.linkDel{border:0;background:none;color:var(--muted,#888);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer;padding:2px 4px}.linkDel.sure{color:var(--bad,#dc2626);font-weight:700}
@@ -4404,7 +4405,7 @@ function inkRedraw(){const {c,g}=INK;if(!g)return;const d=INK.dpr||window.device
   g.lineCap='round';g.lineJoin='round';g.strokeStyle='#1d4ed8';
   for(const s of INK.strokes.concat(INK.cur?[INK.cur]:[])){for(let i=1;i<s.length;i++){g.lineWidth=1.3+1.6*(s[i].p||0.5);g.beginPath();g.moveTo(s[i-1].x,s[i-1].y);g.lineTo(s[i].x,s[i].y);g.stroke()}
     if(s.length===1){g.beginPath();g.arc(s[0].x,s[0].y,1.5,0,7);g.fillStyle='#1d4ed8';g.fill()}}
-  if(INK.mark){g.strokeStyle='#dc2626';g.lineWidth=3;g.beginPath();if(INK.mark==='o')g.ellipse(36,30,30,25,0,0,7);else{g.moveTo(54,8);g.lineTo(14,56)}g.stroke()}}
+  if(INK.mark){g.strokeStyle='#dc2626';g.lineWidth=3;g.beginPath();const G=INK.gw||0;if(G){const cx=G/2,cy=INK.gy||24,r=Math.max(18,G/2-4);if(INK.mark==='o')g.ellipse(cx,cy,r,r*0.85,0,0,7);else{g.moveTo(cx+r*0.6,cy-r*0.78);g.lineTo(cx-r*0.6,cy+r*0.78)}}else if(INK.mark==='o')g.ellipse(36,30,30,25,0,0,7);else{g.moveTo(54,8);g.lineTo(14,56)}g.stroke()}}   /* TWIN은 번호 칸(문제 왼쪽 여백)의 번호에 ○/／ */
 function inkErase(x,y){const r=10,n=INK.strokes.length;INK.strokes=INK.strokes.filter(s=>!s.some(p=>Math.hypot(p.x-x,p.y-y)<r));if(INK.strokes.length!==n)inkRedraw()}
 function inkInit(){const c=$('#qzInk');INK.c=c;INK.g=c.getContext('2d');
   const pos=e=>{const r=c.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top,p:e.pointerType==='pen'?(e.pressure||0.5):0.5}};
@@ -4433,9 +4434,9 @@ function qzSkin(){const V=$('#vQuiz');if(!V||V._skin)return;V._skin=1;V.classLis
   const g=$('#qzSubmit');g.innerHTML='<span class="goT">GO</span><small class="goS">채점하기</small>';bar.querySelector('.qzR').append($('#qzNext'));
   const t=$('#qzTools');t.classList.add('qzRail');const ic={pen:'✎',erase:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M16 3l5 5-11 11H5v-5z"/><path d="M5 19h14"/></svg>',undo:'↶',clear:'🧹<small>모두</small>'};for(const b of t.querySelectorAll('[data-t]'))if(ic[b.dataset.t]){b.innerHTML=ic[b.dataset.t];b.title={pen:'펜',erase:'지우개',undo:'되돌리기',clear:'모두 지우기'}[b.dataset.t]}{const cl=t.querySelector('[data-t="clear"]');if(cl&&cl.nextSibling)t.insertBefore(g,cl.nextSibling);else t.appendChild(g)}g.classList.add('qzGo');t.appendChild(q)}   /* 나가기도 문제집 화면처럼 왼쪽 막대 맨 아래 */   /* 채점 버튼은 왼쪽 막대에 GO 하나 (문제집 화면과 같게) */
 async function showQ(){
-  {const c=$('#qzKeyC');if(c)c.remove()}const it=QZ.list[QZ.i];QZ.cur={t0:Date.now(),done:false};INK.strokes=[];INK.cur=null;INK.mark=null;try{inkRedraw()}catch(e){}
+  {const c=$('#qzKeyC');if(c)c.remove()}const it=QZ.list[QZ.i];QZ.g0=it.twinOf?60:0;QZ.cur={t0:Date.now(),done:false};INK.strokes=[];INK.cur=null;INK.mark=null;try{inkRedraw()}catch(e){}
   $('#qzProg').textContent=`${QZ.i+1} / ${QZ.list.length}`;$('#qzBar').style.width=`${QZ.i/QZ.list.length*100}%`;
-  try{qzSkin();{const pg=$('#qzPage');let tn=$('#qzTno');if(!tn&&pg){tn=document.createElement('div');tn.id='qzTno';tn.className='out';tn.setAttribute('aria-hidden','true')}if(tn&&pg&&tn.nextSibling!==pg)pg.parentNode.insertBefore(tn,pg);   /* 문제 위 바깥에 (그림을 가리지 않게) */if(tn){tn.hidden=!it.twinOf;tn.textContent=it.twinOf?'T'+(QZ.list.slice(0,QZ.i+1).filter(x=>x.twinOf).length):''}}   /* 유사 문제 번호는 문제집 번호 자리(문제 왼쪽 위)에 */
+  try{qzSkin();{const pg=$('#qzPage');let tn=$('#qzTno');if(!tn&&pg){tn=document.createElement('div');tn.id='qzTno';tn.className='out';tn.setAttribute('aria-hidden','true')}if(tn&&pg&&tn.parentNode!==pg){tn.className='gut';pg.insertBefore(tn,pg.firstChild)}   /* 문제 위 바깥에 (그림을 가리지 않게) */if(tn){tn.hidden=!it.twinOf;tn.textContent=it.twinOf?'T'+(QZ.list.slice(0,QZ.i+1).filter(x=>x.twinOf).length):''}}   /* 유사 문제 번호는 문제집 번호 자리(문제 왼쪽 위)에 */
   if(it.twinOf){const tw=QZ.list.filter(x=>x.twinOf).length;$('#qzQn').textContent='TWIN'+(tw>1?` ${QZ.list.slice(0,QZ.i+1).filter(x=>x.twinOf).length}/${tw}`:'');$('#qzSub').textContent='유사 · '+(it.twinFrom||'')}else{$('#qzQn').textContent=QN(it.q)+'번';$('#qzSub').textContent=bookOf(it.src)+(it.hist.length?` · 도전 ${it.hist.length+1}회`:'')}}catch(e){}
   $('#qzMeta').textContent=`${it.topic?it.topic+' · ':''}${it.src} ${QN(it.q)}번 · ${it.hist.length+2}번째 풀이${it.pw&&it.pw.length?` · 지난번 ${it.pw.map(i=>'('+i+')').join('')} 틀림`:''}${it.pn&&it.pn.length?` · 지난번 ${pnTxt(it)}`:''}`;
   $('#vQuiz').classList.remove('end');$('#qzFb').className='qzfb';$('#qzFb').textContent='';$('#qzConfirm').innerHTML='';$('#qzNext').hidden=true;$('#qzSubmit').hidden=false;$('#qzTools').hidden=false;$('#qzSkip').hidden=false;$('#qzSkip').textContent=QZ.i+1<QZ.list.length?'건너뛰기 →':'건너뛰고 결과 보기';
@@ -4446,9 +4447,9 @@ async function showQ(){
 }
 /* 퀴즈 확대·축소: 문제 그림을 다시 그리고, 이미 쓴 필기도 같은 비율로 키운다 */
 async function qzLayout(z){if(!QZ)return;const it=QZ.list[QZ.i],page=$('#qzPage'),dpr=window.devicePixelRatio||1;z=Math.max(1,Math.min(3,Math.round(z*100)/100));
-  const cw=Math.round(QZ.cw0*z),k=Math.min(QZ.cw0/it.w,Math.max(1.2,QZ.cw0/520))*z,old=INK.k||k,f=k/old;if(f!==1){for(const s of INK.strokes)for(const p of s){p.x*=f;p.y*=f}}
+  const g0=QZ.g0||0,G=Math.round(g0*z),cw=Math.round(QZ.cw0*z),k=Math.min((QZ.cw0-g0)/it.w,Math.max(1.2,(QZ.cw0-g0)/520))*z,old=INK.k||k,f=k/old;if(f!==1){for(const s of INK.strokes)for(const p of s){p.x*=f;p.y*=f}}
   const H=Math.round(it.h*k+Math.max(380,QZ.cw0*0.75)*z),d2=Math.min(dpr,Math.sqrt(9e6/(cw*H)));INK.k=k;QZ.z=z;
-  const pc=$('#qzProb');pc.width=Math.round(it.w*k*d2);pc.height=Math.round(it.h*k*d2);pc.style.width=Math.round(it.w*k)+'px';pc.style.height=Math.round(it.h*k)+'px';
+  const pc=$('#qzProb');pc.width=Math.round(it.w*k*d2);pc.height=Math.round(it.h*k*d2);pc.style.width=Math.round(it.w*k)+'px';pc.style.height=Math.round(it.h*k)+'px';pc.style.marginLeft=G+'px';INK.gw=G;INK.gy=Math.round(26*z);{const tn=$('#qzTno');if(tn&&tn.className==='gut'){tn.style.width=G+'px';tn.style.top=Math.round(8*z)+'px';tn.style.fontSize=Math.round(26*z)+'px'}}   /* 번호 칸: 책처럼 문제 왼쪽에 번호, 채점 표시는 그 번호에 */
   const g=pc.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,pc.width,pc.height);page.style.height=H+'px';
   const ic=$('#qzInk');ic.width=Math.round(cw*d2);ic.height=Math.round(H*d2);ic.style.width=cw+'px';ic.style.height=H+'px';INK.dpr=d2;inkRedraw();
   $('#qzZ').textContent=Math.round(z*100)+'%';
@@ -4456,7 +4457,7 @@ async function qzLayout(z){if(!QZ)return;const it=QZ.list[QZ.i],page=$('#qzPage'
 async function qzZoomTo(z,ax,ay){if(!QZ)return;const page=$('#qzPage'),r=page.getBoundingClientRect(),z0=QZ.z||1;ax=ax==null?r.left+r.width/2:ax;ay=ay==null?innerHeight/2:ay;
   const fx=(ax-r.left+page.scrollLeft)/z0,fy=(ay-r.top)/z0;await qzLayout(z);const z1=QZ.z;page.scrollLeft=Math.max(0,fx*z1-(ax-r.left));scrollBy(0,fy*(z1-z0))}
 function readInk(it){   // 화면 좌표(px) → 문항 PDF 좌표(pt, y는 위로) → PDF 채점과 같은 판독기
-  const k=INK.k,st=INK.strokes.map((s,i)=>{const pts=s.map(p=>({x:p.x/k,y:it.h-p.y/k}));let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const p of pts){x0=Math.min(x0,p.x);y0=Math.min(y0,p.y);x1=Math.max(x1,p.x);y1=Math.max(y1,p.y)}
+  const k=INK.k,G=INK.gw||0,st=INK.strokes.map((s,i)=>{const pts=s.map(p=>({x:(p.x-G)/k,y:it.h-p.y/k}));let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const p of pts){x0=Math.min(x0,p.x);y0=Math.min(y0,p.y);x1=Math.max(x1,p.x);y1=Math.max(y1,p.y)}
     return {page:1,pts,b:{x0,y0,x1,y1,w:x1-x0,h:y1-y0},sig:'q'+i}});
   return SV.readAnswer({page:1,x0:-1e5,x1:1e5,y0:-1e5,y1:1e5,choices:it.choices||[]},st)}
 function submitQ(){
