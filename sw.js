@@ -25,7 +25,8 @@ self.addEventListener('fetch', e => {
       })());
       return;
     }
-    if (u.pathname.includes('/lib/')) { e.respondWith(caches.match(r).then(m => m || fetch(r).then(res => { if (res.ok) caches.open(CACHE).then(c => c.put(r, res.clone())); return res }))); }
+    if (u.pathname.includes('/lib/') && !u.pathname.includes('/lib/pack/')) {   // 기출 팩 조각은 저장하지 않음(앱이 IndexedDB에 넣음)
+       e.respondWith(caches.match(r).then(m => m || fetch(r).then(res => { if (res.ok) caches.open(CACHE).then(c => c.put(r, res.clone())); return res }))); }
     return;
   }
   if (TOOL.test(u.hostname)) {   // 도구: 저장본 먼저, 없으면 받아서 저장
