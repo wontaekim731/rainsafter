@@ -4648,6 +4648,7 @@ function pvGo(n,f){const pg=(PV.pages||[]).find(p=>p.n===n);if(!pg)return;PV.jum
 function pvToast(html,btns){const t=$('#pvToast');t.innerHTML=html+(btns||[]).map((b,i)=>`<button type="button" data-i="${i}">${b[0]}</button>`).join('')+'<button type="button" data-x aria-label="닫기">✕</button>';t.hidden=false;
   const close=()=>{t.hidden=true;clearTimeout(t._t)};t.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{close();btns[+b.dataset.i][1]()});t.querySelector('[data-x]').onclick=close;clearTimeout(t._t);t._t=setTimeout(close,6000)}
 function pvRestore(){const o=posGet(P.name),N=PV.pages.length,b=$('#pvPg');if(b){b.textContent=`1 / ${N}쪽`;b.onclick=pvPgEdit}
+  {let fr=false;try{fr=localStorage.getItem('njfresh:'+P.name)==='1';if(fr)localStorage.removeItem('njfresh:'+P.name)}catch(e){}if(fr){setTimeout(()=>{try{pvGo(1,0)}catch(e){}},60);return}}
   if(o&&o.pg>1&&o.pg<=N){setTimeout(()=>{pvGo(o.pg,o.f);pvToast(`📍 ${o.pg}쪽부터 이어서 열었어요`,[['처음으로',()=>pvGo(1,0)]])},60)}}
 function pvPgEdit(){const b=$('#pvPg'),N=PV.pages.length,c=pvCurPage();const w=document.createElement('span');w.className='pvPgIn';
   w.innerHTML=`<input type="number" inputmode="numeric" min="1" max="${N}" value="${c?c.pg:1}" aria-label="이동할 쪽"><button class="pvPgBtn" type="button">이동</button>`;b.replaceWith(w);const inp=w.querySelector('input');inp.focus();inp.select();
@@ -5599,7 +5600,7 @@ let FRESH=false;
 async function latestCopy(orig){try{const o=await libMeta(orig),L=(await libAll()).filter(r=>!r.orig&&r.from===orig&&!r.done&&!r.task&&(!o||!r.size0||r.size0===o.size0)).sort((a,b)=>b.at-a.at);return L[0]||null}catch(e){return null}}
 async function makeWorkCopy(orig){   // 원본은 깨끗하게 두고, 학생 풀이는 '원본 (풀이 10-02)' 이름의 사본에 저장
   const r=await libGet(orig),d=new Date(),base=`${orig} (풀이 ${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')})`;let nm=base,i=2;while(await libMeta(nm))nm=`${base} ${i++}`;
-  const c=Object.assign({},r,{name:nm,orig:false,work:true,from:orig,mod:Date.now(),at:Date.now()});if(r.bytes instanceof Blob){c.blobRef=r.blobRef||orig;BREF.set(c,c.bytes)}/* 큰 책: 사본은 원본 파일을 같이 쓰고 필기만 따로 */if(!c.pages&&P&&P.name===orig&&P.doc)c.pages=P.doc.numPages;if(!c.problems&&P&&P.name===orig)c.problems=P.problems;await libPut(c);return c}   // 쪽 수가 없으면 읽어 둔 문항 정보를 못 쓰고 처음부터 다시 읽음
+  const c=Object.assign({},r,{name:nm,orig:false,work:true,from:orig,mod:Date.now(),at:Date.now()});try{localStorage.setItem('njfresh:'+nm,'1')}catch(e){}   /* 새 풀이본은 1쪽부터 (마지막에 보던 쪽은 책마다 기억하지만 새로 시작할 때는 처음부터) */if(r.bytes instanceof Blob){c.blobRef=r.blobRef||orig;BREF.set(c,c.bytes)}/* 큰 책: 사본은 원본 파일을 같이 쓰고 필기만 따로 */if(!c.pages&&P&&P.name===orig&&P.doc)c.pages=P.doc.numPages;if(!c.problems&&P&&P.name===orig)c.problems=P.problems;await libPut(c);return c}   // 쪽 수가 없으면 읽어 둔 문항 정보를 못 쓰고 처음부터 다시 읽음
 /* 기기: 안내 문구를 기기에 맞춘다 */
 const DEV=(()=>{const u=navigator.userAgent||'';if(/iPad/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return 'ipad';if(/iPhone/.test(u))return 'iphone';if(/Android/.test(u))return 'android';if(/Windows/.test(u))return 'win';return 'pc'})();
 const DEVN={ipad:'아이패드',iphone:'아이폰',android:'갤럭시탭',win:'이 컴퓨터(서피스)',pc:'이 컴퓨터'}[DEV];
