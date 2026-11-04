@@ -848,6 +848,7 @@ body:has(#pvRail.foc:not(.fold)) .focus #fGrade{display:none!important}   /* 채
 #qzTno{position:absolute;left:8px;top:2px;z-index:1;pointer-events:none;font-family:'Arial Narrow','Roboto Condensed',var(--sans),sans-serif;font-size:30px;font-weight:900;letter-spacing:.02em;line-height:1;color:#4E8B5A}#qzTno[hidden]{display:none}#qzInk{z-index:2}
 .twIn .twL{color:var(--ink);font-weight:900;letter-spacing:.04em}.twIn{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;margin:8px 0 4px;font-size:13px;font-weight:700;color:var(--muted)}.twSeg.sm{gap:4px}.twSeg.sm button{font-size:13px;padding:5px 10px;border-radius:10px}
 #qzQuit.qzOut{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1;min-height:50px;margin-top:6px;font-size:12px!important;padding:6px 4px!important}#qzQuit.qzOut small{font-size:11px;font-weight:700}
+#pvScrub{position:fixed;right:2px;top:96px;bottom:24px;width:30px;z-index:31;touch-action:none;cursor:grab}#pvScrub[hidden]{display:none}#pvScrub .tr{position:absolute;right:8px;top:0;bottom:0;width:4px;border-radius:4px;background:rgba(120,128,140,.18)}#pvScrub .th{position:absolute;right:5px;top:0;width:10px;height:56px;border-radius:10px;background:rgba(90,98,112,.55);box-shadow:0 1px 4px rgba(0,0,0,.2)}#pvScrub.on .th{background:var(--omr);width:12px;right:4px}#pvScrub .bb{position:absolute;right:26px;top:16px;font-size:13px;font-weight:800;white-space:nowrap;background:#1A1F27;color:#F2F4F7;border-radius:8px;padding:4px 8px;opacity:0;transition:opacity .2s;pointer-events:none}#pvScrub.on .bb{opacity:1}
 /* ===== v46 덱 · N회독 · 세모/별표 ===== */
 .dk .dkH{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dk .dkH h2{margin:0}.dk .dkH .sub{flex:1}
 .dk .fiGo{margin:0 0 6px}.dk .fiGo small{font-size:13px;font-weight:600;opacity:.7;margin-left:8px}
@@ -6765,6 +6766,21 @@ async function twinRun(L,btn){const h=await qpHdr();if(!h){packPick(()=>{twinRun
   await startQuizOld(items);if(QZ)QZ.twin=true}
 /* BLOCK 하나 풀기: 원래 문제를 다시 풀고, 맞히는 순간 그 문제의 쌍둥이(같은 유형 기출 1문제)가 바로 이어진다. 원래 문제를 이미 맞힌 BLOCK은 쌍둥이부터 */
 let TWQ=null;
+/* 문제집 화면 오른쪽 스크롤 막대: 아이패드는 스크롤 막대가 안 보여서(앱이 직접 넘김) 직접 그린다. 끌면 쪽 이동, 옆에 'n쪽' */
+const SCR={el:null,drag:false};
+function scrInit(){if(SCR.el)return;const d=document.createElement('div');d.id='pvScrub';d.setAttribute('aria-hidden','true');d.innerHTML='<i class="tr"></i><i class="th"></i><b class="bb"></b>';document.body.appendChild(d);SCR.el=d;
+  const max=()=>Math.max(1,document.documentElement.scrollHeight-innerHeight),N=()=>(PV.pages||[]).length||1;
+  const at=e=>{const r=d.getBoundingClientRect(),th=d.querySelector('.th').offsetHeight||48;return Math.max(0,Math.min(1,(e.clientY-r.top-th/2)/Math.max(1,r.height-th)))};
+  const go=f=>{window.scrollTo(0,f*max());const pg=Math.max(1,Math.min(N(),Math.round(f*(N()-1))+1));d.querySelector('.bb').textContent=pg+'쪽';scrDraw(f)};
+  d.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();SCR.drag=true;d.classList.add('on');try{d.setPointerCapture(e.pointerId)}catch(er){}go(at(e))});
+  d.addEventListener('pointermove',e=>{if(!SCR.drag)return;e.preventDefault();go(at(e))});
+  const up=e=>{if(!SCR.drag)return;SCR.drag=false;d.classList.remove('on');const f=at(e),pg=Math.max(1,Math.min(N(),Math.round(f*(N()-1))+1));try{pvGo(pg)}catch(er){}};
+  d.addEventListener('pointerup',up);d.addEventListener('pointercancel',up);
+  window.addEventListener('scroll',()=>{if(SCR.drag||SCR.raf)return;SCR.raf=requestAnimationFrame(()=>{SCR.raf=0;scrDraw()})},{passive:true});setInterval(()=>scrDraw(),1500)}
+function scrDraw(f){const d=SCR.el;if(!d)return;const show=!$('#vPdf').hidden&&!FOC.on&&(PV.pages||[]).length>1;d.hidden=!show;if(!show)return;
+  const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);if(f==null)f=Math.max(0,Math.min(1,scrollY/max));const th=d.querySelector('.th'),h=d.getBoundingClientRect().height,tH=th.offsetHeight||48;th.style.transform=`translateY(${Math.round(f*(h-tH))}px)`;const bb=d.querySelector('.bb');bb.style.transform=`translateY(${Math.round(f*(h-tH))}px)`;
+  if(!SCR.drag){try{const c=pvCurPage();if(c)bb.textContent=(c.pg||c.n||'')+'쪽'}catch(e){}}}
+setTimeout(()=>{try{scrInit()}catch(e){console.error(e)}},1200);
 /* BLOCK 유사 문제 설정: 개수(1~3) · 난이도(자동=같거나 조금 더 어렵게 / 쉬움 / 보통 / 어려움). 이 기기에 저장 */
 const twN=()=>Math.max(1,Math.min(3,+LS.get('blkTwN',1)||1)),twLv=()=>+LS.get('blkTwLv',0)||0,TW_LV={0:'자동',1:'쉬움',2:'보통',3:'어려움'};
 /* 한 문제씩 화면: GO 뒤 결과를 문제 위에 크게 (○ 맞았어요 / ✗ 아직 아니에요 / 답을 못 읽었어요 / 새 답 없음) */
