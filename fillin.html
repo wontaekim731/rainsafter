@@ -838,6 +838,8 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 body:not(.teacher) .ocW,body:not(.teacher) #aQuiz .kw{display:none!important}   /* v46.04 학생 화면 단순화: 원인·형광펜 기반 카드는 선생님 모드에서만 */
 .bk2{display:inline-flex;gap:3px;margin-right:6px;vertical-align:middle}.sdot .bk2 i{display:block;width:12px;height:12px;border-radius:3px;border:1.5px solid #E8913F;box-sizing:border-box;background:transparent}.sdot .bk2 i.on{background:var(--omr);border-color:var(--omr)}
 .bkK{font-style:normal;font-weight:800;margin-right:4px;color:#E8913F}
+#twChip{position:fixed;top:calc(var(--fTop,64px) + 10px);right:16px;z-index:41;font-size:13px;font-weight:700;padding:6px 12px;border-radius:99px;background:#1A1F27;color:#B7BECA;border:1px solid #2C313C;box-shadow:0 4px 12px rgba(0,0,0,.25)}#twChip[hidden]{display:none}#twChip.ok{color:#0E1014;background:var(--omr);border-color:var(--omr)}#twChip.wait::before{content:'';display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:50%;background:#E8913F;animation:twBl 1s ease-in-out infinite}@keyframes twBl{50%{opacity:.25}}
+body:has(#pvRail.foc:not(.fold)) .focus #fGrade{display:none!important}   /* 채점 버튼은 왼쪽 막대 GO 하나만 (막대를 접었을 때만 위쪽 GO) */
 /* ===== v46 덱 · N회독 · 세모/별표 ===== */
 .dk .dkH{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dk .dkH h2{margin:0}.dk .dkH .sub{flex:1}
 .dk .fiGo{margin:0 0 6px}.dk .fiGo small{font-size:13px;font-weight:600;opacity:.7;margin-left:8px}
@@ -6745,12 +6747,24 @@ async function twinRun(L,btn){const h=await qpHdr();if(!h){packPick(()=>{twinRun
   await startQuizOld(items);if(QZ)QZ.twin=true}
 /* BLOCK 하나 풀기: 원래 문제를 다시 풀고, 맞히는 순간 그 문제의 쌍둥이(같은 유형 기출 1문제)가 바로 이어진다. 원래 문제를 이미 맞힌 BLOCK은 쌍둥이부터 */
 let TWQ=null;
+/* 쌍둥이 1문제를 미리 만들어 둔다 (원래 문제를 푸는 동안 뒤에서) */
+async function twinPrep(w){try{const h=await qpHdr();if(!h)return {none:'pack'};const a=simAuto(w);if(!a)return {none:'type'};let ctx=null;try{ctx=await simCtx(w,false)}catch(e){}
+  const pk=simPick(a.big,1,simCode(w)||'',new Set(),0,ctx)[0];if(!pk)return {none:'none'};const it=await simItem(pk);it.id='tw:'+pk.c;it.twinOf=w.id;it.twinFrom=`${bookOf(w.src)} ${QN(w.q)}번`;
+  const used=LS.get('simUsed',{});used[pk.c]=Date.now();LS.set('simUsed',used);return {it}}catch(e){console.error(e);return {none:'err'}}}
+/* 다시 풀기 화면 위의 작은 표시: 쌍둥이 준비 중 → 준비됨 / 없음 */
+function twChip(t,k){let c=$('#twChip');if(!t){if(c)c.hidden=true;return}if(!c){c=document.createElement('div');c.id='twChip';c.setAttribute('role','status');document.body.appendChild(c)}c.className=k||'';c.textContent=t;c.hidden=false;
+  clearInterval(twChip._i);twChip._i=setInterval(()=>{if(!FOC.on||!TWQ){c.hidden=true;clearInterval(twChip._i)}},1000)}
 async function blockRun(w){const st=wStage(w);if(st==='H'){await twinRun([w]);return}
-  TWQ={id:w.id,src:w.src,q:w.q};try{await noteAddFromWrongs([w.id]);const it=(await dbAll()).find(i=>i.id===w.id);if(!it){TWQ=null;return}await itemRetry([it])}catch(e){console.error(e);TWQ=null}}
-async function twinNext(q){const T=TWQ;if(!T||!P||String(T.q)!==String(q)||bookOf(P.name)!==bookOf(T.src))return;TWQ=null;
+  const T=TWQ={id:w.id,src:w.src,q:w.q,prep:null,p:null};let need=false;try{need=twinNeed(w)&&!(w.twin&&w.twin.ok)}catch(e){}
+  if(need)T.p=twinPrep(w).then(r=>{T.prep=r;if(TWQ===T)twChip(r.it?'쌍둥이 준비됨 · 맞히면 바로 나와요':'쌍둥이를 찾지 못했어요 · 맞히면 CLEAR',r.it?'ok':'no');return r});
+  try{await noteAddFromWrongs([w.id]);const it=(await dbAll()).find(i=>i.id===w.id);if(!it){TWQ=null;return}await itemRetry([it])}catch(e){console.error(e);TWQ=null;return}
+  if(TWQ===T)twChip(need?(T.prep?(T.prep.it?'쌍둥이 준비됨 · 맞히면 바로 나와요':'쌍둥이를 찾지 못했어요 · 맞히면 CLEAR'):'쌍둥이 준비 중…'):'쌍둥이 없음 · 맞히면 CLEAR',need?(T.prep?(T.prep.it?'ok':'no'):'wait'):'no')}
+async function twinNext(q){const T=TWQ;if(!T||!P||String(T.q)!==String(q)||bookOf(P.name)!==bookOf(T.src))return;TWQ=null;twChip(null);
   let w=null;try{w=await wrGet(T.id)}catch(e){}if(!w)return;let need=false;try{need=twinNeed(w)&&!(w.twin&&w.twin.ok)}catch(e){}
   if(!need){pvToast('<b>BLOCK CLEAR!</b> 원래 문제를 혼자 해결했어요');return}
-  pvToast('<b>맞혔어요!</b> 이어서 같은 유형 쌍둥이 1문제');setTimeout(async()=>{try{await pvEnd()}catch(e){}try{await twinRun([w])}catch(e){console.error(e)}},900)}
+  pvToast(T.prep&&T.prep.it?'<b>맞혔어요!</b> 이어서 같은 유형 쌍둥이 1문제':'<b>맞혔어요!</b> 쌍둥이를 준비하는 중…');
+  const r=T.p?await T.p.catch(()=>null):null;
+  setTimeout(async()=>{try{await pvEnd()}catch(e){}try{if(r&&r.it){await startQuizOld([r.it]);if(QZ)QZ.twin=true}else await twinRun([w])}catch(e){console.error(e)}},700)}
 async function twinRec(it,ok){try{const w=await wrGet(it.twinOf);if(!w)return;const t=Object.assign({},w.twin||{});t.c=String(it.id).slice(3);t.n=(t.n||0)+1;t.at=Date.now();if(ok)t.ok=true;w.twin=t;await wrPut(w)}catch(e){console.error(e)}try{simRes(String(it.id).slice(3),ok)}catch(e){}}
 /* BLOCK 맨 위 '내가 몰랐던 것': 학생이 고른 이유 · 최근 막힌 곳(형광펜) · 약한 유형 (최근 2주) */
 function knowHtml(W){const since=Date.now()-14*DAY,R=W.filter(w=>(w.at||0)>=since),cnt={dir:0,stuck:0,slip:0};for(const w of R){const k=w.cls&&w.cls.k;if(k in cnt)cnt[k]++}
