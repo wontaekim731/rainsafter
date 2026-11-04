@@ -838,7 +838,8 @@ html[data-th][data-bg="light"] .tabs.tabbar button.on svg,html[data-th][data-bg=
 body:not(.teacher) .ocW,body:not(.teacher) #aQuiz .kw{display:none!important}   /* v46.04 학생 화면 단순화: 원인·형광펜 기반 카드는 선생님 모드에서만 */
 .bk2{display:inline-flex;gap:3px;margin-right:6px;vertical-align:middle}.sdot .bk2 i{display:block;width:12px;height:12px;border-radius:3px;border:1.5px solid #E8913F;box-sizing:border-box;background:transparent}.sdot .bk2 i.on{background:var(--omr);border-color:var(--omr)}
 .bkK{font-style:normal;font-weight:800;margin-right:4px;color:#E8913F}
-#twChip{position:fixed;top:calc(var(--fTop,64px) + 10px);right:16px;z-index:41;font-size:13px;font-weight:700;padding:6px 12px;border-radius:99px;background:#1A1F27;color:#B7BECA;border:1px solid #2C313C;box-shadow:0 4px 12px rgba(0,0,0,.25)}#twChip[hidden]{display:none}#twChip.ok{color:#0E1014;background:var(--omr);border-color:var(--omr)}#twChip.wait::before{content:'';display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:50%;background:#E8913F;animation:twBl 1s ease-in-out infinite}@keyframes twBl{50%{opacity:.25}}
+#twChip{position:fixed;top:calc(var(--fTop,64px) + 10px);right:16px;z-index:41;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 8px;border-radius:12px;background:#1A1F27;color:#B7BECA;border:1px solid #2C313C;line-height:1.1;pointer-events:none;text-align:center}#twChip.inRail{position:static;margin:4px 2px 2px;width:auto;padding:4px 2px;background:transparent!important;border:0!important;border-top:1px solid #2C313C!important;border-radius:0!important;color:#8A93A3}#twChip.inRail.ok{color:var(--omr)}#twChip.inRail.wait{color:#E8913F}   /* 버튼이 아니라 표시만 */#twChip small{font-size:10px;font-weight:700;opacity:.8}#twChip b{font-size:12px;font-weight:900}#twChip[hidden]{display:none}#twChip.ok{color:#0E1014;background:var(--omr);border-color:var(--omr)}#twChip.no{opacity:.75}#twChip.wait b::before{content:'';display:inline-block;width:6px;height:6px;margin-right:4px;border-radius:50%;background:#E8913F;vertical-align:middle;animation:twBl 1s ease-in-out infinite}@keyframes twBl{50%{opacity:.25}}
+#fRes{position:fixed;left:50%;top:calc(var(--fTop,64px) + 24px);transform:translateX(-50%);z-index:85;display:flex;align-items:center;gap:12px;padding:14px 22px;border-radius:18px;background:#1A1F27;color:#F2F4F7;box-shadow:0 12px 32px rgba(0,0,0,.35);animation:fResIn .25s ease}#fRes[hidden]{display:none}#fRes b{font-size:24px;font-weight:900}#fRes small{font-size:13px;color:#B7BECA}#fRes.kok{background:var(--omr);color:#0E1014}#fRes.kok small{color:#0E1014}#fRes.kno b{color:#FFB37A}#fRes button{font:inherit;font-size:14px;font-weight:800;border:0;border-radius:10px;padding:8px 12px;background:var(--omr);color:#0E1014;cursor:pointer}@keyframes fResIn{from{opacity:0;transform:translate(-50%,-8px)}}
 body:has(#pvRail.foc:not(.fold)) .focus #fGrade{display:none!important}   /* 채점 버튼은 왼쪽 막대 GO 하나만 (막대를 접었을 때만 위쪽 GO) */
 /* ===== v46 덱 · N회독 · 세모/별표 ===== */
 .dk .dkH{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dk .dkH h2{margin:0}.dk .dkH .sub{flex:1}
@@ -3688,7 +3689,7 @@ function fErase(kind,p){if(kind==='p'||kind==='a'){const pg=FOC.pg,q=fToPage(pg,
 fs.addEventListener('touchstart',e=>{const t=e.changedTouches[0];if(!t)return;if(t.touchType==='stylus'||FOC.draw){e.preventDefault()}},{passive:false});fs.addEventListener('touchmove',e=>{if(FOC.draw||[...e.touches].some(t=>t.touchType==='stylus'))e.preventDefault()},{passive:false})}})();
 (()=>{const b=$('#pvFocus');if(!b)return;b.onclick=()=>FOC.on?fClose():fOpen();$('#rlFocus').onclick=e=>{e.stopPropagation();FOC.on?fClose():fOpen()};$('#fExit').onclick=()=>fClose();$('#fPrev').onclick=()=>fGo(-1);$('#fNext').onclick=()=>fGo(1);
   $('#fSol').onclick=fSolToggle;$('#fGrade').onclick=async()=>{if(PV.busy)return;const q0=FOC.p&&FOC.p.q,b4=q0!=null&&S&&S.state?JSON.stringify(S.state[q0]||null):null,h4=q0!=null?((histLoad(P.name)[q0]||[]).length):0;const b=$('#fGrade');b.disabled=true;b.querySelector('span').textContent='채점 중…';try{if(PV.review)pvResume();await pvGrade()}catch(e){console.error(e)}finally{b.disabled=false;b.querySelector('span').textContent='GO'}
-  fToast(q0,b4,h4);fDraw();fAnsMarks();try{rtItemSync()}catch(e){console.error(e)}};
+  fToast(q0,b4,h4);fDraw();fAnsMarks();try{rtItemSync()}catch(e){console.error(e)}try{fResult(q0,b4,h4)}catch(e){console.error(e)}};
 /* 지금 문제의 채점 결과를 한 줄로: 맞음 / 틀림(도전 n회) / 직접 채점 / 새 답 없음 */
 function fToast(q,b4,h4){if(q==null||!S||!S.state)return;const st=S.state[q],H=(histLoad(P.name)[q]||[]),nm=QN(q)+'번';
   if(JSON.stringify(st||null)===b4&&H.length===h4){const ss=document.querySelector('#selfSheet');if(ss&&ss.offsetParent)return;if(st&&st.status==='check'){pvToast(nm+' · 정답을 아직 못 읽었어요 — 직접 채점하거나, 정답을 다 읽은 뒤 GO를 다시 누르면 자동 채점돼요');return}pvToast(nm+' · 채점할 새 답이 없어요 — 답은 답란에 써 주세요');return}
@@ -6200,7 +6201,7 @@ async function mkApply(q,m){if(!S||!S.state)return;const st=S.state[q],c=catOf(s
   if(m.k==='star'&&c&&c!=='O'&&!(st.cls&&st.cls.k)){try{await clsSet(q,{k:'dir',auto:'star'})}catch(e){console.error(e)}return}
   try{await logWrongs()}catch(e){console.error(e)}}
 /* 시험용: 바깥(콘솔·테스트)에서 STACK·표시 인식을 확인할 수 있게 */
-window.NJdeck={streak:s=>streak(s),wrPut:o=>wrPut(o),mkFind,strokeOf,deckGet,deckPut,deckState,deckPace,bookReady,libPut,libAll,homeSimple,view:v=>view(v),wOrig:w=>wOrig(w),wCat:w=>wCat(w),dayKey,histReset:k=>{delete HC[k]}};
+window.NJdeck={twChip:(t,k)=>twChip(t,k),streak:s=>streak(s),wrPut:o=>wrPut(o),mkFind,strokeOf,deckGet,deckPut,deckState,deckPace,bookReady,libPut,libAll,homeSimple,view:v=>view(v),wOrig:w=>wOrig(w),wCat:w=>wCat(w),dayKey,histReset:k=>{delete HC[k]}};
 /* 오답 퀴즈를 한 날: 도장 */
 function quizDays(items){const q={};for(const it of items||[])for(const h of it.hist||[]){if(!h||!h.d)continue;const k=dayKey(h.d);q[k]=(q[k]||0)+1}return q}
 function quizStreak(q){let n=0;const d=new Date();if(!q[dayKey(d.getTime())])d.setDate(d.getDate()-1);while(q[dayKey(d.getTime())]){n++;d.setDate(d.getDate()-1)}return n}
@@ -6716,7 +6717,7 @@ async function clsComposite(){const im=$('#clsSheet .cImg img');if(!im||!im.natu
 function clsHint(){if(!FOC.on||!FOC.retry||!FOC.p||!S||!S.state)return;const st=S.state[FOC.p.q],c=st&&st.cls&&CLS[st.cls.k];let h=$('#clsHint');if(!c){if(h)h.remove();return}
   if(!h){h=document.createElement('div');h.id='clsHint';document.body.appendChild(h)}h.style.setProperty('--c',c.c);h.style.opacity=1;h.textContent=`${c.n} → ${c.h}`;clearTimeout(h._t);h._t=setTimeout(()=>{h.style.opacity=0},5000)}
 /* 다시 풀기에서 GO 뒤: 맞히면 한 줄 코멘트, 또 틀리면 선생님에게 넘기기 */
-function clsAfter(){if(!FOC.on||!FOC.retry||!FOC.p||!S||!S.state)return;const q=FOC.p.q,st=S.state[q],r=st&&st.retry;if(!r||r.at!==FOC.rt0||r.ok==null)return;const key=FOC.rt0+':'+r.ans+':'+r.ok;if(st.cls&&st.cls.seen===key)return;
+function clsAfter(){if(!FOC.on||!FOC.retry||!FOC.p||!S||!S.state)return;const q=FOC.p.q,st=S.state[q],r=st&&st.retry;if(!r||r.ok==null)return;{const L=histLoad(P.name)[q]||[],z=L[L.length-1];if(!z||(z.t||0)<(FOC.rt0||0))return}   /* v46.13 이번 다시 풀기에서 채점된 결과만 (예전엔 retry.at을 비교했는데 아무 데서도 넣지 않아 늘 멈췄다 → 쌍둥이·다음 문제가 안 이어지던 원인) */const key=FOC.rt0+':'+r.ans+':'+r.ok;if(st.cls&&st.cls.seen===key)return;
   /* 다시 채점한 뒤: 맞든 틀리든 '처음에 어디서 멈췄나요?' 한 번만 묻는다 (글 쓰기 없음). 맞히면 바로 다음, 또 틀리면 한 번 더 / 다음 문제 */
   st.cls=Object.assign({},st.cls||{},{seen:key});CLSV={W:[q],i:0,step:'after'};const box=clsShell();FOC.clsR=FOC.clsR||{};const R=FOC.clsR[q]=FOC.clsR[q]||{};R.tries=(R.tries||0)+1;
   const res=ok=>{if(FOC.cls){R.res=ok?'ok':'block';setTimeout(clsNextQ,ok?500:250)}};
@@ -6747,12 +6748,21 @@ async function twinRun(L,btn){const h=await qpHdr();if(!h){packPick(()=>{twinRun
   await startQuizOld(items);if(QZ)QZ.twin=true}
 /* BLOCK 하나 풀기: 원래 문제를 다시 풀고, 맞히는 순간 그 문제의 쌍둥이(같은 유형 기출 1문제)가 바로 이어진다. 원래 문제를 이미 맞힌 BLOCK은 쌍둥이부터 */
 let TWQ=null;
+/* 한 문제씩 화면: GO 뒤 결과를 문제 위에 크게 (○ 맞았어요 / ✗ 아직 아니에요 / 답을 못 읽었어요 / 새 답 없음) */
+function fResult(q,b4,h4){if(q==null||!S||!S.state)return;const st=S.state[q]||{},r=FOC.retry&&st.retry?st.retry:st,H=(histLoad(P.name)[q]||[]),same=JSON.stringify(S.state[q]||null)===b4&&H.length===h4;
+  let k,t,sub='';if(same){if(st.status==='check'){k='q';t='답을 아직 못 읽었어요';sub='직접 채점해 주세요'}else{k='n';t='새로 쓴 답이 없어요';sub='답을 쓰고 GO'}}
+  else if(r.ok===true){k='ok';t='○ 맞았어요'}else if(r.ok===false){k='no';t='✗ 아직 아니에요';sub='한 번 더 풀어 봐요'}else{k='q';t='답을 확실히 못 읽었어요';sub='직접 채점해 주세요'}
+  let d=$('#fRes');if(!d){d=document.createElement('div');d.id='fRes';d.setAttribute('role','status');document.body.appendChild(d)}
+  d.className='k'+k;d.innerHTML=`<b>${t}</b>${sub?`<small>${sub}</small>`:''}${k==='q'?'<button type="button" data-self>직접 채점</button>':''}`;d.hidden=false;
+  const sb=d.querySelector('[data-self]');if(sb)sb.onclick=()=>{d.hidden=true;try{selfSheet(()=>{try{clsAfter()}catch(e){}},true)}catch(e){console.error(e)}};
+  clearTimeout(d._t);d._t=setTimeout(()=>{d.hidden=true},k==='q'?8000:2600)}
 /* 쌍둥이 1문제를 미리 만들어 둔다 (원래 문제를 푸는 동안 뒤에서) */
 async function twinPrep(w){try{const h=await qpHdr();if(!h)return {none:'pack'};const a=simAuto(w);if(!a)return {none:'type'};let ctx=null;try{ctx=await simCtx(w,false)}catch(e){}
   const pk=simPick(a.big,1,simCode(w)||'',new Set(),0,ctx)[0];if(!pk)return {none:'none'};const it=await simItem(pk);it.id='tw:'+pk.c;it.twinOf=w.id;it.twinFrom=`${bookOf(w.src)} ${QN(w.q)}번`;
   const used=LS.get('simUsed',{});used[pk.c]=Date.now();LS.set('simUsed',used);return {it}}catch(e){console.error(e);return {none:'err'}}}
 /* 다시 풀기 화면 위의 작은 표시: 쌍둥이 준비 중 → 준비됨 / 없음 */
-function twChip(t,k){let c=$('#twChip');if(!t){if(c)c.hidden=true;return}if(!c){c=document.createElement('div');c.id='twChip';c.setAttribute('role','status');document.body.appendChild(c)}c.className=k||'';c.textContent=t;c.hidden=false;
+function twChip(t,k){let c=$('#twChip');if(!t){if(c)c.hidden=true;return}const rail=$('#pvRail .rlIn');if(!c||(rail&&c.parentNode!==rail)){if(c)c.remove();c=document.createElement('div');c.id='twChip';c.setAttribute('role','status');const fx=rail&&rail.querySelector('#pvFixW');if(rail){if(fx&&fx.nextSibling)rail.insertBefore(c,fx.nextSibling);else rail.appendChild(c)}else document.body.appendChild(c)}
+  c.className=(k||'')+(rail&&c.parentNode===rail?' inRail':'');c.innerHTML=`<small>쌍둥이</small><b>${({ok:'준비됨',wait:'준비 중',no:'없음'})[k]||''}</b>`;c.title=t;c.setAttribute('aria-label',t);c.hidden=false;
   clearInterval(twChip._i);twChip._i=setInterval(()=>{if(!FOC.on||!TWQ){c.hidden=true;clearInterval(twChip._i)}},1000)}
 async function blockRun(w){const st=wStage(w);if(st==='H'){await twinRun([w]);return}
   const T=TWQ={id:w.id,src:w.src,q:w.q,prep:null,p:null};let need=false;try{need=twinNeed(w)&&!(w.twin&&w.twin.ok)}catch(e){}
