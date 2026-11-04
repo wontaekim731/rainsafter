@@ -843,6 +843,8 @@ body:not(.teacher) .ocW,body:not(.teacher) #aQuiz .kw{display:none!important}   
 body:has(#pvRail.foc:not(.fold)) .focus #fGrade{display:none!important}   /* 채점 버튼은 왼쪽 막대 GO 하나만 (막대를 접었을 때만 위쪽 GO) */
 #qzSubmit.qzGo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1;background:var(--omr)!important;color:#0E1014!important;border:0!important;border-radius:12px;min-height:54px;font-weight:900}#qzSubmit.qzGo .goT{font-size:19px;font-weight:900;letter-spacing:.04em}#qzSubmit.qzGo .goS{font-size:10px;font-weight:700;opacity:.85;white-space:nowrap}#qzSubmit.qzGo[hidden]{display:none}
 .qzfb .qzClr{color:#11804A;font-size:18px;font-weight:900}
+.twSet{margin-top:8px;font:inherit;font-size:13px;font-weight:700;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:99px;padding:5px 12px;cursor:pointer}
+.twSeg{display:flex;gap:6px;flex-wrap:wrap}.twSeg button{font:inherit;font-size:15px;font-weight:700;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:12px;padding:10px 16px;cursor:pointer}.twSeg button.on{background:var(--omr);border-color:var(--omr);color:#0E1014}
 /* ===== v46 덱 · N회독 · 세모/별표 ===== */
 .dk .dkH{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dk .dkH h2{margin:0}.dk .dkH .sub{flex:1}
 .dk .fiGo{margin:0 0 6px}.dk .fiGo small{font-size:13px;font-weight:600;opacity:.7;margin-left:8px}
@@ -4459,7 +4461,7 @@ async function finishQ(ans){
   const key=it.key?normAns(it.key.text.split(',').map(x=>x.trim()).sort().join(',')):'',ok=key?normAns(ans)===key:null,secs=Math.round(((c.t1||Date.now())-c.t0)/1000);
   if(ok===null)fb2('','이 문항은 정답 정보가 없어 채점하지 못했습니다.');
   else if(it.twinOf){it.hist.push({d:Date.now(),ok,ans,t:secs});await twinRec(it,ok);if(ok)QZ.ok++;INK.mark=ok?'o':'x';inkRedraw();
-    const f=$('#qzFb');f.className='qzfb '+(ok?'ok':'bad');f.innerHTML=ok?`<b class="qzClr">BLOCK 1개 CLEAR!</b> <span>${esc(it.twinFrom||'')} · 원래 문제 + TWIN 모두 맞힘</span>`:`오답 <span>${ans==='✗'?'':`내 답 ${esc(ans)} · 정답 ${esc(it.keyShow||key)} · `}다음엔 다른 TWIN이 나와요</span>`}
+    const f=$('#qzFb');f.className='qzfb '+(ok?'ok':'bad');const tw=await wrGet(it.twinOf).catch(()=>null),tn=tw&&tw.twin||{};f.innerHTML=ok?(tn.ok?`<b class="qzClr">BLOCK 1개 CLEAR!</b> <span>${esc(it.twinFrom||'')} · 원래 문제 + TWIN 모두 맞힘</span>`:`TWIN 정답! <span>${tn.okN||1}/${tn.need||1} · ${(tn.need||1)-(tn.okN||1)}문제 더 맞히면 BLOCK CLEAR</span>`):`오답 <span>${ans==='✗'?'':`내 답 ${esc(ans)} · 정답 ${esc(it.keyShow||key)} · `}다음엔 다른 TWIN이 나와요</span>`}
   else{attempt(it,ok,ans);it.hist[it.hist.length-1].t=secs;await dbPut(it);if(ok)QZ.ok++;if(it.done)QZ.fin++;INK.mark=ok?'o':'x';inkRedraw();
     const f=$('#qzFb');f.className='qzfb '+(ok?'ok':'bad');f.innerHTML=ok?`정답! <span>${it.done?'이 문항은 완료됐습니다':'3일 뒤에 한 번 더 나옵니다'}</span>`:`오답 <span>${ans==='✗'?'':`내 답 ${esc(ans)} · 정답 ${esc(it.keyShow||key)} · `}내일 다시 나옵니다</span>`}
   QZ.res.push({it,ok,secs});$('#qzSubmit').hidden=true;$('#qzSkip').hidden=true;$('#qzNext').hidden=false;$('#qzNext').textContent=QZ.i+1<QZ.list.length?'다음 문제 →':'결과 보기';
@@ -6227,7 +6229,7 @@ async function renderAnaTab(){try{await qpHdr()}catch(e){}
   {const simple=!teacherOn();$('#aSeg').parentElement.style.display=simple?'none':'flex';if(simple){ANAV='all';const left=W.filter(w=>wStage(w)!=='T'),clr=W.length-left.length;
     const twL=left.filter(w=>wStage(w)==='H'),orL=left.filter(w=>wStage(w)!=='H');
     $('#aQuiz').innerHTML=knowHtml(W)+`<div class="blkHero"><div><div class="label">BLOCK</div><div class="nowT">${W.length?(left.length?`남은 BLOCK <b>${left.length}</b>개`:'모든 BLOCK 클리어!'):'아직 BLOCK이 없어요'}</div><div class="muted" style="font-size:14px">${W.length?`클리어 ${clr} / ${W.length}${twL.length?` · TWIN 남음 ${twL.length}`:''}`:'문제를 풀고 채점하면 틀린 문제가 여기에 모여요'}</div>${W.length?(QP.hdr?'<div class="muted" style="font-size:12px">클리어 = 원래 문제 다시 맞히기 + 같은 유형 기출(TWIN) 1문제</div>':`<div class="muted" style="font-size:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">기출 팩을 넣으면 클리어할 때 같은 유형 기출(TWIN)도 풀어요 ${packBtn}</div>`):''}</div>${left.length?`<button class="btn big" type="button" id="aClr">${orL.length?'클리어 시작':'TWIN 풀기'}</button>`:''}</div>${W.length?`<div class="blkBar"><i style="width:${Math.round(clr/W.length*100)}%"></i></div>`:''}<button class="linkDel" type="button" id="aMq2" hidden></button>`;
-    knowBind($('#aQuiz'),W);{const qa=$('#aQuiz').querySelector('[data-qpadd]');if(qa)qa.onclick=()=>packPick(renderAnaTab)}const go=$('#aClr');if(go)go.onclick=async()=>{go.disabled=true;try{if(!orL.length){await twinRun(twL.slice().sort((a,b)=>(a.at||0)-(b.at||0)).slice(0,8),go);return}const L=orL.slice().sort((a,b)=>(a.at||0)-(b.at||0)).slice(0,8),ids=L.map(w=>w.id);await noteAddFromWrongs(ids);const all=await dbAll(),its=ids.map(id=>all.find(i=>i.id===id)).filter(Boolean);if(its.length)await startQuiz(its)}finally{go.disabled=false}};
+    knowBind($('#aQuiz'),W);{const h=$('#aQuiz').querySelector('.blkHero');if(h&&!h.querySelector('#twSet')){const b=document.createElement('button');b.type='button';b.id='twSet';b.className='twSet';b.textContent=`유사 문제 ${twN()}개 · ${TW_LV[twLv()]} ⚙`;b.onclick=()=>twSetSheet();h.appendChild(b)}}{const qa=$('#aQuiz').querySelector('[data-qpadd]');if(qa)qa.onclick=()=>packPick(renderAnaTab)}const go=$('#aClr');if(go)go.onclick=async()=>{go.disabled=true;try{if(!orL.length){await twinRun(twL.slice().sort((a,b)=>(a.at||0)-(b.at||0)).slice(0,8),go);return}const L=orL.slice().sort((a,b)=>(a.at||0)-(b.at||0)).slice(0,8),ids=L.map(w=>w.id);await noteAddFromWrongs(ids);const all=await dbAll(),its=ids.map(id=>all.find(i=>i.id===id)).filter(Boolean);if(its.length)await startQuiz(its)}finally{go.disabled=false}};
     if(!left.length)memoList().then(L=>{const b=$('#aMq2');if(b&&L.length){b.hidden=false;b.textContent=`코멘트 숏 퀴즈 ${Math.min(8,L.length)}문제 풀어 보기`;b.onclick=()=>memoQuiz(L)}});
     try{const t=$('#aTaskN');if(t){const n=(await libAll()).filter(r=>r.task&&r.done!==true).length;t.textContent=n?`남은 문제지 ${n}`:''}}catch(e){}
     }}
@@ -6755,6 +6757,8 @@ async function twinRun(L,btn){const h=await qpHdr();if(!h){packPick(()=>{twinRun
   await startQuizOld(items);if(QZ)QZ.twin=true}
 /* BLOCK 하나 풀기: 원래 문제를 다시 풀고, 맞히는 순간 그 문제의 쌍둥이(같은 유형 기출 1문제)가 바로 이어진다. 원래 문제를 이미 맞힌 BLOCK은 쌍둥이부터 */
 let TWQ=null;
+/* BLOCK 유사 문제 설정: 개수(1~3) · 난이도(자동=같거나 조금 더 어렵게 / 쉬움 / 보통 / 어려움). 이 기기에 저장 */
+const twN=()=>Math.max(1,Math.min(3,+LS.get('blkTwN',1)||1)),twLv=()=>+LS.get('blkTwLv',0)||0,TW_LV={0:'자동',1:'쉬움',2:'보통',3:'어려움'};
 /* 한 문제씩 화면: GO 뒤 결과를 문제 위에 크게 (○ 맞았어요 / ✗ 아직 아니에요 / 답을 못 읽었어요 / 새 답 없음) */
 function fResult(q,b4,h4){if(q==null||!S||!S.state)return;const st=S.state[q]||{},r=FOC.retry&&st.retry?st.retry:st,H=(histLoad(P.name)[q]||[]),same=JSON.stringify(S.state[q]||null)===b4&&H.length===h4;
   let k,t,sub='';if(same){if(st.status==='check'){k='q';t='답을 아직 못 읽었어요';sub='직접 채점해 주세요'}else{k='n';t='새로 쓴 답이 없어요';sub='답을 쓰고 GO'}}
@@ -6765,25 +6769,32 @@ function fResult(q,b4,h4){if(q==null||!S||!S.state)return;const st=S.state[q]||{
   clearTimeout(d._t);d._t=setTimeout(()=>{d.hidden=true},k==='q'?8000:2600)}
 /* 쌍둥이 1문제를 미리 만들어 둔다 (원래 문제를 푸는 동안 뒤에서) */
 async function twinPrep(w){try{const h=await qpHdr();if(!h)return {none:'pack'};const a=simAuto(w);if(!a)return {none:'type'};let ctx=null;try{ctx=await simCtx(w,false)}catch(e){}
-  const pk=simPick(a.big,1,simCode(w)||'',new Set(),0,ctx)[0];if(!pk)return {none:'none'};const it=await simItem(pk);it.id='tw:'+pk.c;it.twinOf=w.id;it.twinFrom=`${bookOf(w.src)} ${QN(w.q)}번`;
-  const used=LS.get('simUsed',{});used[pk.c]=Date.now();LS.set('simUsed',used);return {it}}catch(e){console.error(e);return {none:'err'}}}
+  const pks=simPick(a.big,twN(),simCode(w)||'',new Set(),twLv(),ctx);if(!pks.length)return {none:'none'};const used=LS.get('simUsed',{}),its=[];
+  for(const pk of pks){const it=await simItem(pk);it.id='tw:'+pk.c;it.twinOf=w.id;it.twinFrom=`${bookOf(w.src)} ${QN(w.q)}번`;it.twinNeed=pks.length;its.push(it);used[pk.c]=Date.now()}LS.set('simUsed',used);return {it:its[0],its}}catch(e){console.error(e);return {none:'err'}}}
 /* 다시 풀기 화면 위의 작은 표시: 쌍둥이 준비 중 → 준비됨 / 없음 */
 function twChip(t,k){let c=$('#twChip');if(!t){if(c)c.hidden=true;return}const rail=$('#pvRail .rlIn');if(!c||(rail&&c.parentNode!==rail)){if(c)c.remove();c=document.createElement('div');c.id='twChip';c.setAttribute('role','status');const fx=rail&&rail.querySelector('#pvFixW');if(rail){if(fx&&fx.nextSibling)rail.insertBefore(c,fx.nextSibling);else rail.appendChild(c)}else document.body.appendChild(c)}
   if(k==='no'){c.hidden=true;return}c.className=(k||'')+(rail&&c.parentNode===rail?' inRail':'');c.innerHTML='<b>TWIN</b><small>유사</small>';c.title=t;c.setAttribute('aria-label',t);c.hidden=false;
   clearInterval(twChip._i);twChip._i=setInterval(()=>{if(!FOC.on||!TWQ){c.hidden=true;clearInterval(twChip._i)}},1000)}
-async function blockRun(w){const st=wStage(w);if(st==='H'){await twinRun([w]);return}
+async function blockRun(w){const st=wStage(w);if(st==='H'){const r=await twinPrep(w);if(r.its&&r.its.length){await startQuizOld(r.its);if(QZ)QZ.twin=true}else await twinRun([w]);return}
   const T=TWQ={id:w.id,src:w.src,q:w.q,prep:null,p:null};let need=false;try{need=twinNeed(w)&&!(w.twin&&w.twin.ok)}catch(e){}
   if(need)T.p=twinPrep(w).then(r=>{T.prep=r;if(TWQ===T)twChip(r.it?'쌍둥이 준비됨 · 맞히면 바로 나와요':'쌍둥이를 찾지 못했어요 · 맞히면 CLEAR',r.it?'ok':'no');return r});
   try{await noteAddFromWrongs([w.id]);const it=(await dbAll()).find(i=>i.id===w.id);if(!it){TWQ=null;return}await itemRetry([it])}catch(e){console.error(e);TWQ=null;return}
   if(TWQ===T)twChip(need?(T.prep?(T.prep.it?'쌍둥이 준비됨 · 맞히면 바로 나와요':'쌍둥이를 찾지 못했어요 · 맞히면 CLEAR'):'쌍둥이 준비 중…'):'쌍둥이 없음 · 맞히면 CLEAR',need?(T.prep?(T.prep.it?'ok':'no'):'wait'):'no')}
 async function blkFix(T){try{const now=Date.now(),w0=await wrGet(T.id);if(!w0)return;for(const x of await wrAll())if(x.id===w0.id||(bookOf(x.src)===bookOf(w0.src)&&String(x.q)===String(w0.q))){x.fix=now;await wrPut(x)}}catch(e){console.error(e)}}   /* 다시 풀어 맞힌 BLOCK: 원래 문제 칸을 채운다 */
+function twSetSheet(){const d=dkShell(`<div class="dkSh"><b style="font-size:18px">유사 문제 설정</b><button class="sb" type="button" data-x>닫기</button></div>
+    <p class="sub" style="margin:0">BLOCK에서 원래 문제를 맞힌 뒤 나오는 유사 문제(TWIN)예요. 정한 개수를 모두 맞히면 BLOCK이 CLEAR돼요.</p>
+    <label class="sub">개수</label><div class="twSeg" data-k="n">${[1,2,3].map(v=>`<button type="button" data-v="${v}" class="${v===twN()?'on':''}">${v}문제</button>`).join('')}</div>
+    <label class="sub">난이도</label><div class="twSeg" data-k="lv">${[0,1,2,3].map(v=>`<button type="button" data-v="${v}" class="${v===twLv()?'on':''}">${TW_LV[v]}</button>`).join('')}</div>
+    <p class="sub" style="margin:0">자동: 틀린 문제와 같거나 조금 더 어려운 기출 위주</p>`);
+  d.querySelector('[data-x]').onclick=()=>{d.hidden=true;try{renderAnaTab()}catch(e){}};
+  d.querySelectorAll('.twSeg').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{LS.set(g.dataset.k==='n'?'blkTwN':'blkTwLv',+b.dataset.v);g.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))}))}
 async function twinNext(q){const T=TWQ,it0=typeof RT_ITEMS!=='undefined'&&RT_ITEMS&&RT_ITEMS[q];dlog('twinNext','q'+q+' T'+(T?T.q:'-')+' it'+(it0?it0.id===(T&&T.id):'-'));if(!T||!P||!((it0&&it0.id===T.id)||String(T.q)===String(q))||bookOf(P.name)!==bookOf(T.src))return;TWQ=null;twChip(null);await blkFix(T);
   let w=null;try{w=await wrGet(T.id)}catch(e){}if(!w)return;let need=false;try{need=twinNeed(w)&&!(w.twin&&w.twin.ok)}catch(e){}
   if(!need){pvToast('<b>BLOCK CLEAR!</b> 원래 문제를 혼자 해결했어요');return}
   pvToast(T.prep&&T.prep.it?'<b>맞혔어요!</b> 이어서 같은 유형 쌍둥이 1문제':'<b>맞혔어요!</b> 쌍둥이를 준비하는 중…');
   const r=T.p?await T.p.catch(()=>null):null;
-  setTimeout(async()=>{try{PV.endAsk=1;await pvEnd()}catch(e){}try{if(r&&r.it){await startQuizOld([r.it]);if(QZ)QZ.twin=true}else await twinRun([w])}catch(e){console.error(e)}},900)}   /* 나갈 때 다른 문제의 '직접 채점' 창에 막히지 않게 */
-async function twinRec(it,ok){try{const w=await wrGet(it.twinOf);if(!w)return;const t=Object.assign({},w.twin||{});t.c=String(it.id).slice(3);t.n=(t.n||0)+1;t.at=Date.now();if(ok)t.ok=true;w.twin=t;await wrPut(w);if(ok)for(const x of await wrAll())if(x.id!==w.id&&bookOf(x.src)===bookOf(w.src)&&String(x.q)===String(w.q)){x.twin=Object.assign({},x.twin||{},t);await wrPut(x)}}catch(e){console.error(e)}try{simRes(String(it.id).slice(3),ok)}catch(e){}}
+  setTimeout(async()=>{try{PV.endAsk=1;await pvEnd()}catch(e){}try{if(r&&r.its&&r.its.length){await startQuizOld(r.its);if(QZ)QZ.twin=true}else await twinRun([w])}catch(e){console.error(e)}},900)}   /* 나갈 때 다른 문제의 '직접 채점' 창에 막히지 않게 */
+async function twinRec(it,ok){try{const w=await wrGet(it.twinOf);if(!w)return;const t=Object.assign({},w.twin||{});t.c=String(it.id).slice(3);t.n=(t.n||0)+1;t.at=Date.now();const need=it.twinNeed||1;if(ok)t.okN=(t.okN||0)+1;if(ok&&(t.okN||0)>=need)t.ok=true;t.need=need;w.twin=t;await wrPut(w);if(ok)for(const x of await wrAll())if(x.id!==w.id&&bookOf(x.src)===bookOf(w.src)&&String(x.q)===String(w.q)){x.twin=Object.assign({},x.twin||{},t);await wrPut(x)}}catch(e){console.error(e)}try{simRes(String(it.id).slice(3),ok)}catch(e){}}
 /* BLOCK 맨 위 '내가 몰랐던 것': 학생이 고른 이유 · 최근 막힌 곳(형광펜) · 약한 유형 (최근 2주) */
 function knowHtml(W){const since=Date.now()-14*DAY,R=W.filter(w=>(w.at||0)>=since),cnt={dir:0,stuck:0,slip:0};for(const w of R){const k=w.cls&&w.cls.k;if(k in cnt)cnt[k]++}
   const n=cnt.dir+cnt.stuck+cnt.slip,hl=R.filter(w=>w.cls&&w.cls.k==='stuck'&&(w.cls.cimg||w.cls.img)).slice(0,2);
