@@ -852,6 +852,7 @@ body:has(#pvRail.foc:not(.fold)) .focus #fGrade{display:none!important}   /* 채
 .dk .dkH{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dk .dkH h2{margin:0}.dk .dkH .sub{flex:1}
 .dk .fiGo{margin:0 0 6px}.dk .fiGo small{font-size:13px;font-weight:600;opacity:.7;margin-left:8px}
 .dkB{border:2px solid var(--line);border-radius:16px;padding:12px 14px 8px;margin-top:10px;cursor:pointer;transition:border-color .15s}.dkB{position:relative;opacity:.72}.dkB.on{opacity:1;border-color:var(--omr);background:var(--ok-soft,#17241D);box-shadow:0 0 0 3px rgba(124,242,176,.14)}
+.dkEmpty{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:86px;font:inherit;color:var(--muted);background:transparent;border:2px dashed var(--line)!important;opacity:1!important;cursor:pointer}.dkEmpty span{font-size:22px;font-weight:700}.dkEmpty b{font-size:15px;color:var(--ink)}.dkEmpty small{font-size:13px}.dkEmpty:hover,.dkEmpty:focus-visible{border-color:var(--omr)!important;color:var(--omr)}
 .dkB.on::after{content:'✓';position:absolute;top:-10px;right:-10px;width:26px;height:26px;border-radius:50%;background:var(--omr);color:#0E1014;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.35)}.dkB:focus-visible{outline:3px solid var(--omr);outline-offset:2px}
 .dk .fiGo[disabled]{opacity:.45;cursor:default}
 .dkT{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.dkT b{font-size:16px;overflow-wrap:anywhere}
@@ -6087,9 +6088,9 @@ function deckToday(g,docs){let q=0,t=0,has=false;for(const b of g.books){const s
 function deckSel(g,S,docs){let k=g.books.findIndex((b,i)=>b.name===g.sel&&!S[i].miss);if(k<0)k=deckActive(g,docs,S);if(k<0)k=g.books.findIndex((b,i)=>!S[i].miss);return k}
 function deckHtml(g,docs,wr){const BN={};for(const w of wr||[])if(wStage(w)!=='T'){const k=bookOf(w.src);BN[k]=(BN[k]||0)+1}   /* 책마다 남은 BLOCK (BLOCK 탭과 같은 기준) */
   const S=g.books.map(b=>deckState(b,docs)),ai=deckSel(g,S,docs),A=ai>=0?g.books[ai]:null;
-  return `<div class="cc dk"><div class="dkH"><h2>STACK</h2><span class="sub">${g.books.length}/${DECK_MAX}권</span><button class="sb" type="button" data-dkadd>${g.books.length<DECK_MAX?'＋ 쌓기 · 빼기':'쌓기 · 빼기'}</button></div>
+  return `<div class="cc dk"><div class="dkH"><h2>STACK</h2><span class="sub"></span><button class="sb" type="button" data-dkadd>${g.books.length<DECK_MAX?'＋ 쌓기 · 빼기':'쌓기 · 빼기'}</button></div>
     ${g.books.length?`<button class="fiGo" type="button" data-dkmain="${ai}"${A&&!S[ai].clear?'':' disabled'}>이어 풀기</button>`:''}
-    ${g.books.map((b,i)=>deckBookHtml(b,i,S[i],i===ai,BN[b.name])).join('')||'<p class="sub" style="margin:0">[Q]에서 추가를 마친 문제집을 최대 3권까지 쌓아 두고, 여기서 바로 이어 풀어요. 범위와 목표일은 나중에 [설정]에서 정해도 돼요.</p>'}</div>`}
+    ${g.books.map((b,i)=>deckBookHtml(b,i,S[i],i===ai,BN[b.name])).join('')}${Array.from({length:Math.max(0,DECK_MAX-g.books.length)},()=>`<button type="button" class="dkB dkEmpty" data-dkadd><span>＋</span><b>빈칸</b><small>문제집 쌓기</small></button>`).join('')}</div>`}
 function deckBind(box,g,docs,again){const on=(s,f)=>box.querySelectorAll(s).forEach(b=>b.onclick=()=>f(b));
   on('[data-dkadd]',()=>deckAddSheet(again));
   box.querySelectorAll('.dkB[data-dk]').forEach(el=>{const pick=async()=>{const G=await deckGet(),bk=G.books[+el.dataset.dk];if(!bk||G.sel===bk.name&&el.classList.contains('on'))return;G.sel=bk.name;await deckPut(G);again()};
