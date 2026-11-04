@@ -2848,7 +2848,7 @@ async function seqPPRead(P0,pg){if(!P0.seqAns||!P0.seqAns.tbl||(P0.seqAns.ppn&&P
 /* 정답 표 책: 쪽 범위로 고른 Theme의 문항 수보다 번호가 크면(표 머리 쪽 번호를 잘못 읽어 범위가 어긋남) 바로 앞·뒤 Theme 중 그 번호까지 있는 쪽으로 */
 function tblSec(A,pp,d){const S=A.secs,i=S.findIndex(s=>s.a!=null&&pp>=s.a&&pp<=s.b);if(i<0)return null;const s=S[i],mx=x=>Math.max(x.m||0,x.n||0);if(d<=mx(s)+1)return s;
   for(const j of [i-1,i-2,i+1]){const t=S[j];if(t&&d<=mx(t)+1&&(t.k[d]||(t.p&&t.p[d])))return t}return s}
-function seqApply(P0){const A=P0&&P0.seqAns;if(!A)return 0;seqFitOff(P0);let n=0;for(const p of P0.problems){if(!(p.q>=3000000&&p.q<4000000))continue;const pp=A.tbl?seqPP(P0,p.page):p.page-(A.off||0),sec=A.tbl?tblSec(A,pp,p.disp):A.secs.find(s=>s.a!=null&&pp>=s.a&&pp<=s.b),k=sec&&sec.k[p.disp],png=sec&&sec.p&&sec.p[p.disp],img=sec&&sec.im&&sec.im[p.disp];   /* 시냅스 표: 정답 칸 자리는 tbx에 (img로 두면 다른 정답 다시 읽기가 이 칸을 건드림) — 정답표 보기에서만 쓴다 */
+function seqApply(P0){const A=P0&&P0.seqAns;if(!A)return 0;seqFitOff(P0);if(A.txa&&A.txa.pg)try{TXA.fixD(P0);TXA.pgOff(P0)}catch(e){}let n=0;for(const p of P0.problems){if(A.txa&&A.txa.pg&&p.disp!=null){const tk=TXA.pgKey(A,p);if(tk){p.key=Object.assign({},tk,{txa:1});n++}else if(p.key&&p.key.txa)p.key=null;continue}if(A.txa&&A.txa.map&&p.disp!=null){const tk=A.txa.map[p.page+':'+p.disp];if(tk){p.key=Object.assign({},tk);n++;continue}}if(!(p.q>=3000000&&p.q<4000000))continue;const pp=A.tbl?seqPP(P0,p.page):p.page-(A.off||0),sec=A.tbl?tblSec(A,pp,p.disp):A.secs.find(s=>s.a!=null&&pp>=s.a&&pp<=s.b),k=sec&&sec.k[p.disp],png=sec&&sec.p&&sec.p[p.disp],img=sec&&sec.im&&sec.im[p.disp];   /* 시냅스 표: 정답 칸 자리는 tbx에 (img로 두면 다른 정답 다시 읽기가 이 칸을 건드림) — 정답표 보기에서만 쓴다 */
     if(k){p.key=Object.assign({},k,png?{png}:{},img?{tbx:img}:{});n++}else if(!p.key||p.key.seqA||p.key.kind!=='self'||p.key.seqS||(p.key.text==='✓'&&!p.key.png))p.key=Object.assign({text:'✓',kind:'self',seqS:1},png?{png}:{},img?{tbx:img}:{})}return n}
 async function seqTry(file,handle,bytes,doc,ansDoc,o,kind,msgEl){if(SCANNING)return false;SCANNING={stop:false};const t0=Date.now();let A=null;
   try{A=await SECQ.run(ansDoc,Object.assign({},o,{stop:()=>SCANNING&&SCANNING.stop,step:(msg,np,nk)=>{const el=msgEl||$('#scProg');if(el)el.innerHTML=`${esc(msg)}${nk?` · <b style="color:var(--ok)">번호 ${nk}개</b>`:''} <span class="muted">(${Math.round((Date.now()-t0)/1000)}초)</span>`}}))}catch(e){console.error(e);dlog('seqErr',e&&e.message)}finally{SCANNING=null}
@@ -2903,10 +2903,77 @@ function quickMiss(file,handle,bytes,doc,textPdf,why,st){const N=doc.numPages;if
   $('#qkFile').onclick=()=>{const inp=document.createElement('input');inp.type='file';inp.accept='application/pdf,.pdf';inp.onchange=()=>{const f=inp.files&&inp.files[0];if(f)quickFile(file,handle,bytes,doc,textPdf,f)};inp.click()};
   $('#qkSol').onclick=()=>scanOffer(file,handle,bytes,doc,'sol',textPdf);
   $('#lzGo').onclick=()=>scanLazyInit(file,handle,bytes,doc,{})}
+/* ================= 글자 PDF 답지(올림포스·수능특강 등 EBS): 단원·코너마다 번호가 01부터 다시 시작하는 '한눈에 보는 정답' =================
+   번호만으로 짝지으면 다른 단원·코너의 01번 정답이 섞인다 → 답지 글자에서 [단원 → 코너 → 번호 → 정답] 목록을 만들고,
+   문제 책은 쪽마다 읽은 번호를 앞에서부터 늘어놓아 번호가 01로 돌아가는 곳마다 다음 코너로 넘겨 순서대로 짝짓는다 (번호 개수로 검산) */
+/* 글자 PDF 빠른 정답: 쪽마다 글자 조각 {x,y,s,t} → 단원·코너(번호가 다시 시작하는 묶음)별 정답 */
+const TXA_parse=pages=>{const CIR='①②③④⑤',isInt=t=>/^\d{1,3}$/.test(t),KW=/(유제|유형\s*확인|서술형|고난도|종합\s*문제|기초\s*연습|기본\s*연습|실력\s*완성|Level|예제|STEP|Step|확인\s*문제|중단원|대단원|기출|연습\s*문제|실전)/;
+  /* 번호 글자 크기: 같은 줄 바로 오른쪽에 다른 조각이 붙어 있는 정수 조각들의 크기 중 가장 많은 것 */
+  const cnt={};for(const P of pages){for(const it of P.items){if(!isInt(it.t))continue;const nx=P.items.find(o=>o!==it&&Math.abs(o.y-it.y)<4&&o.x>it.x&&o.x-it.x<40);if(nx){const k=Math.round(it.s*2)/2;cnt[k]=(cnt[k]||0)+1}}}
+  const LS=+(Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0]||[0])[0];if(!LS)return null;
+  const isLab=it=>isInt(it.t)&&Math.abs(it.s-LS)<=0.6;
+  const secs=[];let cur=null,unit=0,unitT='',stop=false;const newSec=nm=>{cur={unit,unitT,name:nm||'',keys:{},max:0,last:0};secs.push(cur)};
+  const val=s=>{s=s.replace(/\s+/g,'').replace(/[−–]/g,'-');if(s.length===1&&CIR.includes(s))return {text:String(CIR.indexOf(s)+1),kind:'circled'};if(/^-?\d{1,4}$/.test(s))return {text:s,kind:'number'};return {text:'✓',kind:'self',raw:s.slice(0,30)}};
+  for(const P of pages){if(stop)break;const W=P.W,its=P.items.filter(o=>o.t.trim()).map(o=>Object.assign({},o,{c:o.x<W/2?0:1}));
+    its.sort((a,b)=>a.c-b.c||(Math.abs(a.y-b.y)<3?a.x-b.x:b.y-a.y));
+    for(let i=0;i<its.length;i++){const it=its[i];
+      if(isInt(it.t)&&it.s>=LS*1.35&&+it.t<=30){if(+it.t<unit){stop=true;break}const tt=its.filter(o=>o.c===it.c&&Math.abs(o.y-it.y)<6&&o.x>it.x&&o.x-it.x<120&&!isInt(o.t)).map(o=>o.t).join('');unit=+it.t;unitT=tt.slice(0,20);cur=null;continue}   /* 단원 머리 '01 지수와 로그' */
+      if(!isLab(it)&&KW.test(it.t)&&it.s<LS*1.35){const nm=its.filter(o=>o.c===it.c&&Math.abs(o.y-it.y)<4&&o.x>=it.x-1&&!isLab(o)).map(o=>o.t).join(' ').slice(0,30);newSec(nm);continue}
+      if(!isLab(it))continue;
+      /* 같은 줄에서 다음 번호까지의 조각 = 정답 */const line=its.filter(o=>o.c===it.c&&Math.abs(o.y-it.y)<4.5&&o.x>it.x+0.5).sort((a,b)=>a.x-b.x);const nx=line.find(o=>isLab(o)&&o.x>it.x+4);const vs=line.filter(o=>!isLab(o)||o.x<(nx?nx.x:1e9)).filter(o=>!nx||o.x<nx.x);
+      if(!vs.length)continue;const n=+it.t;if(!cur||n<=cur.last&&n<=3)newSec(cur?cur.name+'+':'');if(n<=cur.last)continue;cur.keys[n]=val(vs.map(o=>o.t).join(''));cur.last=n;cur.max=Math.max(cur.max,n)}}
+  const S=secs.filter(s=>Object.keys(s.keys).length>=2);return {LS,secs:S,nk:S.reduce((a,s)=>a+Object.keys(s.keys).length,0)}};
+
+
+const TXA={busy:false};
+TXA.read=async d=>{const pages=[];for(let p=1;p<=Math.min(d.numPages,16);p++){try{const pg=await d.getPage(p),vp=pg.getViewport({scale:1}),tc=await pg.getTextContent();pages.push({W:vp.width,items:tc.items.map(it=>({x:it.transform[4],y:it.transform[5],s:Math.hypot(it.transform[0],it.transform[1]),t:it.str}))})}catch(e){}}
+  const r=TXA_parse(pages);if(!r)return null;const R=r.secs.filter((s,i)=>i===0||Object.keys(s.keys).length>=2);if(!(R.length>=3&&r.nk>=40))return null;const secs=R.map(s=>({u:s.unit,ut:s.unitT,nm:s.name,n:s.max,k:s.keys}));
+  /* 풀이 쪽의 '본문 24~27쪽' 표시를 차례로 모아 코너마다 문제 책 쪽 범위를 붙인다 (개수가 맞을 때만) */
+  try{const refs=[];for(let p=1;p<=Math.min(d.numPages,300);p++){const tc=await (await d.getPage(p)).getTextContent();const t=tc.items.map(it=>it.str).join(' ');const re=/본문\s*(\d{1,3})\s*(?:[~∼～\-]\s*(\d{1,3}))?\s*쪽/g;let mm;while((mm=re.exec(t))){const a=+mm[1],b=+(mm[2]||mm[1]),z=refs[refs.length-1];if(b<a||b-a>30)continue;if(z&&z[0]===a&&z[1]===b)continue;refs.push([a,b])}}
+    let mono=refs.length===secs.length;for(let i=1;mono&&i<refs.length;i++)if(refs[i][0]<refs[i-1][0])mono=false;
+    if(mono)secs.forEach((s,i)=>s.pg=refs[i]);dlog('txaPg',refs.length+'/'+secs.length+(mono?' ok':''))}catch(e){}
+  return {secs,nk:r.nk,pg:secs.every(s=>s.pg)}};
+/* 쪽 범위가 있으면: 그 쪽의 번호 → 그 코너의 정답 (책 쪽번호와 PDF 쪽 차이는 1번 문제 위치로 맞춘다) */
+TXA.pgKey=(A,p)=>{const X=A.txa;if(!X||!X.pg||p.disp==null)return null;const off=X.off||0,pp=p.page-off;const s=X.secs.find(s=>s.pg&&pp>=s.pg[0]&&pp<=s.pg[1]);return s&&s.k[p.disp]||null};
+TXA.fixD=P0=>{const by={};for(const p of P0.problems||[])(by[p.page]=by[p.page]||[]).push(p);   /* 11을 1로 읽었거나 못 읽은 번호: 앞이 10, 뒤가 12(또는 없음)면 11 */
+  for(const k in by){const L=by[k];for(let i=1;i<L.length;i++){const a=L[i-1].disp,b=L[i].disp,c=i+1<L.length?L[i+1].disp:undefined;if(a==null||b===a+1)continue;
+    if(c===a+2||((b==null||b>a+6)&&(c==null||c===a+2)))L[i].disp=a+1}}};
+TXA.pgOff=(P0)=>{const X=P0.seqAns&&P0.seqAns.txa;if(!X||!X.pg)return;const F={};for(const p of P0.problems||[]){if(p.disp==null)continue;if(!(p.page in F))F[p.page]=p.disp}   /* 쪽마다 첫 번호 */
+  const st=new Set(X.secs.filter(s=>s.pg).map(s=>s.pg[0])),sc=o=>{let v=0;for(const pg in F){const s1=st.has(+pg-o),f1=F[pg]===1;v+=s1===f1?1:-1}return v};
+  let best=0,bv=sc(0);for(let o=-30;o<=30;o++){const v=sc(o);if(v>bv+1){bv=v;best=o}}X.off=best};   /* 코너 첫 쪽에서만 1번이 시작해야 맞는 차이 (애매하면 0) */
+/* 문제 책 한 쪽의 번호들 (읽는 순서: 왼쪽 단 위→아래, 오른쪽 단) */
+TXA.labs=async(doc,pi)=>{const A=await SCAN.analyze(doc,{from:pi,to:pi,T:TPL,noSol:true,keep:true,thorough:true,seq:true,keepSeqH:true,footer:false});const L=A.problems.filter(p=>p.page===pi&&p.disp!=null);
+  const W=Math.max(1,...L.map(p=>p.x1||0));L.sort((a,b)=>((a.x0>W*0.45)-(b.x0>W*0.45))||b.y1-a.y1);return L.map(p=>p.disp)};
+/* 번호 줄 ↔ 답지 코너 짝짓기 */
+TXA.align=(lab,secs)=>{const seq=[];for(const pi of Object.keys(lab).map(Number).sort((a,b)=>a-b))for(const d of lab[pi])seq.push({pi,d});
+  for(let i=1;i+1<seq.length;i++){const a=seq[i-1].d,b=seq[i].d,c=seq[i+1].d;if(b==null||a==null||c==null)continue;
+    if(c>a&&c-a<=4&&(b<a||b>c)){seq[i].d=c-a===2?a+1:null}   /* 11을 1로, 10을 52로 잘못 읽은 것: 앞뒤 번호 사이가 아니면 고치거나 버림 */
+    else if(b===a)seq[i].d=null;
+    else if(b>a+6&&c<b)seq[i].d=null}   /* 혼자 튀는 큰 번호(쪽번호·코드 조각) */   /* 같은 번호 두 번 */
+  for(let i=seq.length-1;i>=0;i--)if(seq[i].d==null)seq.splice(i,1);
+  if(seq.length>1){const z=seq.length-1;if(seq[z].d>seq[z-1].d+6)seq.splice(z,1)}
+  const G=[];for(const x of seq){const g=G[G.length-1];if(!g||x.d<=g.last){G.push({L:[x],last:x.d,first:x.d})}else{g.L.push(x);g.last=x.d}}
+  const n=G.length,m=secs.length,INF=1e9,D=[],B=[];for(let i=0;i<=n;i++){D.push(new Float64Array(m+1).fill(INF));B.push(new Int8Array(m+1))}D[0][0]=0;
+  const mc=(g,s)=>{if(g.first>3)return INF;const np=g.L[g.L.length-1].pi-g.L[0].pi+1;if(g.L.length/np<2.5)return INF;   /* 쪽마다 한두 개뿐인 번호는 개념 번호 */const over=g.L.filter(x=>x.d>s.n).length;return over*1.5+Math.abs(g.last-s.n)/Math.max(1,s.n)*2};
+  for(let i=0;i<=n;i++)for(let j=0;j<=m;j++){const v=D[i][j];if(v>=INF)continue;
+    if(i<n&&j<m){const c=v+mc(G[i],secs[j]);if(c<D[i+1][j+1]){D[i+1][j+1]=c;B[i+1][j+1]=1}}
+    if(i<n){const c=v+0.6+0.15*G[i].L.length;if(c<D[i+1][j]){D[i+1][j]=c;B[i+1][j]=2}}   /* 답지에 없는 묶음(예제 등) */
+    if(j<m){const c=v+0.5+0.05*secs[j].n;if(c<D[i][j+1]){D[i][j+1]=c;B[i][j+1]=3}}}
+  const map={},asg=[];let ok=0;for(let i=n,j=m;i>0||j>0;){const t=B[i][j];if(t===1){const s=secs[j-1];asg.push(G[i-1].L[0].pi+'-'+G[i-1].L[G[i-1].L.length-1].pi+'→'+s.u+(s.nm||'').slice(0,4));for(const x of G[i-1].L){const k=s.k[x.d];if(k){map[x.pi+':'+x.d]=Object.assign({},k,{txa:1});ok++}}i--;j--}else if(t===2)i--;else if(t===3)j--;else break}
+  return {map,ok,groups:n,asg:asg.reverse()}};
+/* 뒤에서: 문제 책 모든 쪽의 번호를 읽고(쪽마다 저장, 다음에 이어서) 짝지은 뒤 정답을 붙인다 */
+TXA.run=async T=>{const X=T&&T.seqAns&&T.seqAns.txa;if(!X||X.done||TXA.busy||!T.doc||!window.SCAN)return;TXA.busy=true;const t0=performance.now();
+  try{X.lab=X.lab||{};const N=T.doc.numPages;for(let pi=1;pi<=N;pi++){if(X.lab[pi])continue;const known=(T.problems||[]).filter(p=>p.page===pi&&p.disp!=null&&(T.lazyDone||[]).includes(pi));
+      if(known.length){const W=Math.max(1,...known.map(p=>p.x1||0));X.lab[pi]=known.slice().sort((a,b)=>((a.x0>W*0.45)-(b.x0>W*0.45))||b.y1-a.y1).map(p=>p.disp)}
+      else{let L=[];await (LZ.q=LZ.q.then(async()=>{try{L=await TXA.labs(T.doc,pi)}catch(e){console.error(e)}}));X.lab[pi]=L}
+      if(pi%8===0){try{await recentSave(T)}catch(e){}}}
+    const r=TXA.align(X.lab,X.secs);X.map=r.map;X.done=1;dlog('txa','정답 '+r.ok+' · 묶음 '+r.groups+' · 코너 '+X.secs.length+' · '+Math.round((performance.now()-t0)/1000)+'s');
+    try{seqApply(T)}catch(e){console.error(e)}await recentSave(T);bgDeliver(T)}catch(e){console.error(e);dlog('txaErr',e&&e.message)}finally{TXA.busy=false}};
 async function quickFile(file,handle,bytes,doc,textPdf,f){if(SCANNING)return;const m=$('#qkMsg');
   try{if(!/\.pdf$/i.test(f.name)){m.innerHTML='<span class="err">PDF만 읽을 수 있어요</span>';return}
     const d=await PDFJS.getDocument({data:new Uint8Array(await f.arrayBuffer())}).promise;
     // 글자가 있는 답지면 글자로 바로 읽는다
+    {let TX=null;try{TX=await TXA.read(d)}catch(e){console.error(e)}if(TX){dlog('txaRead',TX.nk+'개 · 코너 '+TX.secs.length);const T=await scanLazyInit(file,handle,bytes,doc,{},[1,d.numPages,'f']);T.seqAns={secs:[],off:0,txa:{secs:TX.secs,lab:{},map:{},done:TX.pg?1:0,pg:TX.pg}};await recentSave(T);if(!TX.pg)TXA.run(T);else bgDeliver(T);return T}}   /* 글자 답지에 단원·코너별 정답이 있으면: 순서로 짝짓기 */
     const L=await SV.lines(d);let K={};if(L.length>20){const qs=[];for(let i=1;i<=2000;i++)qs.push(i);K=Object.assign({},SV.keysGrid(L,qs).key,SV.keysFromLines(L).key)}
     if(Object.keys(K).length<10){m.innerHTML='빠른 정답 쪽을 찾는 중…';const r=await seqTry(file,handle,bytes,doc,d,{front:true,fp:f.name+':'+f.size,file:f},'f',m);if(r)return}
     if(Object.keys(K).length<10){SCANNING={stop:false};m.innerHTML='빠른 정답 쪽을 찾는 중…';const t0=Date.now();
@@ -2944,9 +3011,9 @@ async function scanLazyInit(file,handle,bytes,doc,solKeys,solRange,replace,colr)
   if(old&&old.footAns)Q.footAns=1;if(BGQ&&BGQ.name===name)BGQ.P=Q;if(!bgOff){P=Q;showInfo();$('#start').disabled=false}await recentSave(Q);return Q}
 /* 뒤에서 읽은 정답을 지금 푸는 풀이본·저장된 풀이본에도 붙인다 → '이제 자동 채점돼요' */
 let BGQ=null;
-async function bgDeliver(T){try{if(!T)return;const name=T.name,nk=Object.keys(T.solKeys||{}).length,has=nk>=1||(T.seqAns&&T.seqAns.secs&&T.seqAns.secs.length)||T.footAns;if(!has)return;
+async function bgDeliver(T){try{if(!T)return;const name=T.name,nk=Object.keys(T.solKeys||{}).length,has=nk>=1||(T.seqAns&&T.seqAns.secs&&T.seqAns.secs.length)||(T.seqAns&&T.seqAns.txa&&T.seqAns.txa.done)||T.footAns;if(!has)return;
     const apply=X=>{/* 정답 표·STEP 책(번호가 Theme마다 1부터): 정답을 읽기 전에 학생이 먼저 연 쪽은 보통 번호(1, 11, 21, 254…)로 읽혀 엉뚱한 '직접 채점'이 됐다 → 그런 문제는 지우고 그 쪽은 다음에 볼 때 Theme 번호로 다시 읽는다 */
-      if(T.seqAns&&T.seqAns.secs&&T.seqAns.secs.length){const bad=(X.problems||[]).filter(p=>!(p.q>=3000000&&p.q<4000000));if(bad.length){const pg=new Set(bad.map(p=>p.page));X.problems=X.problems.filter(p=>!bad.includes(p));X.lazyDone=(X.lazyDone||[]).filter(x=>!pg.has(x));try{for(const p of bad)if(X===P&&S&&S.state)delete S.state[p.q]}catch(e){}dlog('seqDrop',bad.length+'개 · 쪽 '+[...pg].join(','))}}
+      if(T.seqAns&&((T.seqAns.secs&&T.seqAns.secs.length)||T.seqAns.txa)){const bad=(X.problems||[]).filter(p=>!(p.q>=3000000&&p.q<4000000));if(bad.length){const pg=new Set(bad.map(p=>p.page));X.problems=X.problems.filter(p=>!bad.includes(p));X.lazyDone=(X.lazyDone||[]).filter(x=>!pg.has(x));try{for(const p of bad)if(X===P&&S&&S.state)delete S.state[p.q]}catch(e){}dlog('seqDrop',bad.length+'개 · 쪽 '+[...pg].join(','))}}
       X.solKeys=Object.assign({},X.solKeys||{},T.solKeys||{});X.solRange=T.solRange;X.solColor=!!T.solColor;X.qkV=T.qkV;if(T.seqAns)X.seqAns=T.seqAns;if(T.footAns)X.footAns=1;
       for(const p of X.problems||[]){const k=X.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&!p.key.set&&(k.kind!=='self'||!p.key.img||p.key.guess))))p.key=k}   /* 정답 없이 먼저 읽은 문제의 임시 '직접 채점' 표시(정답 그림 없음)도 새로 읽은 정답·그림으로 바꾼다 */if(X.seqAns&&X.doc){try{seqApply(X)}catch(e){}}};
     const act=P&&P!==T&&bookOf(P.name)===name?P:null;if(act){apply(act);await recentSave(act);try{chips()}catch(e){}try{pvSum()}catch(e){}}
@@ -3002,7 +3069,7 @@ const QKV=2;function qkUpgrade(P0){try{if(!P0||!P0.scan||!P0.solRange||P0.solRan
     for(const p of A.problems){if(P0.xi&&p.q<100000)continue;if((P0.xi||P0.ebs)&&P0.problems.some(x=>x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV))P0.problems=P0.problems.filter(x=>!(x.q===p.q&&x.page!==pg&&(x.lv||0)<LZV));if(P0.problems.some(x=>x.q===p.q))continue;p.chTried=1;p.lv=p.q>=3000000&&p.q<4000000?6:LZV;const k=!P0.ebs&&P0.solKeys&&P0.solKeys[p.q];if(k&&(!p.key||(p.key.kind==='self'&&k.kind!=='self')))p.key=k;if(!p.key||P0.ebs)p.key={text:'✓',kind:'self',ebs:P0.ebs?1:undefined,xi:P0.xi&&p.q>=100000?1:undefined};P0.problems.push(p)}
     if(P0.xi)P0.problems=xiClean(P0.problems);if(P0.seqAns&&!P0.seqAns.tbl&&P0.seqAns.offV!==2){try{await seqOffset(P0,true)}catch(e){}}if(P0.seqAns&&P0.seqAns.tbl&&A.problems.some(p=>p.page===pg)){seqApply(P0);await seqPPRead(P0,pg)}if(P0.seqAns)seqApply(P0);{const pv=(PV.pages||[]).find(x=>x.n===pg);if(pv&&pv.live&&P===P0)setTimeout(()=>pvBadge(pv),0)}if(P0.seqAns&&P0.seqAns.sol&&!P0.seqAns.sol.done)setTimeout(()=>solIndex(P0),3000);P0.problems.sort((a,b)=>a.q-b.q);if(window.NJPROF)console.log('PROF lazy',pg,Math.round(performance.now()-T0));if(P===P0)await recentSave()}).catch(e=>console.error(e)).finally(()=>{delete LZ.m[key];LZ.n--});
   LZ.m[key]=pr;return pr}
-let LZ_T=0;function lazySoon(pg,ms){if(!S||!P)return;clearTimeout(LZ_T);LZ_T=setTimeout(()=>{const P0=P;((P.lazy||P.xi||P.ebs)?lazyOne(pg):Promise.resolve()).then(()=>{if(P0.lazy||P0.xi||P0.ebs)ebsPrefetch(P0,pg);keyPrep(P0,pg)})},ms||300)}
+let LZ_T=0;function lazySoon(pg,ms){if(!S||!P)return;try{if(P.seqAns&&P.seqAns.txa&&!P.seqAns.txa.done)TXA.run(P)}catch(e){}clearTimeout(LZ_T);LZ_T=setTimeout(()=>{const P0=P;((P.lazy||P.xi||P.ebs)?lazyOne(pg):Promise.resolve()).then(()=>{if(P0.lazy||P0.xi||P0.ebs)ebsPrefetch(P0,pg);keyPrep(P0,pg)})},ms||300)}
 /* 지금 보고 있는 쪽의 정답을 미리 맞춰 둔다: GO 때 하던 무거운 확인(보기 자리 찾기·동그라미 정답 다시 읽기·소문제/분수 정답 다시 읽기·빠른 정답 다시 읽기)을
    학생이 그 쪽에 머무는 동안 뒤에서 해 두어, GO는 필기만 읽고 바로 채점한다 (쪽마다 한 번) */
 const KP=new Set();
