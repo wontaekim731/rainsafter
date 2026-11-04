@@ -845,6 +845,7 @@ body:has(#pvRail.foc:not(.fold)) .focus #fGrade{display:none!important}   /* 채
 .qzfb .qzClr{color:#11804A;font-size:18px;font-weight:900}
 .twSet{margin-top:8px;font:inherit;font-size:13px;font-weight:700;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:99px;padding:5px 12px;cursor:pointer}
 .twSeg{display:flex;gap:6px;flex-wrap:wrap}.twSeg button{font:inherit;font-size:15px;font-weight:700;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:12px;padding:10px 16px;cursor:pointer}.twSeg button.on{background:var(--omr);border-color:var(--omr);color:#0E1014}
+#qzTno{position:absolute;left:8px;top:2px;z-index:1;pointer-events:none;font-family:'Arial Narrow','Roboto Condensed',var(--sans),sans-serif;font-size:30px;font-weight:900;letter-spacing:.02em;line-height:1;color:#4E8B5A}#qzTno[hidden]{display:none}#qzInk{z-index:2}
 /* ===== v46 덱 · N회독 · 세모/별표 ===== */
 .dk .dkH{display:flex;align-items:center;gap:8px;margin-bottom:10px}.dk .dkH h2{margin:0}.dk .dkH .sub{flex:1}
 .dk .fiGo{margin:0 0 6px}.dk .fiGo small{font-size:13px;font-weight:600;opacity:.7;margin-left:8px}
@@ -4419,7 +4420,8 @@ function qzSkin(){const V=$('#vQuiz');if(!V||V._skin)return;V._skin=1;V.classLis
 async function showQ(){
   const it=QZ.list[QZ.i];QZ.cur={t0:Date.now(),done:false};INK.strokes=[];INK.cur=null;INK.mark=null;
   $('#qzProg').textContent=`${QZ.i+1} / ${QZ.list.length}`;$('#qzBar').style.width=`${QZ.i/QZ.list.length*100}%`;
-  try{qzSkin();if(it.twinOf){$('#qzQn').textContent='T'+(QZ.list.slice(0,QZ.i+1).filter(x=>x.twinOf).length);$('#qzSub').textContent='유사 · '+(it.twinFrom||'')}else{$('#qzQn').textContent=QN(it.q)+'번';$('#qzSub').textContent=bookOf(it.src)+(it.hist.length?` · 도전 ${it.hist.length+1}회`:'')}}catch(e){}
+  try{qzSkin();{const pg=$('#qzPage');let tn=$('#qzTno');if(!tn&&pg){tn=document.createElement('div');tn.id='qzTno';tn.setAttribute('aria-hidden','true');pg.appendChild(tn)}if(tn){tn.hidden=!it.twinOf;tn.textContent=it.twinOf?'T'+(QZ.list.slice(0,QZ.i+1).filter(x=>x.twinOf).length):''}}   /* 유사 문제 번호는 문제집 번호 자리(문제 왼쪽 위)에 */
+  if(it.twinOf){const tw=QZ.list.filter(x=>x.twinOf).length;$('#qzQn').textContent='TWIN'+(tw>1?` ${QZ.list.slice(0,QZ.i+1).filter(x=>x.twinOf).length}/${tw}`:'');$('#qzSub').textContent='유사 · '+(it.twinFrom||'')}else{$('#qzQn').textContent=QN(it.q)+'번';$('#qzSub').textContent=bookOf(it.src)+(it.hist.length?` · 도전 ${it.hist.length+1}회`:'')}}catch(e){}
   $('#qzMeta').textContent=`${it.topic?it.topic+' · ':''}${it.src} ${QN(it.q)}번 · ${it.hist.length+2}번째 풀이${it.pw&&it.pw.length?` · 지난번 ${it.pw.map(i=>'('+i+')').join('')} 틀림`:''}${it.pn&&it.pn.length?` · 지난번 ${pnTxt(it)}`:''}`;
   $('#vQuiz').classList.remove('end');$('#qzFb').className='qzfb';$('#qzFb').textContent='';$('#qzConfirm').innerHTML='';$('#qzNext').hidden=true;$('#qzSubmit').hidden=false;$('#qzTools').hidden=false;$('#qzSkip').hidden=false;$('#qzSkip').textContent=QZ.i+1<QZ.list.length?'건너뛰기 →':'건너뛰고 결과 보기';
   const page=$('#qzPage');QZ.cw0=Math.min(page.clientWidth||600,860);QZ.z=1;QZ.pg=null;page.scrollLeft=0;
