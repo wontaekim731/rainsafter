@@ -1556,6 +1556,18 @@ SCAN.analyze=async(doc,o)=>{o=o||{};const SC=2,FS=4,from=Math.max(1,o.from||1),t
     {const big=ws.filter(x=>x.y1<bodyH&&x.y1-x.y0>=SC*11&&/^\d{3}$/.test(String(x.t).trim()));const z=big.filter(x=>String(x.t).trim()[0]==='0');
       if(z.length>=2){const hz=z.map(x=>x.y1-x.y0).sort((a,b)=>a-b)[z.length>>1];for(const x of big){const t=String(x.t).trim();if(t[0]!=='1'||Math.abs((x.y1-x.y0)-hz)>hz*0.15)continue;const q2=+t.slice(1),zq=z.map(x=>+String(x.t).trim());if(!(q2>0))continue;if(!(q2>=Math.min(...zq)-3&&q2<=Math.max(...zq)+3))continue;   /* 098·099·101처럼 100을 넘는 번호는 그대로 */
         const l=labs.find(l=>l.q===+t&&Math.abs(l.x0-x.x0)<2&&Math.abs(l.y0-x.y0)<2);if(l&&!labs.some(m=>m.q===q2)){l.q=q2;if(root.QDBG)root.QDBG.push({pi,lead0:t+'→'+q2})}}}}
+    /* 번호 순서로 바로잡기: 문제 번호는 읽는 순서(왼쪽 단 위→아래, 오른쪽 단)대로 1~3씩 커진다. 같은 크기 번호 중 순서에 안 맞는 것은
+       앞뒤 번호 사이에 들어갈 수를 고른다 (끝자리가 맞는 수, 없으면 사이에 하나뿐인 수). 쪽 끝은 앞 쪽 마지막·다음 쪽 첫 번호로 */
+    {const bl=labs.filter(l=>l.y1-l.y0>=SC*11);if(bl.length>=3){const hs=bl.map(l=>l.y1-l.y0).sort((a,b)=>a-b),hm=hs[hs.length>>1],B2=bl.filter(l=>Math.abs((l.y1-l.y0)-hm)<=hm*0.2);
+      const ord=B2.slice().sort((a,b)=>((a.x0>W*0.45)-(b.x0>W*0.45))||a.y0-b.y0),N=ord.length;
+      if(N>=3){const len=new Array(N).fill(1),pv=new Array(N).fill(-1);for(let i=0;i<N;i++)for(let j=0;j<i;j++){const d=ord[i].q-ord[j].q;if(d>=1&&d<=3*(i-j)&&len[j]+1>len[i]){len[i]=len[j]+1;pv[i]=j}}
+        let e=0;for(let i=1;i<N;i++)if(len[i]>len[e])e=i;const ok=new Set();for(let i=e;i>=0;i=pv[i])ok.add(i);
+        if(ok.size>=2){const fix=[];for(let i=0;i<N;i++){if(ok.has(i))continue;let a=null,b=null;for(let j=i-1;j>=0;j--)if(ok.has(j)){a=ord[j].q;break}for(let j=i+1;j<N;j++)if(ok.has(j)){b=ord[j].q;break}
+            if(a==null&&o.prevLast!=null)a=o.prevLast;if(b==null&&o.nextFirst!=null)b=o.nextFirst;if(a==null&&b!=null)a=b-4;if(b==null&&a!=null)b=a+4;if(a==null||b==null||b-a<2)continue;
+            const nb=[];for(let j=i-1;j>=0&&!ok.has(j);j--)nb.push(j);for(let j=i+1;j<N&&!ok.has(j);j++)nb.push(j);const slots=b-a-1;   /* 사이에 놓친 번호가 몇 개인지 */
+            const t=String(ord[i].q),C=[];for(let q=a+1;q<b;q++)C.push(q);let q=C.find(c=>t.endsWith(String(c).padStart(2,'0').slice(-2)))||C.find(c=>t.endsWith(String(c%10)));
+            if(q==null&&slots===1&&nb.length===0)q=a+1;if(q!=null&&!labs.some(m=>m.q===q))fix.push([ord[i],q])}
+          for(const [l,q] of fix){if(root.QDBG)root.QDBG.push({pi,order:l.q+'→'+q});l.q=q}}}}}
     /* 큰 번호(같은 높이)가 셋 이상 이어지는 쪽: 그 번호들과 동떨어진 작은 숫자(본문 속 '11' 등)는 번호가 아니다 (고쟁이 21쪽 '유형 해결 TIP' 속 숫자가 11번 문제가 되던 것) */
     {const bl=labs.filter(l=>l.y1-l.y0>=SC*11);if(bl.length>=3){const hs=bl.map(l=>l.y1-l.y0).sort((a,b)=>a-b),hm=hs[hs.length>>1],qs=bl.map(l=>l.q).sort((a,b)=>a-b),lo=qs[0]-3,hi=qs[qs.length-1]+3;
       if(qs[qs.length-1]-qs[0]<=12){const n0=labs.length;labs=labs.filter(l=>l.y1-l.y0>=hm*0.75||(l.q>=lo&&l.q<=hi));if(labs.length<n0&&root.QDBG)root.QDBG.push({pi,dropSmall:n0-labs.length})}}}
@@ -3956,7 +3968,7 @@ async function pvReread(){if(!P||!S)return;const c=pvCurPage();if(!c)return;cons
   for(const p of P0.problems)if(p.page===pg)p.lv=0;P0.lazyDone=(P0.lazyDone||[]).filter(x=>x!==pg);
   fb('nk',`${pg}쪽 문항을 다시 읽는 중… (10초쯤)`);try{pvSum()}catch(e){}const was=P0.lazy;P0.lazy=true;
   try{await lazyOne(pg)}catch(e){console.error(e)}finally{P0.lazy=was}
-  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v46.08 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
+  const L=P0.problems.filter(p=>p.page===pg).map(p=>QN(p.q)),tag=`[v46.09 · ${P0.scan?'s':''}${P0.xi?'x':''}${P0.ebs?'e':''}${was?'l':''}]`;
   fb(L.length?'ok':'bad',L.length?`${pg}쪽에서 찾은 문항: ${L.join(', ')} ${tag}`:`${pg}쪽에서 문항 번호를 못 찾았어요 ${tag}`);try{pvSum()}catch(e){}try{for(const g of PV.pages)if(g.n===pg&&g.live)pvDraw(g)}catch(e){}}
 function fixSheet(){if(!S||!P)return;let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   // 지금 보는 쪽의 문항 전부 + 이번에 채점한 문항: 지난번에 채점한 것·아직 채점 안 된 것도 직접 ○ / ／로 정할 수 있게
