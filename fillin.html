@@ -4457,6 +4457,7 @@ async function finishQ(ans){
   QZ.res.push({it,ok,secs});$('#qzSubmit').hidden=true;$('#qzSkip').hidden=true;$('#qzNext').hidden=false;$('#qzNext').textContent=QZ.i+1<QZ.list.length?'다음 문제 →':'결과 보기';
 }
 async function nextQ(){if(QZ.i+1<QZ.list.length){QZ.i++;showQ();return}
+  {const T=TWQ;if(T&&!QZ.twin){TWQ=null;const r=QZ.res.find(x=>x.it&&x.it.id===T.id);if(r&&r.ok){let w=null;try{w=await wrGet(T.id)}catch(e){}let need=false;try{need=!!w&&twinNeed(w)&&!(w.twin&&w.twin.ok)}catch(e){}if(need){await twinRun([w]);return}}}}   /* 문제집을 못 열어 퀴즈로 푼 BLOCK도: 맞히면 바로 쌍둥이 */
   const all=await dbAll(),pct=all.length?Math.round(all.filter(i=>i.done).length/all.length*100):0,graded=QZ.res.filter(r=>r.ok!==null);
   $('#vQuiz').classList.add('end');$('#qzBar').style.width='100%';$('#qzProg').textContent='끝';$('#qzMeta').textContent='';$('#qzTools').hidden=true;$('#qzPage').style.height='auto';
   $('#qzProb').style.height='0';$('#qzInk').style.height='0';
@@ -6289,7 +6290,7 @@ function anaList(W,items,inNote){const SIMS=new Set(simSent().map(x=>x.id)),box=
   box.querySelectorAll('.ncX').forEach(x=>x.addEventListener('click',async e=>{e.stopPropagation();e.preventDefault();if(!x.classList.contains('sure')){box.querySelectorAll('.ncX.sure').forEach(y=>{y.classList.remove('sure');y.textContent='✕'});x.classList.add('sure');x.textContent='지우기';setTimeout(()=>{if(x.isConnected&&x.classList.contains('sure')){x.classList.remove('sure');x.textContent='✕'}},3000);return}
     const id=x.dataset.xid;if(star)await dbDel(id);else await wrDel(id);const c=x.closest('.ncard');if(c)c.remove();badge();renderAnaTab()},true));
   box.querySelectorAll('[data-nid]').forEach(b=>b.onclick=()=>itemSheet(items.find(i=>i.id===b.dataset.nid)));
-  box.querySelectorAll('[data-wid]').forEach(b=>{b.onclick=()=>wrongSheet(W.find(w=>w.id===b.dataset.wid),inNote);});
+  box.querySelectorAll('[data-wid]').forEach(b=>{b.onclick=()=>{const w=W.find(w=>w.id===b.dataset.wid);if(!w)return;if(!teacherOn()&&wStage(w)!=='T'){blockRun(w);return}wrongSheet(w,inNote)};});   /* 학생: BLOCK을 누르면 원래 문제 → 맞히면 바로 쌍둥이 */
   /* → : 오른쪽 [유사 문제]로 옮기기 (다시 누르면 빼기). 끌어다 놓기가 안 되는 기기용 */
   box.querySelectorAll('.ncTo').forEach(x=>x.addEventListener('click',async e=>{e.stopPropagation();e.preventDefault();const id=x.dataset.to;if(simSent().some(s=>s.id===id))simSave(simSent().filter(s=>s.id!==id));else await simAdd(W.find(w=>w.id===id));renderAnaTab()},true))
   tsShrink(box,star?items:W,star)}
@@ -6721,7 +6722,7 @@ function clsAfter(){if(!FOC.on||!FOC.retry||!FOC.p||!S||!S.state)return;const q=
     <div class="cpOpts">${Object.entries(CLS).map(([k,o])=>`<button type="button" class="cpOpt${st.cls.k===k?' on':''}" style="--c:${o.c}" data-k="${k}"><i></i><b>${o.n}</b></button>`).join('')}</div>
     <div class="cRow" data-nx hidden></div><button type="button" class="cpSkip" data-sk>건너뛰기</button>`;
   const after=async k=>{if(k)await clsSet(q,{k,res:r.ok?'ok':'no',tries:R.tries,solo:!!r.ok});
-    if(r.ok){clsClose();res(true);return}
+    if(r.ok){clsClose();res(true);twinNext(q);return}
     const nx=box.querySelector('[data-nx]');box.querySelector('.cpOpts').hidden=true;box.querySelector('h3').hidden=true;box.querySelector('[data-sk]').hidden=true;nx.hidden=false;
     nx.innerHTML=`<button type="button" class="cBtn" data-again>한 번 더 풀기</button><button type="button" class="cBtn g" data-next>${FOC.cls?'다음 문제':'BLOCK에 남겨 두기'}</button>`;
     nx.querySelector('[data-again]').onclick=()=>clsClose();nx.querySelector('[data-next]').onclick=()=>{clsClose();if(FOC.cls)res(false);else pvToast('BLOCK에 남겨 뒀어요 · 여전히 틀린 문제로 보여요')}};
@@ -6742,6 +6743,14 @@ async function twinRun(L,btn){const h=await qpHdr();if(!h){packPick(()=>{twinRun
     LS.set('simUsed',used)}catch(e){console.error(e)}finally{if(btn)btn.textContent=t0}
   if(!items.length){pvToast('같은 유형 기출을 찾지 못했어요');return}
   await startQuizOld(items);if(QZ)QZ.twin=true}
+/* BLOCK 하나 풀기: 원래 문제를 다시 풀고, 맞히는 순간 그 문제의 쌍둥이(같은 유형 기출 1문제)가 바로 이어진다. 원래 문제를 이미 맞힌 BLOCK은 쌍둥이부터 */
+let TWQ=null;
+async function blockRun(w){const st=wStage(w);if(st==='H'){await twinRun([w]);return}
+  TWQ={id:w.id,src:w.src,q:w.q};try{await noteAddFromWrongs([w.id]);const it=(await dbAll()).find(i=>i.id===w.id);if(!it){TWQ=null;return}await itemRetry([it])}catch(e){console.error(e);TWQ=null}}
+async function twinNext(q){const T=TWQ;if(!T||!P||String(T.q)!==String(q)||bookOf(P.name)!==bookOf(T.src))return;TWQ=null;
+  let w=null;try{w=await wrGet(T.id)}catch(e){}if(!w)return;let need=false;try{need=twinNeed(w)&&!(w.twin&&w.twin.ok)}catch(e){}
+  if(!need){pvToast('<b>BLOCK CLEAR!</b> 원래 문제를 혼자 해결했어요');return}
+  pvToast('<b>맞혔어요!</b> 이어서 같은 유형 쌍둥이 1문제');setTimeout(async()=>{try{await pvEnd()}catch(e){}try{await twinRun([w])}catch(e){console.error(e)}},900)}
 async function twinRec(it,ok){try{const w=await wrGet(it.twinOf);if(!w)return;const t=Object.assign({},w.twin||{});t.c=String(it.id).slice(3);t.n=(t.n||0)+1;t.at=Date.now();if(ok)t.ok=true;w.twin=t;await wrPut(w)}catch(e){console.error(e)}try{simRes(String(it.id).slice(3),ok)}catch(e){}}
 /* BLOCK 맨 위 '내가 몰랐던 것': 학생이 고른 이유 · 최근 막힌 곳(형광펜) · 약한 유형 (최근 2주) */
 function knowHtml(W){const since=Date.now()-14*DAY,R=W.filter(w=>(w.at||0)>=since),cnt={dir:0,stuck:0,slip:0};for(const w of R){const k=w.cls&&w.cls.k;if(k in cnt)cnt[k]++}
