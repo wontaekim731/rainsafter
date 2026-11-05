@@ -6585,7 +6585,7 @@ let BQ=[],RCQ=[];   /* [다시 풀기 시작]으로 이어서 풀 다시 볼 문
 /* 다시 확인: 확인 문제까지 맞혀 QLEAR한 지 7일 지난 다시 풀기에 새 확인 문제 1문제. 맞히면 끝, 못 맞히면 다시 풀기로 돌아온다 */
 const RC_DAYS=7;
 function rcDue(W){const t=Date.now()-RC_DAYS*DAY;return (W||[]).filter(w=>{try{return wStage(w)==='T'&&w.twin&&w.twin.ok&&!w.rc&&(w.twin.at||0)<=t&&twinNeed(w)}catch(e){return false}})}
-async function rcRun(w){try{const h=await qpHdr();const a=h&&simAuto(w);let pk=null;if(a){let ctx=null;try{ctx=await simCtx(w,false)}catch(e){}const U=LS.get('simUsed',{});
+async function rcRun(w){try{const h=await qpHdr();let ctx=null;try{ctx=await simCtx(w,!simBookOf(w.src))}catch(e){}const a=h&&simAuto(w);let pk=null;if(a){const U=LS.get('simUsed',{});
     pk=simPick(a.big,1,simCode(w)||'',new Set([...((LS.get('twBad',{})[w.id])||[]),String((w.twin&&w.twin.c)||'')]),twLv(),ctx)[0];if(pk){U[pk.c]=Date.now();LS.set('simUsed',U)}}
   if(!pk){w.rc={at:Date.now(),ok:true,none:1};await wrPut(w);return false}
   const it=await simItem(pk);it.id='tw:'+pk.c;it.twinOf=w.id;it.rc=1;it.twinFrom=`다시 확인 · ${bookOf(w.src)} ${QN(w.q)}번`;it.twinNeed=1;await startQuizOld([it]);if(QZ)QZ.twin=true;return true}catch(e){console.error(e);return false}}
@@ -6861,10 +6861,11 @@ function simBadge(){try{const n=simSent().length,b=$('#taskBadge');if(b){b.textC
 function simSubjOf(src){const m=LS.get('simBookSubj',{})[bookOf(src)];if(m)return SIM_BOOKS[m]?SIM_BOOKS[m].subj:m;const t=String(bookOf(src)||'').replace(/\s/g,'');if(/공통수학(1|Ⅰ|I)(?![0-9I])|공수1|공통1/.test(t))return 'C1';if(/공통수학(2|Ⅱ|II)|공수2|공통2/.test(t))return 'C2';if(/확률|확통/.test(t))return 'PS';if(/수학(Ⅱ|II|2)|수(Ⅱ|2)(?![0-9])/.test(t))return 'M2';if(/수학(Ⅰ|I|1)|수(Ⅰ|1)(?![0-9])/.test(t))return 'M1';return ''}
 /* 자이스토리 고3 문제(번호 'A32')는 팩에 같은 문제가 있어 큰 유형이 바로 정해진다 */
 const simIsXi=w=>{const q=+w.q;return q>=100000&&q<1000000&&!simBookOf(w.src)};
-function simCode(w){const q=+w.q;if(!(q>=100000&&q<1000000))return null;const sj=simSubjOf(w.src);if(!sj)return null;const code=String.fromCharCode(64+Math.floor(q/100000))+String(q%100000).padStart(2,'0');return (sj==='M2'?'M2-':sj==='PS'?'PS-':'')+code}
+function simCode(w){if(w&&w.srcm&&w.srcm.c)return w.srcm.c;return simCode0(w)}
+function simCode0(w){const q=+w.q;if(!(q>=100000&&q<1000000))return null;const sj=simSubjOf(w.src);if(!sj)return null;const code=String.fromCharCode(64+Math.floor(q/100000))+String(q%100000).padStart(2,'0');return (sj==='M2'?'M2-':sj==='PS'?'PS-':'')+code}
 /* 분류는 여기 한 곳에서: ① 책 지도(문항 번호 → 유형) ② 자이스토리 번호 ③ 선생님이 이 문제에 고른 유형(기억) ④ 유형 엔진(글자 인식 추천, 확신할 때만).
    유사 문제는 고른 유형과 같은 '묶음'(CLS_B2T)에서 고르고, 발문 포인트도 같은 기록을 쓴다 */
-function simAuto(w){if(!w)return null;const bk=simBookOf(w.src);if(bk){const b=bk.map[+w.q],est=(bk.est||[]).some(r=>+w.q>=r[0]&&+w.q<=r[1]);if(b&&!est)return {big:b,code:'',book:bk.name,src:'book'};if(b){const m=clsMem(w);return m||{big:b,code:'',book:bk.name,est:true,src:'book'}}}
+function simAuto(w){if(!w)return null;if(w.srcm&&w.srcm.b){const bk0=simBookOf(w.src);if(!(bk0&&bk0.map&&bk0.map[+w.q]))return {big:w.srcm.b,code:w.srcm.c||'',src:'기출',how:w.srcm.how}}   /* 출처 줄로 찾은 기출: 확정 유형 */const bk=simBookOf(w.src);if(bk){const b=bk.map[+w.q],est=(bk.est||[]).some(r=>+w.q>=r[0]&&+w.q<=r[1]);if(b&&!est)return {big:b,code:'',book:bk.name,src:'book'};if(b){const m=clsMem(w);return m||{big:b,code:'',book:bk.name,est:true,src:'book'}}}
   const c=simCode(w),it=c&&QP.by&&QP.by.get(c);if(it)return {big:it.b,code:c,src:'xi'};
   const m=clsMem(w);if(m)return m;
   const e=w.engTop&&w.engTop[0];if(e&&e.p>=0.55&&(!w.engTop[1]||e.p-w.engTop[1].p>=0.25))return {big:e.big,code:'',est:true,src:'engine'};return null}
@@ -6916,11 +6917,54 @@ PKI.qv=(t)=>{const m=PKI.m,g=PKI.ng(t),v={};let s2=0;for(const [k,n] of g){const
 const PKI_CON=[[/개수/,/개수/,1],[/주기|f\s*\(\s*x\s*\+/,/주기|f\(x\+/],[/미분\s*가능/,/미분가능/],[/불연속/,/불연속/,1],[/정적분|적분/,/정적분|∫/],[/역함수/,/역함수/,1],[/시그마|Σ|합/,/Σ|합/],[/등비/,/등비/,1],[/등차/,/등차/,1],[/원\s|원의|원 위|원이/,/원/],[/넓이|부피|길이|거리/,/넓이|부피|길이|거리/],[/접선|기울기/,/접선|기울기/],[/그래프/,/그래프/],[/평균\s*변화율/,/평균변화율/],[/실수\s*[tk]|[tk]\s*에\s*대하여|g\s*\(\s*t\s*\)|h\s*\(\s*t\s*\)/,/실수 t|실수 k|g\(t\)|t에 대하여/],[/(log|로그).{0,25}[fg]\s*\(|[fg]\s*\(\s*x\s*\).{0,220}(log|로그|부등식)|\^\s*[fg]\s*\(/,/log[^ ]*\s*[fg]\(|[fg]\(x\)\)|\^[fg]\(|[fg]\(x\)\s*[≤<>≥]/],[/증가|감소/,/증가|감소/],[/보기|ㄱ\s*\.|ㄴ\s*\.|옳은 것만/,/보기|ㄱ\.|ㄱ\s|옳은 것/],[/대우/,/대우/,1],[/무게\s*중심/,/무게중심|무게 중심/,1],[/산술|기하|코시|슈바르츠|양수.{0,40}최솟값|최솟값.{0,40}양수/,/산술|기하평균|코시|합의 최솟값|곱의 최솟값|일정할 때|절대부등식/],[/(제곱|²).{0,40}(최솟값|최댓값)|(최솟값|최댓값).{0,40}(제곱|²)/,/제곱의 합의 최솟값|이차함수|이차식/],[/\||절댓값/,/\||절댓값/],[/\[\s*x\s*\]|가우스/,/\[x\]|가우스/],[/이와같은과정|과정을계속|반복|잘라내|n번째|R_?n|R₁|그림R|[0-9]+번째/,/반복|과정|n번째|R_?n|R₁|그림 R|활용-도형|그래프와 도형|규칙/]];   /* 선생님 메모에서 나온 핵심 개념: 문제와 기출이 같이 가지면 앞으로, 기출만 가지면(개수·역함수·등차·등비·불연속) 뒤로 */
 const PKI_KW=[/실근의\s*개수|서로\s*다른\s*실근|교점의\s*개수|만나는\s*점의\s*개수|=\s*k|=\s*t/,/\|/,/합성|f\s*\(\s*f|g\s*\(\s*f|f\s*\(\s*g/,/평행이동/,/대칭|역함수/];
 /* 문제 쪽 정보: 글자(이미 읽은 것)와 난이도(1~5) */
+/* 출처 줄로 기출 찾기: "2019학년도 6월 평가원 가형 14번", "2023년 3월 고3 학평 21번", "2024실시 10월 교육청 2(고1)", "[2020.4 교육청]" 등
+   → 기출 팩 항목. 팩: y+g('대비'=학년도, '실시'=시행 연도), m(월), e(수능·모평·학평·삼사·경찰대), n(번호), gr(고1~3), k(가·나·A·B…) */
+function srcParse(t){if(!t)return null;let s=String(t).replace(/[\s ]+/g,' ').replace(/[［【〔]/g,'[').replace(/[］】〕]/g,']');
+  /* 스캔 글자 오류 보정: 학펑→학평, 쉼시·싣시→실시, 실시(4)→(A), 실시가)→(가) */
+  s=s.replace(/학[펑펭핑]/g,'학평').replace(/(\d{4})\s*[쉼싣싫실]\s*[시사]/g,'$1실시').replace(/(실시|대비)\s*\(?\s*[4ㅅ시]\s*\)/g,'$1(A)').replace(/(실시|대비)\s*\(?\s*([가나AB])\s*\)/g,'$1($2)');
+  const z=s.replace(/\s+/g,'');
+  let e=null;if(/대학수학능력|수능/.test(z))e='수능';if(/평가원|모의평가|모평|6월모|9월모/.test(z))e='모평';if(/교육청|학력평가|학평|교육감|전국연합/.test(z))e='학평';if(/사관|삼사/.test(z))e='삼사';if(/경찰대/.test(z))e='경찰대';
+  if(!e)return null;
+  let yH=null,yR=null,m=null;
+  let r=/((?:19|20)\d{2}|\d{2})학년도/.exec(z);if(r)yH=r[1].length===2?(+r[1]>50?1900:2000)+ +r[1]:+r[1];
+  r=/((?:19|20)\d{2})(?:년|실시|\.|\/|-)(?!학년)/.exec(z);if(r&&!yH)yR=+r[1];
+  r=/((?:19|20)\d{2})[.\/-](\d{1,2})(?!\d)/.exec(z);if(r){if(!yH)yR=+r[1];m=+r[2]}
+  if(!yH&&!yR){r=/(?:^|[^\d])(\d{2})(?:년|\.)(?=\d{1,2}월|\d{1,2}[^\d]|)/.exec(z);if(r)yR=2000+ +r[1]}
+  r=/(\d{1,2})월/.exec(z);if(r)m=+r[1];
+  let n=null;r=/(?:^|[^\d])(\d{1,2})\s*번/.exec(s);if(r)n=+r[1];
+  if(n==null){const s2=s.replace(/고\s*[123]/g,' ').replace(/\(고[123]\)/g,' ');r=/(?:수능|평가원|모평|모의평가|교육청|학평|학력평가|사관|경찰대)\s*\)?\s*(?:\(?[가나AB]\)?형?)?\s*[^\d\s(]{0,2}\s*(\d{1,2})(?!\d|\s*월|\s*학년|\s*년)/.exec(s2);if(r)n=+r[1]}
+  if(n==null)return null;
+  let gr=null;r=/고\s*([123])(?!\d)/.exec(s);if(r)gr='고'+r[1];
+  let k=null;r=/\(?([가나AB])\)?형/.exec(z)||/\(([가나AB])\)/.exec(z)||/(?:평가원|모평|수능|교육청|학평)\s*([가나AB])(?=\d|\s|번|$)/.exec(z);if(r)k=r[1];
+  if(e==='수능')m=11;
+  if(e==='학평'&&m===1)m=11;   /* 학평은 1월이 없음: 11월의 앞 1이 빠진 것 */
+  return {e,yH,yR,m,n,gr,k}}
+function srcHeld(it){const y=+it.y;if(!y)return null;return it.g==='대비'?y-1:y}   /* 시행 연도로 통일: 학년도 대비 = 그 전 해에 시행 */
+function srcFind(t,items,subj){const P=srcParse(t);if(!P)return null;
+  const held=P.yR?P.yR:P.yH?P.yH-1:null;
+  let L=items.filter(i=>{const ie=i.e==='교육청'?'학평':i.e;if(ie!==P.e)return false;if(+i.n!==P.n)return false;
+    const h=srcHeld(i);if(held&&h!==held){if(!(P.yR&&!P.yH&&P.e!=='학평'&&h===P.yR-1))return false}
+    if(P.m&&P.e!=='수능'&&i.m&&+i.m!==P.m)return false;return true});
+  if(!L.length)return null;
+  if(P.gr){const g=L.filter(i=>!i.gr||i.gr===P.gr);if(g.length)L=g}
+  if(P.k){const g=L.filter(i=>String(i.k).includes(P.k));if(g.length)L=g}
+  if(subj&&L.length>1){const g=L.filter(i=>i.s===subj);if(g.length)L=g}
+  return {P,L,one:L.length===1?L[0]:null}}
+/* 다른 출처의 기출: 문제 글(글자 인식)에 붙은 출처 줄로 기출 팩의 같은 문제를 찾는다. 가·나형이 안 적혀 여러 개면 문제 글이 가장 비슷한 것, 그래도 애매하면 유형이 모두 같을 때만 그 유형 */
+function srcPick(t,w){const h=QP.hdr;if(!h||!t)return null;const r=srcFind(t,h.items,simSubjOf(w.src)||null);if(!r)return null;const K=PKI.m,qv=K?PKI.qv(t):null;
+  const dot=c=>{let v=0;const u=K.U[c]||{};for(const k in qv)if(u[k])v+=qv[k]*u[k];return v};
+  if(r.one){   /* 출처 줄에서 글자 하나가 잘못 읽히면 엉뚱한 기출과 맞을 수 있음: 본문 글이 그 기출과 너무 다르면(전체 팩 중 300등 밖) 버림 */
+    if(qv&&K.U&&Object.keys(qv).length>=8){const v=dot(r.one.c);let rk=0;for(const c in K.U)if(dot(c)>v&&++rk>300)return null}
+    return {c:r.one.c,b:r.one.b,src:r.one,how:'출처'}}
+if(qv&&K.U){const sc=r.L.map(i=>{let v=0;const u=K.U[i.c]||{};for(const k in qv)if(u[k])v+=qv[k]*u[k];return [v,i]}).sort((a,b)=>b[0]-a[0]);if(sc[0][0]>0&&sc[0][0]>=(sc[1]?sc[1][0]:0)*1.3)return {c:sc[0][1].c,b:sc[0][1].b,src:sc[0][1],how:'출처+글'}}
+  const bs=new Set(r.L.map(i=>i.b));if(bs.size===1){const i=r.L[0];return {c:'',b:i.b,src:i,how:'출처(유형만)'}}return null}
 async function simCtx(w,read){if(!w)return null;let t=w.ocr;if(t==null&&read){try{t=await Promise.race([ENG.text(w),new Promise(ok=>setTimeout(()=>ok(null),9000))])}catch(e){t=null}}
   const bk=simBookOf(w.src),qs=bk&&bk.qs&&bk.qs[+w.q];if(qs)t=((t||'')+' '+qs).trim();   /* 책 지도에 있는 문제는 깨끗한 발문 요약도 같이 */
   let dq=null;if(bk&&bk.step){const c=bk.step[+w.q-1];if(c&&c!=='0')dq={'1':2,'2':2.8,'3':3.6}[c]}   /* 기출 난이도 눈금(2점=1·3점=2·4점=3·준킬러 3.7·킬러 4.5)에 맞춤: STEP 2를 4점(3)으로 보던 것이 TWIN을 갑자기 어렵게 만들었음 (선생님 메모 11.05) */
   if(dq==null&&t){const m=/\(\s*([234])\s*점\s*\)/.exec(t);if(m)dq={'2':1,'3':2,'4':3}[m[1]]}
-  try{await PKI.load()}catch(e){}return {t:t||'',dq:dq==null?2.5:dq,dqU:dq==null}}   /* 난이도를 모르는 문제는 보통(2.5)으로 보고 킬러급은 피한다 */
+  try{await PKI.load()}catch(e){}
+  let sm=null;try{if(!(bk&&bk.map&&bk.map[+w.q])&&simCode0(w)==null){sm=srcPick(t,w);if(sm){const o=JSON.stringify(w.srcm||null);w.srcm={c:sm.c,b:sm.b,how:sm.how};if(o!==JSON.stringify(w.srcm)&&w.id)wrPut(w).catch(()=>{});const K=PKI.m;if(dq==null&&sm.c&&K&&K.M[sm.c])dq=K.M[sm.c][2]}}}catch(e){console.error(e)}   /* 기출이면 그 기출의 난이도를 그대로 */
+  return {t:t||'',dq:dq==null?2.5:dq,dqU:dq==null,sm}}   /* 난이도를 모르는 문제는 보통(2.5)으로 보고 킬러급은 피한다 */
 function simPick(big,n,own,taken,lv,ctx){const used=LS.get('simUsed',{}),h=QP.hdr,K=PKI.m;
   const tb=CLS_B2T[big];let pool=h.items.filter(i=>(tb?CLS_B2T[i.b]===tb:i.b===big)&&i.e&&i.c!==own&&!taken.has(i.c));
   /* 문제 안에서 새 변수(실수 t·k, g(t))로 함수를 정의하는 문제: 같은 단원의 다른 유형이라도 그런 기출이면 후보에 넣는다 (선생님 메모) */
@@ -7113,7 +7157,8 @@ function twinNeed(w){try{if(window.__twForce)return true;if(twOff())return false
 /* 확인 문제 풀기: 문제마다 같은 유형 기출 1문제(해설 없이 문제·정답만)를 한 문제씩 화면으로 */
 async function twinRun(L,btn){const h=await qpHdr();if(!h){packPick(()=>{twinRun(L,btn);try{renderAnaTab()}catch(e){}});return}
   const t0=btn&&btn.textContent,items=[],taken=new Set(),used=LS.get('simUsed',{});
-  try{for(const w of L){const a=simAuto(w);if(!a)continue;let ctx=null;try{ctx=await simCtx(w,false)}catch(e){}const pk=simPick(a.big,1,simCode(w)||'',new Set([...taken,...((LS.get('twBad',{})[w.id])||[])]),0,ctx)[0];if(!pk)continue;taken.add(pk.c);
+  try{for(const w of L){let ctx=null;try{ctx=await simCtx(w,false)}catch(e){}   /* 여러 문제를 한 번에 돌 때는 새로 글자 인식하지 않음(이미 읽은 글만) */
+const a=simAuto(w);if(!a)continue;const pk=simPick(a.big,1,simCode(w)||'',new Set([...taken,...((LS.get('twBad',{})[w.id])||[])]),0,ctx)[0];if(!pk)continue;taken.add(pk.c);
       if(btn)btn.textContent=`확인 문제 준비 중 ${items.length+1}/${L.length}`;const it=await simItem(pk);it.id='tw:'+pk.c;it.twinOf=w.id;it.twinFrom=`${bookOf(w.src)} ${QN(w.q)}번`;items.push(it);used[pk.c]=Date.now()}
     LS.set('simUsed',used)}catch(e){console.error(e)}finally{if(btn)btn.textContent=t0}
   if(!items.length){pvToast('같은 유형 기출을 찾지 못했어요');return}
@@ -7153,11 +7198,11 @@ async function twinSwap(){if(!QZ||!QZ.cur||QZ.cur.done)return;const it=QZ.list[Q
   const B=LS.get('twBad',{});B[w.id]=[...new Set([...(B[w.id]||[]),c])];LS.set('twBad',B);
   const J=LS.get('twJudge',[]);J.push({from:simCode(w)||'',book:bookOf(w.src),q:w.q,twin:c,ok:0,at:Date.now()});LS.set('twJudge',J.slice(-500));
   if(btn){btn.disabled=true;btn.textContent='바꾸는 중…'}
-  try{const a=simAuto(w);let ctx=null;try{ctx=await simCtx(w,false)}catch(e){}const taken=new Set([...B[w.id],...QZ.list.filter(x=>x&&x.id&&String(x.id).startsWith('tw:')).map(x=>String(x.id).slice(3))]);
+  try{let ctx=null;try{ctx=await simCtx(w,!simBookOf(w.src))}catch(e){}const a=simAuto(w);const taken=new Set([...B[w.id],...QZ.list.filter(x=>x&&x.id&&String(x.id).startsWith('tw:')).map(x=>String(x.id).slice(3))]);
     const pk=a&&simPick(a.big,1,simCode(w)||'',taken,twLv(),ctx)[0];if(!pk){pvToast('바꿀 다른 확인 문제가 없어요');if(btn){btn.textContent='↻ 다른 문제로';btn.disabled=false}return}
     const n=await simItem(pk);n.id='tw:'+pk.c;n.twinOf=w.id;n.twinFrom=it.twinFrom;n.twinNeed=it.twinNeed;SW[w.id]=(SW[w.id]||0)+1;LS.set('twSwap',SW);{const U=LS.get('simUsed',{});U[pk.c]=Date.now();LS.set('simUsed',U)}
     QZ.list[QZ.i]=n;if(btn)btn.textContent='↻ 다른 문제로';await showQ();pvToast('다른 확인 문제로 바꿨어요 · 이 다시 볼 문제에선 마지막 교체예요')}catch(e){console.error(e);if(btn){btn.textContent='↻ 다른 문제로';btn.disabled=false}}}
-async function twinPrep(w){try{const h=await qpHdr();if(!h)return {none:'pack'};const a=simAuto(w);if(!a)return {none:'type'};let ctx=null;try{ctx=await simCtx(w,false)}catch(e){}
+async function twinPrep(w){try{const h=await qpHdr();if(!h)return {none:'pack'};let ctx=null;try{ctx=await simCtx(w,!simBookOf(w.src))}catch(e){}const a=simAuto(w);if(!a)return {none:'type'};
   const pks=simPick(a.big,twN(),simCode(w)||'',new Set((LS.get('twBad',{})[w.id])||[]),twLv(),ctx);if(!pks.length){try{if(!w.twNone){w.twNone=1;await wrPut(w)}}catch(e){}return {none:'none'}}const used=LS.get('simUsed',{}),its=[];
   for(const pk of pks){const it=await simItem(pk);it.id='tw:'+pk.c;it.twinOf=w.id;it.twinFrom=`${bookOf(w.src)} ${QN(w.q)}번`;it.twinNeed=pks.length;its.push(it);used[pk.c]=Date.now()}LS.set('simUsed',used);return {it:its[0],its}}catch(e){console.error(e);return {none:'err'}}}
 /* 다시 풀기 화면 위의 작은 표시: 확인 문제 준비 중 → 준비됨 / 없음 */
