@@ -4458,7 +4458,7 @@ function itemSheet(i){if(!i)return;const S=$('#nSheet');
   memoBind(i);const q=S.querySelector('[data-q]');if(q)q.onclick=()=>{close();startQuiz([i])};
   const d=S.querySelector('[data-del]');d.onclick=async()=>{if(d.dataset.sure){await dbDel(i.id);close();CURV==='ana'?renderAnaTab():renderNote();badge()}else{d.dataset.sure=1;d.textContent='한 번 더 누르면 빼기'}}}
 const dueItems=items=>items.filter(i=>!i.done&&i.due!=null&&i.due<=today0()).sort((a,b)=>a.due-b.due||a.added-b.added).slice(0,8);
-async function badge(){try{const H=new Set(LS.get('blkHide',[])),d=(await wrAll()).filter(w=>!H.has(bookOf(w.src))&&wStage(w)!=='T').length;$('#dueBadge').textContent=d?d:'';$('#dueBadge').hidden=!d}catch(e){}}   /* 배지 = 다시 풀기 화면의 '남음'과 같은 수 (예전엔 오답 퀴즈 문항 수라 8 ↔ 27로 달랐다) */
+async function badge(){try{const H=new Set(LS.get('blkHide',[])),d=deckWr(await wrAll(),await deckGet().catch(()=>null)).filter(w=>!H.has(bookOf(w.src))&&wStage(w)!=='T').length;$('#dueBadge').textContent=d?d:'';$('#dueBadge').hidden=!d}catch(e){}}   /* 배지 = 다시 풀기 화면의 '남음'과 같은 수 (예전엔 오답 퀴즈 문항 수라 8 ↔ 27로 달랐다) */
 /* 문제집 범위를 정해 그 안의 오답만 뽑기: 문항 번호 또는 쪽 범위 · 지금 틀린 문항만 / 한 번이라도 틀린 문항 */
 async function wrongRange(book){let sh=$('#wxSheet');if(!sh){sh=document.createElement('div');sh.id='wxSheet';sh.hidden=true;document.body.appendChild(sh)}
   const metas=(await libAll()).filter(r=>!r.task&&(r.name===book||r.from===book)),att=metas.filter(r=>!r.orig).sort((a,b)=>a.at-b.at),names=new Set(att.map(r=>r.name));
@@ -6091,7 +6091,10 @@ function stackHtml(g,docs,wr,td,open,gate,SK){const D=new Date(),dl=`${D.getMont
     ${main}</section>
   ${open?`<button type="button" class="cc skBlk" data-toana><span class="skBC" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></span><span class="skBT"><b>다시 볼 문제 ${open}개${rcN?` · 다시 확인 ${rcN}개 포함`:''}</b><small>${rcN?'다시 볼 문제 먼저, 다시 확인은 마지막에 확인 문제 1문제':'다시 풀기 → 확인 문제 → 해결'}</small></span><span class="skBA">다시 풀기 →</span></button>`:''}
   ${g.books.length?`<div class="skSecH"><b>학습 중</b><button type="button" class="linkDel" data-toq>문제집 바꾸기 →</button></div><div class="dk skList">${g.books.map((b,i)=>skRowHtml(b,i,S[i],i===ai)).join('')}</div>`:''}`}
-async function homeSimple(){const box=$('#hHell');try{await qpHdr()}catch(e){}const docs=await libAll().catch(()=>[]),items=await dbAll().catch(()=>[]),wr=(await wrAll().catch(()=>[])).filter(w=>{try{return !LS.get('blkHide',[]).includes(bookOf(w.src))}catch(e){return true}}),ses=await sesAll().catch(()=>[]);   /* 다시 풀기에서 숨긴 문제집은 오늘 숫자에서도 뺀다 */
+/* 다시 볼 문제는 내 책장에서 '학습 중'으로 고른 문제집 것만 센다·보여 준다 (하나도 안 골랐으면 전부) */
+function deckWr(W,g){const N=new Set(((g&&g.books)||[]).map(b=>b.name));return N.size?W.filter(w=>N.has(bookOf(w.src))):W}
+async function homeSimple(){const box=$('#hHell');try{await qpHdr()}catch(e){}let wr,ses;const docs=await libAll().catch(()=>[]),items=await dbAll().catch(()=>[]);wr=(await wrAll().catch(()=>[])).filter(w=>{try{return !LS.get('blkHide',[]).includes(bookOf(w.src))}catch(e){return true}}),ses=await sesAll().catch(()=>[]);   /* 다시 풀기에서 숨긴 문제집은 오늘 숫자에서도 뺀다 */
+  const DK0=await deckGet().catch(()=>({books:[]}));wr=deckWr(wr,DK0);
   const today=dayKey(Date.now()),td=hellDays(ses)[today]||{n:0,ok:0,fix:0},open=wr.filter(w=>wStage(w)!=='T').length+rcDue(wr).length,deck=ocDeck(wr);
   const work=docs.filter(x=>!x.orig).sort((a,b)=>b.at-a.at),going=work.find(r=>{const c=Object.keys(loadCats(r.name)).length;return !r.done&&(r.n||0)&&c<r.n})||work[0];
   const gate=going?{a:'이어 풀기',t:going.name,go:()=>{view('solve');openRecent(going.name)}}:{a:docs.length?'문제집 고르기':'첫 문제집 넣기',t:'',go:()=>{view('solve');if(!docs.length)addOpen()}};
@@ -6505,7 +6508,7 @@ function weekStrip(ses,qd,pop){qd=qd||{};const ws=weekStart(Date.now()),by={};fo
 /* ---- 오답: 전체 오답(날짜별) / ☆ 오답노트 ---- */
 let ANAV='all';
 async function renderAnaTab(){try{await qpHdr()}catch(e){}
-  const W0=(await wrAll()).sort((a,b)=>b.at-a.at);
+  const W0=(teacherOn()?(await wrAll()):deckWr(await wrAll(),await deckGet().catch(()=>null))).sort((a,b)=>b.at-a.at);   /* 학생: 학습 중인 문제집의 오답만 */
   /* 학생 다시 볼 문제: 문제집 탭으로 한 책만 보기 · 문제집 숨기기 (숨긴 책의 다시 볼 문제는 목록·[다시 풀기 시작]에서 빠짐) */
   const BKH=new Set(LS.get('blkHide',[]));let BKS=LS.get('blkSel','all');const BKL=[...new Set(W0.map(w=>bookOf(w.src)))];if(BKS!=='all'&&(!BKL.includes(BKS)||BKH.has(BKS)))BKS='all';
   const W=teacherOn()?W0:W0.filter(w=>{const b=bookOf(w.src);return !BKH.has(b)&&(BKS==='all'||b===BKS)}),items=await dbAll(),inNote=new Set(items.map(i=>i.id)),dueN=dueItems(items).length,box=$('#aList');
