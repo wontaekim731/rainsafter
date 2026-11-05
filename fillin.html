@@ -940,6 +940,7 @@ label.dkPick{justify-content:flex-start;cursor:pointer}label.dkPick input{width:
 #verTag{display:none!important}
 #vRecent .origBox,#rmAll,.bWall{display:none!important}
 #vRecent .wbBox,#vRecent .asrc{display:none!important}
+.bkNext{all:unset;box-sizing:border-box;cursor:pointer;display:flex;justify-content:space-between;align-items:center;width:100%;padding:16px 20px;margin:0 0 12px;border-radius:16px;background:var(--omr);color:var(--on-acc,#111);font-weight:800;font-size:17px}.bkNext span{font-size:15px}
 .tabs.tabbar #dueBadge{left:calc(50% + 34px)!important;top:2px!important}
 .qcCov.img{background-size:cover!important;background-position:center top!important;border:1px solid var(--line)}
 /* 다시 풀기 탭 (단순·읽히게) */
@@ -6567,6 +6568,7 @@ async function renderAnaTab(){try{await qpHdr()}catch(e){}
       ${left.length||rcL.length?`<button class="bkGo" type="button" id="aClr"><span><b>다시 풀기 시작</b><small>오래된 문제부터 하나씩 · 맞히면 확인 문제</small></span>${arrow}</button>`:`<p class="bkNone">${W.length?'ALL QLEAR! 다시 볼 문제가 없어요':'아직 다시 볼 문제가 없어요 · 문제를 풀고 채점하면 틀린 문제가 여기에 모여요'}</p>`}
       ${W.length?`<div class="bkLeg"><span><i class="on"></i>맞힌 칸</span><span><i></i>남은 칸 (원래 문제 · 확인 문제)</span><span><i class="na"></i>확인 문제 없음 → 원래 문제만</span></div>`:''}
       ${W.length&&!QP.hdr?`<div class="muted" style="font-size:13px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">확인 문제가 꺼져 있어요 ${packBtn}</div>`:''}</section>${knowHtml(W)}<button class="linkDel" type="button" id="aMq2" hidden></button>`;
+    {const q=BQ.filter(id=>W.some(w=>w.id===id&&wStage(w)!=='T'));BQ=q;if(q.length&&left.length){const h=$('#aQuiz').querySelector('.bkHero2');if(h)h.insertAdjacentHTML('beforebegin',`<button type="button" class="bkNext" id="bkNext"><b>이어서 다음 문제</b><span>${q.length}개 남음 →</span></button>`);const nb=$('#bkNext');if(nb)nb.onclick=async()=>{nb.disabled=true;try{if(!await blkNext())renderAnaTab()}finally{nb.disabled=false}}}}
     knowBind($('#aQuiz'),W);{const t=$('#twSetB');if(t)t.onclick=twSetSheet}{const qa=$('#aQuiz').querySelector('[data-qpadd]');if(qa)qa.onclick=()=>packPick(renderAnaTab)}const go=$('#aClr');if(go)go.onclick=()=>blkStartList(left,go,rcL);
     if(!left.length)memoList().then(L=>{const b=$('#aMq2');if(b&&L.length){b.hidden=false;b.textContent=`코멘트 숏 퀴즈 ${Math.min(8,L.length)}문제 풀어 보기`;b.onclick=()=>memoQuiz(L)}});
     try{const t=$('#aTaskN');if(t){const n=(await libAll()).filter(r=>r.task&&r.done!==true).length;t.textContent=n?`남은 문제지 ${n}`:''}}catch(e){}
@@ -6671,7 +6673,7 @@ function anaList(W,items,inNote){const SIMS=new Set(simSent().map(x=>x.id)),box=
     const id=x.dataset.xid;if(star)await dbDel(id);else await wrDel(id);const c=x.closest('.ncard');if(c)c.remove();badge();renderAnaTab()},true));
   box.querySelectorAll('[data-nid]').forEach(b=>b.onclick=()=>itemSheet(items.find(i=>i.id===b.dataset.nid)));
   box.querySelectorAll('[data-wv]').forEach(b=>{b.onclick=()=>{const w=W.find(w=>w.id===b.dataset.wv);if(w)bkView(w)}});
-  box.querySelectorAll('[data-wid]').forEach(b=>{b.onclick=()=>{const w=W.find(w=>w.id===b.dataset.wid);if(!w)return;if(!teacherOn()&&wStage(w)!=='T'){blockRun(w);return}wrongSheet(w,inNote)};});   /* 학생: 다시 볼 문제를 누르면 원래 문제 → 맞히면 바로 확인 문제 */
+  box.querySelectorAll('[data-wid]').forEach(b=>{b.onclick=()=>{const w=W.find(w=>w.id===b.dataset.wid);if(!w)return;if(!teacherOn()&&wStage(w)!=='T'){const bk=bookOf(w.src);BQ=W.filter(x=>x!==w&&wStage(x)!=='T'&&bookOf(x.src)===bk).sort((a,b)=>(a.at||0)-(b.at||0)).map(x=>x.id);blockRun(w);return}   /* 누른 문제부터, 같은 문제집의 나머지를 줄 세워 이어서 */wrongSheet(w,inNote)};});   /* 학생: 다시 볼 문제를 누르면 원래 문제 → 맞히면 바로 확인 문제 */
   /* → : 오른쪽 [유사 문제]로 옮기기 (다시 누르면 빼기). 끌어다 놓기가 안 되는 기기용 */
   box.querySelectorAll('.ncTo').forEach(x=>x.addEventListener('click',async e=>{e.stopPropagation();e.preventDefault();const id=x.dataset.to;if(simSent().some(s=>s.id===id))simSave(simSent().filter(s=>s.id!==id));else await simAdd(W.find(w=>w.id===id));renderAnaTab()},true))
   tsShrink(box,star?items:W,star)}

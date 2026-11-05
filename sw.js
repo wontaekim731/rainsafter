@@ -22,7 +22,7 @@ self.addEventListener('fetch', e => {
     if (page) {   // 네트워크 먼저, 4초 넘게 응답이 없으면 저장본
       e.respondWith((async () => {
         const c = await caches.open(CACHE), key = u.pathname.endsWith('/') ? './index.html' : u.pathname;
-        const net = fetch(r).then(res => { if (res.ok) c.put(key, res.clone()); return res });
+        const net = fetch(r, { cache: 'no-cache' }).then(res =>   /* 브라우저 저장본(최대 10분)도 건너뛰고 서버에 새 버전 확인 */ { if (res.ok) c.put(key, res.clone()); return res });
         const old = await c.match(key, { ignoreSearch: true });
         if (!old) return net.catch(async () => (await c.match('./index.html')) || Response.error());
         return Promise.race([net.catch(() => old), new Promise(ok => setTimeout(() => ok(old), 4000))]);
