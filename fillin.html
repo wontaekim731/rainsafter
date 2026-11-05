@@ -3013,6 +3013,24 @@ TXA.ybase=async(P0,sc,pg)=>{const X=P0.seqAns.txa,off=X.off||0,a=sc.pg[0]+off,b=
   for(let q=a;q<=b;q++){if(X.yc[q]==null){try{X.yc[q]=await TXA.yuje(P0.doc,q,{count:1})}catch(e){X.yc[q]=0}}tot+=X.yc[q];if(q<pg)base+=X.yc[q]}
   dlog('ybase',pg+' '+base+'/'+tot+' of '+sc.n);return tot===sc.n?{base,n:sc.n}:{n:sc.n}};
 TXA.secAt=(P0,pi)=>{const X=P0&&P0.seqAns&&P0.seqAns.txa;if(!X||!X.pg)return null;const pp=pi-(X.off||0);return X.secs.find(s=>s.pg&&pp>=s.pg[0]&&pp<=s.pg[1])||null};
+/* 해설 PDF(고쟁이형): 큰 머리 번호 '004'와 같은 줄 오른쪽의 정답을 번호대로 */
+/* 해설 PDF: 큰 '004' 머리 번호와 같은 줄 오른쪽 끝의 정답 */
+function HDR_parse(pages){const K={};let nl=0;
+  for(const P of pages){const its=P.items.filter(i=>i.s.trim());const sz=its.map(i=>i.h).sort((a,b)=>a-b),med=sz[sz.length>>1]||9;
+    const labs=its.filter(i=>/^\d{3,4}$/.test(i.s.trim())&&i.h>=med*1.6);
+    for(const L of labs){const n=+L.s.trim();if(!n)continue;nl++;
+      const v=its.filter(i=>i!==L&&i.y>=L.y-3&&i.y<=L.y+L.h*0.7&&i.x>L.x+L.h*3&&i.x<L.x+P.w*0.45&&i.h<med*1.4&&!labs.includes(i)).sort((a,b)=>a.x-b.x);
+      const t=v.map(i=>i.s.trim()).join(' ').replace(/\s+/g,' ').trim();if(!t)continue;if(K[n])continue;K[n]=HDR_val(t)}}
+  return {K,nl}}
+function HDR_val(t){const c='①②③④⑤';t=t.replace(/[\uE000-\uF8FF\u0000-\u001F]/g,' ').replace(/\s+/g,' ').trim();const raw=t;
+  {const m=t.match(/^([①②③④⑤])(?:\s|$)/);if(m&&!/^[①②③④⑤]\s*,?\s*[①②③④⑤]/.test(t))return {text:String(c.indexOf(m[1])+1),kind:'circled',raw}}
+  {const m=t.match(/^(-?\d+)(?:\s|$)/);if(m&&!/^-?\d+\s*[,.:/'`;√]/.test(t))return {text:m[1],kind:'number',raw}}
+  if(/^[①②③④⑤]$/.test(t))return {text:String(c.indexOf(t)+1),kind:'circled',raw:t};
+  if(/^-?\d+$/.test(t))return {text:t.replace(/^-/,'-'),kind:'number',raw:t};
+  const m=t.match(/^⑴\s*(-?\d+)\s*⑵\s*(-?\d+)(?:\s*⑶\s*(-?\d+))?(?:\s*$|\s+[^\d⑷;\-'])/);if(m){const nums=[m[1],m[2]].concat(m[3]!=null?[m[3]]:[]);return {text:nums.join('|'),kind:'nparts',nums,raw:t}}
+  return {text:'✓',kind:'self',raw:t}}
+TXA.hdr=async d=>{const pages=[];for(let p=1;p<=Math.min(d.numPages,400);p++){const pg=await d.getPage(p),vp=pg.getViewport({scale:1}),tc=await pg.getTextContent();pages.push({w:vp.width,items:tc.items.map(i=>({s:i.str,x:i.transform[4],y:i.transform[5],h:Math.abs(i.transform[3])||Math.abs(i.transform[0])}))});pg.cleanup&&pg.cleanup()}
+  const r=HDR_parse(pages),ks=Object.keys(r.K).map(Number),mx=Math.max(0,...ks);return ks.length>=30&&ks.length>=mx*0.6?r.K:null};
 /* 문제 책 한 쪽의 번호들 (읽는 순서: 왼쪽 단 위→아래, 오른쪽 단) */
 TXA.labs=async(doc,pi)=>{const A=await SCAN.analyze(doc,{from:pi,to:pi,T:TPL,noSol:true,keep:true,thorough:true,seq:true,keepSeqH:true,footer:false});const L=A.problems.filter(p=>p.page===pi&&p.disp!=null);
   const W=Math.max(1,...L.map(p=>p.x1||0));L.sort((a,b)=>((a.x0>W*0.45)-(b.x0>W*0.45))||b.y1-a.y1);return L.map(p=>p.disp)};
@@ -3045,6 +3063,7 @@ async function quickFile(file,handle,bytes,doc,textPdf,f){if(SCANNING)return;con
   try{if(!/\.pdf$/i.test(f.name)){m.innerHTML='<span class="err">PDF만 읽을 수 있어요</span>';return}
     const d=await PDFJS.getDocument({data:new Uint8Array(await f.arrayBuffer())}).promise;
     // 글자가 있는 답지면 글자로 바로 읽는다
+    {let HK=null;try{HK=await TXA.hdr(d)}catch(e){console.error(e)}if(HK){dlog('hdrKeys',Object.keys(HK).length+'개');const T=await scanLazyInit(file,handle,bytes,doc,HK,[1,d.numPages,'f']);bgDeliver(T);return T}}   /* 해설의 머리 번호 줄에서 정답 */
     {let TX=null;try{TX=await TXA.read(d)}catch(e){console.error(e)}if(TX){dlog('txaRead',TX.nk+'개 · 코너 '+TX.secs.length);const T=await scanLazyInit(file,handle,bytes,doc,{},[1,d.numPages,'f']);T.seqAns={secs:[],off:0,txa:{secs:TX.secs,lab:{},map:{},done:TX.pg?1:0,pg:TX.pg}};await recentSave(T);if(!TX.pg)TXA.run(T);else bgDeliver(T);return T}}   /* 글자 답지에 단원·코너별 정답이 있으면: 순서로 짝짓기 */
     const L=await SV.lines(d);let K={};if(L.length>20){const qs=[];for(let i=1;i<=2000;i++)qs.push(i);K=Object.assign({},SV.keysGrid(L,qs).key,SV.keysFromLines(L).key)}
     if(Object.keys(K).length<10){m.innerHTML='빠른 정답 쪽을 찾는 중…';const r=await seqTry(file,handle,bytes,doc,d,{front:true,fp:f.name+':'+f.size,file:f},'f',m);if(r)return}
