@@ -6886,18 +6886,18 @@ const PKI_KW=[/실근의\s*개수|서로\s*다른\s*실근|교점의\s*개수|�
 /* 문제 쪽 정보: 글자(이미 읽은 것)와 난이도(1~5) */
 async function simCtx(w,read){if(!w)return null;let t=w.ocr;if(t==null&&read){try{t=await Promise.race([ENG.text(w),new Promise(ok=>setTimeout(()=>ok(null),9000))])}catch(e){t=null}}
   const bk=simBookOf(w.src),qs=bk&&bk.qs&&bk.qs[+w.q];if(qs)t=((t||'')+' '+qs).trim();   /* 책 지도에 있는 문제는 깨끗한 발문 요약도 같이 */
-  let dq=null;if(bk&&bk.step){const c=bk.step[+w.q-1];if(c&&c!=='0')dq={'1':2,'2':3,'3':4}[c]}
+  let dq=null;if(bk&&bk.step){const c=bk.step[+w.q-1];if(c&&c!=='0')dq={'1':2,'2':2.8,'3':3.6}[c]}   /* 기출 난이도 눈금(2점=1·3점=2·4점=3·준킬러 3.7·킬러 4.5)에 맞춤: STEP 2를 4점(3)으로 보던 것이 TWIN을 갑자기 어렵게 만들었음 (선생님 메모 11.05) */
   if(dq==null&&t){const m=/\(\s*([234])\s*점\s*\)/.exec(t);if(m)dq={'2':1,'3':2,'4':3}[m[1]]}
-  try{await PKI.load()}catch(e){}return {t:t||'',dq:dq==null?3:dq}}
+  try{await PKI.load()}catch(e){}return {t:t||'',dq:dq==null?2.5:dq,dqU:dq==null}}   /* 난이도를 모르는 문제는 보통(2.5)으로 보고 킬러급은 피한다 */
 function simPick(big,n,own,taken,lv,ctx){const used=LS.get('simUsed',{}),h=QP.hdr,K=PKI.m;
   const tb=CLS_B2T[big];let pool=h.items.filter(i=>(tb?CLS_B2T[i.b]===tb:i.b===big)&&i.e&&i.c!==own&&!taken.has(i.c));
   /* 문제 안에서 새 변수(실수 t·k, g(t))로 함수를 정의하는 문제: 같은 단원의 다른 유형이라도 그런 기출이면 후보에 넣는다 (선생님 메모) */
   const PAR=/실수\s*[tk]|[tk]\s*에\s*대하여|g\s*\(\s*t\s*\)|h\s*\(\s*t\s*\)/,PARS=/실수 t|실수 k|g\(t\)|t에 대하여/,PAT=/이와같은과정|과정을계속|반복|잘라내|n번째|R_?n|R₁|그림R|[0-9]+번째/,PATS=/반복|과정|n번째|R_?n|R₁|그림 R|활용-도형|그래프와 도형|규칙 찾기|활용-규칙/,chp=b=>{const n=+(String(b).match(/(\d+)$/)||[0,0])[1];if(/^M2L/.test(b))return 'M2a';if(/^M2/.test(b))return n<=20?'M2b':'M2c';if(/^PS/.test(b))return n<=8?'Pa':n<=13?'Pb':'Pc';if(/^C1/.test(b))return n<=7?'C1a':n<=20?'C1b':n<=23?'C1c':'C1d';if(/^C2/.test(b))return n<=10?'C2a':n<=17?'C2b':'C2c';return n<=20?'A':n<=29?'B':'C'};
   const par=!!(ctx&&ctx.t&&PAR.test(ctx.t)&&K),pat=!!(ctx&&ctx.t&&PAT.test(ctx.t.replace(/\s+/g,''))&&K);if(par||pat){const have=new Set(pool.map(i=>i.c));for(const i of h.items)if(!have.has(i.c)&&i.e&&i.c!==own&&!taken.has(i.c)&&i.b!==big&&chp(i.b)===chp(big)&&K.M[i.c]&&((par&&PARS.test(K.M[i.c][0]))||(pat&&PATS.test(K.M[i.c][0]))))pool.push(i)}   /* 도형 패턴(첫 단계와 반복 규칙)도 같은 단원의 그런 기출을 후보로 (선생님 메모) */
   const qv=ctx&&ctx.t&&K?PKI.qv(ctx.t):null,tq=ctx&&ctx.t?PKI_KW.map(p=>p.test(ctx.t)?1:0):null,dq=ctx?ctx.dq:3,dOf=c=>K&&K.M[c]?K.M[c][2]:({1:1.5,2:2.5,3:3.8}[SIM_DIFF[c]||2]);
-  if(!lv&&ctx){const ok=pool.filter(i=>dOf(i.c)>=dq-0.5);if(ok.length>=n)pool=ok}   /* 고른 난이도가 없을 때: 문제보다 쉬운 기출은 뺀다 */
+  if(!lv&&ctx){const hi=ctx.dqU?Math.min(dq+0.7,3.2):dq+1;let ok=pool.filter(i=>{const d=dOf(i.c);return d>=dq-0.5&&d<=hi});if(ok.length<n)ok=pool.filter(i=>dOf(i.c)<=hi);if(ok.length>=n)pool=ok}   /* 고른 난이도가 없을 때: 문제보다 쉬운 기출은 빼고, 한 단계 넘게 어려운 기출도 뺀다 — 갑자기 어려워지는 게 쉬운 것보다 해롭다 (선생님 메모 11.05) */
   const sc=pool.map(i=>{const d=SIM_DIFF[i.c]||(K&&K.M[i.c]?(K.M[i.c][2]<1.8?1:K.M[i.c][2]<3.2?2:3):2);   /* 공통수학 등 새 기출: 요약의 난이도로 쉬움·보통·어려움 */let r=(lv?Math.abs(d-lv)*1000:0)+(used[i.c]?100:0)+(i.kice?0:10)-(+i.y||0)/1000+Math.random()*4;
-    if(ctx){const dt=dOf(i.c),pen=Math.max(0,dq-dt)*1.0+Math.max(0,dt-dq-1)*1.5;r+=lv?0:pen*40;   /* 가중치: 선생님 판정 357개에서 배움 (쉬움 1.0 · 너무 어려움 1.5 · 개념 1 · 구조 0.5 · 핵심 개념 0.4) */
+    if(ctx){const dt=dOf(i.c),pen=Math.max(0,dq-0.3-dt)*1.0+Math.max(0,dt-dq)*1.5+Math.max(0,dt-dq-0.5)*2;   /* 어려운 쪽 벌점을 더 크게: 원래 난이도 근처 → 조금 쉬움 → 조금 어려움 순 */r+=lv?0:pen*40;   /* 가중치: 선생님 판정 357개에서 배움 (쉬움 1.0 · 너무 어려움 1.5 · 개념 1 · 구조 0.5 · 핵심 개념 0.4) */
       if(qv&&K.U[i.c]){let sim=0;const u=K.U[i.c];for(const k in qv)if(u[k])sim+=qv[k]*u[k];r-=sim*40}
       if(ctx.t&&K&&K.M[i.c]){const st=K.M[i.c][0],tn=ctx.t.replace(/\s+/g,'');let cn=0;if(/sin|cos|tan/.test(ctx.t)&&/삼각|sin|cos|tan/.test(st)){const qq=/(sin|cos|tan)\s*[²2'’"]\s*x|(sin|cos|tan)\s*x\s*\)\s*[²2]|²/.test(ctx.t),pq=/sin²|cos²|tan²|\^2|이차식/.test(st);cn+=qq===pq?1:-1}   /* 삼각방정식·부등식: 이차식 꼴과 일차식 꼴을 나눈다 (선생님 메모) */
       {const ctxQ=(/sin|cos|tan|삼각/.test(ctx.t)&&/삼각|sin|cos|tan/.test(st))||(/\^|지수|log|로그/.test(ctx.t)&&/지수|로그|\^|log/.test(st));if(ctxQ){const qq=/sin²|cos²|tan²|sin\^2|cos\^2|\^\(?2x|\^\{2x|([0-9])\^\(?x.{0,25}\1\^\(?x|log.{0,8}²|\(log[^)]*\)²/.test(ctx.t),pq=/이차식 꼴|반복되는 경우|지수가 이차식|sin²|cos²|tan²|\^\(?2x/.test(st);r-=(qq===pq?1:-1)*32}}   /* 치환해서 이차식이 되는 문제끼리 (선생님 메모) */
