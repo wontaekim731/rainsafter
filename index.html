@@ -940,6 +940,7 @@ label.dkPick{justify-content:flex-start;cursor:pointer}label.dkPick input{width:
 /* #verTag 숨김 해제(v46.52): 선생님이 어느 버전인지 늘 확인할 수 있게 — 위 줄 작은 회색 글씨, ⋯ 메뉴 맨 아래에도 */
 #vRecent .origBox,#rmAll,.bWall{display:none!important}
 #vRecent .wbBox,#vRecent .asrc{display:none!important}
+.skSel{font-style:normal;font-size:12px;font-weight:800;color:var(--omr);margin-left:8px;padding:2px 8px;border-radius:99px;border:1px solid var(--omr);vertical-align:middle}.skRow{cursor:pointer}
 .qStkOn{font-size:13px;font-weight:800;color:var(--omr);padding:4px 10px;border-radius:99px;background:color-mix(in srgb,var(--omr) 15%,transparent)}.qStk.hid{display:none!important}
 .bkC2{cursor:pointer}.bkC2i{position:relative;cursor:pointer}.bkC2 .bkZ{position:absolute;right:6px;bottom:6px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(17,18,22,.72);color:#fff;font-size:18px;cursor:zoom-in}
 .skBar2{display:flex;gap:10px;margin:2px 0 4px}.skBar2>span{flex:1;height:10px;border-radius:99px;background:color-mix(in srgb,var(--omr) 16%,transparent);overflow:hidden}.skBar2>span>i{display:block;height:100%;border-radius:99px;background:var(--omr)}.skBar2>span.o{background:color-mix(in srgb,#F2A65A 16%,transparent)}.skBar2>span.o>i{background:#F2A65A}
@@ -6124,7 +6125,7 @@ function skRowHtml(b,i,st,on){const pal=['#26463A','#2B3550','#4A3326','#35304A'
   if(st.miss)return `<div class="skRow" data-dk="${i}" role="button" tabindex="0"><i class="qcCov" data-cov="${esc(b.name)}" style="background:${cov}"></i><span class="skRT"><b>${esc(bkName(b.name))}</b><small>이 기기에서 문제집을 찾지 못했어요</small></span><button class="sb" type="button" data-dkrm="${i}">빼기</button></div>`;
   const c=st.cur,n=c.set.length+(c.extra||0),dn=c.set.length-c.un.length,P1=n?Math.min(100,Math.round(dn/n*100)):0,pc=deckPace(b,st),rg=dkRange(b,st);
   const today=pc&&pc.quota&&!st.complete&&!pc.wait?(pc.td>=pc.quota?'오늘 끝 · ':`오늘 ${pc.quota}문제 중 ${Math.min(pc.td,pc.quota)} · `):'';
-  return `<div class="skRow${on?' on':''}" data-dk="${i}" role="button" tabindex="0" aria-pressed="${on?'true':'false'}"><i class="qcCov" data-cov="${esc(b.name)}" style="background:${cov}" aria-hidden="true"></i><span class="skRT"><b>${esc(bkName(b.name))}</b><small>${today}${rg}${b.end?` · ${+b.end.slice(5,7)}.${+b.end.slice(8)}까지`:''}</small></span>
+  return `<div class="skRow${on?' on':''}" data-dk="${i}" role="button" tabindex="0" aria-pressed="${on?'true':'false'}"><i class="qcCov" data-cov="${esc(b.name)}" style="background:${cov}" aria-hidden="true"></i><span class="skRT"><b>${esc(bkName(b.name))}${on?'<em class="skSel">이어 풀 책</em>':''}</b><small>${today}${rg}${b.end?` · ${+b.end.slice(5,7)}.${+b.end.slice(8)}까지`:''}</small></span>
     ${st.clear?'<span class="dkOk">모든 회독 완료</span>':st.complete?`<button class="sb pri" type="button" data-dknext="${i}">${st.r+1}회독 시작</button>`:`<span class="skRP"><b>${st.r}회독 ${P1}%</b><span class="qcBar"><i style="width:${P1}%"></i></span></span>`}<button class="skRS" type="button" data-dkset="${i}" aria-label="${esc(b.name)} 설정">⋯</button></div>`}
 function stackHtml(g,docs,wr,td,open,gate,SK){const D=new Date(),dl=`${D.getMonth()+1}월 ${D.getDate()}일 ${'일월화수목금토'[D.getDay()]}요일 · 오늘`;
   const S=g.books.map(b=>deckState(b,docs)),ai=deckSel(g,S,docs),A=ai>=0?g.books[ai]:null,DT=g.books.length?deckToday(g,docs):null;
@@ -6431,7 +6432,7 @@ function deckHtml(g,docs,wr){const BN={};for(const w of wr||[])if(wStage(w)!=='T
     ${g.books.map((b,i)=>deckBookHtml(b,i,S[i],i===ai,BN[b.name])).join('')}${Array.from({length:Math.max(0,DECK_MAX-g.books.length)},()=>`<button type="button" class="dkB dkEmpty" data-dkadd><span>＋</span><b>빈칸</b><small>문제집 쌓기</small></button>`).join('')}</div>`}
 function deckBind(box,g,docs,again){const on=(s,f)=>box.querySelectorAll(s).forEach(b=>b.onclick=()=>f(b));
   on('[data-dkadd]',()=>deckAddSheet(again));
-  box.querySelectorAll('.dkB[data-dk]').forEach(el=>{const pick=async()=>{const G=await deckGet(),bk=G.books[+el.dataset.dk];if(!bk||G.sel===bk.name&&el.classList.contains('on'))return;G.sel=bk.name;await deckPut(G);again()};
+  box.querySelectorAll('.dkB[data-dk],.skRow[data-dk]').forEach(el=>{const pick=async()=>{const G=await deckGet(),bk=G.books[+el.dataset.dk];if(!bk||G.sel===bk.name&&el.classList.contains('on'))return;G.sel=bk.name;await deckPut(G);again()};
     el.onclick=e=>{if(e.target.closest('button,a,input,label'))return;pick()};el.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&e.target===el){e.preventDefault();pick()}}});
   on('[data-dkmain]',async b=>{const i=+b.dataset.dkmain;if(!(i>=0))return;const G=await deckGet(),bk=G.books[i];if(!bk)return;const st=deckState(bk,await libAll());
     if(st.complete&&st.next&&st.next.length){bk.rounds=st.R.slice();bk.rounds.push({at:Date.now(),qs:st.next});await deckPut(G)}   /* 회독을 다 끝낸 책이면 다음 회독을 시작하고 연다 */
