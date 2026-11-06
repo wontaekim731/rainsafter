@@ -5577,7 +5577,7 @@ async function ssShow(){setTimeout(()=>{try{ssPosApply()}catch(e){}},0);const x=
     ask.innerHTML=obj?'내가 고른 번호를 눌러 주세요':'내가 쓴 답을 입력해 주세요';
     btns.outerHTML=obj?`<div class="qzch" style="justify-content:center">${[1,2,3,4,5].map(n=>`<button type="button" data-pk="${n}">${'①②③④⑤'[n-1]}</button>`).join('')}</div>`
       :`<div style="display:flex;gap:8px;justify-content:center"><input class="txt" id="ssTyped" inputmode="numeric" style="font-size:22px;max-width:200px" value="${esc(x.ans||'')}"><button class="btn mid" type="button" id="ssTypedOk">확인</button></div>`;
-    const done=v=>{v=String(v).replace(/\s/g,'');if(!v)return;const k=keyOf(p),ok=normAns(v)===normAns(k);try{tlEv('self',{q:x.q,typed:v,key:k,good:ok,how:'typed',read:p&&p._rd||null})}catch(e){}x.ans=v;x.status='done';x.ok=ok;x.wrongs=ok?0:1;SS.n++;SS.np=0;chips();if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()};
+    const done=v=>{v=String(v).replace(/\s/g,'');if(!v)return;const k=keyOf(p),ok=normAns(v)===normAns(k);try{tlEv('self',{q:x.q,typed:v,key:k,good:ok,how:'typed',read:p&&p._rd||null})}catch(e){}x.ans=v;x.status='done';x.ok=ok;x.wrongs=ok?0:1;SS.n++;SS.np=0;chips();ssMk();if(SS.i+1<SS.L.length){SS.i++;ssShow()}else ssClose()};
     $('#ssBody').querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>done(b.dataset.pk));const ti=$('#ssTyped');if(ti){$('#ssTypedOk').onclick=()=>done(ti.value);ti.onkeydown=e=>{if(e.key==='Enter')done(ti.value)}}}
   if(NP){const pv=new Array(NP).fill(null);$('#ssBody').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{pv[+b.dataset.p]=b.dataset.v==='n'?'n':b.dataset.v==='1';
       $('#ssBody').querySelectorAll(`[data-p="${b.dataset.p}"]`).forEach(y=>y.classList.toggle('pick',y===b));$('#ssPartOk').disabled=pv.some(v=>v===null);
@@ -5596,7 +5596,9 @@ function ssNone(x){if(!S||!SS)return;try{const p=P.problems.find(z=>z.q===x.q);t
 function ssApply(x,p,good){try{if(subjQ(p))sdRec(x,p,good)}catch(e){console.error(e)}const k=keyOf(p)||'✓';
   if(x.status==='check'){x.ans=good?k:'✗';x.status='done';x.ok=good;x.wrongs=good?0:1;x.manual=!good}
   else{x.retry.ans=good?k:'✗';x.retry.ok=good;x.retry.sure=true;if(!good){x.wrongs=(x.wrongs||1)+1;x.manual=true}}
-  histEvt(x.q,good);setTimeout(pvBadgeAll,0);SS.n++;SS.np=0;chips()}
+  histEvt(x.q,good);setTimeout(pvBadgeAll,0);SS.n++;SS.np=0;chips();ssMk()}
+/* 직접 채점: ○/✕를 누를 때마다 문제 위 표시를 바로 그린다 (전엔 창을 닫아야 한꺼번에 나옴) */
+function ssMk(){clearTimeout(ssMk.t);ssMk.t=setTimeout(async()=>{try{await writeMarks()}catch(e){console.error(e)}try{if(FOC.on){fDraw();fAnsMarks()}}catch(e){}},80)}
 /* ================= 단답형 손글씨 데이터 (v46.04) =================
    단답형·서술형은 학생이 ○/✕로 직접 채점한다. 그때마다 [쓴 답 손글씨 그림 · 획 좌표 · 문제 번호 · 정답 · 앱이 읽은 답 · 학생 판정]을 기기에 쌓아 두고,
    홈의 [파일로 보내기]로 한 파일에 담아 선생님께 보낸다 (숫자 인식 규칙·모델을 고치는 데 쓴다).
