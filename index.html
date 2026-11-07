@@ -5860,6 +5860,10 @@ async function importPdf(f){START_OPEN=true;$('#vStart').classList.remove('colla
 async function recentSave(P0){try{P0=P0||P;if(!P0||!P0.handle||P0.handle.kind!=='lib')return;const r=await libMeta(P0.name);if(!r)return;
   Object.assign(r,{qkV:P0.qkV||0,rotV:P0.rotV||0,lzV:P0.lzV||0});Object.assign(r,{anaV:5,origRef:P0.origRef||null,at:Date.now(),pages:P0.pages,problems:P0.problems,keyFound:P0.keyFound,generic:P0.generic,scan:!!P0.scan,lazy:!!P0.lazy,solKeys:P0.solKeys||null,solRange:P0.solRange||null,solColor:!!P0.solColor,seqAns:P0.seqAns||null,lazyDone:P0.lazyDone||null,miss:P0===P?keyMiss():r.miss,ranges:P0.ranges||null,n:P0.problems.length,task:!!P0.task,footAns:P0.footAns||undefined});await libPut(r);renderRecent()}catch(e){console.error(e)}}
 let RECENT_DONE_OPEN=false,RECENT_ORIG_OPEN=false;
+/* 삭제 '한 번 더 누르면 삭제' 상태·⋯ 메뉴: 다른 곳을 누르면 바로 원래대로 (5초 기다리지 않게) */
+document.addEventListener('pointerdown',e=>{try{const t=e.target,b0=t.closest&&t.closest('button');if(b0&&!b0.dataset.sure&&(b0.matches('[data-rm],[data-rmbook],[data-trm],#rmAll')))b0.dataset.lab0=b0.textContent;
+  document.querySelectorAll('button[data-sure]').forEach(b=>{if(b.contains(t))return;delete b.dataset.sure;b.classList.remove('sure');if(b.dataset.lab0!=null)b.textContent=b.dataset.lab0});
+  document.querySelectorAll('.rcAct.open').forEach(m=>{if(!m.contains(t))m.classList.remove('open')})}catch(err){}},true);
 let QSEG='mine',QNEW='',QF='all';
 async function renderRecent(){let L=[];try{L=(await libAll()).sort((a,b)=>b.at-a.at)}catch(e){}
   {const hb=$('#howBox');if(hb){hb.innerHTML=window.NJ_BETA||(L||[]).some(r=>r.orig||r.from)?'':howToHTML();hb.querySelectorAll('[data-how]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('njHowHide',b.dataset.how==='0'?'1':'0')}catch(e){}renderRecent()})}}
