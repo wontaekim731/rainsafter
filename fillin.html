@@ -943,6 +943,7 @@ label.dkPick{justify-content:flex-start;cursor:pointer}label.dkPick input{width:
 /* #verTag 숨김 해제(v46.52): 선생님이 어느 버전인지 늘 확인할 수 있게 — 위 줄 작은 회색 글씨, ⋯ 메뉴 맨 아래에도 */
 #vRecent .origBox,#rmAll,.bWall{display:none!important}
 #vRecent .wbBox,#vRecent .asrc{display:none!important}
+.qStkX{all:unset;cursor:pointer;width:30px;height:30px;margin-left:4px;border-radius:50%;display:inline-grid;place-items:center;font-size:13px;font-weight:800;color:var(--muted);border:1px solid var(--line)}.qStkX:hover{color:#F27A5A;border-color:#F27A5A}
 .plSum{display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:16px;background:color-mix(in srgb,var(--omr) 10%,transparent)}.plSum span{font-size:15px;color:var(--muted);font-weight:600}.plSum small{font-size:13px;color:var(--muted)}
 .plBig{font-size:30px;font-weight:900;line-height:1.2;color:var(--omr)}.plBig.warn{color:#F2A65A}
 .plRow{display:flex;align-items:center;gap:12px;min-height:44px}.plRow.col{flex-direction:column;align-items:stretch;gap:8px}.plK{width:56px;flex:none;font-size:15px;font-weight:800}.plRow.col .plK{width:auto}
@@ -953,8 +954,8 @@ label.dkPick{justify-content:flex-start;cursor:pointer}label.dkPick input{width:
 .plBtns{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px}.plOk{min-width:140px;min-height:48px;font-size:17px!important}
 .qcGd{all:unset;cursor:pointer;font-size:13px;font-weight:800;padding:5px 11px;border-radius:99px;margin-right:6px}.qcGd.lv2{color:#F27A5A;background:color-mix(in srgb,#F27A5A 15%,transparent)}.qcGd.lv1{color:#E8B04F;background:color-mix(in srgb,#E8B04F 14%,transparent)}
 .gdWhy{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:12px;border:1px solid var(--line)}.gdWhy b{font-size:16px}.gdWhy span{font-size:14px;color:var(--muted)}.gdWhy em{font-style:normal;font-size:14px;font-weight:700;color:var(--omr)}
-.skStat{display:flex;flex-direction:column;gap:6px}.skStatB{font-size:28px;font-weight:900;line-height:1.25;letter-spacing:-.01em;color:var(--ink,#F2F4F7)}.skStat.warn .skStatB{color:#F2A65A}
-.skStatS{font-size:17px;font-weight:700;color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:10px}.skStatS.late{color:#F2A65A}
+.skStat{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 14px}.skStatB{font-size:28px;font-weight:900;line-height:1.25;letter-spacing:-.01em;color:var(--ink,#F2F4F7)}.skStat.warn .skStatB{color:#F2A65A}
+.skStatS{font-size:18px;font-weight:800;color:var(--muted);display:contents}.skStatS .skFix{margin-left:auto}.skStatS.late{color:#F2A65A}
 .skFix{all:unset;cursor:pointer;font-size:16px;font-weight:800;padding:6px 14px;border-radius:99px;border:1.5px solid currentColor;color:#F2A65A}
 .skOver{font-style:normal;color:#F2A65A;font-weight:800}.dkQuick{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.dkQuick .sb{min-height:36px;padding:0 12px}
 .twSetB.txtB{width:auto!important;height:auto!important;padding:8px 14px!important;border-radius:99px!important;font-size:14px!important;font-weight:800}
@@ -5885,7 +5886,7 @@ async function renderRecent(){let L=[];try{L=(await libAll()).sort((a,b)=>b.at-a
       <div class="rcAct qcAct"><button class="iconbtn more" type="button" aria-label="더보기" onclick="this.parentNode.classList.toggle('open')">⋯</button><div class="moreMenu">${B.orig&&inStk.has(B.orig.name)?`<button class="del" type="button" data-plan="${esc(B.orig.name)}">📅 범위 · 기간</button>`:''}<button class="del" type="button" data-rnbook="${esc(B.name)}">✏️ 이름 바꾸기</button>${B.orig?`<button class="del" type="button" data-fresh="${esc(B.orig.name)}">🔁 새 회독 시작</button>`:''}${att.length?`<button class="del" type="button" data-wx="${esc(B.name)}">📄 틀린 문제만 뽑기</button>`:''}
         ${noteOpt?`<button class="del" type="button" data-note="${esc(B.orig.name)}">노트 앱에서 푼 PDF 넣기</button>`:''}${cur.scan&&!cur.lazy&&!done?`<button class="del tOnly" type="button" data-more="${esc(cur.name)}">쪽 더 읽기</button>`:''}${att.length?`<button class="del tOnly" type="button" data-ex="${esc(cur.name)}">내보내기</button>`:''}<button class="del" type="button" data-rmbook="${esc(B.name)}">🗑 문제집 삭제</button></div></div>
       ${!done&&src.miss&&!src.scan?`<button type="button" class="cat x keyNeed qcKey" data-key="${esc(src.name)}">${src.miss>=(src.n||0)?'답지 없음':'정답 '+src.miss+'개 없음'} · 답지 넣기</button>`:''}
-      <div class="qcBot">${gdBadge(B.orig?B.orig.name:B.name)}${BLN[B.name]?`<button type="button" class="qcBlk" data-toblk="${esc(B.name)}">다시 풀기 ${BLN[B.name]} →</button>`:'<span class="qcNo">다시 볼 문제 없음</span>'}${B.orig?(()=>{const on=inStk.has(B.orig.name),ok=on||rdy;return `<button type="button" class="qStkB${on?' on':''}${ok?'':' off'}" data-stkt="${esc(B.orig.name)}" aria-pressed="${on}">${on?`● 학습 중${stkEnd(B.orig.name)}`:'계획 세우기'}</button><label class="qStk hid" hidden><input type="checkbox" data-stk="${esc(B.orig.name)}"${on?' checked':''}${ok?'':' disabled'}></label>`})():''}</div>
+      <div class="qcBot">${gdBadge(B.orig?B.orig.name:B.name)}${BLN[B.name]?`<button type="button" class="qcBlk" data-toblk="${esc(B.name)}">다시 풀기 ${BLN[B.name]} →</button>`:'<span class="qcNo">다시 볼 문제 없음</span>'}${B.orig?(()=>{const on=inStk.has(B.orig.name),ok=on||rdy;return `<button type="button" class="qStkB${on?' on':''}${ok?'':' off'}" data-stkt="${esc(B.orig.name)}" aria-pressed="${on}">${on?`● 학습 중${stkEnd(B.orig.name)}`:'계획 세우기'}</button>${on?`<button type="button" class="qStkX" data-stkx="${esc(B.orig.name)}" aria-label="학습 중에서 빼기">✕</button>`:''}<label class="qStk hid" hidden><input type="checkbox" data-stk="${esc(B.orig.name)}"${on?' checked':''}${ok?'':' disabled'}></label>`})():''}</div>
       </div>`};
   const Bs=ord.map(b=>BK[b]).filter(B=>B.orig||B.att.length),doingB=Bs.filter(B=>B.att.some(r=>!isDone(r))),newB=Bs.filter(B=>!B.att.length),dnB=Bs.filter(B=>B.att.length&&B.att.every(isDone));
   const qseg=`<div class="qSeg" role="tablist"><button type="button" data-qseg="mine" class="${QSEG==='mine'?'on':''}">내 문제집 <b>${Bs.length}</b></button><button type="button" data-qseg="wrong" class="${QSEG==='wrong'?'on':''}">내 오답 <b>${wbk.length}</b></button></div>`;
@@ -5905,6 +5906,8 @@ async function renderRecent(){let L=[];try{L=(await libAll()).sort((a,b)=>b.at-a
     if(c.checked){const i=G.books.findIndex(x=>x.name===n);if(i>=0&&!G.books[i].end)setTimeout(()=>deckSetSheet(i,renderRecent),250)}});   /* 학습 중으로 올릴 때 '어디까지 · 언제까지'를 한 번만 묻는다 */
   if(QNEW){const g=[...$('#recentList').querySelectorAll('[data-go]')].find(b=>b.dataset.go===QNEW),rc=g&&g.closest('.rc');if(rc){rc.classList.add('rcNew');setTimeout(()=>rc.scrollIntoView({behavior:'smooth',block:'center'}),80)}QNEW=''}
   try{covFill($('#recentList'))}catch(e){}
+  $('#recentList').querySelectorAll('[data-stkx]').forEach(b=>b.onclick=async e=>{e.stopPropagation();const n=b.dataset.stkx,G=await deckGet(),i=G.books.findIndex(x=>x.name===n);if(i<0)return;const keep=JSON.parse(JSON.stringify(G.books[i]));deckDrop(G,G.books[i]);await deckPut(G);renderRecent();   /* 바로 빼고, 되돌리기로 그대로 복구 (풀이 기록은 원래 남음) */
+    pvToast(`「${esc(bkName(n))}」 학습 중에서 뺐어요`,[['되돌리기',async()=>{const g=await deckGet();if(!g.books.some(x=>x.name===n)){g.books.splice(Math.min(i,g.books.length),0,keep);await deckPut(g)}renderRecent()}]])});
   $('#recentList').querySelectorAll('[data-gd]').forEach(b=>b.onclick=e=>{e.stopPropagation();gdShow(b.dataset.gd)});
   $('#recentList').querySelectorAll('[data-plan]').forEach(b=>b.onclick=async()=>{const G=await deckGet(),i=G.books.findIndex(x=>x.name===b.dataset.plan);if(i>=0)deckSetSheet(i,renderRecent)});
   $('#recentList').querySelectorAll('[data-rnbook]').forEach(b=>b.onclick=()=>{if(bkRename(b.dataset.rnbook))renderRecent()});
@@ -6197,8 +6200,8 @@ function stackHtml(g,docs,wr,td,open,gate,SK){const D=new Date(),dl=`${D.getMont
     if(!A.end||!p)return {big:'',sub:`목표일을 정하면 하루 분량을 알려 줘요 ${fix('계획 세우기')}`};
     if(p.wait)return {big:`${p.wait}일 뒤에 시작해요`,sub:fix()};
     const rem=st.cur.un.length+(st.cur.extra||0);
-    if(p.dl<0)return {big:'목표일이 지났어요',sub:`남은 ${rem}문제 · 마감일이나 범위를 다시 정해 주세요 ${fix()}`,warn:1};
-    if(p.quota>DECK_QMAX)return {big:`하루 ${p.quota}문제가 필요해요`,sub:`지금 계획은 무리예요 · 마감일이나 범위를 조정해 주세요 ${fix()}`,warn:1};
+    if(p.dl<0)return {big:'목표일이 지났어요',sub:`남은 ${rem}문제 ${fix()}`,warn:1};
+    if(p.quota>DECK_QMAX)return {big:`하루 ${p.quota}문제가 필요해요`,sub:`계획이 무리예요 ${fix()}`,warn:1};
     const left=Math.max(0,p.quota-Math.min(p.td,p.quota));let unit='문제',n=left;
     if(st.cur.extra){const I=bookInfo(A.name,docs),P0=A.pf||1,P1=A.pt||I.pages||0,N=st.cur.set.length+st.cur.extra;if(P1>=P0&&N){n=Math.max(1,Math.ceil(left*(P1-P0+1)/N));unit='쪽'}}
     const L0=deckLate({books:[A]},docs),L=L0&&L0.q>p.quota?L0:null,sub=L?`계획보다 ${L.days}일 늦어요 ${fix()}`:p.dl?`마감까지 ${p.dl}일`:'오늘이 마감일이에요';
@@ -6529,11 +6532,10 @@ async function deckSetSheet(i,again,O){O=O||{};const g=await deckGet(),b=g.books
     <div class="plRow"><span class="plK">마감일</span><div class="plV">${O.tmp||!b.end?[2,4,8].map(w=>`<button type="button" class="plChip" data-wk="${w}">${w}주</button>`).join(''):[3,7,14].map(n=>`<button type="button" class="plChip" data-plus="${n}">+${n}일</button>`).join('')}<input class="txt plDate" type="date" data-e min="${today}" value="${esc(b.end||dayKey(Date.now()+27*864e5))}" aria-label="마감일"></div></div>
     <div class="plRow"><span class="plK">범위</span><div class="plV"><span class="plRng" data-rng></span><button type="button" class="plChip" data-rtog>${hasR?'전체로':'쪽 정하기'}</button></div></div>
     <div class="plPages" data-pages ${hasR?'':'hidden'}><input class="txt" inputmode="numeric" placeholder="시작 쪽" data-f value="${esc(b.pf||'')}"> ~ <input class="txt" inputmode="numeric" placeholder="끝 쪽" data-t value="${esc(b.pt||'')}"><span class="sub">${I.pages?`전체 ${I.pages}쪽`:''}</span></div>
+  <div class="plRow col plMode"><span class="plK">학습 모드</span>${mro?`<div class="dkMode ro"><b>${BK_MODE[M0.m].n}</b> · 선생님 설정<small>${BK_MODE[M0.m].d}</small></div>`:`<div class="dkMode" data-mode role="radiogroup" aria-label="학습 모드">${Object.entries(BK_MODE).map(([k,o])=>`<button type="button" role="radio" data-m="${k}" aria-checked="${k===M0.m}" class="${k===M0.m?'on':''}">${o.n}</button>`).join('')}</div><small class="sub" data-mdesc>${BK_MODE[M0.m].d}</small>${T0?`<label class="ppSnap"><input type="checkbox" data-mlock ${M0.lock?'checked':''}> 학생이 바꾸지 못하게 고정</label>`:''}`}</div>
     <details class="plMore"><summary>더 설정</summary>
       <div class="plRow"><span class="plK">시작일</span><div class="plV"><input class="txt plDate" type="date" data-s value="${esc(st0)}" aria-label="시작일"></div></div>
-      <div class="plRow col"><span class="plK">학습 모드</span>${mro?`<div class="dkMode ro"><b>${BK_MODE[M0.m].n}</b> · 선생님 설정<small>${BK_MODE[M0.m].d}</small></div>`:`<div class="dkMode" data-mode role="radiogroup" aria-label="학습 모드">${Object.entries(BK_MODE).map(([k,o])=>`<button type="button" role="radio" data-m="${k}" aria-checked="${k===M0.m}" class="${k===M0.m?'on':''}">${o.n}</button>`).join('')}</div><small class="sub" data-mdesc>${BK_MODE[M0.m].d}</small>${T0?`<label class="ppSnap"><input type="checkbox" data-mlock ${M0.lock?'checked':''}> 학생이 바꾸지 못하게 고정</label>`:''}`}</div>
       ${b.rounds&&b.rounds.length>1?`<button class="sb" type="button" data-undo>${b.rounds.length}회독 취소 · ${b.rounds.length-1}회독으로 되돌리기</button>`:''}
-      ${O.tmp?'':'<button class="sb plRm" type="button" data-rm>학습 중에서 빼기</button>'}
     </details>
     <div class="plBtns">${O.tmp?'<button class="sb" type="button" data-x2>취소</button>':'<span></span>'}<button class="sb pri plOk" type="button" data-ok>${O.tmp?'학습 시작':'저장'}</button></div>`);
   let saved=false;const drop=async()=>{if(!O.tmp||saved)return;saved=true;const G=await deckGet(),B=G.books[i];if(B&&B.name===b.name){deckDrop(G,B);await deckPut(G)}again()};   /* 계획 세우기를 저장하지 않고 닫으면 학습 중에 넣지 않는다 */
