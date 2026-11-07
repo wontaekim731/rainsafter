@@ -2350,7 +2350,7 @@ async function slimJpeg(src,page){try{const {PDFName,PDFDict,PDFRawStream,PDFArr
     const m=txt.trim().match(/^q\s+([\d.]+)\s+0\s+0\s+([\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+cm\s+\/\S+\s+Do\s+Q$/);const {width:W,height:H}=page.getSize();
     if(!m||Math.abs(+m[1]-W)>3||Math.abs(+m[2]-H)>3||Math.abs(+m[3])>3||Math.abs(+m[4])>3||page.getRotation().angle%360)return null;
     const w=Math.round(W*SLIM_DPI/72),h=Math.round(H*SLIM_DPI/72),bm=await createImageBitmap(new Blob([st.contents],{type:'image/jpeg'}),{resizeWidth:w,resizeHeight:h,resizeQuality:'high'});
-    const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,w,h);g.drawImage(bm,0,0);bm.close&&bm.close();const jb=await new Promise(ok=>c.toBlob(ok,'image/jpeg',0.75));c.width=c.height=0;return {jb,W,H}}
+    const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,w,h);g.drawImage(bm,0,0,w,h);bm.close&&bm.close();   /* 사파리(아이패드)는 createImageBitmap 크기 옵션을 무시할 수 있어 원래 크기 그림이 온다 → 그릴 때 크기를 맞춘다 */const jb=await new Promise(ok=>c.toBlob(ok,'image/jpeg',0.75));c.width=c.height=0;return {jb,W,H}}
   catch(e){return null}}
 async function pdfSlim(f,label){let d=null;try{const N0=await (async()=>{const x=await pdfOpenBlob(f);const n=x.numPages;d=x;return n})();if(!N0||f.size/N0<900e3)return null;   /* 쪽당 0.9MB 넘는 아주 무거운 스캔만 (시냅스 0.45MB/쪽은 그대로 두어야 표 글자가 또렷) */const N=N0;
     {const pg=await d.getPage(Math.min(N,Math.max(1,Math.ceil(N/2))));let tx=0;try{tx=(await pg.getTextContent()).items.filter(i=>String(i.str||'').trim()).length}catch(e){}try{pg.cleanup()}catch(e){}if(tx>=5)return null}   /* 글자가 있는 PDF는 손대지 않음 */
