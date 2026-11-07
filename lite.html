@@ -6,9 +6,10 @@
 <title>QLEAR 가벼운 버전</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <meta name="theme-color" content="#0E1014">
+<link rel="manifest" href="manifest-lite.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
-<meta name="apple-mobile-web-app-title" content="QLEAR"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="QLEAR 라이트"><meta name="apple-mobile-web-app-capable" content="yes">
 <script>/* 고른 색을 화면이 처음 그려지기 전에 입힌다 (아래 큰 스크립트가 다 읽힐 때까지 기본색이 잠깐 보이던 문제) — 색 값은 '내 색 고르기'와 같게 */
 (function(){try{var A={mint:'#7CF2B0',orange:'#FF9F43',lavender:'#B9A2FF',cherry:'#FF6B86',sky:'#5AB8FF',lemon:'#F5E04A',coral:'#FF8A6B',mono:'#E6E6E9'},B={dark:['#0E1014','#161920','#F2F4F7','#8A93A3','#262A33'],light:['#F4F5F7','#FFFFFF','#15171C','#5F6672','#E1E3E8'],cream:['#F3ECDD','#FFFBF2','#2B251C','#756A58','#E3D8C2']};
 var t=JSON.parse(localStorage.getItem('nj:theme')||'null')||{};if(!A[t.acc])t.acc='mint';if(!B[t.bg])t.bg='dark';var r=document.documentElement,b=B[t.bg],SEM={re:'#F2A65A','re-l':'#FFB37A',warn:'#F27A5A',caution:'#E8B04F'},X={orange:{re:'#5AB8FF','re-l':'#8CCBFF',warn:'#FF4D6D'},coral:{re:'#5AB8FF','re-l':'#8CCBFF',warn:'#FF4D6D',caution:'#B9A2FF'},lemon:{re:'#5AB8FF','re-l':'#8CCBFF',caution:'#B9A2FF'},cherry:{warn:'#FFC24A'}}[t.acc]||{};for(var q in SEM)r.style.setProperty('--'+q,X[q]||SEM[q]);var v={'--omr':A[t.acc],'--fi-acc':A[t.acc],'--on-acc':'#111216','--bg':b[0],'--paper':b[1],'--ink':b[2],'--muted':b[3],'--line':b[4],'--navy':t.bg==='dark'?'#1D222C':b[1]};
@@ -4999,7 +5000,7 @@ async function pvOpen(){try{liveCv()}catch(e){}
        PV.rq.delete(best);PV.rbusy=1;const zp=best.zp,W=Math.round(best.cw*best.d),Hh=Math.round(best.h*best.d);best.zp=0;
        let tgt=best.c;if(zp){tgt=document.createElement('canvas');tgt.width=W;tgt.height=Hh;const g0=tgt.getContext('2d');g0.fillStyle='#fff';g0.fillRect(0,0,W,Hh)}   // 확대·축소: 따로 그린 뒤 한 번에 바꿔 끼움 (깜빡임 없음)
        const rt=best.page.render({canvasContext:tgt.getContext('2d'),viewport:best.page.getViewport({scale:best.k*best.d}),annotationMode:0});best.rt=rt;
-       const T0=performance.now();let kept=0;rt.promise.then(()=>{const ms=Math.round(performance.now()-T0);if(ms>1500||zp)dlog(zp?'zoomDraw':'draw',best.n+' '+ms+'ms '+W+'x'+Hh);if(zp&&best.rt===rt&&best.live){const o=best.c;tgt.style.cssText=o.style.cssText+';position:absolute;left:0;top:0';o.after(tgt);best.c=tgt;kept=1;requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(()=>{o.remove();o.width=o.height=0},120)))}/* 새 그림을 옛 그림 위에 얹고, 화면에 나온 뒤에 옛 것을 치운다 (크기를 바꾸며 지우는 순간이 없어 하얗게 깜빡이지 않음) */if(best.live&&best.c.width)pvThumb(best)}).catch(e=>{if(!/cancel/i.test(e&&e.name||''))dlog('renderErr',best.n+' '+(e&&e.message))}).finally(()=>{if(zp&&!kept)tgt.width=tgt.height=0;if(best.rt===rt)best.rt=null;PV.rbusy=0;setTimeout(pump,0)})},
+       const T0=performance.now();let kept=0;rt.promise.then(()=>{const ms=Math.round(performance.now()-T0);if(ms>1500||zp)dlog(zp?'zoomDraw':'draw',best.n+' '+ms+'ms '+W+'x'+Hh);if(zp&&best.rt===rt&&best.live){const o=best.c;tgt.style.cssText=o.style.cssText+';position:absolute;left:0;top:0;opacity:0;transition:opacity .15s linear';o.after(tgt);best.c=tgt;kept=1;requestAnimationFrame(()=>{tgt.style.opacity='1';setTimeout(()=>{tgt.style.transition='';o.remove();o.width=o.height=0},220)})}   /* LITE: 흐린 그림 → 선명한 그림을 0.15초에 걸쳐 바꿈 (툭 바뀌는 번쩍임 줄임) *//* 새 그림을 옛 그림 위에 얹고, 화면에 나온 뒤에 옛 것을 치운다 (크기를 바꾸며 지우는 순간이 없어 하얗게 깜빡이지 않음) */if(best.live&&best.c.width)pvThumb(best)}).catch(e=>{if(!/cancel/i.test(e&&e.name||''))dlog('renderErr',best.n+' '+(e&&e.message))}).finally(()=>{if(zp&&!kept)tgt.width=tgt.height=0;if(best.rt===rt)best.rt=null;PV.rbusy=0;setTimeout(pump,0)})},
      /* 확대·축소: 지금 그림은 CSS로 늘어난 채 그대로 두고, 새 크기 그림은 한 쪽씩 차례로(가운데 쪽부터) 그려 바꿔 끼운다. 여러 쪽을 한꺼번에 다시 그리면 아이패드가 멈춤 */
      rezoom=pg=>{if(pg.rt){try{pg.rt.cancel()}catch(e){}pg.rt=null}pg.d=pvD(pg);pg.ink.width=pg.ink.height=0;pvDraw(pg);pg.zp=1;PV.rq.add(pg);PV.zoomAt=performance.now();pump()},
      budget=keep=>{   // 아이패드 사파리는 캔버스 메모리가 넘치면 쪽이 하얗게·잘려 보인다: 살아 있는 쪽의 화소 합을 제한하고 먼 쪽부터 내린다
@@ -5762,8 +5763,10 @@ function pvFreeze(){try{const box=$('#pdfPages');if(!box||!PV.pages)return null;
   for(const pg of PV.pages){const r=pg.wrap.getBoundingClientRect();if(r.bottom<y0||r.top>y1||r.right<x0||r.left>x1)continue;g.fillStyle='#fff';g.fillRect(r.left,r.top,r.width,r.height);g.strokeStyle=getComputedStyle(pg.wrap).borderTopColor;g.lineWidth=1;g.strokeRect(r.left+0.5,r.top+0.5,r.width-1,r.height-1);
     for(const k of [pg.c,pg.ink])if(k.width&&k.height){const q=k.getBoundingClientRect();g.drawImage(k,q.left,q.top,q.width,q.height)}}
   document.body.appendChild(c);return c}catch(e){dlog('freezeErr',e&&e.message);return null}}
-function pvFreezeDo(fn){const f=pvFreeze();if(!f){fn();return}const off=()=>{f.remove();f.width=f.height=0};
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{try{fn()}catch(e){console.error(e)}requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(off,120)))}))}   /* 덮은 화면이 먼저 나온 다음 프레임에 바꾸고, 바뀐 화면이 자리 잡은 뒤 걷는다 */
+function pvFreezeDo(fn){const f=pvFreeze();if(!f){fn();return}let gone=0;const off=()=>{if(gone)return;gone=1;removeEventListener('pointerdown',now,true);f.remove();f.width=f.height=0},
+    fade=()=>{if(gone)return;f.style.transition='opacity .18s ease-out';f.style.opacity='0';setTimeout(off,220)},now=()=>off();
+  addEventListener('pointerdown',now,true);   /* 얼린 화면이 덮인 동안 다시 만지면 바로 걷음 */
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{try{fn()}catch(e){console.error(e)}requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(fade,180)))}))}   /* LITE: 얼린 화면을 한 번에 치우면 사파리가 새 배율로 다시 칠하는 순간이 '번쩍' 보임 → 조금 더 덮어 두었다가 서서히 걷는다 */   /* 덮은 화면이 먼저 나온 다음 프레임에 바꾸고, 바뀐 화면이 자리 잡은 뒤 걷는다 */
 function pvZLabel(){const b=$('#pvZ');if(b)b.textContent=Math.round((PV.z||1)*100)+'%'}
 function pvZoom(z,anchor,target){z=Math.max(0.6,Math.min(3,Math.round(z*100)/100));const old=PV.z||1;if(!PV.pages||!PV.pages.length||!PV.inner||Math.abs(z-old)<0.005){PV.z=z;pvZLabel();return}const TZ=performance.now();
   const box=$('#pdfPages'),inn=PV.inner,r0=inn.getBoundingClientRect(),ax=anchor?anchor.x:innerWidth/2,ay=anchor?anchor.y:innerHeight/2,tx=target?target.x:ax,ty=target?target.y:ay,ux=(ax-r0.left)/old,uy=(ay-r0.top)/old;
