@@ -2975,7 +2975,7 @@ async function quickFind0(file,handle,bytes,doc,textPdf,pages,replace){if(SCANNI
   $('#scStop').onclick=()=>{if(SCANNING){SCANNING.stop=true;SCANNING.user=true}const b=$('#scStop');b.disabled=true;b.classList.add('ing');b.innerHTML='<span class="spin" aria-hidden="true"></span>멈추는 중… 지금 보는 쪽까지 정리해요';dlog('scStop',file.name.slice(0,40))};
   if($('#scSkip'))$('#scSkip').onclick=()=>{if(SCANNING)SCANNING.stop=true;$('#scSkip').disabled=true;$('#scSkip').textContent='건너뛰는 중…'};
   let A=null,err=null;const t0=Date.now();let QL={msg:'준비 중',nk:0,pct:1};
-  const qRender=()=>{const pr=$('#scProg');const el=Math.round((Date.now()-t0)/1000),pct=QL.pct;if(pr)pr.innerHTML=progHTML(pct,'정답 읽는 중',`${QL.nk?`정답 ${QL.nk}개`:esc(QL.msg.replace(/\(.*\)|…/g,''))}${pct>=8&&el>=3?` · 약 ${(r=>r>=60?Math.round(r/60)+'분':r+'초')(Math.max(1,Math.round(el*(100-pct)/pct)))} 남음`:''}`)};const qT=setInterval(qRender,1000);
+  const qRender=()=>{const pr=$('#scProg');const el=Math.round((Date.now()-t0)/1000),pct=QL.pct;try{if(BGQ)BGQ.q={pct:Math.round(pct),nk:QL.nk,msg:String(QL.msg||'').replace(/\(.*\)|…/g,'').trim(),rem:pct>=8&&el>=3?(r=>r>=60?Math.round(r/60)+'분':r+'초')(Math.max(1,Math.round(el*(100-pct)/pct))):''}}catch(e){}   /* 뒤에서 읽는 동안 GO 아래·알림에 진행률을 보여 준다 (무엇을 기다리는지 모르면 답답하다) */if(pr)pr.innerHTML=progHTML(pct,'정답 읽는 중',`${QL.nk?`정답 ${QL.nk}개`:esc(QL.msg.replace(/\(.*\)|…/g,''))}${pct>=8&&el>=3?` · 약 ${(r=>r>=60?Math.round(r/60)+'분':r+'초')(Math.max(1,Math.round(el*(100-pct)/pct)))} 남음`:''}`)};const qT=setInterval(qRender,1000);
   const FOOT_NAME=/마플\s*교과서/;   /* 이름으로 바로 아는 책: 마플교과서는 책 뒤 빠른 정답이 없고 문제마다 아래에 정답 → 찾기 없이 바로 */
   if(!pages&&!replace&&FOOT_NAME.test(file.name||'')){SCANNING=null;clearInterval(qT);dlog('footAns','name');{const T=await scanLazyInit(file,handle,bytes,doc,{});T.footAns=1;if(P===T)showInfo();await recentSave(T);bgDeliver(T)}return}
   if(!pages&&!replace){let fp=false;try{fp=await footProbe(doc,(i,n)=>{QL={msg:'쪽 아래 정답 확인',nk:0,pct:Math.round(2+i/n*6)};qRender()},()=>SCANNING&&SCANNING.stop)}catch(e){console.error(e)}
@@ -3638,16 +3638,19 @@ async function autoCheck(){   // Ctrl+S로 저장되면 자동 채점
   gradeFile(f,true)}
 /* EBS·자이스토리 정답 찾기. EBSV 2: 인쇄 쪽 번호를 잘못 읽어 못 찾았던 문항은 한 번 더 찾는다 */
 const EBSV=7,ebsNeed=p=>p.key&&p.key.ebs&&(!p.key.ebsT||(p.key.ebsV||0)<EBSV);   /* EBSV 3: 예전 버전이 엉뚱한 칸(옆 줄 번호)을 정답으로 잡은 것이 남아 있을 수 있어 한 번씩 다시 찾는다 */
-async function ebsFill(p){if(!ebsNeed(p))return;try{const k=p.key.xi?await xiKey(p):await ebsKey(p);p.key=Object.assign(k||(((P&&P.qDup)||0)>=10&&!p.key.xi?{text:'✓',kind:'self',ebs:1,ebsT:1,ebsMiss:1}:Object.assign({},p.key,{ebsT:1})),{ebsV:EBSV})}   /* 단원마다 번호가 다시 시작하는 책에서 구역을 못 찾으면 번호만으로 짝지은 칸(다른 단원일 수 있음)을 쓰지 않는다 */catch(e){console.error(e);p.key.ebsE=(p.key.ebsE||0)+1;if(p.key.ebsE>=3){p.key.ebsT=1;p.key.ebsV=EBSV}}}   /* 글자 인식이 멈춘 경우 등: 바로 '직접 채점'으로 굳히지 않고 다음에 다시 */
+async function ebsFill(p){if(!ebsNeed(p))return;try{const k=p.key.xi?await xiKey(p):await ebsKey(p);if(!k&&keysBg()&&!(P.seqAns&&P.seqAns.ansKey)){dlog('ebsWait',p.q);return}   /* 책 뒤 정답 쪽을 아직 다 못 찾았으면 '못 찾음'으로 굳히지 않고 다음 GO 때 다시 (그동안은 직접 채점) */
+  p.key=Object.assign(k||(((P&&P.qDup)||0)>=10&&!p.key.xi?{text:'✓',kind:'self',ebs:1,ebsT:1,ebsMiss:1}:Object.assign({},p.key,{ebsT:1})),{ebsV:EBSV})}   /* 단원마다 번호가 다시 시작하는 책에서 구역을 못 찾으면 번호만으로 짝지은 칸(다른 단원일 수 있음)을 쓰지 않는다 */catch(e){console.error(e);p.key.ebsE=(p.key.ebsE||0)+1;if(p.key.ebsE>=3){p.key.ebsT=1;p.key.ebsV=EBSV}}}   /* 글자 인식이 멈춘 경우 등: 바로 '직접 채점'으로 굳히지 않고 다음에 다시 */
 /* 학생이 그 쪽을 풀기 시작하면(문제 번호를 읽은 뒤) 정답도 뒤에서 미리 찾아 둔다 → 채점 버튼을 누를 때는 거의 끝나 있다 */
 function ebsPrefetch(P0,pg){if(!P0||!(P0.ebs||P0.xi))return;const L=P0.problems.filter(p=>p.page===pg&&ebsNeed(p));if(!L.length)return;
   EBS.pre=(EBS.pre||Promise.resolve()).then(async()=>{if(P!==P0)return;const t=performance.now();for(const p of L){if(P!==P0)return;await ebsFill(p)}dlog('ebsPre',pg+'쪽 '+L.length+'개 '+Math.round(performance.now()-t)+'ms');try{await recentSave()}catch(e){}}).catch(e=>console.error(e))}
 let GT0=0;
 /* 문제집을 넣자마자 풀 때: 빠른 정답을 뒤에서 다 읽기 전에는 GO(채점)를 막는다 → 다 읽으면 초록색으로 */
-function keysPending(){try{return !!(BGQ&&P&&bookOf(P.name)===BGQ.name)}catch(e){return false}}
-setInterval(()=>{const w=keysPending();for(const id of ['pvGrade','fGrade']){const b=document.getElementById(id);if(!b)continue;b.classList.toggle('keyWait',w);b.setAttribute('aria-disabled',w?'true':'false');const sm=b.querySelector('.goS');if(sm){if(w&&sm.textContent!=='정답 읽는 중')sm.textContent='정답 읽는 중';else if(!w&&sm.textContent==='정답 읽는 중')sm.textContent='채점하기'}}},700);
+function keysBg(){try{return !!(BGQ&&P&&bookOf(P.name)===BGQ.name)}catch(e){return false}}
+function keysPending(){try{return keysBg()&&!P.ebs&&!P.xi}catch(e){return false}}   /* EBS(올림포스·수능특강 등)·자이 번호 책은 채점할 때 그 단원 정답을 따로 찾으므로 책 뒤 빠른 정답을 다 읽을 때까지 GO를 막지 않는다 */
+function keysMsg(){const q=BGQ&&BGQ.q;if(!q)return '📘 책 뒤 정답을 읽는 중이에요. 다 읽으면 GO가 초록색으로 바뀌어요';return `📘 책 뒤 정답을 읽는 중이에요 · ${q.pct}%${q.nk?` · 정답 ${q.nk}개 읽음`:q.msg?' · '+esc(q.msg):''}${q.rem?` · 약 ${q.rem} 남음`:''}<br><small>다 읽으면 GO가 초록색으로 바뀌어요. 그동안 문제를 풀어 두면 돼요 (화면은 켜 두세요)</small>`}
+setInterval(()=>{const w=keysPending();for(const id of ['pvGrade','fGrade']){const b=document.getElementById(id);if(!b)continue;b.classList.toggle('keyWait',w);b.setAttribute('aria-disabled',w?'true':'false');const sm=b.querySelector('.goS');if(sm){const lab=w?('정답 읽는 중'+(BGQ&&BGQ.q&&BGQ.q.pct?' '+BGQ.q.pct+'%':'')):'';if(w&&sm.textContent!==lab)sm.textContent=lab;else if(!w&&/^정답 읽는 중/.test(sm.textContent))sm.textContent='채점하기'}}},700);
 async function gradeFile(file,auto,mem){
-  if(keysPending()){if(!auto)try{pvToast('📘 아직 정답을 읽는 중이에요. 다 읽으면 GO가 초록색으로 바뀌고 채점할 수 있어요')}catch(e){}dlog('goWait',auto?'auto':'tap');return}
+  if(keysPending()){if(!auto)try{pvToast(keysMsg())}catch(e){}dlog('goWait',auto?'auto':'tap');return}
   if(S.busy)return;GT0=performance.now();dlog('GO',(typeof FOC!=='undefined'&&FOC.on?'focus ':'page ')+(GRADE_ONLY!=null?GRADE_ONLY:'')+(typeof FOC!=='undefined'&&FOC.retry?' retry':''));
   if(!mem&&P.handle&&file.lastModified===P.lastMod){if(auto)return;fb('nk',Object.keys(S.state).length?'새로 저장된 필기가 없습니다. PDF에서 고친 뒤 꼭 Ctrl+S로 저장하고 다시 누르세요.':'아직 저장된 필기가 없습니다. PDF에서 Ctrl+S로 저장한 뒤 누르세요.');return}
   fb('nk',auto?'저장을 확인해 자동 채점 중…':'저장된 필기를 읽는 중…');$('#grade').disabled=true;S.busy=true;
@@ -5590,7 +5593,7 @@ function fShowTitle(){const p=FOC.p;if(!p)return;const i=FOC.list.indexOf(p);$('
 function goResult(){const r=S&&S.goRes;if(!r||!r.n)return;const p2=n=>String(n).padStart(2,'0');let first=false;try{const k=dayKey(Date.now());if(LS.get('goDay','')!==k){LS.set('goDay',k);first=true}}catch(e){}   /* 하루 첫 GO만 '채점 끝 → 이제 공부' */
   pvToast(`<div class="goRes">${first?'<div class="goNow">채점 끝 → <b>이제 공부</b></div>':''}<div><b>${r.ok} / ${r.n}</b><small>정답</small></div>${r.gap?`<div><b class="gp">다시 볼 문제 ${p2(r.gap)}</b><small>교정할 문제 ${r.gap}개</small></div>`:''}<small>푼 문제만 채점했어요 · 안 푼 문제는 그대로${r.chk?` · 직접 확인 ${r.chk}`:''}</small></div>`,r.gap?[['다시 볼 문제 확인 →',async()=>{await pvEnd();view('ana')}]]:[])}
 function goHtml(){return '<span class="goT">GO</span><small class="goS">채점하기</small>'}
-async function pvGrade(){if(keysPending()){try{pvToast('📘 아직 정답을 읽는 중이에요. 다 읽으면 GO가 초록색으로 바뀌고 채점할 수 있어요')}catch(e){}dlog('goWait','tap');return}GRADE_ONLY=FOC.on&&FOC.p?FOC.p.q:null;try{regFix();abIndex();regStale()}catch(e){}try{setTimeout(()=>{if(!S||!S.state||!P)return;for(const p of P.problems){const st=S.state[p.q];if(st&&p._pr&&p.ab&&!st.parts)st.parts=p._pr.slice()}},0)}catch(e){}
+async function pvGrade(){if(keysPending()){try{pvToast(keysMsg())}catch(e){}dlog('goWait','tap');return}GRADE_ONLY=FOC.on&&FOC.p?FOC.p.q:null;try{regFix();abIndex();regStale()}catch(e){}try{setTimeout(()=>{if(!S||!S.state||!P)return;for(const p of P.problems){const st=S.state[p.q];if(st&&p._pr&&p.ab&&!st.parts)st.parts=p._pr.slice()}},0)}catch(e){}
   if(PV.review){const ug=ungraded().length||pvNewInk();pvResume();if(!ug&&!FOC.on)return}   /* 채점한 뒤 답을 고쳤으면(새 필기) [이어 풀기]가 아니라 바로 다시 채점 */   /* 집중 모드는 다시 쓴 답(이미 표시가 있는 문제)도 바로 다시 채점 */   // 채점 안 된 답이 남아 있으면 이어서 학습하기 대신 바로 채점
   if(!S||PV.busy)return;PV.busy=true;pvStatus();$('#pvGrade').disabled=true;
   try{const job=pvCommit();if(job)pvPersist(job);const saved=!!job;
