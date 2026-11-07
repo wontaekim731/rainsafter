@@ -5766,18 +5766,19 @@ function pvFreeze(){try{const box=$('#pdfPages');if(!box||!PV.pages)return null;
 function pvFreezeDo(fn){const f=pvFreeze();if(!f){fn();return}let gone=0;const off=()=>{if(gone)return;gone=1;removeEventListener('pointerdown',now,true);f.remove();f.width=f.height=0},
     fade=()=>{if(gone)return;f.style.transition='opacity .12s linear';f.style.opacity='0';setTimeout(off,160)},now=()=>off();
   addEventListener('pointerdown',now,true);   /* 얼린 화면이 덮인 동안 다시 만지면 바로 걷음 */
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{try{fn()}catch(e){console.error(e)}const T=performance.now();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{try{const o=fn(f);if(o&&(Math.abs(o.dx)>1||Math.abs(o.dy)>1)){f.style.transition='transform .24s cubic-bezier(.2,.8,.2,1)';requestAnimationFrame(()=>{f.style.transform=`translate(${o.dx}px,${o.dy}px)`})}}catch(e){console.error(e)}const T=performance.now();   /* LITE: 확대가 끝난 자리로 얼린 화면을 0.24초 동안 미끄러뜨림 */
     /* LITE: 보이는 쪽이 새 배율로 선명하게 다 그려질 때까지(최대 1.5초) 얼린 화면을 덮어 둔다 → 손 뗀 화면에서 바로 선명한 화면으로. 중간(빈 칸·흐린 그림·다시 칠하는 순간)이 안 보인다 */
     const vis=()=>PV.pages.filter(p=>{if(!p.live)return false;const r=p.wrap.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight}),
-      wait=()=>{if(gone)return;const busy=PV.rbusy||vis().some(p=>p.zp||PV.rq.has(p)||p.rt);if(busy&&performance.now()-T<1500){setTimeout(wait,50);return}dlog('frz',Math.round(performance.now()-T)+'ms'+(busy?' 시간초과':''));requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(fade,60)))};
+      wait=()=>{if(gone)return;const busy=PV.rbusy||vis().some(p=>p.zp||PV.rq.has(p)||p.rt)||performance.now()-T<300;if(busy&&performance.now()-T<1500){setTimeout(wait,50);return}dlog('frz',Math.round(performance.now()-T)+'ms'+(busy?' 시간초과':''));requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(fade,60)))};
     setTimeout(wait,80)}))}   /* 덮은 화면이 먼저 나온 다음 프레임에 바꾸고, 바뀐 화면이 자리 잡은 뒤 걷는다 */
 function pvZLabel(){const b=$('#pvZ');if(b)b.textContent=Math.round((PV.z||1)*100)+'%'}
 function pvZoom(z,anchor,target){z=Math.max(0.6,Math.min(3,Math.round(z*100)/100));const old=PV.z||1;if(!PV.pages||!PV.pages.length||!PV.inner||Math.abs(z-old)<0.005){PV.z=z;pvZLabel();return}const TZ=performance.now();
   const box=$('#pdfPages'),inn=PV.inner,r0=inn.getBoundingClientRect(),ax=anchor?anchor.x:innerWidth/2,ay=anchor?anchor.y:innerHeight/2,tx=target?target.x:ax,ty=target?target.y:ay,ux=(ax-r0.left)/old,uy=(ay-r0.top)/old;
   PV.z=z;pvZLabel();pvApplyZ();const r1=inn.getBoundingClientRect();window.scrollBy(0,(r1.top+uy*z)-ty);box.scrollLeft+=(r1.left+ux*z)-tx;   /* 손가락 아래 내용이 그 자리에 그대로 */
   /* 보이는 쪽은 지금 그림을 늘린 채로 두고 차례로 선명하게 다시 그린다. 안 보이는 쪽은 비운다 */
+  const r2=inn.getBoundingClientRect(),off={dx:Math.round(r2.left+ux*z-tx),dy:Math.round(r2.top+uy*z-ty)};   /* LITE: 화면 끝·가운데 정렬 때문에 손가락 자리에 못 맞춘 만큼 */
   for(const pg of PV.pages){if(!pg.live)continue;const r=pg.wrap.getBoundingClientRect();if(r.bottom>-300&&r.top<innerHeight+300)PV.rezoom(pg);else PV.hide(pg,true)}
-  setTimeout(()=>dlog('zoom',Math.round(z*100)+'% '+Math.round(performance.now()-TZ)+'ms'),0)}
+  setTimeout(()=>dlog('zoom',Math.round(z*100)+'% '+Math.round(performance.now()-TZ)+'ms'+(off.dx||off.dy?` 어긋남 ${off.dx},${off.dy}`:'')),0);return off}
 addEventListener('pointerdown',()=>{if(PV.inert){cancelAnimationFrame(PV.inert);PV.inert=0}},true);   /* 미끄러지는 중에 화면 어디든 닿으면 바로 멈춤 */
 function pinchAbort(){const p=PV.pinch;if(!p)return;PV.pinch=null;PV.pinchEnd=performance.now();cancelAnimationFrame(p.raf);try{pvApplyZ()}catch(e){}}
 /* 손가락과 손바닥 구분: 닿은 면이 넓으면(반지름 PALM_R 이상) 손바닥 → 화면 넘기기·확대·선택·쓰기 모두 하지 않는다 */
@@ -5795,23 +5796,28 @@ function pvPinch(box){if(box.dataset.pinch)return;box.dataset.pinch=1;const tp=n
     if(PV.pinch&&tp.size>=2){const t=two(),z=PV.z||1;PV.pinch.s=Math.max(0.6/z,Math.min(3/z,t.d/PV.pinch.d0));PV.pinch.cx=t.cx;PV.pinch.cy=t.cy;const P1=PV.pinch;
       if(!P1.raf)P1.raf=requestAnimationFrame(()=>{P1.raf=0;if(PV.pinch!==P1)return;const s=P1.s,R0=P1.R,tx=(P1.cx-R0.left)-s*(P1.ax-R0.left),ty=(P1.cy-R0.top)-s*(P1.ay-R0.top);PV.inner.style.transform=`translate(${tx}px,${ty}px) scale(${z*s})`;P1.as=s;P1.acx=P1.cx;P1.acy=P1.cy});e.stopPropagation();e.preventDefault()}},true);   /* 미리보기: 안쪽 상자 하나만 늘린다 */
   const end=e=>{if(e.pointerType!=='touch')return;tp.delete(e.pointerId);if(PV.pinch&&tp.size<2){const p=PV.pinch;PV.pinch=null;PV.pinchEnd=performance.now();cancelAnimationFrame(p.raf);
-      const ps=p.as||1,pcx=p.acx,pcy=p.acy;if(Math.abs(ps-1)<=0.04){pvApplyZ()}else pvFreezeDo(()=>{pvApplyZ();pvZoom((PV.z||1)*ps,{x:p.ax,y:p.ay},{x:pcx,y:pcy})});e.stopPropagation()}};
+      const ps=p.as||1,pcx=p.acx,pcy=p.acy;if(Math.abs(ps-1)<=0.04){pvApplyZ()}else pvFreezeDo(()=>{pvApplyZ();return pvZoom((PV.z||1)*ps,{x:p.ax,y:p.ay},{x:pcx,y:pcy})});e.stopPropagation()}};
   box.addEventListener('pointerup',end,true);box.addEventListener('pointercancel',end,true);
   /* LITE · 아이패드: 두 손가락 확대를 터치 신호로 직접 처리한다.
      포인터 신호로 하면 사파리가 손가락 하나를 '화면 넘기기'로 가져가는 순간 pointercancel이 와서, 손가락을 아직 떼지 않았는데도 확대가 끝난 걸로 처리(확정·다시 그리기)되고
      남은 손가락으로 화면이 밀리며 번쩍였다. 두 손가락이 닿는 순간 기본 넘기기를 막고 끝까지 앱이 확대한다 */
-  if(IOS){const fing=e=>[...e.touches].filter(t=>t.touchType!=='stylus'&&(t.radiusX||0)<PALM_R),
+  if(IOS){let penDown=0,fT={};document.addEventListener('pointerdown',e=>{if(e.pointerType==='pen'){penDown=1;if(PV.pinch&&PV.pinch.touch)tAbort('pen')}},true);document.addEventListener('pointerup',e=>{if(e.pointerType==='pen')penDown=0},true);document.addEventListener('pointercancel',e=>{if(e.pointerType==='pen')penDown=0},true);
+    /* 펜이 닿거나 펜을 쓴 직후에는 확대로 보지 않는다 (손바닥이 손가락 두 개로 잡혀 확대가 시작되면 펜이 안 써졌음) */
+    const tAbort=why=>{const p=PV.pinch;if(!p||!p.touch)return;PV.pinch=null;cancelAnimationFrame(p.raf);try{pvApplyZ()}catch(e){}dlog('pinch','취소 '+why)},
+      sty=e=>[...e.touches].some(t=>t.touchType==='stylus'),
+      fing=e=>[...e.touches].filter(t=>t.touchType!=='stylus'&&(t.radiusX||0)<PALM_R),
       dd=f=>Math.hypot(f[0].clientX-f[1].clientX,f[0].clientY-f[1].clientY),cc=f=>({x:(f[0].clientX+f[1].clientX)/2,y:(f[0].clientY+f[1].clientY)/2});
-    box.addEventListener('touchstart',e=>{const f=fing(e);if(f.length!==2||!PV.inner||PV.pinch)return;if(PV.pages.some(p=>p.cur&&!p.curTouch)||Date.now()-(PV.penT||0)<400)return;
+    box.addEventListener('touchstart',e=>{const now=performance.now();for(const t of e.changedTouches)fT[t.identifier]=now;if(sty(e)){tAbort('stylus');return}const f=fing(e);if(f.length!==2||!PV.inner||PV.pinch)return;
+      if(penDown||PV.pages.some(p=>p.cur&&!p.curTouch)||Date.now()-(PV.penT||0)<1500)return;if(Math.abs((fT[f[0].identifier]||0)-(fT[f[1].identifier]||0))>350)return;   /* 두 손가락이 거의 같이 닿았을 때만 (손바닥이 차례로 닿는 것과 구분) */
       if(e.cancelable)e.preventDefault();for(const pg of PV.pages)if(pg.cur&&pg.curTouch){pg.cur=null;pvDraw(pg)}const c=cc(f);PV.pinch={touch:1,d0:Math.max(20,dd(f)),cx:c.x,cy:c.y,ax:c.x,ay:c.y,s:1,R:PV.inner.getBoundingClientRect()};dlog('pinch','시작'+(e.cancelable?'':' (넘기는 중)'))},{capture:true,passive:false});
-    box.addEventListener('touchmove',e=>{const P1=PV.pinch;if(!P1||!P1.touch)return;if(e.cancelable)e.preventDefault();const f=fing(e);if(f.length<2)return;const z=PV.z||1,c=cc(f);P1.s=Math.max(0.6/z,Math.min(3/z,dd(f)/P1.d0));P1.cx=c.x;P1.cy=c.y;
+    box.addEventListener('touchmove',e=>{const P1=PV.pinch;if(!P1||!P1.touch)return;if(sty(e)||penDown){tAbort('stylus');return}if(e.cancelable)e.preventDefault();const f=fing(e);if(f.length<2)return;const z=PV.z||1,c=cc(f);P1.s=Math.max(0.6/z,Math.min(3/z,dd(f)/P1.d0));P1.cx=c.x;P1.cy=c.y;
       if(!P1.raf)P1.raf=requestAnimationFrame(()=>{P1.raf=0;if(PV.pinch!==P1)return;const s=P1.s,R0=P1.R,tx=(P1.cx-R0.left)-s*(P1.ax-R0.left),ty=(P1.cy-R0.top)-s*(P1.ay-R0.top);PV.inner.style.transform=`translate(${tx}px,${ty}px) scale(${z*s})`;P1.as=s;P1.acx=P1.cx;P1.acy=P1.cy})},{capture:true,passive:false});
     const tend=e=>{const p=PV.pinch;if(!p||!p.touch||fing(e).length>=2)return;PV.pinch=null;PV.pinchEnd=performance.now();cancelAnimationFrame(p.raf);const ps=p.as||1,pcx=p.acx,pcy=p.acy;
-      if(Math.abs(ps-1)<=0.04){pvApplyZ()}else pvFreezeDo(()=>{pvApplyZ();pvZoom((PV.z||1)*ps,{x:p.ax,y:p.ay},{x:pcx,y:pcy})})};
+      if(Math.abs(ps-1)<=0.04){pvApplyZ()}else pvFreezeDo(()=>{pvApplyZ();return pvZoom((PV.z||1)*ps,{x:p.ax,y:p.ay},{x:pcx,y:pcy})})};
     box.addEventListener('touchend',tend,{capture:true});box.addEventListener('touchcancel',tend,{capture:true})}
   box.addEventListener('wheel',e=>{if(!e.ctrlKey||!PV.inner)return;e.preventDefault();const z=PV.z||1;let W=PV.wz;if(!W){W=PV.wz={s:1,ax:e.clientX,ay:e.clientY,R:PV.inner.getBoundingClientRect()}}   /* LITE: 휠 한 칸마다 다시 그리지 않는다 */
     W.s=Math.max(0.6/z,Math.min(3/z,W.s*(e.deltaY<0?1.1:1/1.1)));PV.inner.style.transform=`translate(${(W.ax-W.R.left)*(1-W.s)}px,${(W.ay-W.R.top)*(1-W.s)}px) scale(${z*W.s})`;
-    clearTimeout(W.t);W.t=setTimeout(()=>{PV.wz=null;pvFreezeDo(()=>{pvApplyZ();pvZoom(z*W.s,{x:W.ax,y:W.ay},{x:W.ax,y:W.ay})})},180)},{passive:false})}
+    clearTimeout(W.t);W.t=setTimeout(()=>{PV.wz=null;pvFreezeDo(()=>{pvApplyZ();return pvZoom(z*W.s,{x:W.ax,y:W.ay},{x:W.ax,y:W.ay})})},180)},{passive:false})}
 /* 펜 색·굵기 (기기에 기억) */
 const PEN_C=[['#111827','검정'],['#1d4ed8','파랑'],['#15803d','초록']],PEN_W=[[0.7,'가늘게'],[1,'보통'],[1.6,'굵게']];
 try{const v=JSON.parse(localStorage.getItem('njPen')||'{}');PV.color=v.c||'#1d4ed8';PV.width=v.w||1}catch(e){PV.color='#1d4ed8';PV.width=1}
