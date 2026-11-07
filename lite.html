@@ -3910,7 +3910,9 @@ async function fPrinted(p,pg,X0,X1,Yt,Yb){if((p.npr!==undefined&&p.nprPos)||p._n
 const fFromPage=(pg,x,y,m)=>{m=m||FOC;const X=x/pg.k+(pg.ox||0),Y=pg.H-y/pg.k;return {x:(X-m.X0)*m.zf,y:(m.Yt-Y)*m.zf}};
 const fToPage=(pg,x,y,m)=>{m=m||FOC;const X=x/m.zf+m.X0,Y=m.Yt-y/m.zf;return {x:(X-(pg.ox||0))*pg.k,y:(pg.H-Y)*pg.k}};
 const fMap=k=>k==='a'?FOC.ma:FOC;   /* 'a' = 답란 (같은 쪽, 문제 칸 바로 아래 띠) */
-function fPath(g,pts,w,col,straight){if(!pts.length)return;g.strokeStyle=col||'#1d4ed8';g.lineWidth=w;g.beginPath();g.moveTo(pts[0].x,pts[0].y);if(pts.length===1)g.lineTo(pts[0].x+0.01,pts[0].y);if(straight){for(let i=1;i<pts.length;i++)g.lineTo(pts[i].x,pts[i].y);g.stroke();return}   /* 도형·채점 표시(△ 등)는 꼭짓점을 살린다 */
+/* LITE: 펜 떨림 다듬기 — 점마다 앞뒤 점과 1:2:1로 평균(끝점은 그대로). 저장되는 점은 그대로이고 그릴 때만 (채점·글자 읽기 영향 없음) */
+function inkSmooth(p){const n=p.length;if(n<5)return p;let a=p;for(let k=0;k<2;k++){const o=[a[0]];for(let i=1;i<n-1;i++)o.push({x:(a[i-1].x+2*a[i].x+a[i+1].x)/4,y:(a[i-1].y+2*a[i].y+a[i+1].y)/4});o.push(a[n-1]);a=o}return a}
+function fPath(g,pts,w,col,straight){if(!pts.length)return;if(!straight)pts=inkSmooth(pts);g.strokeStyle=col||'#1d4ed8';g.lineWidth=w;g.beginPath();g.moveTo(pts[0].x,pts[0].y);if(pts.length===1)g.lineTo(pts[0].x+0.01,pts[0].y);if(straight){for(let i=1;i<pts.length;i++)g.lineTo(pts[i].x,pts[i].y);g.stroke();return}   /* 도형·채점 표시(△ 등)는 꼭짓점을 살린다 */
   for(let i=1;i<pts.length-1;i++){const mx=(pts[i].x+pts[i+1].x)/2,my=(pts[i].y+pts[i+1].y)/2;g.quadraticCurveTo(pts[i].x,pts[i].y,mx,my)}if(pts.length>1){const l=pts[pts.length-1];g.lineTo(l.x,l.y)}g.stroke()}
 function fDrawSoon(){if(FOC._raf)return;FOC._raf=requestAnimationFrame(()=>{FOC._raf=0;fDraw()})}
 function fDrawOn(c,m){const pg=FOC.pg;if(!c||!c.width||!m)return;const g=c.getContext('2d'),d=FOC.d,r=m.zf/pg.k;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,c.width,c.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';
@@ -4933,7 +4935,8 @@ function abShow(g,pg,AB){const k=pg.k,H=pg.H,ox=pg.ox||0,X=x=>(x-ox)*k,Y=y=>(H-y
     g.fillStyle='rgba(37,99,235,.85)';g.font='700 '+Math.max(9,Math.round(9*k))+'px sans-serif';g.textAlign='right';g.fillText('답',bx-3,by+Math.max(9,Math.round(10*k)));g.restore();
     for(const s of e.ink){g.strokeStyle=s.c||col;g.lineWidth=Math.max(1.2,2*(s.w||1)*sc);g.beginPath();s.pts.forEach((t,i)=>{i?g.lineTo(mx(t),my(t)):g.moveTo(mx(t),my(t))});g.stroke()}}}
 function pvDraw(pg){if(FOC.on&&FOC.pg===pg)fDrawSoon();if(!pg.live)return;if(!pg.ink.width){if(!(pg.saved.length||pg.marks.length||pg.fresh.length||pg.cur||(PV.sel&&PV.sel.pg===pg)))return;if(!pvInk(pg))return}const g=pg.g,k=pg.k,H=pg.H,d=pg.di||pg.d||window.devicePixelRatio||1;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,pg.ink.width,pg.ink.height);g.setTransform(d,0,0,d,0,0);g.lineCap='round';g.lineJoin='round';
-  const line=(pts,css)=>{g.beginPath();pts.forEach((p,i)=>{const x=css?p.x:(p.x-(pg.ox||0))*k,y=css?p.y:(H-p.y)*k;i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke()};
+  const line=(pts,css)=>{let q=pts.map(p=>({x:css?p.x:(p.x-(pg.ox||0))*k,y:css?p.y:(H-p.y)*k}));g.beginPath();if(q.length<=6){q.forEach((p,i)=>i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y));g.stroke();return}   /* 점이 적은 것(도형·채점 표시)은 꼭짓점 그대로 */
+    q=inkSmooth(q);g.moveTo(q[0].x,q[0].y);for(let i=1;i<q.length-1;i++)g.quadraticCurveTo(q[i].x,q[i].y,(q[i].x+q[i+1].x)/2,(q[i].y+q[i+1].y)/2);g.lineTo(q[q.length-1].x,q[q.length-1].y);g.stroke()};   /* LITE: 저장된 필기도 직선 이음 대신 부드러운 곡선 (펜을 떼는 순간 삐뚤삐뚤해지던 것) */
   const AB=abOnPage(pg),ox0=pg.ox||0,inAB=(pts,css)=>{if(!AB.length||!pts.length)return null;let x=0,y=0;for(const t of pts){x+=css?t.x/k+ox0:t.x;y+=css?H-t.y/k:t.y}x/=pts.length;y/=pts.length;return AB.find(e=>x>=e.a.x0&&x<=e.a.x1&&y>=e.a.y0&&y<=e.a.y1)||null};
   for(const e of AB)e.ink=[];
   for(const s of pg.saved)if(!pg.del.has(s.id)&&!s.f){const e=inAB(s.pts,false);if(e){e.ink.push({pts:s.pts,c:s.c,w:s.w});continue}g.strokeStyle=s.c||'#1d4ed8';g.lineWidth=2*(s.w||1);line(s.pts,false)}
