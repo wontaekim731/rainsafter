@@ -952,6 +952,8 @@ label.dkPick{justify-content:flex-start;cursor:pointer}label.dkPick input{width:
 #recentList .qcL{display:flex;gap:6px;flex:1;min-width:0;flex-wrap:wrap}
 #recentList .qcSt{all:unset;box-sizing:border-box;cursor:pointer;height:32px;display:inline-flex;align-items:center;padding:0 12px;border-radius:99px;font-size:13px;font-weight:800;white-space:nowrap}
 #recentList .qcSt.key{color:var(--omr);border:1.5px dashed var(--omr)}#recentList .qcSt.lv2{color:var(--warn,#F27A5A);background:color-mix(in srgb,var(--warn,#F27A5A) 14%,transparent)}#recentList .qcSt.lv1{color:var(--caution,#E8B04F);background:color-mix(in srgb,var(--caution,#E8B04F) 14%,transparent)}
+#recentList .qcSt.ok{cursor:default;color:var(--omr);background:color-mix(in srgb,var(--omr) 12%,transparent)}
+#recentList .qcOk{font-style:normal;color:var(--omr);font-weight:700}
 #recentList .qcSt.re{color:var(--re,#F2A65A);background:color-mix(in srgb,var(--re,#F2A65A) 14%,transparent)}
 #recentList .qPlan{display:inline-flex;align-items:center;flex:none;margin-left:auto;height:32px;border-radius:99px;border:1.5px dashed var(--line)}#recentList .qPlan.on{border:0;background:color-mix(in srgb,var(--omr) 15%,transparent)}#recentList .qPlan.off{opacity:.5}
 #recentList .qPlan .qStkB{all:unset;cursor:pointer;height:32px;display:inline-flex;align-items:center;padding:0 12px;font-size:13px;font-weight:800;color:var(--muted);white-space:nowrap;margin:0}#recentList .qPlan.on .qStkB{color:var(--omr);padding-right:4px}
@@ -5931,14 +5933,20 @@ async function renderRecent(){let L=[];try{L=(await libAll()).sort((a,b)=>b.at-a
     /* Q 카드 (구조 시안): 표지 칸 · 이름 · 한 줄 상태(+진행 막대) / 아래 줄에 다시 볼 문제 바로가기 · 문제집 스위치. 누르면 열기, 나머지는 ⋯ */
     const pal=['#26463A','#2B3550','#4A3326','#35304A','#3A3A2A','#2A3D4A','#45293A'],cov=pal[[...B.name].reduce((h,c)=>h+c.charCodeAt(0),0)%pal.length];
     const rdy=!B.orig||bookReady(B.orig,L),pct=n&&att.length?Math.round(v.length/n*100):0;
+    const gOK=(()=>{try{if(!rdy||done||!src)return false;const g=GD.get(B.orig?B.orig.name:B.name)||{};if(g.noKey||(g.dpi&&g.dpi<110))return false;const OQ=(src.problems||[]).filter(objQ);return OQ.length>0&&OQ.every(p=>p.key&&String(p.key.text==null?'':p.key.text).trim())}catch(e){return false}})();   /* 객관식 정답이 다 있으면 '채점 가능' (단답형·서술형은 원래 직접 채점) */
     const stt=!rdy?'정답 읽는 중…':done?`${k}회독 끝 · 다시 풀 수 있어요`:att.length?`${k}회독 ${pct}%${pos&&pos.pg>1?` · ${pos.pg}쪽`:''}`:`아직 안 풂${src.n?` · ${src.n}문항`:''}`;
-    return `<div class="rc qc${done?' rcDone':''}${rdy?'':' qcRd'}"><button type="button" class="qcMain" data-go="${esc(go[1])}" aria-label="${esc(B.name)} ${go[0]}"><i class="qcCov" data-cov="${esc(B.name)}" style="background:${cov}" aria-hidden="true"></i><span class="qcT"><b>${esc(bkName(B.name))}</b><small>${stt}</small>${att.length&&n?`<span class="qcBar"><i style="width:${pct}%"></i></span>`:''}</span></button>
+    return `<div class="rc qc${done?' rcDone':''}${rdy?'':' qcRd'}"><button type="button" class="qcMain" data-go="${esc(go[1])}" aria-label="${esc(B.name)} ${go[0]}"><i class="qcCov" data-cov="${esc(B.name)}" style="background:${cov}" aria-hidden="true"></i><span class="qcT"><b>${esc(bkName(B.name))}</b><small>${stt}${gOK?' · <em class="qcOk">✓ 채점 가능</em>':''}</small>${att.length&&n?`<span class="qcBar"><i style="width:${pct}%"></i></span>`:''}</span></button>
       <div class="rcAct qcAct"><button class="iconbtn more" type="button" aria-label="더보기" onclick="this.parentNode.classList.toggle('open')">⋯</button><div class="moreMenu">${B.orig&&inStk.has(B.orig.name)?`<button class="del" type="button" data-plan="${esc(B.orig.name)}">📅 범위 · 기간</button>`:''}<button class="del" type="button" data-rnbook="${esc(B.name)}">✏️ 이름 바꾸기</button>${B.orig?`<button class="del" type="button" data-fresh="${esc(B.orig.name)}">🔁 새 회독 시작</button>`:''}${att.length?`<button class="del" type="button" data-wx="${esc(B.name)}">📄 틀린 문제만 뽑기</button>`:''}
         ${noteOpt?`<button class="del" type="button" data-note="${esc(B.orig.name)}">노트 앱에서 푼 PDF 넣기</button>`:''}${cur.scan&&!cur.lazy&&!done?`<button class="del tOnly" type="button" data-more="${esc(cur.name)}">쪽 더 읽기</button>`:''}${att.length?`<button class="del tOnly" type="button" data-ex="${esc(cur.name)}">내보내기</button>`:''}<button class="del" type="button" data-rmbook="${esc(B.name)}">🗑 문제집 삭제</button></div></div>
       <div class="qcBot">${(()=>{const nm=B.orig?B.orig.name:B.name,gb=gdBadge(nm,{problems:(src&&src.problems)||[],orig:B.orig||null}),g=GD.get(nm)||{},sk=src&&src.solKeys&&Object.keys(src.solKeys).length;
         /* 상태는 한 줄에 같은 모양으로: [해설지 넣기 | 채점 주의] [다시 풀기 N] ………… [계획] — '자동 채점'·'다시 볼 문제 없음'처럼 문제가 없을 때는 아무것도 안 띄운다 */
-        const noKey=!done&&!g.ebs&&(src.scan?(g.noKey||(!sk&&!src.seqAns&&!src.footAns&&!src.ebs)):(src.miss&&src.miss>=(src.n||0))),part=!done&&!src.scan&&src.miss&&src.miss<(src.n||0);
-        const st=noKey?`<button type="button" class="qcSt key" data-key="${esc(src.name)}">＋ 해설지 넣기</button>`:gb?gb:part?`<button type="button" class="qcSt lv1" data-key="${esc(src.name)}">△ 정답 ${src.miss}개 없음</button>`:'';
+        const noKey=!done&&!g.ebs&&(src.scan?(g.noKey||(!sk&&!src.seqAns&&!src.footAns&&!src.ebs)):(src.miss&&src.miss>=(src.n||0)));
+        /* 채점 상태는 앱이 채점하는 객관식만 본다: 단답형·서술형은 원래 학생이 직접 채점하니 정답이 없어도 '빠진 것'이 아니다 */
+        const OQ=((src&&src.problems)||[]).filter(objQ),oMiss=OQ.filter(p=>!(p.key&&String(p.key.text==null?'':p.key.text).trim())).length,lowDpi=g.dpi&&g.dpi<110;
+        const st=noKey?`<button type="button" class="qcSt key" data-key="${esc(src.name)}">＋ 해설지 넣기</button>`
+          :lowDpi?gb
+          :OQ.length?(oMiss?`<button type="button" class="qcSt lv1" data-key="${esc(src.name)}">△ 정답 ${oMiss}개 없음</button>`:'')
+          :gb;
         const bl=BLN[B.name]?`<button type="button" class="qcSt re" data-toblk="${esc(B.name)}">다시 풀기 ${BLN[B.name]}</button>`:'';
         const pl=B.orig?(()=>{const on=inStk.has(B.orig.name),ok=on||rdy;return `<span class="qPlan${on?' on':''}${ok?'':' off'}"><button type="button" class="qStkB${on?' on':''}" data-stkt="${esc(B.orig.name)}" aria-pressed="${on}">${on?`● 학습 중${stkEnd(B.orig.name)}`:'계획 세우기'}</button>${on?`<button type="button" class="qStkX" data-stkx="${esc(B.orig.name)}" aria-label="학습 중에서 빼기">✕</button>`:''}</span><label class="qStk hid" hidden><input type="checkbox" data-stk="${esc(B.orig.name)}"${on?' checked':''}${ok?'':' disabled'}></label>`})():'';
         return `<span class="qcL">${st}${bl}</span>${pl}`})()}</div>
