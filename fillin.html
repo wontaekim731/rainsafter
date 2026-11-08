@@ -3682,7 +3682,7 @@ async function cropUrl(doc,p,ink){const page=await doc.getPage(p.page),v1=page.g
   if(ink){g.strokeStyle='#1d4ed8';g.lineWidth=2.2;g.lineCap='round';g.lineJoin='round';for(const s of ink){if(s.raster||s.page!==p.page||s.b.x1<p.x0||s.b.x0>p.x1||s.b.y1<p.y0||s.b.y0>p.y1)continue;g.beginPath();s.pts.forEach((q,k)=>{const v=vp.convertToViewportPoint(q.x,q.y);k?g.lineTo(v[0]-X0,v[1]-Y0):g.moveTo(v[0]-X0,v[1]-Y0)});g.stroke()}}
   return new Promise(r=>o.toBlob(bl=>r(bl?URL.createObjectURL(bl):''),'image/png'))}
 /* 빠른 정답에서 번호를 놓친 문항: 앞뒤 번호의 정답 칸 사이를 잘라 정답 그림으로 보여 준다 */
-function quickGuessImg(q){const K=P&&P.solKeys,sr=P&&P.solRange;if(!K||!sr||sr[2]!=='q')return null;if(P.ebs||P.xi||(P.qDup||0)>=10)return null;   /* 단원마다 번호가 다시 시작하는 책: 번호만으로 짐작하면 다른 단원의 칸 */let a=null,b=null;
+function quickGuessImg(q){const K=P&&P.solKeys,sr=P&&P.solRange;if(!K||!sr||sr[2]!=='q')return null;if(sr[0]<=Math.max(0,...P.problems.map(p=>p.page||0)))return null;   /* 답안지 쪽이 문제 쪽보다 앞이면 잘못 잡은 것 */if(P.ebs||P.xi||(P.qDup||0)>=10)return null;   /* 단원마다 번호가 다시 시작하는 책: 번호만으로 짐작하면 다른 단원의 칸 */let a=null,b=null;
   for(let d=1;d<=3&&!(a&&b);d++){if(!a&&K[q-d]&&K[q-d].img)a=K[q-d].img;if(!b&&K[q+d]&&K[q+d].img)b=K[q+d].img}
   if(a&&b&&a.page===b.page){const y0=Math.min(a.y0,b.y0),y1=Math.max(a.y1,b.y1),two=Math.abs(a.y0-b.y0)>8,pad=two?170:6;if(y1-y0<160)return {page:a.page,x0:Math.max(0,Math.min(a.x0,b.x0)-pad),x1:Math.max(a.x1,b.x1)+pad,y0:y0-4,y1:y1+4}}
   if(a)return {page:a.page,x0:a.x0-6,x1:a.x1+260,y0:a.y0-34,y1:a.y1+4};
@@ -4140,7 +4140,8 @@ async function anpToggle(){if(ANP.on){anpClose();return}if(!P){return}if(P.task)
   /* 정답표는 언제든 열려야 한다: 칸 위치를 모르면 ① 가까운 번호의 정답 칸이 있는 쪽 ② 답안지 첫 쪽 ③ 읽어 둔 정답으로 만든 표 ④ 정답이 없으면 해설지 넣기 */
   if(q!=null&&!P.ebs&&!P.xi&&!(P.qDup>=10)){let best=null;for(const p of P.problems){if(p.q===q)continue;const d=Math.abs(p.q-q);if(d>6||(best&&d>=best.d))continue;let m=null;try{m=anpImg(p.q)}catch(e){}if(m&&m.page)best={d,m,q:p.q}}
     if(best){pvToast(`${q}번 칸 위치는 몰라서, 가까운 ${best.q}번 정답이 있는 쪽을 보여 줘요`);anpOpen(best.m.page,null);return}}
-  const sr=P.solRange||(P.seqAns&&P.seqAns.ansFrom?[P.seqAns.ansFrom]:null);if(sr&&sr[0]){pvToast('이 문제의 정답 칸 위치는 몰라서 답안지 첫 쪽을 보여 줘요');anpOpen(sr[0],null);return}
+  const sr=P.solRange||(P.seqAns&&P.seqAns.ansFrom?[P.seqAns.ansFrom]:null),qMax=Math.max(0,...P.problems.map(p=>p.page||0));   /* 답안지는 문제 뒤에 있다: 문제 쪽보다 앞(표지 등)을 답안지로 잘못 잡은 책(블랙라벨 문제 PDF + 해설지 따로)은 표로 */
+  if(sr&&sr[0]&&sr[0]>qMax){pvToast('이 문제의 정답 칸 위치는 몰라서 답안지 첫 쪽을 보여 줘요');anpOpen(sr[0],null);return}
   if(P.problems.some(p=>p.key&&String(p.key.text==null?'':p.key.text).trim())){pvToast('답안지 쪽은 못 찾아서, 읽어 둔 정답으로 표를 보여 줘요');anpTask();return}
   pvToast('이 문제집에는 아직 정답이 없어요',[['＋ 해설지 넣기',()=>{try{keyFor(bookOf(P.name),false)}catch(e){}}]])}
 /* 과제·유사 기출 문제지: 답안지 쪽이 따로 없으니 문제지에 들어 있는 정답으로 정답표를 보여 준다 */
