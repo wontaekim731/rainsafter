@@ -2839,7 +2839,7 @@ TBLQ.run=async(doc,o)=>{o=o||{};const N=doc.numPages,tell=m=>o.step&&o.step(m);l
   /* 정답을 거의 못 읽은 표(그래프 격자 등을 표로 잘못 잡은 것)는 뺀다 */
   for(let i=T.length-1;i>=0;i--){const t=T[i],nv=t.cells.filter(c=>c.v).length;if(nv<3||nv<t.cells.length*0.3)T.splice(i,1)}
   /* 시작 쪽: 앞 표보다 크고, 앞 표 문항 수에 비해 너무 가깝지 않고(한 쪽에 5문항 넘게는 없다), 너무 멀지 않은(30쪽 이내) 값 중 표가 많이 받은 값 ('013p'를 8로, '091p'를 971로 읽은 경우를 거른다) */
-  {let prev=0,pm=0;const cap=(T.length?Math.min(...T.map(t=>t.pi)):ps&&ps.length?ps[0]:N)+3;   /* 실제로 읽힌 첫 표 쪽 기준 (그래프 쪽이 표로 잡혀도) */for(const t of T){const ok=(t.av||[]).filter(x=>x.v>prev&&x.v<=cap&&(!prev||((x.v-prev)*5>=pm&&x.v-prev<=30)));   /* 문제 쪽은 정답 표가 시작하는 쪽 앞에 있다 ('091p'를 97로 읽음) */t.a=ok.length?ok[0].v:null;if(t.a!=null){prev=t.a;pm=t.cells.length}else pm+=t.cells.length}}
+  {let prev=0,pm=0;const cap=o.sep?1e9:(T.length?Math.min(...T.map(t=>t.pi)):ps&&ps.length?ps[0]:N)+3;   /* 답지 파일이 따로면(o.sep) 문제 쪽 번호가 답지 쪽보다 클 수 있다 */   /* 실제로 읽힌 첫 표 쪽 기준 (그래프 쪽이 표로 잡혀도) */for(const t of T){const ok=(t.av||[]).filter(x=>x.v>prev&&x.v<=cap&&(!prev||((x.v-prev)*5>=pm&&x.v-prev<=30)));   /* 문제 쪽은 정답 표가 시작하는 쪽 앞에 있다 ('091p'를 97로 읽음) */t.a=ok.length?ok[0].v:null;if(t.a!=null){prev=t.a;pm=t.cells.length}else pm+=t.cells.length}}
   const ctx={circ:[]},secs=T.map(t=>{const s={a:t.a,b:null,keys:{},pics:{},ims:{}};for(const c of t.cells){if(c.pic)s.pics[c.n]=c.pic;if(c.box)s.ims[c.n]=Object.assign({page:t.pi},c.box);if(c.v==='CIRC'){ctx.circ.push({v:c.cv.v,tp:c.cv.tp,oc:c.cv.oc,lo:c.cv.lo,sec:s,n:c.n});s.keys[c.n]='CIRC'}else s.keys[c.n]=c.v||'IMG'}s.m=Math.max(...t.cells.map(c=>c.n));return s});
   TBLQ.settle(ctx.circ);
   /* 해설 '답' 상자: 표에서 못 읽은 칸은 채우고, 표와 해설이 다르면 그 칸은 '직접 채점'으로 (틀린 정답으로 채점하지 않게) */
@@ -3029,7 +3029,9 @@ async function quickFind0(file,handle,bytes,doc,textPdf,pages,replace){if(SCANNI
   if(!pages&&!replace&&FOOT_NAME.test(file.name||'')){SCANNING=null;clearInterval(qT);dlog('footAns','name');{const T=await scanLazyInit(file,handle,bytes,doc,{});T.footAns=1;if(P===T)showInfo();await recentSave(T);bgDeliver(T)}return}
   if(!pages&&!replace){let fp=false;try{fp=await footProbe(doc,(i,n)=>{QL={msg:'쪽 아래 정답 확인',nk:0,pct:Math.round(2+i/n*6)};qRender()},()=>SCANNING&&SCANNING.stop)}catch(e){console.error(e)}
     if(fp){SCANNING=null;clearInterval(qT);dlog('footAns',fp+'');{const T=await scanLazyInit(file,handle,bytes,doc,{});T.footAns=1;if(P===T)showInfo();await recentSave(T);bgDeliver(T)}return}}   /* 쪽마다 아래에 정답이 있는 책: 그 쪽을 풀 때 같이 읽으면 되니 미리 읽을 것이 없다 */
-  if(!pages&&!replace){let th=0;try{const N0=doc.numPages,L=[];for(let k=0;k<24;k++)L.push(Math.round(N0*(0.5+0.5*k/23)));   /* 표가 몇 쪽 걸러 하나씩인 책(시냅스)도 걸리게 24쪽을 본다 */for(const p of [...new Set(L)]){if(SCANNING&&SCANNING.stop)break;QL={msg:'정답 표 확인',nk:0,pct:9};if(await TBLQ.probe(doc,Math.min(N0,Math.max(1,p))))th++}}catch(e){console.error(e)}dlog('tblPre',th+'');
+  if(!pages&&!replace){let th=0;try{const N0=doc.numPages,L=[];for(let k=0;k<24;k++)L.push(Math.round(N0*(0.5+0.5*k/23)));   /* 표가 몇 쪽 걸러 하나씩인 책(시냅스)도 걸리게 24쪽을 본다 */for(const p of [...new Set(L)]){if(SCANNING&&SCANNING.stop)break;QL={msg:'정답 표 확인',nk:0,pct:9};if(await TBLQ.probe(doc,Math.min(N0,Math.max(1,p))))th++}
+      /* 표가 5쪽에 하나꼴로 드문 책(시발점 워크북: Theme 묶음마다 표 하나)은 24쪽 표본에 1~2개만 걸린다 → 하나라도 걸렸으면 뒤쪽 절반을 한 쪽씩 더 본다 */
+      if(th>=1&&th<3){const seen=new Set(L);for(let p=Math.round(N0*0.5);p<=N0&&th<3;p++){if(seen.has(p))continue;if(SCANNING&&SCANNING.stop)break;QL={msg:'정답 표 확인',nk:0,pct:9};try{if(await TBLQ.probe0(doc,p))th++}catch(e){}}}}catch(e){console.error(e)}dlog('tblPre',th+'');
     if(th>=3){SCANNING=null;clearInterval(qT);$('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div id="scProg" style="font-size:14px;margin-top:8px">정답 표 찾는 중…</div>`;if(await tblTry(file,handle,bytes,doc,{}))return;SCANNING={stop:false}}}   /* 뒤쪽에 회색 정답 표가 여러 쪽이면 표부터 (시냅스 등: 다른 방법으로 몇 분 찾기 전에) */
   try{A=await SCAN.quick(doc,{pages,stop:()=>SCANNING&&SCANNING.stop,step:(msg,np,nk,pct)=>{QL={msg,nk,pct};qRender()}})}
   catch(e){console.error(e);err=e.message||'읽지 못했습니다'}
@@ -3180,6 +3182,13 @@ TXA.run=async T=>{const X=T&&T.seqAns&&T.seqAns.txa;if(!X||X.done||TXA.busy||!T.
       if(pi%8===0){try{await recentSave(T)}catch(e){}}}
     const r=TXA.align(X.lab,X.secs);X.map=r.map;X.done=1;dlog('txa','정답 '+r.ok+' · 묶음 '+r.groups+' · 코너 '+X.secs.length+' · '+Math.round((performance.now()-t0)/1000)+'s');
     try{seqApply(T)}catch(e){console.error(e)}await recentSave(T);bgDeliver(T)}catch(e){console.error(e);dlog('txaErr',e&&e.message)}finally{TXA.busy=false}};
+/* 따로 넣은 스캔 답지의 구역 표: 표마다 시작 쪽(5p) + 번호·정답 → 문제집의 인쇄된 쪽 번호로 구역을 골라 같은 번호 정답 */
+async function tblFile(file,handle,bytes,doc,d,m){if(SCANNING)return false;const N=d.numPages,ps=[];SCANNING={stop:false};
+  try{for(let p=1;p<=Math.min(N,120);p++){if(SCANNING.stop)break;if(m)m.innerHTML=`답지에서 정답 표 찾는 중… ${p}/${N}쪽`;if(await TBLQ.probe(d,p))ps.push(p);if(p>=12&&!ps.length)break}}finally{SCANNING=null}   /* 앞 12쪽에 표가 하나도 없으면 이 방식의 답지가 아니다 */
+  dlog('tblFile',ps.join(','));if(!ps.length)return false;let A=null;SCANNING={stop:false};
+  try{A=await TBLQ.run(d,{pages:ps,sep:1,stop:()=>SCANNING&&SCANNING.stop,step:x=>{if(m)m.innerHTML=esc(x)}})}catch(e){console.error(e);dlog('tblErr',e&&e.message)}finally{SCANNING=null}
+  if(!A||!A.secs.length||A.secs.reduce((a,s)=>a+s.n,0)<10)return false;
+  A.seqObj={secs:A.secs,off:null,tbl:1};let T=null;SEQ_SOON=A;try{T=await scanLazyInit(file,handle,bytes,doc,{},[1,d.numPages,'f'])}finally{SEQ_SOON=null}T.seqAns=A.seqObj;try{await seqOffset(T)}catch(e){console.error(e)}seqApply(T);if(P===T)showInfo();await recentSave(T);bgDeliver(T);return true}
 async function quickFile(file,handle,bytes,doc,textPdf,f){if(SCANNING)return;const m=$('#qkMsg');
   try{if(!/\.pdf$/i.test(f.name)){m.innerHTML='<span class="err">PDF만 읽을 수 있어요</span>';return}
     const d=await PDFJS.getDocument({data:new Uint8Array(await f.arrayBuffer())}).promise;
@@ -3187,6 +3196,7 @@ async function quickFile(file,handle,bytes,doc,textPdf,f){if(SCANNING)return;con
     {let HK=null;try{HK=await TXA.hdr(d)}catch(e){console.error(e)}if(HK){dlog('hdrKeys',Object.keys(HK).length+'개');const T=await scanLazyInit(file,handle,bytes,doc,HK,[1,d.numPages,'f']);bgDeliver(T);return T}}   /* 해설의 머리 번호 줄에서 정답 */
     {let TX=null;try{TX=await TXA.read(d)}catch(e){console.error(e)}if(TX){dlog('txaRead',TX.nk+'개 · 코너 '+TX.secs.length);const T=await scanLazyInit(file,handle,bytes,doc,{},[1,d.numPages,'f']);T.seqAns={secs:[],off:0,txa:{secs:TX.secs,lab:{},map:{},done:TX.pg?1:0,pg:TX.pg}};await recentSave(T);if(!TX.pg)TXA.run(T);else bgDeliver(T);return T}}   /* 글자 답지에 단원·코너별 정답이 있으면: 순서로 짝짓기 */
     const L=await SV.lines(d);let K={};if(L.length>20){const qs=[];for(let i=1;i<=2000;i++)qs.push(i);K=Object.assign({},SV.keysGrid(L,qs).key,SV.keysFromLines(L).key)}
+    if(Object.keys(K).length<10){try{if(await tblFile(file,handle,bytes,doc,d,m))return}catch(e){console.error(e);dlog('tblErr',e&&e.message)}}   /* 스캔 답지에 구역마다 '5p'처럼 시작 쪽이 적힌 회색 표(드릴·시냅스·수분감 정답 파일) */
     if(Object.keys(K).length<10){m.innerHTML='빠른 정답 쪽을 찾는 중…';const r=await seqTry(file,handle,bytes,doc,d,{front:true,fp:f.name+':'+f.size,file:f},'f',m);if(r)return}
     if(Object.keys(K).length<10){SCANNING={stop:false};m.innerHTML='빠른 정답 쪽을 찾는 중…';const t0=Date.now();
       try{const A=await SCAN.quick(d,{all:true,front:true,guess:Math.max(2,Math.round(d.numPages*0.1)),stop:()=>SCANNING&&SCANNING.stop,step:(msg,np,nk)=>{m.innerHTML=`${esc(msg)}${nk?` · <b style="color:var(--ok)">정답 ${nk}개</b>`:''} <span class="muted">(${Math.round((Date.now()-t0)/1000)}초)</span>`}});K=A.keys}finally{SCANNING=null}
