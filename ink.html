@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>QLEAR 손글씨 학습</title>
+<style>
+:root{--bg:#f4f6f5;--card:#fff;--ink:#16201c;--sub:#5d6b65;--line:#dfe5e2;--acc:#0f9d6e;--bad:#d64545;--warn:#b7791f}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+body{min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:12px 16px 20px}
+.wrap{width:min(900px,100%);display:flex;flex-direction:column;gap:12px}
+header{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+header h1{font-size:20px;margin:0;font-weight:800}
+header .ver{font-size:12px;color:var(--sub)}
+header .sp{flex:1}
+input.nm{font:inherit;font-size:15px;padding:7px 10px;border:1px solid var(--line);border-radius:10px;width:120px;background:#fff;-webkit-user-select:text;user-select:text}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.stat{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--sub)}
+.stat b{color:var(--ink);font-size:18px}
+.prompt{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.prompt .lb{font-size:15px;color:var(--sub)}
+.prompt .tg{font-size:44px;font-weight:800;letter-spacing:2px;font-variant-numeric:tabular-nums}
+.prompt .hint{font-size:14px;color:var(--sub);flex-basis:100%}
+.prompt .no{margin-left:auto;font-size:14px;color:var(--sub)}
+.pad{position:relative;width:100%;height:min(300px,38dvh);border-radius:14px;border:2px dashed #b9c6c0;background:#fff;touch-action:none;overflow:hidden}
+.pad canvas{position:absolute;inset:0;width:100%;height:100%}
+.pad .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#b3bfba;font-size:16px;pointer-events:none}
+.res{min-height:44px;display:flex;align-items:center;gap:10px;font-size:18px}
+.res .rd{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
+.res.ok .rd{color:var(--acc)} .res.ng .rd{color:var(--bad)} .res .mut{color:var(--sub);font-size:14px}
+.btns{display:grid;grid-template-columns:1fr 1fr 2fr;gap:10px}
+button{font:inherit;font-size:17px;font-weight:700;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:14px 10px;cursor:pointer}
+button.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+button:disabled{opacity:.4}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row button{font-size:15px;padding:10px 14px}
+.small{font-size:13px;color:var(--sub);line-height:1.5}
+.log{display:flex;flex-wrap:wrap;gap:6px}
+.log span{font-size:13px;padding:3px 8px;border-radius:999px;background:#eef3f1;font-variant-numeric:tabular-nums}
+.log span.ng{background:#fde8e8;color:#9b2c2c}
+label.ck{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--sub)}
+#load{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--sub);z-index:9}
+@media (max-width:600px){.prompt .tg{font-size:36px}.btns{grid-template-columns:1fr 1fr}.btns .pri{grid-column:span 2}}
+</style>
+</head>
+<body>
+<div id="load">앱의 숫자 인식기를 불러오는 중…</div>
+<div class="wrap">
+  <header>
+    <h1>✍️ 손글씨 학습</h1><span class="ver" id="ver"></span><span class="sp"></span>
+    <input class="nm" id="nm" placeholder="이름" maxlength="12">
+  </header>
+
+  <div class="card stat">
+    <span>쓴 개수 <b id="sN">0</b></span>
+    <span>앱이 맞게 읽음 <b id="sOk">-</b></span>
+    <span>정답을 알 때 맞게 읽음 <b id="sOkK">-</b></span>
+  </div>
+
+  <div class="card" style="display:flex;flex-direction:column;gap:12px">
+    <div class="prompt"><span class="lb">이 답을 써 주세요</span><span class="tg" id="tg">-</span><span class="no" id="no"></span>
+      <span class="hint" id="hint">문제집에 답 쓰듯이 평소 글씨로 써 주세요. 크기·위치는 자유예요.</span></div>
+    <div class="pad" id="pad"><canvas id="cv"></canvas><div class="ph" id="ph">애플펜슬로 여기에 쓰세요</div></div>
+    <div class="res" id="res"><span class="mut">다 쓰면 앱이 읽은 답이 여기에 나와요</span></div>
+    <div class="btns">
+      <button id="bUndo" type="button">↶ 한 획</button>
+      <button id="bClr" type="button">지우기</button>
+      <button id="bNext" type="button" class="pri" disabled>저장하고 다음 →</button>
+    </div>
+    <div class="row">
+      <button id="bSkip" type="button">이 답 건너뛰기</button>
+      <label class="ck"><input type="checkbox" id="fing"> 손가락으로도 쓰기</label>
+    </div>
+  </div>
+
+  <div class="card" style="display:flex;flex-direction:column;gap:10px">
+    <div class="row"><b>최근 기록</b><span class="small">빨간색은 앱이 잘못 읽은 것</span></div>
+    <div class="log" id="log"></div>
+    <div class="row">
+      <button id="bSend" type="button" class="pri" style="font-size:16px">📤 파일로 보내기</button>
+      <span class="small" id="sendInfo"></span>
+    </div>
+    <p class="small" style="margin:0">쓴 글씨는 이 기기에만 저장돼요. [파일로 보내기]로 한 파일에 담아 선생님께 보내면, 그걸로 앱의 숫자 인식을 고쳐요. 30개 정도씩 모아서 보내 주세요.</p>
+  </div>
+</div>
+
+<script>
+const VER='ink v1';
+document.getElementById('ver').textContent=VER;
+const $=s=>document.querySelector(s);
+const LSg=(k,d)=>{try{const v=localStorage.getItem('qlink:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
+const LSs=(k,v)=>{try{localStorage.setItem('qlink:'+k,JSON.stringify(v))}catch(e){}};
+
+/* ---- 앱(index.html)의 인식기 코드를 그대로 불러온다: 앱에서 인식기를 고치면 이 쪽도 같이 바뀐다 ---- */
+async function loadSV(){
+  const r=await fetch('index.html',{cache:'no-cache'});const html=await r.text();
+  const blocks=[...html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)].filter(m=>!/src=|id=/.test(m[1])).map(m=>m[2]);
+  const want=blocks.filter(t=>/const KL=\{\}|const SV=\{\}|^\s*SV\.(CNN|NET)=|SV\.readAnswer=|SV\.readFrac=/m.test(t)&&t.length<600000);
+  for(const t of want){try{(0,eval)(t)}catch(e){console.warn('block',e)}}
+  const m=html.match(/↻\s*(v[\d.]+)/);if(m)document.getElementById('ver').textContent=VER+' · 인식기 '+m[1];
+  if(!window.SV||!SV.readAnswer)throw new Error('인식기를 못 불러왔어요');
+}
+
+/* ---- 연습할 답 목록 (한 묶음 30개) ---- */
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function makeSet(){
+  const L=[];const d=[0,1,2,3,4,5,6,7,8,9].sort(()=>Math.random()-.5);for(const v of d)L.push(String(v));
+  for(let i=0;i<10;i++)L.push(String(rnd(10,99)));
+  for(let i=0;i<6;i++)L.push(String(rnd(100,999)));
+  for(let i=0;i<2;i++)L.push('-'+rnd(1,20));
+  const gcd=(x,y)=>y?gcd(y,x%y):x;for(let i=0;i<2;i++){let a,b;do{a=rnd(1,9);b=rnd(2,9)}while(a===b||gcd(a,b)!==1);L.push(a+'/'+b)}
+  return L.sort(()=>Math.random()-.5);
+}
+let SET=LSg('set',null),SI=LSg('si',0);if(!SET||SI>=SET.length){SET=makeSet();SI=0;LSs('set',SET);LSs('si',0)}
+
+/* ---- 저장 (IndexedDB) ---- */
+function db(){if(db.p)return db.p;db.p=new Promise((res,rej)=>{const r=indexedDB.open('qlink',1);r.onupgradeneeded=()=>r.result.createObjectStore('it',{keyPath:'k'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});return db.p}
+async function tx(mode,f){const d=await db();return new Promise((res,rej)=>{const t=d.transaction('it',mode),st=t.objectStore('it');let out;const q=f(st);if(q)q.onsuccess=()=>{out=q.result};t.oncomplete=()=>res(out);t.onerror=()=>rej(t.error)})}
+const allItems=()=>tx('readonly',st=>st.getAll()).then(a=>(a||[]).sort((x,y)=>x.at-y.at)).catch(()=>[]);
+
+/* ---- 그리기판: 화면 px → 문제집 쪽 좌표(pt, 위로 갈수록 y가 큼). 앱에서 문제집을 볼 때와 비슷한 배율 ---- */
+const PX_PER_PT=2.2;
+const pad=$('#pad'),cv=$('#cv'),g=cv.getContext('2d');let DPR=1,W=0,H=0;
+let strokes=[],cur=null;
+function fit(){const r=pad.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);W=r.width;H=r.height;cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);draw()}
+function draw(){g.setTransform(DPR,0,0,DPR,0,0);g.clearRect(0,0,W,H);g.lineCap='round';g.lineJoin='round';g.strokeStyle='#111';
+  for(const s of strokes.concat(cur?[cur]:[])){g.lineWidth=2.4;g.beginPath();s.c.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));if(s.c.length===1){g.arc(s.c[0][0],s.c[0][1],1.2,0,7)}g.stroke()}
+  $('#ph').style.display=strokes.length||cur?'none':''}
+addEventListener('resize',fit);
+const okPtr=e=>e.pointerType==='pen'||e.pointerType==='mouse'||$('#fing').checked;
+pad.addEventListener('pointerdown',e=>{if(!okPtr(e))return;e.preventDefault();pad.setPointerCapture(e.pointerId);const r=pad.getBoundingClientRect();cur={t:Date.now(),c:[[e.clientX-r.left,e.clientY-r.top,e.pressure||0]],id:e.pointerId};clearTimeout(RT);draw()});
+pad.addEventListener('pointermove',e=>{if(!cur||e.pointerId!==cur.id)return;e.preventDefault();const r=pad.getBoundingClientRect();const ev=e.getCoalescedEvents?e.getCoalescedEvents():[e];for(const q of (ev.length?ev:[e]))cur.c.push([q.clientX-r.left,q.clientY-r.top,q.pressure||0]);draw()});
+const end=e=>{if(!cur||e.pointerId!==cur.id)return;strokes.push(cur);cur=null;draw();RT=setTimeout(readNow,500);$('#bNext').disabled=false};
+pad.addEventListener('pointerup',end);pad.addEventListener('pointercancel',end);
+pad.addEventListener('touchstart',e=>{if(!$('#fing').checked)e.preventDefault()},{passive:false});
+
+/* 앱과 같은 획 모양으로 바꿔 앱의 읽기 함수에 넣는다 */
+function toApp(){return strokes.map(s=>{const pts=s.c.map(p=>({x:p[0]/PX_PER_PT,y:(H-p[1])/PX_PER_PT,p:p[2]}));let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const p of pts){x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);y0=Math.min(y0,p.y);y1=Math.max(y1,p.y)}return {page:1,t:s.t,pts,b:{x0,y0,x1,y1,w:x1-x0,h:y1-y0}}})}
+function keyOf(t){if(/^-?\d+$/.test(t))return {text:t,kind:'number'};return {text:t,kind:'frac'}}
+function read(withKey){const st=toApp();if(!st.length)return {ans:'',how:'none'};const p={q:1,page:1,x0:-1e4,y0:-1e4,x1:1e4,y1:1e4,choices:[],ab:null,parts:null,key:withKey?keyOf(SET[SI]):null};
+  try{const r=SV.readAnswer(p,st)||{};return {ans:r.ans||'',how:r.how||'',sure:r.sure!==false}}catch(e){return {ans:'',how:'err',err:String(e&&e.message||e).slice(0,80)}}}
+const same=(a,b)=>{try{return SV.same(a,b)}catch(e){return String(a)===String(b)}};
+let RT=0,LAST=null;
+function readNow(){if(!strokes.length){$('#res').className='res';$('#res').innerHTML='<span class="mut">다 쓰면 앱이 읽은 답이 여기에 나와요</span>';return}
+  const r0=read(false),r1=read(true);LAST={r0,r1};const ok=same(r0.ans,SET[SI]);
+  $('#res').className='res '+(ok?'ok':'ng');
+  $('#res').innerHTML=`<span class="mut">앱이 읽은 답</span><span class="rd">${r0.ans?esc(r0.ans):'못 읽음'}</span><span>${ok?'✓ 맞게 읽었어요':'✗ 다르게 읽었어요'}</span>${!ok&&same(r1.ans,SET[SI])?'<span class="mut">(정답을 알려 주면 맞게 읽음)</span>':''}`}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function showPrompt(){const t=SET[SI];const fm=/^(-?)(\d+)\/(\d+)$/.exec(t);if(fm)$('#tg').innerHTML=`${fm[1]?'−':''}<span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1;font-size:32px;vertical-align:middle"><span>${fm[2]}</span><span style="border-top:3px solid currentColor;padding-top:2px;min-width:28px;text-align:center">${fm[3]}</span></span>`;else $('#tg').textContent=t;$('#no').textContent=`${SI+1} / ${SET.length}`;
+  $('#hint').textContent=t.includes('/')?'분수는 문제집에 쓰듯이 위아래로(가로줄 위에 분자, 아래에 분모) 써 주세요.':t.startsWith('-')?'음수예요. 빼기 부호까지 써 주세요.':'문제집에 답 쓰듯이 평소 글씨로 써 주세요. 크기·위치는 자유예요.';
+  strokes=[];cur=null;LAST=null;draw();readNow();$('#bNext').disabled=true}
+function nextPrompt(){SI++;if(SI>=SET.length){SET=makeSet();SI=0;LSs('set',SET)}LSs('si',SI);showPrompt()}
+
+$('#bUndo').onclick=()=>{strokes.pop();draw();clearTimeout(RT);readNow();$('#bNext').disabled=!strokes.length};
+$('#bClr').onclick=()=>{strokes=[];draw();readNow();$('#bNext').disabled=true};
+$('#bSkip').onclick=()=>nextPrompt();
+$('#bNext').onclick=async()=>{if(!strokes.length)return;clearTimeout(RT);if(!LAST)readNow();
+  const st=toApp(),label=SET[SI];
+  const it={k:Date.now().toString(36)+Math.random().toString(36).slice(2,6),at:Date.now(),name:$('#nm').value.trim()||'',label,
+    read:LAST.r0,readKey:LAST.r1,ok:same(LAST.r0.ans,label),okKey:same(LAST.r1.ans,label),
+    box:{w:Math.round(W),h:Math.round(H),pxPerPt:PX_PER_PT},
+    ink:st.map(s=>({t:s.t,p:s.pts.map(q=>[Math.round(q.x*10)/10,Math.round(q.y*10)/10,Math.round((q.p||0)*100)/100])})),
+    ua:navigator.userAgent.slice(0,120),ver:$('#ver').textContent};
+  try{await tx('readwrite',st=>st.put(it))}catch(e){alert('저장하지 못했어요: '+e.message)}
+  await refresh();nextPrompt()};
+
+async function refresh(){const A=await allItems();$('#sN').textContent=A.length;
+  const pc=(n,d)=>d?`${n}/${d} (${Math.round(n/d*100)}%)`:'-';
+  $('#sOk').textContent=pc(A.filter(x=>x.ok).length,A.length);$('#sOkK').textContent=pc(A.filter(x=>x.okKey).length,A.length);
+  $('#log').innerHTML=A.slice(-40).reverse().map(x=>`<span class="${x.ok?'':'ng'}">${esc(x.label)}${x.ok?'':' → '+esc(x.read&&x.read.ans||'못 읽음')}</span>`).join('');
+  const sent=LSg('sent',0);$('#sendInfo').textContent=A.length?`보낼 기록 ${A.length}개${sent?` · 마지막으로 보낸 뒤 새로 ${Math.max(0,A.length-sent)}개`:''}`:''}
+
+$('#bSend').onclick=async()=>{const A=await allItems();if(!A.length){alert('아직 쓴 기록이 없어요');return}
+  const d=new Date(),p2=v=>String(v).padStart(2,'0'),nm=($('#nm').value.trim()||'학생').replace(/[\\/:*?"<>|\s]/g,'');
+  const fn=`qlear_손글씨학습_${nm}_${d.getFullYear()}${p2(d.getMonth()+1)}${p2(d.getDate())}_${p2(d.getHours())}${p2(d.getMinutes())}.json`;
+  const body=JSON.stringify({app:'qlear',kind:'ink-train',v:1,at:Date.now(),n:A.length,note:'label=써 달라고 한 답, read=정답을 모를 때 앱이 읽은 답, readKey=정답을 알려 줬을 때, ink=획(pt, 위로 갈수록 y가 큼)',items:A});
+  const blob=new Blob([body],{type:'application/json'});LSs('sent',A.length);
+  try{const f=new File([blob],fn,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'QLEAR 손글씨 학습 데이터'});refresh();return}}catch(e){if(e&&e.name==='AbortError')return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);refresh()};
+
+$('#nm').value=LSg('name','');$('#nm').addEventListener('change',()=>LSs('name',$('#nm').value.trim()));
+
+loadSV().then(()=>{$('#load').remove();fit();showPrompt();refresh()}).catch(e=>{$('#load').textContent='인식기를 불러오지 못했어요: '+e.message+' — 새로고침해 주세요'});
+</script>
+</body>
+</html>
