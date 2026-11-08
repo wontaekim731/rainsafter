@@ -5771,8 +5771,12 @@ function exLevels(c,g){const W=c.width,H=c.height,im=g.getImageData(0,0,W,H),d=i
 /* 단 사이 세로줄은 지우고, 문제 아래 큰 빈칸(책의 풀이 칸)은 잘라낸다 → 시험지에서 문제 크기가 고르게 */
 function exTrim(c,g){const W=c.width,H=c.height,im=g.getImageData(0,0,W,H),d=im.data,ink=(x,y)=>{const i=(y*W+x)*4;return d[i]+d[i+1]+d[i+2]<660};
   const E=Math.round(W*0.12);for(const [a,b] of [[0,E],[W-E,W]])for(let x=a;x<b;x++){let run=0,y0=0;for(let y=0;y<=H;y++){if(y<H&&ink(x,y)){if(!run)y0=y;run++}else{if(run>Math.max(40,H*0.12)){g.fillStyle='#fff';g.fillRect(Math.max(0,x-2),y0-2,5,run+4)}run=0}}}   /* 끊긴 세로줄도 토막마다 지움 */
-  const d2=g.getImageData(0,0,W,H).data,row=y=>{let n=0;for(let x=0;x<W;x+=2){const i=(y*W+x)*4;if(d2[i]+d2[i+1]+d2[i+2]<450)n++}return n};let last=0;for(let y=H-1;y>=0;y--)if(row(y)>1){last=y;break}
-  const nh=Math.min(H,last+24);if(nh>H-30)return c;const o=document.createElement('canvas');o.width=W;o.height=Math.max(2,nh);o.getContext('2d').drawImage(c,0,0);return o}
+  /* 문제 칸이 쪽 전체로 잡힌 경우(시냅스): 가운데쯤의 긴 세로줄(단 나눔) 오른쪽, 아래쪽 긴 가로줄(쪽 아래 머리말·쪽 번호) 아래는 잘라낸다 */
+  let CW=W,CH=H;{const d1=g.getImageData(0,0,W,H).data,k=(x,y)=>{const i=(y*W+x)*4;return d1[i]+d1[i+1]+d1[i+2]<660};
+    for(let x=Math.round(W*0.3);x<W*0.75;x++){let run=0,best=0,bs=0,st=0;for(let y=0;y<H;y++){if(k(x,y)){if(!run)st=y;run++;if(run>best){best=run;bs=st}}else run=0}if(best>H*0.45&&bs<H*0.15){CW=Math.max(2,x-6);break}}   /* 위에서부터 내려오는 긴 줄만(그래프 축 아님) */
+    for(let y=Math.round(H*0.3);y<H;y++){let run=0,best=0,bs=0,st=0;for(let x=0;x<CW;x++){if(k(x,y)){if(!run)st=x;run++;if(run>best){best=run;bs=st}}else run=0}const side=x=>{let n=0;for(let t=3;t<=14;t++)if(y-t>=0&&(k(x,y-t)||k(Math.max(0,x-1),y-t)||k(Math.min(CW-1,x+1),y-t)))n++;return n>=9};if(best>CW*0.7&&!(side(bs+1)||side(bs+best-2))){let below=0;for(let y2=y+4;y2<H;y2++){let n=0;for(let x=0;x<CW;x+=3)if(k(x,y2))n++;if(n>1)below++}if(below<Math.max(40,H*0.06)){CH=Math.max(2,y-6);break}y+=3}}}   /* 아래에 쪽 번호 정도만 있을 때만(조건 상자 윗변 아님) */
+  const d2=g.getImageData(0,0,W,H).data,row=y=>{let n=0;for(let x=0;x<CW;x+=2){const i=(y*W+x)*4;if(d2[i]+d2[i+1]+d2[i+2]<450)n++}return n};let last=0;for(let y=CH-1;y>=0;y--)if(row(y)>1){last=y;break}
+  const nh=Math.min(CH,last+24);if(nh>H-30&&CW===W)return c;const o=document.createElement('canvas');o.width=CW;o.height=Math.max(2,nh);o.getContext('2d').drawImage(c,0,0);return o}
 function exMask(c,g){const W=c.width,H=c.height,d=g.getImageData(0,0,W,H).data,ink=(x,y)=>{const i=(y*W+x)*4;return d[i]+d[i+1]+d[i+2]<600},L=Math.round(W*0.25);
   const rowL=y=>{let n=0;for(let x=0;x<L;x+=2)if(ink(x,y))n++;return n};let y0=-1;for(let y=0;y<Math.min(H,H*0.4);y++)if(rowL(y)>1){y0=y;break}if(y0<0)return;
   let y1=y0;while(y1<H-1&&rowL(y1+1)>0)y1++;const bh=y1-y0+1;if(bh<8||bh>H*0.22||bh>W*0.12)return;
