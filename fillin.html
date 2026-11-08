@@ -969,6 +969,15 @@ label.dkPick{justify-content:flex-start;cursor:pointer}label.dkPick input{width:
 /* #verTag 숨김 해제(v46.52): 선생님이 어느 버전인지 늘 확인할 수 있게 — 위 줄 작은 회색 글씨, ⋯ 메뉴 맨 아래에도 */
 #vRecent .origBox,#rmAll,.bWall{display:none!important}
 #vRecent .wbBox,#vRecent .asrc{display:none!important}
+#exS{position:fixed;inset:0;z-index:80;background:var(--bg,#0E1014);display:flex;flex-direction:column}
+#exS .exHd{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--card,#151a21)}#exS .exT{font-size:24px;font-variant-numeric:tabular-nums;min-width:96px}#exS .exT.late{color:var(--re,#F2A65A)}#exS .exN{color:var(--muted);font-size:14px;font-weight:700}
+#exS .exBody{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 120px}#exS .exGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:16px;max-width:1400px;margin:0 auto}
+#exS .exCard{background:#fff;color:#111;border-radius:12px;padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px;border:3px solid transparent}#exS .exCard.ok{border-color:#3fbf7f}#exS .exCard.ng{border-color:#f0627a}
+#exS .exNo{font-size:20px;font-weight:900;display:flex;align-items:baseline;gap:8px}#exS .exNo small{font-size:12px;font-weight:600;color:#888}
+#exS .exPic{position:relative;min-height:220px}#exS .exPic img{width:100%;display:block}#exS .exInk{position:absolute;left:0;top:0;touch-action:pan-y;cursor:crosshair}
+#exS .exAns{display:flex;gap:8px;flex-wrap:wrap}#exS .exC{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:22px;border:1.5px solid #ccc;color:#333}#exS .exC.on{background:#1d4ed8;color:#fff;border-color:#1d4ed8}#exS .exC.key{box-shadow:0 0 0 3px #3fbf7f}
+#exS .exIn{max-width:220px;background:#f4f5f7;color:#111}#exS .exRes{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:15px}#exS .exMk{font-size:26px;font-weight:900}#exS .exCard.ok .exMk{color:#2a9d63}#exS .exCard.ng .exMk{color:#e0485f}#exS .exSelf{display:flex;gap:6px}
+@media (max-width:900px){#exS .exGrid{grid-template-columns:1fr}}
 .bkExam{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;margin-top:8px;padding:12px 18px;border-radius:14px;border:1.5px solid var(--line)}.bkExam b{font-size:16px}.bkExam small{color:var(--muted);font-size:13px}
 .exBks{display:flex;flex-wrap:wrap;gap:6px}.exBks small{opacity:.6;margin-left:4px}.plChip.dim{opacity:.45}
 #exBar{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:60;background:#1A1F27;color:#F2F4F7;border-radius:99px;padding:8px 18px;font-size:15px;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;gap:10px;align-items:center;pointer-events:none}#exBar b{font-size:20px;font-variant-numeric:tabular-nums}#exBar span{opacity:.75;font-size:13px}#exBar.late b{color:#F2A65A}#exBar[hidden]{display:none}
@@ -5698,15 +5707,83 @@ function examSheet(L){const by={};for(const w of L)(by[bookOf(w.src)]=by[bookOf(
     <div class="plRow col"><span class="plK">문제집</span><div class="exBks">${bks.map(b=>`<button type="button" class="plChip" data-exb="${esc(b)}">${esc(bkName(b))} <small>${by[b].length}</small></button>`).join('')}</div></div>
     <div class="plRow"><span class="plK">문제 수</span><div class="plV" data-exn>${[10,20,30].map(v=>`<button type="button" class="plChip" data-n="${v}">${v}문제</button>`).join('')}</div></div>
     <div class="plRow"><span class="plK">시간</span><div class="plV" data-exm>${[30,40].map(v=>`<button type="button" class="plChip" data-m="${v}">${v}분</button>`).join('')}</div></div>
+    <div class="plRow"><span class="plK">보기</span><div class="plV"><button type="button" class="plChip on" data-shuf>보기 순서 섞기</button><small class="sub">외운 번호로 못 맞히게</small></div></div>
     <div class="plSum"><b class="plBig" data-exs></b><span data-exs2></span></div>
     <div class="plBtns"><span></span><button class="sb pri plOk" type="button" data-ok>시험 시작</button></div>`);
   const paint=()=>{const have=by[bk].length,k=Math.min(n,have);d.querySelectorAll('[data-exb]').forEach(x=>x.classList.toggle('on',x.dataset.exb===bk));d.querySelectorAll('[data-n]').forEach(x=>{x.classList.toggle('on',+x.dataset.n===n);x.classList.toggle('dim',+x.dataset.n>have&&+x.dataset.n!==n)});d.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('on',+x.dataset.m===mn));
     d.querySelector('[data-exs]').textContent=`${k}문제 · ${mn}분`;d.querySelector('[data-exs2]').textContent=have<n?`이 책의 틀린 문제는 ${have}개라 ${have}문제만 나와요`:`문제당 약 ${Math.round(mn*60/k/6)/10}분`};
   d.querySelectorAll('[data-exb]').forEach(x=>x.onclick=()=>{bk=x.dataset.exb;paint()});d.querySelectorAll('[data-n]').forEach(x=>x.onclick=()=>{n=+x.dataset.n;paint()});d.querySelectorAll('[data-m]').forEach(x=>x.onclick=()=>{mn=+x.dataset.m;paint()});
+  let shuf=LS.get('exShuf',true);{const b=d.querySelector('[data-shuf]');b.classList.toggle('on',shuf);b.onclick=()=>{shuf=!shuf;LS.set('exShuf',shuf);b.classList.toggle('on',shuf)}}
   d.querySelector('[data-x]').onclick=()=>{d.hidden=true};paint();
   d.querySelector('[data-ok]').onclick=async()=>{d.hidden=true;const pool=by[bk].slice();for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}   /* 시험처럼 섞어서 */
     const pick=pool.slice(0,Math.min(n,pool.length)),ids=pick.map(w=>w.id);BQ=[];RCQ=[];dlog('exam',bkName(bk)+' '+ids.length+'문제 '+mn+'분');
-    try{await noteAddFromWrongs(ids);const its=(await dbAll()).filter(i=>ids.includes(i.id));if(!its.length){pvToast('문제를 열지 못했어요');return}EXAM={bk,n:its.length,mn,t0:Date.now(),end:Date.now()+mn*60000,warned:0};examBar();await itemRetry(its)}catch(e){console.error(e);EXAM=null;examBar()}}}
+    try{await exSheet(pick,{bk,mn,shuf})}catch(e){console.error(e);pvToast('시험지를 만들지 못했어요');const o=$('#exS');if(o)o.remove();EXS=null}}}
+/* ----- 시험지: 뽑은 문제를 책에서 잘라 2단 시험지로. 객관식은 보기를 눌러 고르고(보기 순서 섞기), 단답형은 답을 적고, 빈 곳에 펜으로 풀이. 제출(또는 시간 끝)하면 한꺼번에 채점 ----- */
+let EXS=null;
+async function exDoc(n){const r=await libGet(n).catch(()=>null);if(!r||!r.bytes)return null;if(EXS.docs[n])return EXS.docs[n];const u=r.bytes instanceof Uint8Array?r.bytes.slice(0):new Uint8Array(r.bytes).slice(0);return EXS.docs[n]=await PDFJS.getDocument({data:u}).promise}
+async function exProb(w,shuf){const bk=bookOf(w.src);let meta=null;for(const n of [w.src,bk]){const m=await libMeta(n).catch(()=>null);if(m&&m.problems&&m.problems.some(p=>p.q===w.q)){meta=m;break}}if(!meta)return null;const p=meta.problems.find(x=>x.q===w.q);
+  let doc=await exDoc(bk);if(!doc)doc=await exDoc(w.src);if(!doc)return null;
+  const page=await doc.getPage(p.page),sc=2,vp=page.getViewport({scale:sc}),pad=4*sc;const xl=Math.min(p.x0,p.lx!=null?p.lx-4:p.x0);
+  const a=vp.convertToViewportPoint(xl,p.y1),b=vp.convertToViewportPoint(p.x1,p.y0),X0=Math.max(0,Math.min(a[0],b[0])-pad),Y0=Math.max(0,Math.min(a[1],b[1])-pad),W=Math.round(Math.abs(b[0]-a[0])+pad*2),H=Math.round(Math.abs(b[1]-a[1])+pad*2);
+  const c=document.createElement('canvas');c.width=Math.max(2,W);c.height=Math.max(2,H);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
+  await page.render({canvasContext:g,viewport:vp,transform:[1,0,0,1,-X0,-Y0],annotationMode:0}).promise;   /* 학생이 전에 쓴 필기(틀린 답)는 빼고 */
+  const k=p.key||null,cs=(p.choices||[]).filter(o=>o&&o.x!=null),obj=cs.length===5&&[1,2,3,4,5].every(n=>cs.some(o=>o.n===n));let key=k,perm=null;
+  if(obj&&shuf&&k&&k.kind==='circled'&&!/,/.test(k.text)){try{const r=exShuffle(c,g,vp,X0,Y0,cs.slice().sort((a,b)=>a.n-b.n),sc);if(r){perm=r;const old=+k.text,nw=perm.indexOf(old-1)+1;key=Object.assign({},k,{text:String(nw)})}}catch(e){console.error(e)}}
+  const url=await new Promise(r=>c.toBlob(bl=>r(bl?URL.createObjectURL(bl):''),'image/jpeg',0.9));c.width=c.height=0;
+  return {w,p,url,key,obj,perm,ans:null,ink:[]}}
+/* 보기 순서 섞기: ①~⑤ 표시는 제자리에 두고, 표시 오른쪽 내용 칸만 서로 바꾼다. 줄·칸이 애매하면(겹침·너무 좁음) 섞지 않는다 */
+function exShuffle(c,g,vp,X0,Y0,cs,sc){const P5=cs.map(o=>{const v=vp.convertToViewportPoint(o.x,o.y);return {n:o.n,x:v[0]-X0,y:v[1]-Y0,s:o.s*sc}}),s=P5.reduce((a,o)=>a+o.s,0)/5;
+  const rows=[];for(const o of P5.slice().sort((a,b)=>a.y-b.y)){const r=rows.find(r=>Math.abs(r.y-o.y)<s*0.6);if(r){r.L.push(o);r.y=(r.y+o.y)/2}else rows.push({y:o.y,L:[o]})}
+  rows.sort((a,b)=>a.y-b.y);let half=s*1.15;for(let i=1;i<rows.length;i++)half=Math.min(half,(rows[i].y-rows[i-1].y)/2-1);if(half<s*0.55)return null;
+  const cell=[];for(const r of rows){r.L.sort((a,b)=>a.x-b.x);r.L.forEach((o,i)=>{const nx=i+1<r.L.length?r.L[i+1].x-s*0.75:c.width-2;const x0=o.x+s*0.62,w=nx-x0;cell[o.n-1]={x:x0,y:r.y-half,w,h:half*2}})}
+  if(cell.some(q=>!q||q.w<s*0.8))return null;
+  /* 칸에서 실제 글자가 있는 곳만 잘라 둔다 (오른쪽 빈칸까지 옮기면 좁은 칸에 들어가며 글자가 작아짐) */
+  const snap=cell.map(q=>{const W0=Math.max(1,Math.round(q.w)),H0=Math.max(1,Math.round(q.h)),d=g.getImageData(Math.round(q.x),Math.round(q.y),W0,H0).data;let x0=W0,x1=-1,y0=H0,y1=-1;
+    for(let y=0;y<H0;y++)for(let x=0;x<W0;x++){const i=(y*W0+x)*4;if(d[i]+d[i+1]+d[i+2]<540){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}}
+    if(x1<0){x0=0;x1=0;y0=0;y1=0}const t=document.createElement('canvas');t.width=x1-x0+1;t.height=y1-y0+1;t.getContext('2d').drawImage(c,q.x+x0,q.y+y0,t.width,t.height,0,0,t.width,t.height);t.dy=y0+(y1-y0+1)/2;return t});
+  let perm=[0,1,2,3,4];for(let t=0;t<8&&perm.every((v,i)=>v===i);t++){for(let i=4;i>0;i--){const j=Math.floor(Math.random()*(i+1));[perm[i],perm[j]]=[perm[j],perm[i]]}}
+  g.fillStyle='#fff';for(const q of cell)g.fillRect(q.x,q.y,q.w,q.h);
+  cell.forEach((q,j)=>{const src=snap[perm[j]],k=Math.min(1,(q.w-2)/src.width,q.h/src.height);g.drawImage(src,q.x+2,q.y+src.dy-src.height*k/2,src.width*k,src.height*k)});   /* 원래 칸에서의 세로 위치 그대로 (분수 등) */
+  snap.forEach(t=>{t.width=t.height=0});return perm}
+async function exSheet(L,o){EXS={o,docs:{},items:[],t0:Date.now(),end:Date.now()+o.mn*60000,warned:0,done:false};let ov=$('#exS');if(ov)ov.remove();ov=document.createElement('div');ov.id='exS';document.body.appendChild(ov);
+  ov.innerHTML=`<div class="exHd"><b class="exT">⏱ --:--</b><span class="exN">시험지 만드는 중…</span><span style="flex:1"></span><button type="button" class="sb" data-exq>나가기</button><button type="button" class="sb pri" data-exsub disabled>제출하고 채점</button></div><div class="exBody"><div class="exGrid"></div></div>`;
+  ov.querySelector('[data-exq]').onclick=()=>{if(EXS&&!EXS.done&&!confirm('시험을 그만둘까요? 지금까지 쓴 답은 저장되지 않아요'))return;exClose()};
+  const grid=ov.querySelector('.exGrid');let k=0;
+  for(const w of L){let it=null;try{it=await exProb(w,o.shuf)}catch(e){console.error(e)}if(!EXS)return;if(!it)continue;EXS.items.push(it);k++;const i=EXS.items.length-1;
+    const cd=document.createElement('div');cd.className='exCard';cd.dataset.i=i;
+    cd.innerHTML=`<div class="exNo">${k}<small>${esc(bkName(bookOf(w.src)))} · ${it.p.page}쪽</small></div><div class="exPic"><img src="${it.url}" alt="${k}번 문제"><canvas class="exInk"></canvas></div>
+      <div class="exAns">${it.obj?[1,2,3,4,5].map(n=>`<button type="button" class="exC" data-c="${n}">${CIRC[n-1]}</button>`).join(''):`<input class="txt exIn" placeholder="답 (단답형)" inputmode="text">`}</div><div class="exRes" hidden></div>`;
+    grid.appendChild(cd);exBind(cd,it);ov.querySelector('.exN').textContent=`시험지 만드는 중… ${k}/${L.length}`}
+  for(const d of Object.values(EXS.docs))try{d.destroy()}catch(e){}EXS.docs={};
+  if(!EXS.items.length){exClose();pvToast('이 문제들은 책에서 잘라 오지 못했어요');return}
+  EXS.t0=Date.now();EXS.end=EXS.t0+o.mn*60000;ov.querySelector('[data-exsub]').disabled=false;ov.querySelector('[data-exsub]').onclick=()=>exSubmit(false);exTick();dlog('exam',`시험지 ${EXS.items.length}문제 · ${o.mn}분${o.shuf?' · 보기 섞음 '+EXS.items.filter(x=>x.perm).length:''}`)}
+function exBind(cd,it){cd.querySelectorAll('.exC').forEach(b=>b.onclick=()=>{if(EXS.done)return;it.ans=it.ans===+b.dataset.c?null:+b.dataset.c;cd.querySelectorAll('.exC').forEach(x=>x.classList.toggle('on',+x.dataset.c===it.ans));exTick()});
+  const inp=cd.querySelector('.exIn');if(inp)inp.oninput=()=>{it.ans=inp.value.trim()||null;exTick()};
+  /* 문제 그림 위 펜 풀이 (손가락은 넘기기) */
+  const img=cd.querySelector('img'),cv=cd.querySelector('.exInk');const fit=()=>{const r=img.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);cv.width=Math.round(r.width*d);cv.height=Math.round(r.height*d);cv.style.width=r.width+'px';cv.style.height=r.height+'px';draw()};
+  const draw=()=>{const g=cv.getContext('2d'),d=cv.width/(cv.clientWidth||1);g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,cv.width,cv.height);g.setTransform(d,0,0,d,0,0);g.strokeStyle='#1d4ed8';g.lineWidth=1.8;g.lineCap=g.lineJoin='round';const W=cv.clientWidth;for(const s of it.ink.concat(cur?[cur]:[])){const q=inkSmoothX(s);g.beginPath();q.forEach((p,i)=>i?g.lineTo(p.x*W,p.y*W):g.moveTo(p.x*W,p.y*W));g.stroke()}};
+  let cur=null;img.complete?fit():img.onload=fit;new ResizeObserver(fit).observe(img);
+  cv.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||EXS.done)return;e.preventDefault();cv.setPointerCapture&&cv.setPointerCapture(e.pointerId);const r=cv.getBoundingClientRect();cur=[{x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.width}]});
+  cv.addEventListener('pointermove',e=>{if(!cur)return;const r=cv.getBoundingClientRect();for(const ev of (e.getCoalescedEvents?e.getCoalescedEvents():[e]))cur.push({x:(ev.clientX-r.left)/r.width,y:(ev.clientY-r.top)/r.width});draw()});
+  const up=()=>{if(cur){if(cur.length>1)it.ink.push(cur);cur=null;draw()}};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up)}
+function inkSmoothX(p){const n=p.length;if(n<5)return p;let a=p;for(let k=0;k<2;k++){const o=[a[0]];for(let i=1;i<n-1;i++)o.push({x:(a[i-1].x+2*a[i].x+a[i+1].x)/4,y:(a[i-1].y+2*a[i].y+a[i+1].y)/4});o.push(a[n-1]);a=o}return a}
+function exTick(){const ov=$('#exS');if(!EXS||!ov)return;const left=Math.max(0,EXS.end-Date.now()),m=Math.floor(left/60000),s=Math.floor(left%60000/1000),T=ov.querySelector('.exT');
+  if(!EXS.done){T.textContent=`⏱ ${m}:${String(s).padStart(2,'0')}`;T.classList.toggle('late',left<300000);ov.querySelector('.exN').textContent=`답 ${EXS.items.filter(x=>x.ans!=null).length} / ${EXS.items.length}${EXS.o.shuf?' · 보기 순서 섞음':''}`}}
+setInterval(()=>{if(!EXS||EXS.done||!EXS.items.length||!$('#exS'))return;exTick();const left=EXS.end-Date.now();if(left<=300000&&!EXS.warned){EXS.warned=1;pvToast('5분 남았어요')}if(left<=0)exSubmit(true)},1000);
+function exKeyOk(it){const k=it.key;if(!k||!k.text||k.kind==='self')return null;if(it.ans==null)return false;if(it.obj&&k.kind==='circled')return k.text.split(',').map(Number).includes(+it.ans);if(k.kind==='number'||/^-?\d+(\.\d+)?$/.test(k.text))return normAns(it.ans)===normAns(k.text);if(it.obj)return String(it.ans)===String(k.text);return null}
+function exSubmit(timeUp){if(!EXS||EXS.done)return;const n0=EXS.items.filter(x=>x.ans==null).length;if(!timeUp&&n0&&!confirm(`답을 안 쓴 문제가 ${n0}개 있어요. 제출할까요?`))return;EXS.done=true;EXS.t1=Date.now();if(timeUp)pvToast('시간이 다 됐어요 · 지금까지 쓴 답으로 채점해요');
+  const ov=$('#exS');let ok=0,self=0;EXS.items.forEach((it,i)=>{const cd=ov.querySelector(`.exCard[data-i="${i}"]`),r=cd.querySelector('.exRes'),v=exKeyOk(it);it.ok=v;const kt=it.key?(it.obj&&it.key.kind==='circled'?it.key.text.split(',').map(n=>CIRC[+n-1]).join(','):showKey({key:it.key})):'?';
+    if(v===null){self++;r.innerHTML=`<span>정답 <b>${esc(kt)}</b> · 내 답 <b>${esc(it.ans==null?'-':it.obj?CIRC[it.ans-1]:it.ans)}</b></span><span class="exSelf"><button type="button" class="sb" data-ok="1">○ 맞았어요</button><button type="button" class="sb" data-ok="0">✕ 틀렸어요</button></span>`;
+      r.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>{it.ok=b.dataset.ok==='1';cd.classList.toggle('ok',it.ok);cd.classList.toggle('ng',!it.ok);r.querySelector('.exSelf').innerHTML=it.ok?'○':'／';exSum()})}
+    else{if(v)ok++;cd.classList.add(v?'ok':'ng');r.innerHTML=`<span class="exMk">${v?'○':'／'}</span><span>정답 <b>${esc(kt)}</b>${v?'':` · 내 답 <b>${esc(it.ans==null?'안 씀':it.obj?CIRC[it.ans-1]:it.ans)}</b>`}</span>`}
+    r.hidden=false;cd.querySelectorAll('.exC').forEach(b=>{b.disabled=true;if(it.key&&it.obj&&it.key.kind==='circled'&&it.key.text.split(',').includes(b.dataset.c))b.classList.add('key')})});
+  const sub=ov.querySelector('[data-exsub]');sub.textContent='결과 저장하고 끝내기';sub.onclick=exFinish;exSum();ov.querySelector('.exBody').scrollTo({top:0,behavior:'smooth'})}
+function exSum(){const ov=$('#exS');if(!ov||!EXS)return;const I=EXS.items,ok=I.filter(x=>x.ok===true).length,und=I.filter(x=>x.ok==null).length,mn=Math.round((EXS.t1-EXS.t0)/60000);ov.querySelector('.exT').textContent=`${ok} / ${I.length}`;ov.querySelector('.exN').textContent=`맞음 ${ok} · 틀림 ${I.length-ok-und}${und?` · 직접 채점 ${und}개 남음`:''} · ${mn}분`}
+async function exFinish(){if(!EXS)return;const und=EXS.items.filter(x=>x.ok==null).length;if(und&&!confirm(`직접 채점하지 않은 문제가 ${und}개 있어요. 그 문제는 기록하지 않고 끝낼까요?`))return;
+  /* 다시 볼 문제 기록: 맞히면 해결, 틀리면 그대로 (다시 풀기에서 한 것과 같은 방식) */
+  let n=0;for(const it of EXS.items){if(it.ok==null)continue;try{const src=it.w.src;delete HC[histKey(src)];const H=histLoad(src);(H[it.w.q]=H[it.w.q]||[]).push({s:0,ok:!!it.ok,t:Date.now(),exam:1});localStorage.setItem(histKey(src),JSON.stringify(H));n++}catch(e){console.error(e)}}
+  const ok=EXS.items.filter(x=>x.ok===true).length;dlog('exam',`끝 ${ok}/${EXS.items.length} 기록 ${n}`);exClose();pvToast(`시험 결과를 저장했어요 · ${ok}문제 해결`);try{view('ana')}catch(e){}}
+function exClose(){if(EXS){for(const it of EXS.items)try{URL.revokeObjectURL(it.url)}catch(e){}for(const d of Object.values(EXS.docs||{}))try{d.destroy()}catch(e){}}EXS=null;const o=$('#exS');if(o)o.remove()}
 function examBar(){let b=$('#exBar');if(!EXAM){if(b)b.remove();return}if(!b){b=document.createElement('div');b.id='exBar';document.body.appendChild(b)}
   const left=Math.max(0,EXAM.end-Date.now()),m=Math.floor(left/60000),s=Math.floor(left%60000/1000);b.className=left<300000?'late':'';b.innerHTML=`⏱ <b>${m}:${String(s).padStart(2,'0')}</b> <span>시험 모드 · ${EXAM.n}문제</span>`;b.hidden=$('#vPdf').hidden}
 setInterval(()=>{if(!EXAM)return;examBar();const left=EXAM.end-Date.now();if(left<=300000&&!EXAM.warned){EXAM.warned=1;pvToast('5분 남았어요')}
