@@ -997,7 +997,7 @@ label.dkPick{justify-content:flex-start;cursor:pointer}label.dkPick input{width:
 #exS .exAns{display:flex;gap:8px;flex-wrap:wrap}#exS .exC{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:22px;border:1.5px solid #ccc;color:#333}#exS .exC.on{background:#1d4ed8;color:#fff;border-color:#1d4ed8}#exS .exC.key{box-shadow:0 0 0 3px #3fbf7f}
 #exS .exIn{max-width:220px;background:#f4f5f7;color:#111}#exS .exRes{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:15px}#exS .exMk{font-size:26px;font-weight:900}#exS .exCard.ok .exMk{color:#2a9d63}#exS .exCard.ng .exMk{color:#e0485f}#exS .exSelf{display:flex;gap:6px}
 @media (max-width:900px){#exS .exGrid{grid-template-columns:1fr}}
-.bkExam{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;margin-top:8px;padding:12px 18px;border-radius:14px;border:1.5px solid var(--line)}.bkExam b{font-size:16px}.bkExam small{color:var(--muted);font-size:13px}
+.bkExam{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:4px;width:100%;min-height:64px;margin-top:-4px;padding:10px 24px;border-radius:18px;border:1.5px solid #4A3A28;color:#F2F4F7;position:relative}.bkExam::after{content:'→';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:22px;font-weight:700;color:#B8C0CC}.bkExam b{font-size:17px!important}.bkHero2 .twSetB.txtB{width:auto;height:auto;padding:8px 14px!important;border-radius:999px!important;font-size:14px;font-weight:800;border:1px solid #4A3A28!important;background:transparent}.bkExam b{font-size:16px}.bkExam small{color:var(--muted);font-size:13px}
 .exBks{display:flex;flex-wrap:wrap;gap:6px}.exBks small{opacity:.6;margin-left:4px}.plChip.dim{opacity:.45}
 #exBar{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:60;background:#1A1F27;color:#F2F4F7;border-radius:99px;padding:8px 18px;font-size:15px;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;gap:10px;align-items:center;pointer-events:none}#exBar b{font-size:20px;font-variant-numeric:tabular-nums}#exBar span{opacity:.75;font-size:13px}#exBar.late b{color:#F2A65A}#exBar[hidden]{display:none}
 /* 문제집 카드 아래 줄: 모든 표시를 같은 높이·같은 글자 크기의 알약으로 */
@@ -1041,7 +1041,7 @@ label.dkPick{justify-content:flex-start;cursor:pointer}label.dkPick input{width:
 .tabs.tabbar #dueBadge{left:calc(50% + 34px)!important;top:2px!important}
 .qcCov.img{background-size:cover!important;background-position:center top!important;border:1px solid var(--line)}
 /* 다시 풀기 탭 (단순·읽히게) */
-.bkHero2 .bkHd{display:flex;justify-content:space-between;align-items:center;gap:10px}.bkHero2 .bkT{margin:0;font-size:24px;font-weight:900;color:#F2F4F7;letter-spacing:0}.bkHero2 .bkT b{color:var(--re,#F2A65A);font-size:30px}.bkHero2 .bkT em{font-style:normal;font-size:15px;color:#B8C0CC}
+#aMsg:empty{display:none}.bkHero2 .bkHd{display:flex;justify-content:space-between;align-items:center;gap:10px}.bkHero2 .bkT{margin:0;font-size:24px;font-weight:900;color:#F2F4F7;letter-spacing:0}.bkHero2 .bkT b{color:var(--re,#F2A65A);font-size:30px}.bkHero2 .bkT em{font-style:normal;font-size:15px;color:#B8C0CC}
 .bkHero2 .twSetB{width:44px;height:44px;padding:0!important;border-radius:50%!important;font-size:20px;display:grid;place-items:center}
 .bkHero2 .bkWk{font-size:15px;margin-top:-6px}.bkHero2 .bkTopR,.bkHero2 .bkNum{display:none}
 .ngrid:has(.bkC2){display:grid!important;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
