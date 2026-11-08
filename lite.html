@@ -5748,13 +5748,14 @@ async function exDoc(n){const r=await libGet(n).catch(()=>null);if(!r||!r.bytes)
 async function exProb(w,shuf){const bk=bookOf(w.src);let meta=null;for(const n of [w.src,bk]){const m=await libMeta(n).catch(()=>null);if(m&&m.problems&&m.problems.some(p=>p.q===w.q&&(w.page==null||p.page===w.page))){meta=m;break}}if(!meta)return null;const p=meta.problems.find(x=>x.q===w.q&&(w.page==null||x.page===w.page));
   let doc=await exDoc(bk);if(!doc)doc=await exDoc(w.src);if(!doc)return null;
   const page=await doc.getPage(p.page),sc=2,vp=page.getViewport({scale:sc}),pad=4*sc;const xl=Math.min(p.x0,p.lx!=null?p.lx-4:p.x0);
-  const a=vp.convertToViewportPoint(xl,p.y1),b=vp.convertToViewportPoint(p.x1,p.y0),X0=Math.max(0,Math.min(a[0],b[0])-pad),Y0=Math.max(0,Math.min(a[1],b[1])-pad),W=Math.round(Math.abs(b[0]-a[0])+pad*2),H=Math.round(Math.abs(b[1]-a[1])+pad*2);
+  let xr=p.x1;for(const o of meta.problems){if(o===p||o.page!==p.page||o.q===p.q)continue;if(o.x0>xl+60&&o.x0<xr&&Math.min(o.y1,p.y1)-Math.max(o.y0,p.y0)>20)xr=Math.min(xr,(o.lx!=null?Math.min(o.lx,o.x0):o.x0)-6)}   /* 문제 칸이 옆 단까지 넓게 잡힌 경우(시냅스): 옆 단 문제 앞에서 자른다 */
+  const a=vp.convertToViewportPoint(xl,p.y1),b=vp.convertToViewportPoint(xr,p.y0),X0=Math.max(0,Math.min(a[0],b[0])-pad),Y0=Math.max(0,Math.min(a[1],b[1])-pad),W=Math.round(Math.abs(b[0]-a[0])+pad*2),H=Math.round(Math.abs(b[1]-a[1])+pad*2);
   const c=document.createElement('canvas');c.width=Math.max(2,W);c.height=Math.max(2,H);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
   await page.render({canvasContext:g,viewport:vp,transform:[1,0,0,1,-X0,-Y0],annotationMode:0}).promise;   /* 학생이 전에 쓴 필기(틀린 답)는 빼고 */
   const k=p.key||null,cs=(p.choices||[]).filter(o=>o&&o.x!=null),obj=cs.length===5&&[1,2,3,4,5].every(n=>cs.some(o=>o.n===n));let key=k,perm=null;
   if(obj&&shuf&&k&&k.kind==='circled'&&!/,/.test(k.text)){try{const r=exShuffle(c,g,vp,X0,Y0,cs.slice().sort((a,b)=>a.n-b.n),sc);if(r){perm=r;const old=+k.text,nw=perm.indexOf(old-1)+1;key=Object.assign({},k,{text:String(nw)})}}catch(e){console.error(e)}}
-  try{exMask(c,g)}catch(e){}try{exLevels(c,g)}catch(e){}
-  const url=await new Promise(r=>c.toBlob(bl=>r(bl?URL.createObjectURL(bl):''),'image/jpeg',0.9));c.width=c.height=0;
+  try{exMask(c,g)}catch(e){}try{exLevels(c,g)}catch(e){}let cc=c;try{cc=exTrim(c,g)}catch(e){}
+  const url=await new Promise(r=>cc.toBlob(bl=>r(bl?URL.createObjectURL(bl):''),'image/jpeg',0.9));c.width=c.height=0;cc.width=cc.height=0;
   return {w,p,url,key,obj,perm,ans:null,ink:[]}}
 /* 책 파일·문제 위치를 못 찾으면: 틀렸을 때 저장해 둔 문제 그림(thumb, 1.5배)으로. 보기 위치도 같이 저장돼 있어 섞기 가능 */
 async function exThumb(w,shuf){if(!w.thumb)return null;const im=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=w.thumb});const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;const g=c.getContext('2d');g.drawImage(im,0,0);
@@ -5767,6 +5768,11 @@ async function exThumb(w,shuf){if(!w.thumb)return null;const im=await new Promis
 function exLevels(c,g){const W=c.width,H=c.height,im=g.getImageData(0,0,W,H),d=im.data,h=new Uint32Array(256);let n=0;for(let i=0;i<d.length;i+=16){h[(d[i]*299+d[i+1]*587+d[i+2]*114)/1000|0]++;n++}
   const pct=q=>{let a=0;for(let v=0;v<256;v++){a+=h[v];if(a>=n*q)return v}return 255};const lo=pct(0.006),hi=pct(0.5);if(hi-lo<40||(lo<40&&hi>235))return;
   const k=255/(hi-lo),T=new Uint8ClampedArray(256);for(let v=0;v<256;v++)T[v]=Math.max(0,Math.min(255,(v-lo)*k));for(let i=0;i<d.length;i+=4){d[i]=T[d[i]];d[i+1]=T[d[i+1]];d[i+2]=T[d[i+2]]}g.putImageData(im,0,0)}
+/* 단 사이 세로줄은 지우고, 문제 아래 큰 빈칸(책의 풀이 칸)은 잘라낸다 → 시험지에서 문제 크기가 고르게 */
+function exTrim(c,g){const W=c.width,H=c.height,im=g.getImageData(0,0,W,H),d=im.data,ink=(x,y)=>{const i=(y*W+x)*4;return d[i]+d[i+1]+d[i+2]<660};
+  const E=Math.round(W*0.12);for(const [a,b] of [[0,E],[W-E,W]])for(let x=a;x<b;x++){let run=0,y0=0;for(let y=0;y<=H;y++){if(y<H&&ink(x,y)){if(!run)y0=y;run++}else{if(run>Math.max(40,H*0.12)){g.fillStyle='#fff';g.fillRect(Math.max(0,x-2),y0-2,5,run+4)}run=0}}}   /* 끊긴 세로줄도 토막마다 지움 */
+  const d2=g.getImageData(0,0,W,H).data,row=y=>{let n=0;for(let x=0;x<W;x+=2){const i=(y*W+x)*4;if(d2[i]+d2[i+1]+d2[i+2]<450)n++}return n};let last=0;for(let y=H-1;y>=0;y--)if(row(y)>1){last=y;break}
+  const nh=Math.min(H,last+24);if(nh>H-30)return c;const o=document.createElement('canvas');o.width=W;o.height=Math.max(2,nh);o.getContext('2d').drawImage(c,0,0);return o}
 function exMask(c,g){const W=c.width,H=c.height,d=g.getImageData(0,0,W,H).data,ink=(x,y)=>{const i=(y*W+x)*4;return d[i]+d[i+1]+d[i+2]<600},L=Math.round(W*0.25);
   const rowL=y=>{let n=0;for(let x=0;x<L;x+=2)if(ink(x,y))n++;return n};let y0=-1;for(let y=0;y<Math.min(H,H*0.4);y++)if(rowL(y)>1){y0=y;break}if(y0<0)return;
   let y1=y0;while(y1<H-1&&rowL(y1+1)>0)y1++;const bh=y1-y0+1;if(bh<8||bh>H*0.22||bh>W*0.12)return;
