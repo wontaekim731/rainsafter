@@ -978,7 +978,7 @@ label.dkPick{justify-content:flex-start;cursor:pointer}label.dkPick input{width:
 #exS .exPaper{position:relative;background:#fff;color:#111;box-shadow:0 4px 18px rgba(0,0,0,.35);flex:none;overflow:hidden}
 #exS .exPaper>*:not(.exInk){transform-origin:0 0}#exS .exPaper .exPHd,#exS .exPaper .exDiv,#exS .exPaper .exQ,#exS .exPaper .exPno{position:absolute;zoom:var(--sc,1)}
 #exS .exPHd{border-bottom:2.5px solid #111;padding-bottom:12px}#exS .exPT{font-size:28px;font-weight:900;letter-spacing:-.02em;text-align:center}#exS .exPS{display:flex;gap:18px;justify-content:center;font-size:14px;color:#444;margin-top:8px}#exS .exName i{display:inline-block;width:110px;border-bottom:1px solid #333;margin-left:6px}
-#exS .exDiv{width:0;border-left:1px solid #999}#exS .exQ .exQn{font-size:22px;font-weight:900;margin-bottom:4px;font-family:serif}#exS .exQ img{display:block}
+#exS .exDiv{width:0;border-left:1px solid #999}#exS .exQ .exQn{font-size:22px;font-weight:900;margin-bottom:4px;font-family:serif}#exS .exQ img{display:block}#exS .exQn .exSrc{font:600 10px/1 system-ui,sans-serif;color:#aaa;margin-left:8px;letter-spacing:0}
 #exS .exPno{bottom:16px;left:0;right:0;text-align:center;font-size:13px;color:#777}
 #exS .exInk{position:absolute;left:0;top:0;width:100%;height:100%;touch-action:pan-y;cursor:crosshair}
 #exS .exMk{position:absolute;left:-14px;top:-14px;pointer-events:none;display:flex;align-items:center;gap:8px}#exS .exMk i{font-style:normal;font-size:58px;font-weight:300;line-height:1;color:#e0283c;font-family:serif}#exS .exMk em{font-style:normal;color:#e0283c;font-weight:800;font-size:16px;background:#fff8;padding:2px 6px;border-radius:6px}
@@ -5823,9 +5823,18 @@ function exTrim(c,g){const W=c.width,H=c.height,im=g.getImageData(0,0,W,H),d=im.
   /* 문제 칸이 쪽 전체로 잡힌 경우(시냅스): 가운데쯤의 긴 세로줄(단 나눔) 오른쪽, 아래쪽 긴 가로줄(쪽 아래 머리말·쪽 번호) 아래는 잘라낸다 */
   let CW=W,CH=H;{const d1=g.getImageData(0,0,W,H).data,k=(x,y)=>{const i=(y*W+x)*4;return d1[i]+d1[i+1]+d1[i+2]<660};
     for(let x=Math.round(W*0.3);x<W*0.75;x++){let run=0,best=0,bs=0,st=0;for(let y=0;y<H;y++){if(k(x,y)){if(!run)st=y;run++;if(run>best){best=run;bs=st}}else run=0}if(best>H*0.45&&bs<H*0.15){CW=Math.max(2,x-6);break}}   /* 위에서부터 내려오는 긴 줄만(그래프 축 아님) */
-    for(let y=Math.round(H*0.3);y<H;y++){let run=0,best=0,bs=0,st=0;for(let x=0;x<CW;x++){if(k(x,y)){if(!run)st=x;run++;if(run>best){best=run;bs=st}}else run=0}const side=x=>{let n=0;for(let t=3;t<=14;t++)if(y-t>=0&&(k(x,y-t)||k(Math.max(0,x-1),y-t)||k(Math.min(CW-1,x+1),y-t)))n++;return n>=9};if(best>CW*0.7&&!(side(bs+1)||side(bs+best-2))){let below=0;for(let y2=y+4;y2<H;y2++){let n=0;for(let x=0;x<CW;x+=3)if(k(x,y2))n++;if(n>1)below++}if(below<Math.max(40,H*0.06)){CH=Math.max(2,y-6);break}y+=3}}}   /* 아래에 쪽 번호 정도만 있을 때만(조건 상자 윗변 아님) */
-  const d2=g.getImageData(0,0,W,H).data,row=y=>{let n=0;for(let x=0;x<CW;x+=2){const i=(y*W+x)*4;if(d2[i]+d2[i+1]+d2[i+2]<450)n++}return n};let last=0;for(let y=CH-1;y>=0;y--)if(row(y)>1){last=y;break}
-  const nh=Math.min(CH,last+24);if(nh>H-30&&CW===W)return c;const o=document.createElement('canvas');o.width=CW;o.height=Math.max(2,nh);o.getContext('2d').drawImage(c,0,0);return o}
+    for(let y=Math.round(H*0.3);y<H;y++){let run=0,best=0,bs=0,st=0;for(let x=0;x<CW;x++){if(k(x,y)){if(!run)st=x;run++;if(run>best){best=run;bs=st}}else run=0}const side=x=>{let n=0;for(let t=3;t<=14;t++)if(y-t>=0&&(k(x,y-t)||k(Math.max(0,x-1),y-t)||k(Math.min(CW-1,x+1),y-t)))n++;return n>=9};if(best>CW*0.7&&!(side(bs+1)||side(bs+best-2))){let below=0,first=-1,ys=y+1;const rh=yy=>{let n=0;for(let x=0;x<CW;x+=3)if(k(x,yy))n++;return n>1};while(ys<H&&ys<y+12&&rh(ys))ys++;for(let y2=ys+1;y2<H;y2++){let n=0;for(let x=0;x<CW;x+=3)if(k(x,y2))n++;if(n>1){below++;if(first<0)first=y2}}if(below<Math.max(40,H*0.06)&&first>=0&&first-y<50){CH=Math.max(2,y-6);break}y+=3}}}   /* 아래에 쪽 번호 정도만 있을 때만(조건 상자 윗변 아님) */
+  const d2=g.getImageData(0,0,W,H).data,row=y=>{let n=0;for(let x=0;x<CW;x+=2){const i=(y*W+x)*4;if(d2[i]+d2[i+1]+d2[i+2]<690)n++}return n};let last=0;for(let y=CH-1;y>=0;y--)if(row(y)>1){last=y;break}
+  const nh=Math.min(CH,last+24);let o=c;if(!(nh>H-30&&CW===W)){o=document.createElement('canvas');o.width=CW;o.height=Math.max(2,nh);o.getContext('2d').drawImage(c,0,0)}
+  try{o=exBands(o)}catch(e){}return o}
+/* 줄 덩어리로 보고: 맨 위의 '번호만 있는 줄'(08 · 1등급)·'유형 머리띠'(대표 유형 ❹ ──)는 떼고, 맨 아래 큰 빈칸 뒤에 붙은 다음 문제 머리(대표 …)도 뗀다 */
+function exBands(c){const W=c.width,H=c.height,g=c.getContext('2d'),d=g.getImageData(0,0,W,H).data,k=(x,y)=>{const i=(y*W+x)*4;return d[i]+d[i+1]+d[i+2]<480};
+  const rows=new Uint16Array(H);for(let y=0;y<H;y++){let n=0;for(let x=0;x<W;x+=2)if(k(x,y))n++;rows[y]=n}
+  const B=[];let y=0;while(y<H){while(y<H&&rows[y]<=1)y++;if(y>=H)break;let a=y,e=y,gap=0;while(y<H){if(rows[y]>1){e=y;gap=0}else if(++gap>5)break;y++}B.push([a,e])}if(B.length<2)return c;
+  const mid=(a,e)=>{let n=0;for(let yy=a;yy<=e;yy++)for(let x=Math.round(W*0.3);x<W*0.62;x+=2)if(k(x,yy))n++;return n},rule=(a,e)=>{for(let yy=a;yy<=e;yy++){let run=0,best=0;for(let x=0;x<W;x++){if(k(x,yy)){run++;if(run>best)best=run}else run=0}if(best>W*0.55)return true}return false};
+  let top=0,i=0;while(i<Math.min(3,B.length-1)&&B[i][1]<H*0.4){const [a,e]=B[i],hh=e-a+1;if(mid(a,e)<=hh*0.05||rule(a,e)){top=B[i+1][0]-6;i++}else break}
+  /* 아래: 큰 빈칸 뒤 짧은 덩어리 */let bot=H;const lh=B.map(b=>b[1]-b[0]+1).sort((a,b)=>a-b)[Math.floor(B.length/2)]||20;for(let j=B.length-1;j>i;j--){const gp=B[j][0]-B[j-1][1];const below=B[B.length-1][1]-B[j][0];if(gp>Math.max(70,lh*3)&&below<(B[j-1][1]-B[i][0])*0.35){bot=B[j-1][1]+20;break}}
+  if(top<=0&&bot>=H)return c;top=Math.max(0,top);const o=document.createElement('canvas');o.width=W;o.height=Math.max(2,bot-top);o.getContext('2d').drawImage(c,0,top,W,bot-top,0,0,W,bot-top);dlog('exBand',`${top}/${H-bot}`);return o}
 function exMask(c,g){const W=c.width,H=c.height,d=g.getImageData(0,0,W,H).data,ink=(x,y)=>{const i=(y*W+x)*4;return d[i]+d[i+1]+d[i+2]<600},L=Math.round(W*0.25),top=Math.round(H*0.4);
   /* 책 번호(14·7·A05 등)만 지운다. 번호는 '맨 왼쪽 글자 덩어리'이고, 다음 줄 글이 번호보다 오른쪽에서 시작(내어쓰기)할 때만 번호로 본다 → 번호 없는 문제의 첫 글자를 지우지 않음 */
   const colN=x=>{let n=0;for(let y=0;y<top;y++)if(ink(x,y))n++;return n};let xa=0;for(;xa<L;xa++){const n=colN(xa);if(n>=2&&n<top*0.5)break}if(xa>=L)return;
@@ -5834,7 +5843,7 @@ function exMask(c,g){const W=c.width,H=c.height,d=g.getImageData(0,0,W,H).data,i
   const colR=x=>{for(let y=ys;y<=ye;y++)if(ink(x,y))return true;return false};let xb=xa,emp=0;for(let x=xa;x<W;x++){if(colR(x)){xb=x;emp=0}else if(++emp>Math.max(4,nh*0.35))break}if(xb-xa+1>W*0.12)return;
   let r=ye+2,fl=-1;for(;r<Math.min(H,ye+nh*4);r++){let lx=-1;for(let x=0;x<W*0.7;x++)if(ink(x,r)){lx=x;break}if(lx>=0&&lx<xb+2){fl=lx;break}if(lx>=0&&r>ye+nh*1.2){fl=lx;break}}if(fl<0||fl<xb+2)return;
   g.fillStyle='#fff';g.fillRect(Math.max(0,xa-3),Math.max(0,ys-3),xb-xa+7,nh+6);const y1=ye;
-  const R0=Math.round(W*0.72);let yq=y1+1;const dens=y=>{let n=0,m=0;for(let x=R0;x<W;x+=2){m++;if(ink(x,y))n++}return n/Math.max(1,m)};while(yq<H&&yq<y1+nh*4&&dens(yq)>0.18)yq++;if(yq>y1+2)g.fillRect(R0,y1,W-R0,yq-y1+3)}
+  const R0=Math.round(W*0.72);let yq=y1+1;const dens=y=>{let n=0,m=0;for(let x=R0;x<W;x+=2){m++;if(ink(x,y))n++}return n/Math.max(1,m)};while(yq<H&&yq<y1+nh*4&&dens(yq)>0.18)yq++;if(yq-y1>=nh*2)g.fillRect(R0,y1,W-R0,yq-y1+3)}   /* QR은 빽빽하고 키가 크다: 글 한 줄(번호 높이 정도)은 지우지 않음 */
 /* 보기 순서 섞기: ①~⑤ 표시는 제자리에 두고, 표시 오른쪽 내용 칸만 서로 바꾼다. 줄·칸이 애매하면(겹침·너무 좁음) 섞지 않는다 */
 function exShuffle(c,g,vp,X0,Y0,cs,sc){const P5=cs.map(o=>{const v=vp.convertToViewportPoint(o.x,o.y);return {n:o.n,x:v[0]-X0,y:v[1]-Y0,s:o.s*sc}}),s=P5.reduce((a,o)=>a+o.s,0)/5;
   const rows=[];for(const o of P5.slice().sort((a,b)=>a.y-b.y)){const r=rows.find(r=>Math.abs(r.y-o.y)<s*0.6);if(r){r.L.push(o);r.y=(r.y+o.y)/2}else rows.push({y:o.y,L:[o]})}
@@ -5864,14 +5873,15 @@ async function exSheet(L,o){EXS={o,docs:{},items:[],t0:Date.now(),end:Date.now()
 async function exLayout(ov){const box=ov.querySelector('.exPapers');box.innerHTML='';const PW=820,PH=Math.round(PW*1.414),M=44,GAP=36,CW=(PW-M*2-GAP)/2,HD=118;
   for(const it of EXS.items){const im=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=it.url});it.iw=im?im.naturalWidth:1;it.ih=im?im.naturalHeight:1}
   const pages=[];let pg=null,col=0,y=0;const newPage=()=>{pg={els:[],top:pages.length?M:M+HD};pages.push(pg);col=0;y=pg.top};newPage();
-  EXS.items.forEach((it,i)=>{const h=Math.round(CW*it.ih/it.iw),space=Math.max(150,Math.min(320,h*0.8)),need=28+h+space;
+  const SR=EXS.items.map(it=>CW/it.iw).sort((a,b)=>a-b),S0=SR[Math.floor(SR.length/2)]||1;   /* 글자 크기 고르게: 대부분 문제의 배율에 맞추고, 단보다 넓은 것만 줄인다 */
+  EXS.items.forEach((it,i)=>{const s=Math.min(S0,CW/it.iw),w=Math.round(it.iw*s),h=Math.round(it.ih*s),space=Math.max(150,Math.min(300,h*0.7)),need=34+h+space;it.dw=w;
     if(y+need>PH-M&&y>pg.top){if(col===0){col=1;y=pg.top}else newPage()}
     pg.els.push({i,x:M+col*(CW+GAP),y,h,need});y+=need});
   EXS.pages=pages.map(()=>({ink:[]}));
   pages.forEach((P0,pi)=>{const el=document.createElement('div');el.className='exPaper';el.style.cssText=`--pw:${PW}px;--ph:${PH}px`;
     el.innerHTML=(pi===0?`<div class="exPHd" style="left:${M}px;right:${M}px;top:${M}px"><div class="exPT">${esc(bkName(EXS.o.bk))} 실전 연습</div><div class="exPS"><span>${EXS.items.length}문항</span><span>${EXS.o.mn}분</span><span>틀렸던 문제${EXS.o.shuf?' · 보기 순서 섞음':''}</span><span class="exName">이름 <i></i></span></div></div>`:'')
       +`<div class="exDiv" style="left:${PW/2}px;top:${P0.top}px;bottom:${M}px"></div>`
-      +P0.els.map(e=>`<div class="exQ" data-i="${e.i}" style="left:${e.x}px;top:${e.y}px;width:${CW}px"><div class="exQn">${e.i+1}.</div><img src="${EXS.items[e.i].url}" style="width:${CW}px;height:${e.h}px" alt="${e.i+1}번"><div class="exMk" hidden></div></div>`).join('')
+      +P0.els.map(e=>`<div class="exQ" data-i="${e.i}" style="left:${e.x}px;top:${e.y}px;width:${CW}px"><div class="exQn">${e.i+1}.${EXS.items[e.i].w?`<small class="exSrc">${esc(bkName(bookOf(EXS.items[e.i].w.src)))} ${QN(EXS.items[e.i].w.q)}번</small>`:""}</div><img src="${EXS.items[e.i].url}" style="width:${EXS.items[e.i].dw||CW}px;height:${e.h}px" alt="${e.i+1}번"><div class="exMk" hidden></div></div>`).join('')
       +`<div class="exPno">${pi+1} / ${pages.length}</div><canvas class="exInk" width="${PW*2}" height="${PH*2}"></canvas>`;
     box.appendChild(el);exInkBind(el,EXS.pages[pi],PW)});
   const fit=()=>{const w=Math.min(box.clientWidth-8,PW*1.4),s=w/PW;box.style.setProperty('--sc',s);box.querySelectorAll('.exPaper').forEach(p=>{p.style.width=PW*s+'px';p.style.height=PH*s+'px'})};fit();new ResizeObserver(fit).observe(box)}
