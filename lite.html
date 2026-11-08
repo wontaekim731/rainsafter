@@ -5761,8 +5761,8 @@ async function exProb(w,shuf){const bk=bookOf(w.src);let meta=null;for(const n o
 async function exThumb(w,shuf){if(!w.thumb)return null;const im=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=w.thumb});const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;const g=c.getContext('2d');g.drawImage(im,0,0);
   const sc=c.width/Math.max(1,w.w||c.width/1.5),k=w.key||null,cs=(w.choices||[]).filter(o=>o&&o.x!=null),obj=cs.length===5&&[1,2,3,4,5].every(n=>cs.some(o=>o.n===n));let key=k,perm=null;
   if(obj&&shuf&&k&&k.kind==='circled'&&!/,/.test(k.text)){try{const vp={convertToViewportPoint:(x,y)=>[x*sc,c.height-y*sc]};const r=exShuffle(c,g,vp,0,0,cs.slice().sort((a,b)=>a.n-b.n),sc);if(r){perm=r;key=Object.assign({},k,{text:String(perm.indexOf(+k.text-1)+1)})}}catch(e){console.error(e)}}
-  try{exMask(c,g)}catch(e){}try{exLevels(c,g)}catch(e){}
-  const url=await new Promise(r=>c.toBlob(bl=>r(bl?URL.createObjectURL(bl):''),'image/jpeg',0.9));c.width=c.height=0;return {w,p:{page:w.page||'?'},url,key,obj,perm,ans:null,ink:[]}}
+  try{exMask(c,g)}catch(e){}try{exLevels(c,g)}catch(e){}let cc=c;try{cc=exTrim(c,g)}catch(e){}   /* 저장해 둔 그림으로 만들 때도 옆 단·쪽 번호·빈칸 잘라냄 */
+  const url=await new Promise(r=>cc.toBlob(bl=>r(bl?URL.createObjectURL(bl):''),'image/jpeg',0.9));c.width=c.height=0;cc.width=cc.height=0;return {w,p:{page:w.page||'?'},url,key,obj,perm,ans:null,ink:[]}}
 /* 시험지에 책 번호(A05·08 등)·출처·QR이 그대로 보이지 않게: 그림 맨 위에서 왼쪽 1/4에 글자가 있는 첫 줄(번호 줄)을 지우고, 그 오른쪽의 빽빽한 네모(QR)도 지운다. 번호 줄이 너무 두꺼우면(문제 글과 붙음) 손대지 않는다 */
 /* 흐린 스캔(회색 글씨·누런 바탕)을 또렷하게: 어두운 쪽 2%를 검정, 밝은 쪽(바탕)을 흰색으로 늘린다. 이미 흑백인 PDF는 거의 그대로 */
 function exLevels(c,g){const W=c.width,H=c.height,im=g.getImageData(0,0,W,H),d=im.data,h=new Uint32Array(256);let n=0;for(let i=0;i<d.length;i+=16){h[(d[i]*299+d[i+1]*587+d[i+2]*114)/1000|0]++;n++}
@@ -5770,7 +5770,7 @@ function exLevels(c,g){const W=c.width,H=c.height,im=g.getImageData(0,0,W,H),d=i
   const k=255/(hi-lo),T=new Uint8ClampedArray(256);for(let v=0;v<256;v++)T[v]=Math.max(0,Math.min(255,(v-lo)*k));for(let i=0;i<d.length;i+=4){d[i]=T[d[i]];d[i+1]=T[d[i+1]];d[i+2]=T[d[i+2]]}g.putImageData(im,0,0)}
 /* 단 사이 세로줄은 지우고, 문제 아래 큰 빈칸(책의 풀이 칸)은 잘라낸다 → 시험지에서 문제 크기가 고르게 */
 function exTrim(c,g){const W=c.width,H=c.height,im=g.getImageData(0,0,W,H),d=im.data,ink=(x,y)=>{const i=(y*W+x)*4;return d[i]+d[i+1]+d[i+2]<660};
-  const E=Math.round(W*0.12);for(const [a,b] of [[0,E],[W-E,W]])for(let x=a;x<b;x++){let run=0,y0=0;for(let y=0;y<=H;y++){if(y<H&&ink(x,y)){if(!run)y0=y;run++}else{if(run>Math.max(40,H*0.12)){g.fillStyle='#fff';g.fillRect(Math.max(0,x-2),y0-2,5,run+4)}run=0}}}   /* 끊긴 세로줄도 토막마다 지움 */
+  const E=Math.round(W*0.12);for(const [a,b] of [[0,E],[W-E,W]])for(let x=a;x<b;x++){let run=0,y0=0;for(let y=0;y<=H;y++){if(y<H&&ink(x,y)){if(!run)y0=y;run++}else{const ye=y-1,cor=yy=>{let n=0;for(let d=4;d<=14;d++)for(const sx of [-1,1]){const xx=x+sx*d;if(xx<0||xx>=W)continue;for(let j=-2;j<=2;j++){const y2=yy+j;if(y2>=0&&y2<H&&ink(xx,y2)){n++;break}}}return n>=9};if(run>Math.max(40,H*0.12)&&!cor(y0)&&!cor(ye)){g.fillStyle='#fff';g.fillRect(Math.max(0,x-2),y0-2,5,run+4)}run=0}}}   /* 끊긴 세로줄도 토막마다 지움 · 모서리가 있는 줄(조건 상자 옆변)은 남김 */
   /* 문제 칸이 쪽 전체로 잡힌 경우(시냅스): 가운데쯤의 긴 세로줄(단 나눔) 오른쪽, 아래쪽 긴 가로줄(쪽 아래 머리말·쪽 번호) 아래는 잘라낸다 */
   let CW=W,CH=H;{const d1=g.getImageData(0,0,W,H).data,k=(x,y)=>{const i=(y*W+x)*4;return d1[i]+d1[i+1]+d1[i+2]<660};
     for(let x=Math.round(W*0.3);x<W*0.75;x++){let run=0,best=0,bs=0,st=0;for(let y=0;y<H;y++){if(k(x,y)){if(!run)st=y;run++;if(run>best){best=run;bs=st}}else run=0}if(best>H*0.45&&bs<H*0.15){CW=Math.max(2,x-6);break}}   /* 위에서부터 내려오는 긴 줄만(그래프 축 아님) */
