@@ -2830,7 +2830,7 @@ TBLQ.solRead=async(doc,from,T,o)=>{const N=doc.numPages,wk=SCAN._wk||await SCAN.
   const res=new Map();let cur=null;for(const it of seq){if(it.kind==='t'){cur={t:it.t,L:[]};res.set(it.t,cur)}else if(cur)cur.L.push(it.v)}
   const out=new Map();for(const [t,r] of res){const m=t.cells.length;dlog('solBadge',(t.a||'?')+' 표'+m+' 답'+r.L.length);out.set(t,r.L)}return out};
 TBLQ.run=async(doc,o)=>{o=o||{};const N=doc.numPages,tell=m=>o.step&&o.step(m);let ps=o.pages&&o.pages.length?o.pages.slice():null,hits=[];
-  if(!ps){ps=[];const from=Math.max(1,Math.round(N*0.35));for(let p=from;p<=N;p++){if(o.stop&&o.stop())break;if(p%4===0)tell(`정답 표 찾는 중… ${p}/${N}쪽`);if(await TBLQ.probe(doc,p))ps.push(p)}}
+  if(!ps){ps=[];const from=Math.max(1,o.from||Math.round(N*0.35));for(let p=from;p<=N;p++){if(o.stop&&o.stop())break;if(p%4===0)tell(`정답 표 찾는 중… ${p}/${N}쪽`);if(await TBLQ.probe(doc,p))ps.push(p)}}
   dlog('tblProbe',ps.join(','));if(ps.length<1)return null;const T=[];
   for(let i=0;i<ps.length;i++){if(o.stop&&o.stop())break;tell(`정답 표 읽는 중… ${i+1}/${ps.length}`);try{const r=await TBLQ.page(doc,ps[i]);T.push(...r);if(r.length)hits.push(ps[i])}catch(e){console.error(e)}}
   if(!T.length)return null;
@@ -3029,10 +3029,10 @@ async function quickFind0(file,handle,bytes,doc,textPdf,pages,replace){if(SCANNI
   if(!pages&&!replace&&FOOT_NAME.test(file.name||'')){SCANNING=null;clearInterval(qT);dlog('footAns','name');{const T=await scanLazyInit(file,handle,bytes,doc,{});T.footAns=1;if(P===T)showInfo();await recentSave(T);bgDeliver(T)}return}
   if(!pages&&!replace){let fp=false;try{fp=await footProbe(doc,(i,n)=>{QL={msg:'쪽 아래 정답 확인',nk:0,pct:Math.round(2+i/n*6)};qRender()},()=>SCANNING&&SCANNING.stop)}catch(e){console.error(e)}
     if(fp){SCANNING=null;clearInterval(qT);dlog('footAns',fp+'');{const T=await scanLazyInit(file,handle,bytes,doc,{});T.footAns=1;if(P===T)showInfo();await recentSave(T);bgDeliver(T)}return}}   /* 쪽마다 아래에 정답이 있는 책: 그 쪽을 풀 때 같이 읽으면 되니 미리 읽을 것이 없다 */
-  if(!pages&&!replace){let th=0;try{const N0=doc.numPages,L=[];for(let k=0;k<24;k++)L.push(Math.round(N0*(0.5+0.5*k/23)));   /* 표가 몇 쪽 걸러 하나씩인 책(시냅스)도 걸리게 24쪽을 본다 */for(const p of [...new Set(L)]){if(SCANNING&&SCANNING.stop)break;QL={msg:'정답 표 확인',nk:0,pct:9};if(await TBLQ.probe(doc,Math.min(N0,Math.max(1,p))))th++}
+  if(!pages&&!replace){let th=0;const TH=[];try{const N0=doc.numPages,L=[];for(let k=0;k<24;k++)L.push(Math.round(N0*(0.5+0.5*k/23)));   /* 표가 몇 쪽 걸러 하나씩인 책(시냅스)도 걸리게 24쪽을 본다 */for(const p of [...new Set(L)]){if(SCANNING&&SCANNING.stop)break;QL={msg:'정답 표 확인',nk:0,pct:9};if(await TBLQ.probe(doc,Math.min(N0,Math.max(1,p)))){th++;TH.push(Math.min(N0,Math.max(1,p)))}}
       /* 표가 5쪽에 하나꼴로 드문 책(시발점 워크북: Theme 묶음마다 표 하나)은 24쪽 표본에 1~2개만 걸린다 → 하나라도 걸렸으면 뒤쪽 절반을 한 쪽씩 더 본다 */
-      if(th>=1&&th<3){const seen=new Set(L);for(let p=Math.round(N0*0.5);p<=N0&&th<3;p++){if(seen.has(p))continue;if(SCANNING&&SCANNING.stop)break;QL={msg:'정답 표 확인',nk:0,pct:9};try{if(await TBLQ.probe0(doc,p))th++}catch(e){}}}}catch(e){console.error(e)}dlog('tblPre',th+'');
-    if(th>=3){SCANNING=null;clearInterval(qT);$('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div id="scProg" style="font-size:14px;margin-top:8px">정답 표 찾는 중…</div>`;if(await tblTry(file,handle,bytes,doc,{}))return;SCANNING={stop:false}}}   /* 뒤쪽에 회색 정답 표가 여러 쪽이면 표부터 (시냅스 등: 다른 방법으로 몇 분 찾기 전에) */
+      if(th>=1&&th<3){const seen=new Set(L);for(let p=Math.round(N0*0.5);p<=N0&&th<3;p++){if(seen.has(p))continue;if(SCANNING&&SCANNING.stop)break;QL={msg:'정답 표 확인',nk:0,pct:9};try{if(await TBLQ.probe0(doc,p)){th++;TH.push(p)}}catch(e){}}}}catch(e){console.error(e)}dlog('tblPre',th+'');
+    if(th>=3){SCANNING=null;clearInterval(qT);$('#pdfInfo').innerHTML=`<b>${esc(file.name)}</b><div id="scProg" style="font-size:14px;margin-top:8px">정답 표 찾는 중…</div>`;if(await tblTry(file,handle,bytes,doc,TH.length?{from:Math.max(1,Math.min(...TH)-12)}:{}))return;SCANNING={stop:false}}}   /* 표가 처음 걸린 쪽 12쪽 앞부터만 찾는다 (그 앞 문제 쪽 40여 쪽을 쪽마다 세 배율로 펼쳐 보던 시간을 아낌) */   /* 뒤쪽에 회색 정답 표가 여러 쪽이면 표부터 (시냅스 등: 다른 방법으로 몇 분 찾기 전에) */
   try{A=await SCAN.quick(doc,{pages,stop:()=>SCANNING&&SCANNING.stop,step:(msg,np,nk,pct)=>{QL={msg,nk,pct};qRender()}})}
   catch(e){console.error(e);err=e.message||'읽지 못했습니다'}
   finally{SCANNING=null;clearInterval(qT)}
@@ -3284,6 +3284,9 @@ async function bgDeliver(T){try{if(!T)return;const name=T.name,nk=Object.keys(T.
 const LZ={q:Promise.resolve(),m:{},n:0};
 /* 손이 쉬는 틈에만 뒤에서 읽기: 펜으로 쓰거나 넘기거나 확대하는 동안 쪽 읽기(쪽마다 PC 0.2초, 아이패드는 그 몇 배)가 끼어들면 펜·스크롤·확대가 끊긴다 → 1.5초 동안 손을 대지 않을 때만 다음 쪽을 읽는다 */
 let UA_T=0;for(const ev of ['pointerdown','pointermove','wheel','touchmove','scroll','gesturechange'])addEventListener(ev,e=>{if(ev==='pointermove'&&!e.buttons&&e.pointerType==='mouse')return;UA_T=performance.now()},{passive:true,capture:true});
+/* 처음 넣은 책의 정답 읽기(표 찾기·표 읽기·쪽 번호 읽기 등)는 모두 쪽 그림 펼치기(SCAN.render)를 거친다 → 뒤에서 읽는 중(BGQ)에는 쪽마다 손이 0.9초 쉴 때까지 기다린다.
+   쓰거나 넘기거나 확대하는 동안 쪽 그림 펼치기(아이패드 한 쪽 수백 ms)가 끼어들어 끊기던 것. 채점 중(S.busy)에는 기다리지 않는다 */
+setTimeout(()=>{try{if(typeof SCAN!=='undefined'&&SCAN.render&&!SCAN.render0){SCAN.render0=SCAN.render;SCAN.render=async(...a)=>{try{if(BGQ&&!(S&&S.busy))await quietGate(900)}catch(e){}return SCAN.render0(...a)}}}catch(e){}},0);
 async function quietGate(ms){ms=ms||1500;const t0=performance.now();for(;;){let busy=false;try{busy=!$('#vPdf').hidden&&(PV.pinch||(PV.pages||[]).some(p=>p.cur))}catch(e){}const idle=performance.now()-UA_T;if(!busy&&idle>=ms)break;if(performance.now()-t0>300000)break;await new Promise(r=>setTimeout(r,Math.max(250,ms-idle)))}await new Promise(r=>window.requestIdleCallback?requestIdleCallback(()=>r(),{timeout:800}):setTimeout(r,0))}
 /* 예전 버전으로 읽어 둔 빠른 정답 다시 읽기 (QKV 2: 줄 끝 칸·흐린 ③·밀린 스캔을 고친 읽기): 책을 열면 뒤에서 정답 쪽만 다시 읽어,
    예전에 못 읽었던(직접 채점) 정답만 새로 읽은 것으로 바꾼다. 필기·채점 기록은 그대로 */
