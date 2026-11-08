@@ -94,7 +94,7 @@ const LSs=(k,v)=>{try{localStorage.setItem('qlink:'+k,JSON.stringify(v))}catch(e
 
 /* ---- 앱(index.html)의 인식기 코드를 그대로 불러온다: 앱에서 인식기를 고치면 이 쪽도 같이 바뀐다 ---- */
 async function loadSV(){
-  const r=await fetch('index.html',{cache:'no-cache'});const html=await r.text();
+  const src=(new URLSearchParams(location.search).get('src')||'index.html').replace(/[^\w.\-]/g,'');const r=await fetch(src,{cache:'no-cache'});const html=await r.text();
   const blocks=[...html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)].filter(m=>!/src=|id=/.test(m[1])).map(m=>m[2]);
   const want=blocks.filter(t=>/const KL=\{\}|const SV=\{\}|^\s*SV\.(CNN|NET)=|SV\.readAnswer=|SV\.readFrac=/m.test(t)&&t.length<600000);
   for(const t of want){try{(0,eval)(t)}catch(e){console.warn('block',e)}}

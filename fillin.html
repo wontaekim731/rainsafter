@@ -2042,12 +2042,13 @@ SV.readFrac=st=>{if(!st||st.length<3)return null;let best=null;
   if(!best)return null;const a=readNum(best.up),b=readNum(best.dn);
   if(!/^\d{1,3}$/.test(a.t)||!/^\d{1,3}$/.test(b.t)||+b.t===0)return null;return {ans:(best.neg?'-':'')+a.t+'/'+b.t,sure:a.sure&&b.sure}};
 // 소문제가 아닌 한 개짜리 답: 숫자로 못 읽었으면 분수인지 본다
-SV.readAnswer=(p,strokes)=>{const r=base(p,strokes);if((p.choices&&p.choices.length)||(p.key&&p.key.kind==='nparts'))return r;if(r.how!=='unclear'&&r.how!=='written')return r;if(r.how==='written'&&r.sure!==false&&/^-?\d+$/.test(r.ans||''))return r;
+SV.readAnswer=(p,strokes)=>{const r=base(p,strokes);if((p.choices&&p.choices.length)||(p.key&&p.key.kind==='nparts'))return r;if(r.how!=='unclear'&&r.how!=='written')return r;   /* 숫자로 확실히 읽혀도 분수 모양(가로줄 위아래에 숫자)이 있으면 분수로 — 5/6을 6으로 읽던 것 */
   const mine=strokes.filter(s=>{const cx=(s.b.x0+s.b.x1)/2,cy=(s.b.y0+s.b.y1)/2;return s.page===p.page&&cx>=p.x0&&cx<=p.x1&&cy>=p.y0&&cy<=p.y1});
   // 획을 덩어리로 모아 분수 모양인 덩어리를 찾는다 (가장 큰 것)
   const H=mine.map(s=>s.b.h).sort((a,b)=>a-b)[mine.length>>1]||12,cl=[];
   for(const s of mine.slice().sort((a,b)=>a.b.x0-b.b.x0)){const g=cl.find(g=>s.b.x0<g.x1+H*0.6&&s.b.x1>g.x0-H*0.6&&s.b.y0<g.y1+H*0.6&&s.b.y1>g.y0-H*0.6);if(g){g.st.push(s);g.x0=Math.min(g.x0,s.b.x0);g.x1=Math.max(g.x1,s.b.x1);g.y0=Math.min(g.y0,s.b.y0);g.y1=Math.max(g.y1,s.b.y1)}else cl.push({st:[s],x0:s.b.x0,x1:s.b.x1,y0:s.b.y0,y1:s.b.y1})}
   const fr=cl.map(g=>({g,f:SV.readFrac(g.st)})).filter(x=>x.f).sort((a,b)=>(b.g.y1-b.g.y0)-(a.g.y1-a.g.y0));
+  if(r.how==='written'&&r.sure!==false&&/^-?\d+$/.test(r.ans||'')){const U=p._used||[];const f=fr.find(x=>x.g.st.some(s=>U.includes(s)));return f?{ans:f.f.ans,how:'written',sure:f.f.sure}:r}   /* 숫자로 확실히 읽힌 답은 그 글씨가 분수 모양 덩어리에 들어 있을 때만 분수로 (풀이 속 분수를 답으로 잡지 않게) */
   if(fr.length)return {ans:fr[0].f.ans,how:'written',sure:fr[0].f.sure&&fr.length===1};return r};
 })(typeof window!=='undefined'?window:globalThis);
 /* 기호 답(ㄱㄴㄷㄹㅁ · A~E) 읽기: 손글씨 획을 점 구름으로 바꿔 견본 모양과 비교 ($P 방식, 획 순서·방향과 무관) */
