@@ -4087,10 +4087,11 @@ function anpPinch(B){if(!B||B._pz)return;B._pz=1;let p0=null;const d=t=>Math.hyp
 function anpClose(){ANP.on=false;{const t=$('#anTask');if(t)t.hidden=true}const el=$('#anPane');if(el){el.hidden=true;const c=el.querySelector('canvas');if(c){c.width=c.height=0}}document.body.classList.remove('anOpen');$('#rlAns')&&$('#rlAns').classList.remove('on')}
 async function anpToggle(){if(ANP.on){anpClose();return}if(!P){return}if(P.task){anpTask();return}const q=anpCurQ();ANP.q=q;ANP.hl=null;
   if(q!=null&&(P.ebs||P.xi)){const p=P.problems.find(x=>x.q===q);if(p&&p.key&&!(p.key.img&&p.key.img.page)&&typeof ebsNeed==='function'&&ebsNeed(p)){pvToast('정답지에서 이 단원 정답 칸을 찾는 중…');try{await ebsFill(p);await recentSave()}catch(e){console.error(e)}}}   /* EBS: 그 단원(본문 ○쪽) 구역에서 칸을 찾은 뒤에 연다 */
-  const im=q!=null?anpImg(q):null;
+  const qMax0=Math.max(0,...P.problems.map(p=>p.page||0)),okIm=m=>m&&m.page&&(P.ebs||P.xi||m.page>qMax0);   /* 정답 칸이 문제 쪽 안(표지 등)을 가리키면 다른 파일(따로 넣은 해설지)의 쪽 번호다 → 이 문제집에서 열면 엉뚱한 쪽 */
+  const im0=q!=null?anpImg(q):null,im=okIm(im0)?im0:null;
   if(im){anpOpen(im.page,im);return}
   /* 정답표는 언제든 열려야 한다: 칸 위치를 모르면 ① 가까운 번호의 정답 칸이 있는 쪽 ② 답안지 첫 쪽 ③ 읽어 둔 정답으로 만든 표 ④ 정답이 없으면 해설지 넣기 */
-  if(q!=null&&!P.ebs&&!P.xi&&!(P.qDup>=10)){let best=null;for(const p of P.problems){if(p.q===q)continue;const d=Math.abs(p.q-q);if(d>6||(best&&d>=best.d))continue;let m=null;try{m=anpImg(p.q)}catch(e){}if(m&&m.page)best={d,m,q:p.q}}
+  if(q!=null&&!P.ebs&&!P.xi&&!(P.qDup>=10)){let best=null;for(const p of P.problems){if(p.q===q)continue;const d=Math.abs(p.q-q);if(d>6||(best&&d>=best.d))continue;let m=null;try{m=anpImg(p.q)}catch(e){}if(okIm(m))best={d,m,q:p.q}}
     if(best){pvToast(`${q}번 칸 위치는 몰라서, 가까운 ${best.q}번 정답이 있는 쪽을 보여 줘요`);anpOpen(best.m.page,null);return}}
   const sr=P.solRange||(P.seqAns&&P.seqAns.ansFrom?[P.seqAns.ansFrom]:null),qMax=Math.max(0,...P.problems.map(p=>p.page||0));   /* 답안지는 문제 뒤에 있다: 문제 쪽보다 앞(표지 등)을 답안지로 잘못 잡은 책(블랙라벨 문제 PDF + 해설지 따로)은 표로 */
   if(sr&&sr[0]&&sr[0]>qMax){pvToast('이 문제의 정답 칸 위치는 몰라서 답안지 첫 쪽을 보여 줘요');anpOpen(sr[0],null);return}
