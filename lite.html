@@ -4760,7 +4760,7 @@ function thRender(){const box=$('#tHist');if(!box)return;const E=thEvents(),days
    선생님: 선생님 탭 → 학생 (이메일 로그인) → 학원 코드 · 그룹 · 학생 목록 · 학생별 학습 이력/과제 시간 이력
    서버 주소는 CLOUD_CFG (Firebase 웹 설정의 apiKey · projectId). 비어 있으면 '서버 연결 전'으로 안내만 한다.
    REST로 직접 부른다(라이브러리 없음). 테스트용 가짜 서버: localStorage nj:clMock = true */
-const CLOUD_CFG={apiKey:'',projectId:''};
+const CLOUD_CFG={apiKey:'AIzaSyBptnht_TuoG15P3CUQ8ZgpeBBD3j_-JfU',projectId:'qlear-4dc2f'};
 const CL={
   cfg(){const c=LS.get('cloudCfg',null)||CLOUD_CFG;return c&&c.apiKey&&c.projectId?c:null},
   mock(){return !!LS.get('clMock',false)},
