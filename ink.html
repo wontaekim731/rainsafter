@@ -86,7 +86,7 @@ label.ck{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--sub)
 </div>
 
 <script>
-const VER='ink v1';
+const VER='ink v2';
 document.getElementById('ver').textContent=VER;
 const $=s=>document.querySelector(s);
 const LSg=(k,d)=>{try{const v=localStorage.getItem('qlink:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -112,12 +112,15 @@ function makeSet(){
   const gcd=(x,y)=>y?gcd(y,x%y):x;for(let i=0;i<2;i++){let a,b;do{a=rnd(1,9);b=rnd(2,9)}while(a===b||gcd(a,b)!==1);L.push(a+'/'+b)}
   return L.sort(()=>Math.random()-.5);
 }
-let SET=LSg('set',null),SI=LSg('si',0);if(!SET||SI>=SET.length){SET=makeSet();SI=0;LSs('set',SET);LSs('si',0)}
+/* 이름마다 따로: 쓸 답 목록·진행·기록·보내기 */
+const NM=()=>$('#nm').value.trim();const nk=k=>k+':'+NM();
+let SET=null,SI=0;
+function loadSet(){SET=LSg(nk('set'),null);SI=LSg(nk('si'),0);if(!SET||SI>=SET.length){SET=makeSet();SI=0;LSs(nk('set'),SET);LSs(nk('si'),0)}}
 
 /* ---- 저장 (IndexedDB) ---- */
 function db(){if(db.p)return db.p;db.p=new Promise((res,rej)=>{const r=indexedDB.open('qlink',1);r.onupgradeneeded=()=>r.result.createObjectStore('it',{keyPath:'k'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});return db.p}
 async function tx(mode,f){const d=await db();return new Promise((res,rej)=>{const t=d.transaction('it',mode),st=t.objectStore('it');let out;const q=f(st);if(q)q.onsuccess=()=>{out=q.result};t.oncomplete=()=>res(out);t.onerror=()=>rej(t.error)})}
-const allItems=()=>tx('readonly',st=>st.getAll()).then(a=>(a||[]).sort((x,y)=>x.at-y.at)).catch(()=>[]);
+const allItems=()=>tx('readonly',st=>st.getAll()).then(a=>(a||[]).filter(x=>(x.name||'')===NM()).sort((x,y)=>x.at-y.at)).catch(()=>[]);
 
 /* ---- 그리기판: 화면 px → 문제집 쪽 좌표(pt, 위로 갈수록 y가 큼). 앱에서 문제집을 볼 때와 비슷한 배율 ---- */
 const PX_PER_PT=2.2;
@@ -151,14 +154,14 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 function showPrompt(){const t=SET[SI];const fm=/^(-?)(\d+)\/(\d+)$/.exec(t);if(fm)$('#tg').innerHTML=`${fm[1]?'−':''}<span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1;font-size:32px;vertical-align:middle"><span>${fm[2]}</span><span style="border-top:3px solid currentColor;padding-top:2px;min-width:28px;text-align:center">${fm[3]}</span></span>`;else $('#tg').textContent=t;$('#no').textContent=`${SI+1} / ${SET.length}`;
   $('#hint').textContent=t.includes('/')?'분수는 문제집에 쓰듯이 위아래로(가로줄 위에 분자, 아래에 분모) 써 주세요.':t.startsWith('-')?'음수예요. 빼기 부호까지 써 주세요.':'문제집에 답 쓰듯이 평소 글씨로 써 주세요. 크기·위치는 자유예요.';
   strokes=[];cur=null;LAST=null;draw();readNow();$('#bNext').disabled=true}
-function nextPrompt(){SI++;if(SI>=SET.length){SET=makeSet();SI=0;LSs('set',SET)}LSs('si',SI);showPrompt()}
+function nextPrompt(){SI++;if(SI>=SET.length){SET=makeSet();SI=0;LSs(nk('set'),SET)}LSs(nk('si'),SI);showPrompt()}
 
 $('#bUndo').onclick=()=>{strokes.pop();draw();clearTimeout(RT);readNow();$('#bNext').disabled=!strokes.length};
 $('#bClr').onclick=()=>{strokes=[];draw();readNow();$('#bNext').disabled=true};
 $('#bSkip').onclick=()=>nextPrompt();
 $('#bNext').onclick=async()=>{if(!strokes.length)return;clearTimeout(RT);if(!LAST)readNow();
   const st=toApp(),label=SET[SI];
-  const it={k:Date.now().toString(36)+Math.random().toString(36).slice(2,6),at:Date.now(),name:$('#nm').value.trim()||'',label,
+  const it={k:Date.now().toString(36)+Math.random().toString(36).slice(2,6),at:Date.now(),name:NM(),label,
     read:LAST.r0,readKey:LAST.r1,ok:same(LAST.r0.ans,label),okKey:same(LAST.r1.ans,label),
     box:{w:Math.round(W),h:Math.round(H),pxPerPt:PX_PER_PT},
     ink:st.map(s=>({t:s.t,p:s.pts.map(q=>[Math.round(q.x*10)/10,Math.round(q.y*10)/10,Math.round((q.p||0)*100)/100])})),
@@ -170,19 +173,23 @@ async function refresh(){const A=await allItems();$('#sN').textContent=A.length;
   const pc=(n,d)=>d?`${n}/${d} (${Math.round(n/d*100)}%)`:'-';
   $('#sOk').textContent=pc(A.filter(x=>x.ok).length,A.length);$('#sOkK').textContent=pc(A.filter(x=>x.okKey).length,A.length);
   $('#log').innerHTML=A.slice(-40).reverse().map(x=>`<span class="${x.ok?'':'ng'}">${esc(x.label)}${x.ok?'':' → '+esc(x.read&&x.read.ans||'못 읽음')}</span>`).join('');
-  const sent=LSg('sent',0);$('#sendInfo').textContent=A.length?`보낼 기록 ${A.length}개${sent?` · 마지막으로 보낸 뒤 새로 ${Math.max(0,A.length-sent)}개`:''}`:''}
+  const sent=LSg(nk('sent'),0);$('#sendInfo').textContent=A.length?`보낼 기록 ${A.length}개${sent?` · 마지막으로 보낸 뒤 새로 ${Math.max(0,A.length-sent)}개`:''}`:''}
 
-$('#bSend').onclick=async()=>{const A=await allItems();if(!A.length){alert('아직 쓴 기록이 없어요');return}
+$('#bSend').onclick=async()=>{const A=await allItems();if(!A.length){alert(NM()?NM()+' 이름으로 쓴 기록이 없어요':'아직 쓴 기록이 없어요');return}
   const d=new Date(),p2=v=>String(v).padStart(2,'0'),nm=($('#nm').value.trim()||'학생').replace(/[\\/:*?"<>|\s]/g,'');
   const fn=`qlear_손글씨학습_${nm}_${d.getFullYear()}${p2(d.getMonth()+1)}${p2(d.getDate())}_${p2(d.getHours())}${p2(d.getMinutes())}.json`;
   const body=JSON.stringify({app:'qlear',kind:'ink-train',v:1,at:Date.now(),n:A.length,note:'label=써 달라고 한 답, read=정답을 모를 때 앱이 읽은 답, readKey=정답을 알려 줬을 때, ink=획(pt, 위로 갈수록 y가 큼)',items:A});
-  const blob=new Blob([body],{type:'application/json'});LSs('sent',A.length);
+  const blob=new Blob([body],{type:'application/json'});LSs(nk('sent'),A.length);
   try{const f=new File([blob],fn,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'QLEAR 손글씨 학습 데이터'});refresh();return}}catch(e){if(e&&e.name==='AbortError')return}
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);refresh()};
 
-$('#nm').value=LSg('name','');$('#nm').addEventListener('change',()=>LSs('name',$('#nm').value.trim()));
+$('#nm').value=LSg('name','');
+/* 이름을 바꾸면 그 이름의 기록·통계·쓸 답으로 바로 바뀐다 */
+let NT=0,READY=false;const onName=()=>{clearTimeout(NT);NT=setTimeout(()=>{LSs('name',NM());if(!READY)return;loadSet();showPrompt();refresh()},250)};
+$('#nm').addEventListener('input',onName);$('#nm').addEventListener('change',onName);
+loadSet();
 
-loadSV().then(()=>{$('#load').remove();fit();showPrompt();refresh()}).catch(e=>{$('#load').textContent='인식기를 불러오지 못했어요: '+e.message+' — 새로고침해 주세요'});
+loadSV().then(()=>{$('#load').remove();READY=true;fit();loadSet();showPrompt();refresh()}).catch(e=>{$('#load').textContent='인식기를 불러오지 못했어요: '+e.message+' — 새로고침해 주세요'});
 </script>
 </body>
 </html>
