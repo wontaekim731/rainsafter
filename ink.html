@@ -45,7 +45,17 @@ label.ck{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--sub)
 </style>
 </head>
 <body>
-<div id="load">앱의 숫자 인식기를 불러오는 중…</div>
+<div id="load">앱의 숫자 인식기를 불러오는 중…<br><small id="loadSub"></small></div>
+<script>
+/* 안 열릴 때 원인을 화면에 보여 준다(옛 문법만 사용: 오래된 아이패드에서도 이 부분은 돌아가게) */
+(function(){var T0=Date.now();function os(){var m=navigator.userAgent.match(/OS (\d+)_(\d+)/)||navigator.userAgent.match(/Version\/(\d+)\.(\d+)/);return m?('iOS/Safari '+m[1]+'.'+m[2]):''}
+function show(msg){var L=document.getElementById('load');if(!L)return;L.style.flexDirection='column';L.style.textAlign='center';L.style.padding='20px';
+L.innerHTML='<div>'+msg+'</div><small style="margin-top:8px;color:#888">'+os()+'</small><button style="margin-top:14px;font-size:16px;padding:10px 18px;border-radius:10px;border:1px solid #ccc;background:#fff" onclick="location.reload()">다시 열기</button>'}
+window.__inkShow=show;
+window.addEventListener('error',function(e){show('열다가 오류가 났어요: '+((e&&e.message)||'알 수 없음').slice(0,120)+'<br>이 화면을 캡처해서 선생님께 보내 주세요')});
+setTimeout(function(){if(document.getElementById('load'))show('30초가 지나도 안 열려요. 인터넷 연결을 확인하고 [다시 열기]를 눌러 주세요.<br>계속 안 되면 이 화면을 캡처해서 선생님께 보내 주세요')},30000);
+setInterval(function(){var s=document.getElementById('loadSub');if(s)s.textContent=Math.round((Date.now()-T0)/1000)+'초'},1000)})();
+</script>
 <div class="wrap">
   <header>
     <h1>✍️ 손글씨 학습</h1><span class="ver" id="ver"></span><span class="sp"></span>
@@ -86,7 +96,7 @@ label.ck{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--sub)
 </div>
 
 <script>
-const VER='ink v2';
+const VER='ink v3';
 document.getElementById('ver').textContent=VER;
 const $=s=>document.querySelector(s);
 const LSg=(k,d)=>{try{const v=localStorage.getItem('qlink:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -97,9 +107,9 @@ async function loadSV(){
   const src=(new URLSearchParams(location.search).get('src')||'index.html').replace(/[^\w.\-]/g,'');const r=await fetch(src,{cache:'no-cache'});const html=await r.text();
   const blocks=[...html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)].filter(m=>!/src=|id=/.test(m[1])).map(m=>m[2]);
   const want=blocks.filter(t=>/const KL=\{\}|const SV=\{\}|^\s*SV\.(CNN|NET)=|SV\.readAnswer=|SV\.readFrac=/m.test(t)&&t.length<600000);
-  for(const t of want){try{(0,eval)(t)}catch(e){console.warn('block',e)}}
+  let bad='';for(const t of want){try{(0,eval)(t)}catch(e){console.warn('block',e);bad=bad||String(e&&e.message||e)}}
   const m=html.match(/↻\s*(v[\d.]+)/);if(m)document.getElementById('ver').textContent=VER+' · 인식기 '+m[1];
-  if(!window.SV||!SV.readAnswer)throw new Error('인식기를 못 불러왔어요');
+  if(!window.SV||!SV.readAnswer)throw new Error('인식기를 못 불러왔어요'+(bad?' ('+bad+')':''));
 }
 
 /* ---- 연습할 답 목록 (한 묶음 30개) ---- */
@@ -189,7 +199,7 @@ let NT=0,READY=false;const onName=()=>{clearTimeout(NT);NT=setTimeout(()=>{LSs('
 $('#nm').addEventListener('input',onName);$('#nm').addEventListener('change',onName);
 loadSet();
 
-loadSV().then(()=>{$('#load').remove();READY=true;fit();loadSet();showPrompt();refresh()}).catch(e=>{$('#load').textContent='인식기를 불러오지 못했어요: '+e.message+' — 새로고침해 주세요'});
+loadSV().then(()=>{$('#load').remove();READY=true;fit();loadSet();showPrompt();refresh()}).catch(e=>{(window.__inkShow||(m=>$('#load').textContent=m))('인식기를 불러오지 못했어요: '+String(e&&e.message||e).slice(0,120)+'<br>이 화면을 캡처해서 선생님께 보내 주세요')});
 </script>
 </body>
 </html>
