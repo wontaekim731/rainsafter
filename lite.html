@@ -5223,7 +5223,8 @@ function touchReset(){const L=SCL.lock;if(L){SCL.lock=null;L.el.style.overflow=L
 /* v46.46 진단: 손바닥을 먼저 대고 펜을 쓰면 첫 획이 안 써지는 것 — 첫 획에서 아이패드가 무엇을 보내는지(터치·펜 신호, 스크롤) 기록 */
 /* v46.71 손바닥만 막기: 문제집 화면에서 크게 닿는 터치(손바닥, 접촉 크기 45 이상 — 손가락은 31 안팎)는 시작할 때 막아, 사파리가 그 터치를 스크롤로 0.4~1.7초 붙잡는 동안 펜슬 신호를 안 보내던 것을 없앤다. 손가락 넘기기는 그대로(기기 스크롤) */
 document.addEventListener('touchstart',e=>{try{if($('#vPdf').hidden)return;const t=e.target;if(!t||!t.closest||!t.closest('#pdfPages'))return;
-  for(const x of e.changedTouches){if(x.touchType!=='stylus'&&(x.radiusX||0)>=45){if(e.cancelable){e.preventDefault();dlog('palm','막음 '+Math.round(x.radiusX))}return}}}catch(er){}},{capture:true,passive:false});
+  for(const x of e.changedTouches){if(x.touchType!=='stylus'&&(x.radiusX||0)>=45){if(!document.body.classList.contains('nscroll')){dlog('palm','통과 '+Math.round(x.radiusX));return}if(e.cancelable){e.preventDefault();dlog('palm','막음 '+Math.round(x.radiusX))}return}}}catch(er){}},{capture:true,passive:false});
+/* LITE v3 실험: 앱이 직접 넘기는 동안(touch-action:none)은 손바닥 터치를 막지(preventDefault) 않는다 — 막은 손바닥을 사파리가 취소할 때 그 순간 닿은 펜 획까지 같이 버리는 것으로 보여서(진단: 펜 첫 시도 1~2번이 신호 없이 사라지고 손바닥 취소 뒤에야 펜이 들어옴). 화면은 touch-action:none 이라 손바닥으로 움직이지 않음 */
 {const tl=t=>(t.touchType==='stylus'?'S':'F')+Math.round(t.radiusX||0);let mvN=0;
  document.addEventListener('touchstart',e=>{mvN=0;try{dlog('tS',[...e.touches].map(tl).join('')+' +'+[...e.changedTouches].map(tl).join('')+(e.cancelable?'':' nc')+' '+((e.target&&(e.target.id||e.target.className))||'').toString().slice(0,12)+(document.body.classList.contains('nscroll')?' ns':''))}catch(er){}},{capture:true,passive:true});
  document.addEventListener('touchend',e=>{try{dlog('tE',[...e.changedTouches].map(tl).join('')+' 남은 '+e.touches.length+' mv'+mvN)}catch(er){}},{capture:true,passive:true});
@@ -5527,7 +5528,7 @@ function pvBind(pg){const c=pg.ink;let holdT=null;
   const pen0=e=>e&&e.pointerType==='touch'&&(pg.cur&&!pg.curTouch);   // 펜으로 쓰는 중 손바닥(터치)이 떨어져도 펜 획을 끝내지 않는다
   c.addEventListener('pointerup',e=>{if(!pen0(e))up()});c.addEventListener('pointercancel',e=>{if(pen0(e))return;pan=null;up()});c.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse'&&!pen0(e))up()});   // 브라우저가 스크롤을 시작하면 cancel: 톡(선택)으로 보지 않는다
   /* 애플 펜슬은 절대 화면을 넘기지 않게, 선택한 도형을 잡은 손가락·두 손가락(확대)도 기본 스크롤을 막는다 */
-  c.addEventListener('touchstart',e=>{if([...e.changedTouches].some(isPalmT)&&S){e.preventDefault();PV.palm=1;return}   /* 넓게 닿은 손바닥: 화면 넘기기 없음 */
+  c.addEventListener('touchstart',e=>{if([...e.changedTouches].some(isPalmT)&&S){if(document.body.classList.contains('nscroll'))e.preventDefault();PV.palm=1;return}   /* 넓게 닿은 손바닥: 화면 넘기기 없음 */
     if(!document.body.classList.contains('nscroll'))return;const t=e.changedTouches[0];if(!t)return;
     if(t.touchType==='stylus'||[...e.touches].filter(x=>!isPalmT(x)).length>=2){e.preventDefault();return}
        /* 넓게 닿은 손바닥: 화면이 움직이지 않게 (펜이 바로 써지도록) */
@@ -5535,7 +5536,7 @@ function pvBind(pg){const c=pg.ink;let holdT=null;
     if(S&&!PV.busy){const r=c.getBoundingClientRect(),z=r.width/(pg.cw||r.width)||1,p={x:(t.clientX-r.left)/z,y:(t.clientY-r.top)/z};if(selHandle(pg,p)||selIn(pg,p))e.preventDefault()}},{passive:false});
   /* 윈도우(서피스·엣지)·안드로이드: 펜이 화면 위에 떠 있을 때(닿기 전) 이 쪽의 화면 넘기기를 끈다 → 펜·지우개 끝으로 문질러도 화면이 같이 움직이지 않음 (아이패드는 펜 떠 있음 신호가 없어 기존 방식) */
   if(!IOS){c.addEventListener('pointerover',e=>{if(e.pointerType==='pen')c.style.touchAction='none'});c.addEventListener('pointerleave',e=>{if(e.pointerType==='pen'&&!e.buttons)c.style.touchAction=''});c.addEventListener('pointerup',e=>{if(e.pointerType==='pen'&&!c.matches(':hover'))c.style.touchAction=''})}
-  c.addEventListener('touchmove',e=>{if(S&&[...e.changedTouches].some(isPalmT)){e.preventDefault();return}   /* 손바닥이 움직여도 화면은 그대로 */if(!document.body.classList.contains('nscroll'))return;if([...e.touches].filter(x=>!isPalmT(x)).length>=2||(e.touches[0]&&e.touches[0].touchType==='stylus')||pg.mv)e.preventDefault()},{passive:false});
+  c.addEventListener('touchmove',e=>{if(S&&[...e.changedTouches].some(isPalmT)){if(document.body.classList.contains('nscroll'))e.preventDefault();return}   /* 손바닥이 움직여도 화면은 그대로 */if(!document.body.classList.contains('nscroll'))return;if([...e.touches].filter(x=>!isPalmT(x)).length>=2||(e.touches[0]&&e.touches[0].touchType==='stylus')||pg.mv)e.preventDefault()},{passive:false});
 }
 /* 이동: 펜 끝 가까운 획 하나를 집는다. 저장된 획이면 새 획으로 바꿔 들고(원래 것은 지움) 옮긴다 */
 /* 선택: 도형을 펴면 바로 선택되고, 손가락으로 획을 톡 치면 선택된다. 선택된 것은 손가락·펜으로 끌어 옮긴다 */
