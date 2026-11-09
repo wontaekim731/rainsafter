@@ -5302,12 +5302,13 @@ function pvApplyZ(){const z=PV.z||1;if(!PV.inner)return;PV.inner.style.transform
 let FINGER_INK=false;try{FINGER_INK=localStorage.getItem('njFinger')==='1'}catch(e){}
 /* 이 기기에서 펜을 한 번이라도 썼으면 기억: 다음에 열어도 처음부터 손가락은 화면 넘기기 (아이패드에서 첫 손가락 터치가 선으로 그어지던 문제) */
 try{if(localStorage.getItem('njPen')==='1'){PV.penSeen=true;INK.penSeen=true}}catch(e){}
-document.addEventListener('pointerdown',e=>{if(e.pointerType!=='pen')return;const was=PV.penSeen;PV.penSeen=true;INK.penSeen=true;if(!IOS&&NATIVE_SCROLL)try{pvTA()}catch(er){}try{if(localStorage.getItem('njPen')!=='1')localStorage.setItem('njPen','1')}catch(er){}},true);
+document.addEventListener('pointerdown',e=>{if(e.pointerType!=='pen')return;const was=PV.penSeen;PV.penSeen=true;INK.penSeen=true;if(NATIVE_SCROLL)try{pvTA()}catch(er){}try{if(localStorage.getItem('njPen')!=='1')localStorage.setItem('njPen','1')}catch(er){}},true);
 /* 손가락 화면 넘기기는 브라우저 기본 스크롤에 맡긴다 (그리는 중에도 부드럽게, 관성도 기기 그대로). 손가락으로 쓰기를 켰고 펜을 아직 안 쓴 경우만 손가락이 그린다 */
 let NATIVE_SCROLL=navigator.maxTouchPoints>0;try{localStorage.removeItem('njNS')}catch(e){}   /* v46.56: '부드러운 손가락 넘기기' 설정 없앰 — 터치 기기는 기기 기본 스크롤(원래 방식) */
 /* 손가락 넘기기: 기기 기본 스크롤(부드럽고 관성도 기기 그대로, 앱이 바빠도 끊기지 않음). 애플 펜슬·손바닥·두 손가락은 터치 시작 때 막아서 화면이 안 움직이게 한다.
    펜슬이 화면을 넘기는 기기에서는 펜 메뉴에서 끄면 예전처럼 앱이 직접 넘긴다 */
-function pvTA(){if(!IOS&&PV.penSeen&&NATIVE_SCROLL){NATIVE_SCROLL=false;dlog('nsOff','pen')}document.body.classList.toggle('nscroll',NATIVE_SCROLL&&!FINGER_INK)}   /* 윈도우·안드로이드에서 펜을 쓰면 기본 스크롤을 끈다: 엣지는 펜 지우개 끝을 화면 넘기기로 가져가 지우기가 취소되고(penC) 화면이 흔들렸다 → 손가락 넘기기는 앱이 직접 */   /* 기본 스크롤(touch-action:pan)은 아이패드 사파리에서 애플 펜슬까지 화면 넘기기로 잡아 버려서 끔: 손가락 넘기기는 앱이 직접 (한 프레임에 한 번씩 모아서) */
+/* LITE v2: 아이패드도 펜을 쓰면 기기 기본 스크롤을 끄고 앱이 직접 넘긴다 — 손바닥을 대고 펜을 대면 사파리가 손바닥 터치를 취소하면서 그때 닿은 펜 첫 획까지 통째로 버렸다(진단: 펜 신호가 늘 손바닥 취소 뒤에야 옴) */
+function pvTA(){if(PV.penSeen&&NATIVE_SCROLL){NATIVE_SCROLL=false;dlog('nsOff','pen')}document.body.classList.toggle('nscroll',NATIVE_SCROLL&&!FINGER_INK)}   /* 윈도우·안드로이드에서 펜을 쓰면 기본 스크롤을 끈다: 엣지는 펜 지우개 끝을 화면 넘기기로 가져가 지우기가 취소되고(penC) 화면이 흔들렸다 → 손가락 넘기기는 앱이 직접 */   /* 기본 스크롤(touch-action:pan)은 아이패드 사파리에서 애플 펜슬까지 화면 넘기기로 잡아 버려서 끔: 손가락 넘기기는 앱이 직접 (한 프레임에 한 번씩 모아서) */
 let SNAP_ON=true;try{SNAP_ON=localStorage.getItem('njSnap')!=='0'}catch(e){}
 function pvBind(pg){const c=pg.ink;let holdT=null;
   let anc=null;const armHold=()=>{clearTimeout(holdT);if(!SNAP_ON||!pg.cur||pg.cur.snapped)return;const cur=pg.cur;anc=cur[cur.length-1];const a0=anc;holdT=setTimeout(()=>{if(pg.cur!==cur||cur.snapped)return;const z=cur[cur.length-1];if(Math.hypot(z.x-a0.x,z.y-a0.y)>7)return;
@@ -5317,7 +5318,7 @@ function pvBind(pg){const c=pg.ink;let holdT=null;
   c.addEventListener('pointerdown',e=>{if(PV.solMode){PV.solTap={x:e.clientX,y:e.clientY,t:performance.now(),pg};if(e.pointerType!=='touch'){e.preventDefault();return}}   /* 해설 보기 중: 누른 문제의 해설을 보여 주고, 펜·마우스로는 쓰지 않는다 */
     if(palmP(e)){e.preventDefault();return}   /* 손바닥: 아무것도 하지 않는다 (손가락은 그대로 넘기기·선택) */
     const fing=e.pointerType==='touch'&&(PV.penSeen||!FINGER_INK);   // 손가락 = 화면 넘기기 (손가락 쓰기를 켠 경우만 예외)
-    const NS=document.body.classList.contains('nscroll');if(e.pointerType==='touch'&&PV.penSeen&&(PV.pages.some(p=>p.cur&&!p.curTouch)||Date.now()-(PV.penT||0)<400))return;   // 손바닥은 선택·화면 넘기기 모두 무시
+    const NS=document.body.classList.contains('nscroll');if(e.pointerType==='touch'&&PV.penSeen&&(PV.pages.some(p=>p.cur&&!p.curTouch)||penJust(Math.max(e.width||0,e.height||0)/2)))return;   // 손바닥은 선택·화면 넘기기 모두 무시
     if(fing&&(!S||PV.busy)){cancelAnimationFrame(PV.inert);if(!NS)try{c.setPointerCapture(e.pointerId)}catch(er){}pan={x:e.clientX,y:e.clientY,t0:Date.now(),mv:0,vy:0,vx:0,tl:performance.now()};return}
     if(e.pointerType==='pen')dlog('pvD',pg.n+' S'+(S?1:0)+(PV.busy?' busy':'')+(PV.review?' rev':'')+' '+PV.tool+(PV.pinch?' pinch':'')+(PV.sel?' sel':'')+(pan?' pan':'')+(NS?' ns':'')+(pg.live?'':' notlive'));
     if(!S||PV.busy)return;if(e.pointerType==='pen'&&!PV.penSeen){PV.penSeen=true;pvTA()}if(PV.review&&!fing)pvResume();
@@ -5359,7 +5360,7 @@ function pvBind(pg){const c=pg.ink;let holdT=null;
     if(!document.body.classList.contains('nscroll'))return;const t=e.changedTouches[0];if(!t)return;
     if(t.touchType==='stylus'||[...e.touches].filter(x=>!isPalmT(x)).length>=2){e.preventDefault();return}
        /* 넓게 닿은 손바닥: 화면이 움직이지 않게 (펜이 바로 써지도록) */
-    if(PV.pages.some(p=>p.cur&&!p.curTouch)||Date.now()-(PV.penT||0)<400){e.preventDefault();PV.palm=1;return}   // 손바닥: 펜으로 쓰는 중·막 뗀 직후·넓게 닿은 터치는 화면을 움직이지 않는다
+    if(PV.pages.some(p=>p.cur&&!p.curTouch)||penJust(Math.max(t.radiusX||0,t.radiusY||0))){e.preventDefault();PV.palm=1;return}   // 손바닥: 펜으로 쓰는 중·막 뗀 직후·넓게 닿은 터치는 화면을 움직이지 않는다
     if(S&&!PV.busy){const r=c.getBoundingClientRect(),z=r.width/(pg.cw||r.width)||1,p={x:(t.clientX-r.left)/z,y:(t.clientY-r.top)/z};if(selHandle(pg,p)||selIn(pg,p))e.preventDefault()}},{passive:false});
   /* 윈도우(서피스·엣지)·안드로이드: 펜이 화면 위에 떠 있을 때(닿기 전) 이 쪽의 화면 넘기기를 끈다 → 펜·지우개 끝으로 문질러도 화면이 같이 움직이지 않음 (아이패드는 펜 떠 있음 신호가 없어 기존 방식) */
   if(!IOS){c.addEventListener('pointerover',e=>{if(e.pointerType==='pen')c.style.touchAction='none'});c.addEventListener('pointerleave',e=>{if(e.pointerType==='pen'&&!e.buttons)c.style.touchAction=''});c.addEventListener('pointerup',e=>{if(e.pointerType==='pen'&&!c.matches(':hover'))c.style.touchAction=''})}
@@ -6163,6 +6164,8 @@ function pvZoom(z,anchor,target){z=Math.max(0.6,Math.min(3,Math.round(z*100)/100
 addEventListener('pointerdown',()=>{if(PV.inert){cancelAnimationFrame(PV.inert);PV.inert=0}},true);   /* 미끄러지는 중에 화면 어디든 닿으면 바로 멈춤 */
 function pinchAbort(){const p=PV.pinch;if(!p)return;PV.pinch=null;PV.pinchEnd=performance.now();cancelAnimationFrame(p.raf);try{pvApplyZ()}catch(e){}}
 /* 손가락과 손바닥 구분: 닿은 면이 넓으면(반지름 PALM_R 이상) 손바닥 → 화면 넘기기·확대·선택·쓰기 모두 하지 않는다 */
+/* 펜을 막 뗀 직후의 터치: 손가락 크기(반지름 38 미만)면 0.12초만 지나도 바로 넘기기 — 예전엔 0.4초 동안 모든 터치를 막아 쓰고 바로 넘기면 무시됐다 (손바닥처럼 큰 터치는 그대로 0.4초 막음) */
+function penJust(r){const dt=Date.now()-(PV.penT||0);return dt<120||(dt<400&&r>=38)}
 const PALM_R=45,PALMS=new Set();   /* v46.72: 30이면 손가락(반지름 31, 세게 누르면 42)도 손바닥으로 보여 화면이 안 넘어갔음 → 45 (손바닥 52~63) */
 function isPalmP(e){return e.pointerType==='touch'&&Math.max(e.width||0,e.height||0)/2>=PALM_R}
 function isPalmT(t){return t.touchType!=='stylus'&&Math.max(t.radiusX||0,t.radiusY||0)>=PALM_R}
