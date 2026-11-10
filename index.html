@@ -2593,7 +2593,7 @@ async function loadPdf0(file,handle,cached){
     if(P.lazy&&P.scan){const st=P.problems.filter(p=>(p.lv||0)<3);if(st.length){const pg=new Set(st.map(p=>p.page));P.problems=P.problems.filter(p=>!st.includes(p));P.lazyDone=P.lazyDone.filter(x=>!pg.has(x));if(window.NJPROF)console.log('PROF relazy',pg.size)}}   // 예전 버전에서 읽은 쪽(자이스토리 'A32'·EBS 번호를 몰랐음)은 처음 볼 때 다시 읽는다
     P.qkV=(cached&&cached.qkV)||0;P.rotV=(cached&&cached.rotV)||0;P.lzV=(cached&&cached.lzV)||0;await rotFix(P);
     /* v44.81: 보통 번호 책에서 자이스토리 번호 찾기 때문에 문제를 못 찾고 '읽음'으로 남은 쪽은 한 번 다시 읽는다 */
-    if(P.lazy&&P.scan&&(P.lzV||0)<78&&noXiOf(P)){const has=new Set(P.problems.map(p=>p.page)),L0=(P.lazyDone||[]).length;P.lazyDone=(P.lazyDone||[]).filter(x=>has.has(x));P.lzV=78;if(L0!==P.lazyDone.length)dlog('lzRedo',(L0-P.lazyDone.length)+'쪽')}P.extInk=!big&&!Object.keys(pm).length&&!(cached&&(cached.inkAsked||cached.work))?base.length:0;P.inkKeep=!!(cached&&cached.inkKeep);P.pages=doc.numPages;P.tries=loadTries(P.name);showInfo();
+    if(P.lazy&&P.scan&&(P.lzV||0)<79&&noXiOf(P)){const has=new Set(P.problems.map(p=>p.page)),L0=(P.lazyDone||[]).length;P.lazyDone=(P.lazyDone||[]).filter(x=>has.has(x));P.lzV=79;   /* lzV 79: 예전 버전에서 문제를 하나도 못 찾고 '읽음'으로 남은 쪽(EBS 개념 확인하기 등)을 한 번 다시 읽는다 — 그 쪽은 GO 해도 다시 읽지 않아 채점이 아예 안 되던 것 */if(L0!==P.lazyDone.length)dlog('lzRedo',(L0-P.lazyDone.length)+'쪽')}P.extInk=!big&&!Object.keys(pm).length&&!(cached&&(cached.inkAsked||cached.work))?base.length:0;P.inkKeep=!!(cached&&cached.inkKeep);P.pages=doc.numPages;P.tries=loadTries(P.name);showInfo();
     $('#start').disabled=false;recentSave();
   }catch(e){console.error(e);errShow($('#pdfInfo'),'이 PDF를 열 수 없어요. '+await errWhy(e,'open'))}
 }
