@@ -440,7 +440,7 @@ html body #pvGrade.keyWait,html body .pvRail .rlIn #pvGrade.keyWait,html body #f
 #pvPenPop .ppW.on{border-color:#f59e0b;background:#fffbeb}
 #noteSh .nsAlt{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:2px 4px}
 .howTo{border:1px solid var(--line,#e5e7eb);border-radius:14px;padding:12px 16px;margin:10px 0 4px;background:#f8fafc}.howH{display:flex;align-items:center;gap:8px}.howH .linkDel{margin-left:auto}
-.howTo ol{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}.howTo li{font-size:14px;line-height:1.5}.howTo li span{display:block;color:var(--muted);font-size:13.5px}.howShow{display:block;margin:8px 0 0}.awayC{display:inline-block;font-size:12.5px;font-weight:800;padding:2px 9px;border-radius:999px;margin-top:8px}.awayC.ok{background:rgba(124,242,176,.16);color:var(--fi-acc,#3fbf7f)}.awayC.ng{background:rgba(242,107,90,.16);color:#F26B5A}
+.howTo ol{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}.howTo li{font-size:14px;line-height:1.5}.howTo li span{display:block;color:var(--muted);font-size:13.5px}.howShow{display:block;margin:8px 0 0}.ptTop{display:flex;align-items:center;gap:12px;margin:2px 0 8px}.ptTop span{font-size:13px;color:var(--muted)}.ptQ{font-size:44px;line-height:1;font-weight:900;color:var(--fi-acc,#3fbf7f);min-width:34px;text-align:center}.ptP{margin-left:auto}.ptBox{border:2px dashed var(--line,#cbd5e1);border-radius:14px;background:rgba(127,127,127,.06)}.ptPad{display:block;width:100%;height:220px;touch-action:none;cursor:crosshair}.ptMsg{min-height:20px;margin:6px 0 2px;font-size:13.5px;font-weight:700;color:#F2A65A}.ptCnt{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px}.ptCnt i{font-style:normal;font-weight:800;font-size:13px;padding:2px 7px;border-radius:8px;background:rgba(127,127,127,.14)}.ptCnt i.ok{background:rgba(124,242,176,.18);color:var(--fi-acc,#3fbf7f)}.ptCnt small{font-size:10px;margin-left:3px;opacity:.75}.ptRes{display:flex;align-items:center;gap:16px;padding:14px;border-radius:14px;background:rgba(127,127,127,.08)}.ptRes div{display:flex;flex-direction:column}.ptRes b{font-size:26px}.ptArr{font-size:22px;opacity:.6}.awayC{display:inline-block;font-size:12.5px;font-weight:800;padding:2px 9px;border-radius:999px;margin-top:8px}.awayC.ok{background:rgba(124,242,176,.16);color:var(--fi-acc,#3fbf7f)}.awayC.ng{background:rgba(242,107,90,.16);color:#F26B5A}
 .howBtn{display:inline-block;font-style:normal;font-weight:800;padding:1px 8px;border-radius:8px;border:1px solid var(--line,#d0d5dd);background:rgba(127,127,127,.14);color:inherit;font-size:13px;white-space:nowrap}.howBtn.go{background:var(--fi-acc,#7CF2B0);color:#0E1014;border-color:transparent;font-weight:900}
 .howKey{display:flex;align-items:center;gap:14px;margin:8px 0 2px}.howTo li .howKeyT{display:block;font-size:13.5px;color:var(--muted);line-height:1.5}
 .howTo li .howGo{flex:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:86px;height:66px;border-radius:14px;background:var(--fi-acc,#7CF2B0);color:#0E1014;line-height:1;box-shadow:0 0 0 5px rgba(124,242,176,.22);animation:howPulse 2.2s ease-in-out infinite}.howTo li .howGo b{font-size:26px;font-weight:900;letter-spacing:.04em}.howTo li .howGo small{font-size:12px;font-weight:800}
@@ -1383,7 +1383,7 @@ function keyCheck(p,rs){if(p)p._kc=null;const k=p&&p.key;if(!k||!/^\d{1,4}$/.tes
   if(pk.every(v=>v>=0.08)&&prod>=0.02)return {txt:k.text,sure:true};
   if(pk.some(v=>v<0.01)&&rs.every(r=>r.p>=0.5))return {txt:top,sure:true};
   return null}
-SV.cnnHid=v=>cnnHid(v);SV.cnnBaseProbs=v=>cnnProbs(v,true);SV.cnnBase=()=>{const W=cnnW();return W&&{W:W['f2.weight'],b:W['f2.bias']}};SV.mnistVec=mnistVec;
+SV.cnnHid=v=>cnnHid(v);SV.cnnBaseProbs=v=>cnnProbs(v,true);SV.cnnProbs=v=>cnnProbs(v);SV.cnnBase=()=>{const W=cnnW();return W&&{W:W['f2.weight'],b:W['f2.bias']}};SV.mnistVec=mnistVec;
 SV.recognizeDigit=strokes=>{
   if(isDash(strokes))return {d:'-',sure:true};if(isEq(strokes))return {d:'=',sure:true};
   if(SV.CNN){const pr=cnnProbs(mnistVec(strokes));let best=0;for(let k=1;k<10;k++)if(pr[k]>pr[best])best=k;return {d:String(best),sure:pr[best]>=(SV.SURE_P||0.75)&&(!pr.p0||pr.p0[best]>=(SV.PERS_B||0.9)),p:pr[best],pr}}   /* 보정이 고른 숫자를 기본 엔진도 90% 이상 그렇게 볼 때만 '확실'(자동 ○) — 보정만으로 확신이 생기지 않게 */
@@ -4858,8 +4858,8 @@ function clLinkSheet(){const me=LS.get('clStu',null);
     catch(er){msg.textContent=CL.err(er);e.target.disabled=false}}}
 function gearMenu(){if(teacherOn()){toggleTeacher();return}const me=LS.get('clStu',null);
   const d=dkShell(`<div class="dkSh"><b style="font-size:18px">설정</b><button class="sb" type="button" data-x>✕</button></div>
-    <div class="rhL"><button type="button" class="rhR" data-l><span><b>🔗 선생님과 연결</b></span><span class="sub">${me?'연결됨 · '+esc(me.name):'학원 코드로 연결'} ›</span></button><button type="button" class="rhR" data-t><span><b>👩‍🏫 선생님 모드</b></span><span class="sub">비밀번호 ›</span></button></div>`);
-  d.querySelector('[data-x]').onclick=()=>{d.hidden=true};d.querySelector('[data-l]').onclick=()=>clLinkSheet();d.querySelector('[data-t]').onclick=()=>{d.hidden=true;toggleTeacher()}}
+    <div class="rhL"><button type="button" class="rhR" data-l><span><b>🔗 선생님과 연결</b></span><span class="sub">${me?'연결됨 · '+esc(me.name):'학원 코드로 연결'} ›</span></button><button type="button" class="rhR" data-pt><span><b>✍ 숫자 글씨 등록</b></span><span class="sub">단답형 인식률 높이기 ›</span></button><button type="button" class="rhR" data-t><span><b>👩‍🏫 선생님 모드</b></span><span class="sub">비밀번호 ›</span></button></div>`);
+  d.querySelector('[data-x]').onclick=()=>{d.hidden=true};d.querySelector('[data-l]').onclick=()=>clLinkSheet();d.querySelector('[data-pt]').onclick=()=>penTestSheet();d.querySelector('[data-t]').onclick=()=>{d.hidden=true;toggleTeacher()}}
 /* ---- 선생님: 학생 목록 · 그룹 · 학생별 이력 ---- */
 const CLT={grp:'all',stu:[],me:null,day:null};
 function clCode(){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<6;i++)s+=A[Math.floor(Math.random()*A.length)];return s}
@@ -6341,6 +6341,42 @@ function persLearn(p,L){try{const k=p&&p.key;
   const o=persLoad(),cnt={};o.s=o.s.concat(add).reverse().filter(x=>(cnt[x.d]=(cnt[x.d]||0)+1)<=30).reverse();   /* 숫자마다 최근 30개까지 */
   localStorage.setItem(PERS.k(),JSON.stringify(o));dlog('persAdd',p.q+' '+lab+' → '+o.s.length+'개');clearTimeout(PERS.t);PERS.t=setTimeout(persFit,1200)}catch(e){console.error(e)}}
 setTimeout(persFit,2500);
+/* ===== 설정 → 숫자 글씨 등록 (펜 테스트): 0~9를 3번 써서 학생별 숫자 보정 견본을 바로 채운다 =====
+   채점 중 ○로 모이는 견본(persLearn)과 같은 곳에 쌓이고, 숫자마다 최근 30개까지. 엔진이 보기에 전혀 그 숫자가 아닌 글씨는 다시 쓰게 함 */
+function penTestSheet(){if(!window.SV||!SV.mnistVec||!SV.cnnBase||!SV.cnnBase()){pvToast('글씨 엔진을 불러오는 중이에요 · 잠시 뒤에 다시 눌러 주세요');return}
+  const R=3,Q=[];for(let r=0;r<R;r++){const a=[0,1,2,3,4,5,6,7,8,9];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}Q.push(...a)}
+  const T={i:0,st:[],cur:null,pen:false,tm:0,done:[],vec:[]};
+  const d=dkShell(`<div class="dkSh"><b style="font-size:18px">✍ 숫자 글씨 등록</b><button class="sb" type="button" data-x aria-label="닫기">✕</button></div>
+    <p class="sub" style="margin:0 0 10px">단답형 자동 채점이 내 글씨에 맞춰져요. 위에 나온 숫자를 칸 안에 <b>평소 문제 풀 때처럼</b> 써 주세요. 0~9를 세 번 (1분쯤).</p>
+    <div class="ptTop"><span>이 숫자를 쓰세요</span><b class="ptQ"></b><span class="ptP"></span></div>
+    <div class="ptBox"><canvas class="ptPad"></canvas></div><p class="ptMsg" aria-live="polite"></p>
+    <div class="plBtns"><button class="sb" type="button" data-clr>다시 쓰기</button><button class="sb pri" type="button" data-ok>다음</button></div>
+    <div class="ptCnt"></div>`);
+  const cv=d.querySelector('.ptPad'),g=cv.getContext('2d'),msg=d.querySelector('.ptMsg');
+  const fit=()=>{const r=cv.getBoundingClientRect(),k=devicePixelRatio||1;cv.width=Math.round(r.width*k);cv.height=Math.round(r.height*k);g.setTransform(k,0,0,k,0,0);draw()};
+  const draw=()=>{const r=cv.getBoundingClientRect();g.clearRect(0,0,r.width,r.height);g.strokeStyle='rgba(127,127,127,.25)';g.setLineDash([6,6]);g.lineWidth=1;g.beginPath();g.moveTo(0,r.height/2);g.lineTo(r.width,r.height/2);g.stroke();g.setLineDash([]);
+    g.strokeStyle=getComputedStyle(d.querySelector('.sh')).color||'#111';g.lineWidth=2.4;g.lineCap=g.lineJoin='round';for(const s of T.st.concat(T.cur?[T.cur]:[])){g.beginPath();s.forEach((p,i)=>i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y));if(s.length===1)g.lineTo(s[0].x+.1,s[0].y);g.stroke()}};
+  const cnt=()=>{const o=persLoad(),c=Array(10).fill(0);o.s.forEach(x=>c[x.d]++);d.querySelector('.ptCnt').innerHTML=`<span class="sub">모인 견본</span>`+c.map((n,k)=>`<i class="${n>=3?'ok':''}">${k}<small>${n}</small></i>`).join('')};
+  const show=()=>{d.querySelector('.ptQ').textContent=Q[T.i];d.querySelector('.ptP').textContent=`${T.i+1} / ${Q.length}`;T.st=[];T.cur=null;draw()};
+  const pt=e=>{const r=cv.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}};
+  const okType=e=>{if(e.pointerType==='pen'){T.pen=true;return true}return e.pointerType==='mouse'||(!T.pen&&e.pointerType==='touch')};   /* 펜을 한 번 쓰면 손가락·손바닥은 무시 */
+  cv.addEventListener('pointerdown',e=>{if(!okType(e))return;e.preventDefault();clearTimeout(T.tm);try{cv.setPointerCapture(e.pointerId)}catch(_){}T.cur=[pt(e)];msg.textContent='';draw()});
+  cv.addEventListener('pointermove',e=>{if(!T.cur||!okType(e))return;e.preventDefault();const L=e.getCoalescedEvents?e.getCoalescedEvents():[];for(const q of (L.length?L:[e]))T.cur.push(pt(q));draw()});
+  const up=e=>{if(!T.cur)return;T.st.push(T.cur);T.cur=null;draw();clearTimeout(T.tm);T.tm=setTimeout(next,1100)};
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+  cv.addEventListener('touchstart',e=>{if(T.pen)e.preventDefault()},{passive:false});cv.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+  function next(){clearTimeout(T.tm);if(!T.st.length){msg.textContent='칸 안에 숫자를 써 주세요';return}const dg=Q[T.i];
+    const v=SV.mnistVec(T.st.map(s=>s.map(p=>({x:p.x,y:p.y})))),pr=SV.cnnBaseProbs(v);let top=0;for(let k=1;k<10;k++)if(pr[k]>pr[top])top=k;
+    if(!(pr[dg]>=0.02)){msg.textContent=`${dg}(으)로 잘 안 보여요 · 한 번만 다시 써 주세요`;dlog('ptOdd',dg+'→'+top);T.st=[];draw();return}
+    T.done.push({h:Array.from(SV.cnnHid(v),x=>Math.round(x*1000)/1000),d:dg,t:Date.now(),pt:1});T.vec.push({v,d:dg,b:top===dg});T.i++;if(T.i<Q.length){show();return}finish()}
+  function finish(){const o=persLoad(),c={};o.s=o.s.concat(T.done).reverse().filter(x=>(c[x.d]=(c[x.d]||0)+1)<=30).reverse();try{localStorage.setItem(PERS.k(),JSON.stringify(o))}catch(e){console.error(e)}
+    persFit();const b=T.vec.filter(x=>x.b).length;let a=b;try{if(SV.cnnProbs&&SV.PERS)a=T.vec.filter(x=>{const p=SV.cnnProbs(x.v);let t=0;for(let k=1;k<10;k++)if(p[k]>p[t])t=k;return t===x.d}).length}catch(e){}
+    dlog('penTest',`기본 ${b}/${T.vec.length} → 맞춤 ${a}/${T.vec.length} · 견본 ${o.s.length}`);
+    d.querySelector('.ptTop').innerHTML=`<b style="font-size:20px">등록 끝 ✓</b>`;d.querySelector('.ptBox').outerHTML=`<div class="ptRes"><div><span class="rK">기본 엔진</span><b>${b} / ${T.vec.length}</b></div><span class="ptArr">→</span><div><span class="rK">내 글씨 맞춤</span><b>${a} / ${T.vec.length}</b></div></div><p class="sub" style="margin:6px 0 0">방금 쓴 글씨로 잰 값이에요. 앞으로 단답형을 채점할 때 이 글씨 견본을 같이 써요. 채점에서 ○를 누를 때마다 견본이 더 쌓여요.</p>`;
+    msg.textContent='';const bb=d.querySelector('.plBtns');bb.innerHTML=`<button class="sb" type="button" data-again>한 번 더 하기</button><button class="sb pri" type="button" data-end>닫기</button>`;bb.querySelector('[data-again]').onclick=()=>penTestSheet();bb.querySelector('[data-end]').onclick=()=>{d.hidden=true};cnt()}
+  d.querySelector('[data-x]').onclick=()=>{clearTimeout(T.tm);d.hidden=true};d.querySelector('[data-clr]').onclick=()=>{clearTimeout(T.tm);T.st=[];T.cur=null;msg.textContent='';draw()};d.querySelector('[data-ok]').onclick=next;
+  requestAnimationFrame(()=>{fit();show();cnt()})}
+
 async function sdRec(x,p,good){if(!P||!p)return;const L=sdInk(p);if(!L.length)return;const mk=ansMark(p,L),A=mk?mk.L:L;if(good)persLearn(p,A);
   let mr=null;if(mk){try{const b=mk.box,r=SV.readAnswer(Object.assign({},p,{x0:b.x0-3,y0:b.y0-3,x1:b.x1+3,y1:b.y1+3,choices:[],ab:null,parts:null}),A);mr=r?{ans:r.ans||'',how:r.how||'',sure:r.sure!==false}:null}catch(e){mr={err:String(e&&e.message||e).slice(0,80)}}}
   const re=x.status!=='check',rd=p._rd||null,k=p.key||{};
