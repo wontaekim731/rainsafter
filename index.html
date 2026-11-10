@@ -4772,24 +4772,26 @@ function thRender(){const box=$('#tHist');if(!box)return;const E=thEvents(),days
    서버 주소는 CLOUD_CFG (Firebase 웹 설정의 apiKey · projectId). 비어 있으면 '서버 연결 전'으로 안내만 한다.
    REST로 직접 부른다(라이브러리 없음). 테스트용 가짜 서버: localStorage nj:clMock = true */
 const CLOUD_CFG={apiKey:'AIzaSyBptnht_TuoG15P3CUQ8ZgpeBBD3j_-JfU',projectId:'qlear-4dc2f'};
+/* 서버 요청은 12초 넘으면 끊고 오류로 (계속 '…하는 중'에 멈추지 않게) */
+const clFetch=(u,o)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),12000);return fetch(u,{...(o||{}),signal:c.signal}).catch(e=>{throw new Error(e&&e.name==='AbortError'?'서버 응답이 없어요 (12초). 인터넷 연결을 확인해 주세요':String(e&&e.message||e))}).finally(()=>clearTimeout(t))};
 const CL={
   cfg(){const c=LS.get('cloudCfg',null)||CLOUD_CFG;return c&&c.apiKey&&c.projectId?c:null},
   mock(){return !!LS.get('clMock',false)},
   on(){return CL.mock()||!!CL.cfg()},
   au(k){return LS.get('clAu:'+k,null)},setAu(k,v){LS.set('clAu:'+k,v)},
-  async post(url,body){const r=await fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error((j.error&&j.error.message)||('HTTP '+r.status));return j},
+  async post(url,body){const r=await clFetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error((j.error&&j.error.message)||('HTTP '+r.status));return j},
   keep(k,j,extra){const a={uid:j.localId||j.user_id,tok:j.idToken||j.id_token,ref:j.refreshToken||j.refresh_token,exp:Date.now()+((+j.expiresIn||+j.expires_in||3600)-120)*1000,...(extra||{})};CL.setAu(k,a);return a},
   async signAnon(k){if(CL.mock()){const a={uid:'m_'+Math.random().toString(36).slice(2,10),tok:'m',ref:'m',exp:9e15};CL.setAu(k,a);return a}const c=CL.cfg();return CL.keep(k,await CL.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${c.apiKey}`,{returnSecureToken:true}))},
   async signPw(k,email,pw,isNew){if(CL.mock()){const U=LS.get('clMockU',{});if(isNew){if(U[email])throw new Error('EMAIL_EXISTS');U[email]={pw,uid:'t_'+Math.random().toString(36).slice(2,10)};LS.set('clMockU',U)}else if(!U[email]||U[email].pw!==pw)throw new Error('INVALID_LOGIN_CREDENTIALS');const a={uid:U[email].uid,tok:'m',ref:'m',exp:9e15,email};CL.setAu(k,a);return a}
     const c=CL.cfg();return CL.keep(k,await CL.post(`https://identitytoolkit.googleapis.com/v1/accounts:${isNew?'signUp':'signInWithPassword'}?key=${c.apiKey}`,{email,password:pw,returnSecureToken:true}),{email})},
   async tok(k){let a=CL.au(k);if(!a)return null;if(CL.mock()||a.exp>Date.now())return a;const c=CL.cfg();
-    const r=await fetch(`https://securetoken.googleapis.com/v1/token?key=${c.apiKey}`,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(a.ref)});const j=await r.json();if(!r.ok)throw new Error((j.error&&j.error.message)||'토큰 갱신 실패');return CL.keep(k,j,{email:a.email})},
+    const r=await clFetch(`https://securetoken.googleapis.com/v1/token?key=${c.apiKey}`,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:'grant_type=refresh_token&refresh_token='+encodeURIComponent(a.ref)});const j=await r.json();if(!r.ok)throw new Error((j.error&&j.error.message)||'토큰 갱신 실패');return CL.keep(k,j,{email:a.email})},
   /* Firestore 값 ↔ JS 값 */
   enc(v){if(v==null)return {nullValue:null};if(typeof v==='boolean')return {booleanValue:v};if(typeof v==='number')return Number.isInteger(v)?{integerValue:String(v)}:{doubleValue:v};if(typeof v==='string')return {stringValue:v};if(Array.isArray(v))return {arrayValue:{values:v.map(CL.enc)}};const f={};for(const k in v)if(v[k]!==undefined)f[k]=CL.enc(v[k]);return {mapValue:{fields:f}}},
   dec(x){if(!x)return null;if('nullValue' in x)return null;if('booleanValue' in x)return x.booleanValue;if('integerValue' in x)return +x.integerValue;if('doubleValue' in x)return x.doubleValue;if('stringValue' in x)return x.stringValue;if('timestampValue' in x)return Date.parse(x.timestampValue);if('arrayValue' in x)return (x.arrayValue.values||[]).map(CL.dec);if('mapValue' in x){const o={};const f=x.mapValue.fields||{};for(const k in f)o[k]=CL.dec(f[k]);return o}return null},
   docOf(d){const o=CL.dec({mapValue:{fields:d.fields||{}}});o._id=d.name.split('/').pop();return o},
   base(){const c=CL.cfg();return `https://firestore.googleapis.com/v1/projects/${c.projectId}/databases/(default)/documents`},
-  async req(k,method,path,body){const a=await CL.tok(k);const r=await fetch(CL.base()+path,{method,headers:{'content-type':'application/json',authorization:'Bearer '+a.tok},body:body?JSON.stringify(body):undefined});if(r.status===404)return null;const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error((j.error&&j.error.message)||('HTTP '+r.status));return j},
+  async req(k,method,path,body){const a=await CL.tok(k);const r=await clFetch(CL.base()+path,{method,headers:{'content-type':'application/json',authorization:'Bearer '+a.tok},body:body?JSON.stringify(body):undefined});if(r.status===404)return null;const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error((j.error&&j.error.message)||('HTTP '+r.status));return j},
   /* 가짜 서버(테스트): 경로 → 문서 */
   mdb(){return LS.get('clMockDB',{})},mput(D){LS.set('clMockDB',D)},
   async get(k,path){if(CL.mock()){const d=CL.mdb()[path];return d?{...d,_id:path.split('/').pop()}:null}const j=await CL.req(k,'GET','/'+path);return j?CL.docOf(j):null},
