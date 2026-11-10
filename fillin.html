@@ -1364,10 +1364,12 @@ let CNNW=null;
 function cnnW(){if(CNNW||!SV.CNN)return CNNW;const W={};for(const k in SV.CNN){const v=SV.CNN[k],bin=atob(v.q),a=new Float32Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=((bin.charCodeAt(i)<<24)>>24)*v.s;W[k]=a}CNNW=W;return W}
 function conv(x,C,H,w,b,O){const o=new Float32Array(O*H*H);for(let oc=0;oc<O;oc++)for(let y=0;y<H;y++)for(let X=0;X<H;X++){let s=b[oc];for(let ic=0;ic<C;ic++)for(let ky=0;ky<5;ky++){const yy=y+ky-2;if(yy<0||yy>=H)continue;for(let kx=0;kx<5;kx++){const xx=X+kx-2;if(xx<0||xx>=H)continue;s+=x[(ic*H+yy)*H+xx]*w[((oc*C+ic)*5+ky)*5+kx]}}o[(oc*H+y)*H+X]=s>0?s:0}return o}
 function pool(x,C,H){const h=H>>1,o=new Float32Array(C*h*h);for(let c=0;c<C;c++)for(let y=0;y<h;y++)for(let X=0;X<h;X++){let m=0;for(let dy=0;dy<2;dy++)for(let dx=0;dx<2;dx++)m=Math.max(m,x[(c*H+2*y+dy)*H+2*X+dx]);o[(c*h+y)*h+X]=m}return o}
-function cnnProbs(v){const W=cnnW();let x=pool(conv(v,1,28,W['c1.weight'],W['c1.bias'],16),16,28);x=pool(conv(x,16,14,W['c2.weight'],W['c2.bias'],32),32,14);
-  const h=new Float32Array(64);for(let j=0;j<64;j++){let s=W['f1.bias'][j];for(let i=0;i<1568;i++)s+=x[i]*W['f1.weight'][j*1568+i];h[j]=s>0?s:0}
-  const out=new Float32Array(10);for(let k=0;k<10;k++){let s=W['f2.bias'][k];for(let j=0;j<64;j++)s+=h[j]*W['f2.weight'][k*64+j];out[k]=s}
+function cnnHid(v){const W=cnnW();let x=pool(conv(v,1,28,W['c1.weight'],W['c1.bias'],16),16,28);x=pool(conv(x,16,14,W['c2.weight'],W['c2.bias'],32),32,14);
+  const h=new Float32Array(64);for(let j=0;j<64;j++){let s=W['f1.bias'][j];for(let i=0;i<1568;i++)s+=x[i]*W['f1.weight'][j*1568+i];h[j]=s>0?s:0}return h}
+/* v47.68 학생별 보정: SV.PERS(그 학생 글씨로 맞춘 마지막 판단 층)가 있으면 그것으로 숫자를 고른다. 없으면 기본 엔진 그대로 */
+function cnnLast(h,fw,fb){const out=new Float32Array(10);for(let k=0;k<10;k++){let s=fb[k];for(let j=0;j<64;j++)s+=h[j]*fw[k*64+j];out[k]=s}
   let mx=-1e9;for(const v of out)mx=Math.max(mx,v);let sum=0;const pr=Array.from(out,v=>{const e=Math.exp(v-mx);sum+=e;return e});return pr.map(v=>v/sum)}
+function cnnProbs(v,base){const W=cnnW(),h=cnnHid(v),p0=cnnLast(h,W['f2.weight'],W['f2.bias']),PP=!base&&SV.PERS;if(!PP)return p0;const p1=cnnLast(h,PP.W,PP.b);p1.p0=p0;return p1}   /* 학생 보정으로 고르되, 기본 엔진의 확률도 같이 넘긴다(아래 '확실' 판단에 씀) */
 function isEq(strokes){if(strokes.length!==2)return false;const b=strokes.map(s=>bboxOf(s));if(!b.every(x=>x.w>1.8*x.h))return false;const w=Math.max(b[0].w,b[1].w);return Math.abs((b[0].x0+b[0].x1)-(b[1].x0+b[1].x1))/2<w*0.8&&Math.abs((b[0].y0+b[0].y1)-(b[1].y0+b[1].y1))/2>Math.max(b[0].h,b[1].h)*0.6}
 const wide=s=>{const b=s.b||bboxOf(s.pts||s);return b.w>1.8*b.h};
 function eqPair(c,s){if(c.st.length!==1)return false;const a=c.st[0];if(!wide(a)||!wide(s))return false;const w=Math.max(a.b.w,s.b.w),dx=Math.abs((a.b.x0+a.b.x1)/2-(s.b.x0+s.b.x1)/2),dy=Math.abs((a.b.y0+a.b.y1)/2-(s.b.y0+s.b.y1)/2);return dx<w*0.8&&dy<w*1.2&&dy>Math.max(a.b.h,s.b.h)*0.6}
@@ -1381,9 +1383,10 @@ function keyCheck(p,rs){if(p)p._kc=null;const k=p&&p.key;if(!k||!/^\d{1,4}$/.tes
   if(pk.every(v=>v>=0.08)&&prod>=0.02)return {txt:k.text,sure:true};
   if(pk.some(v=>v<0.01)&&rs.every(r=>r.p>=0.5))return {txt:top,sure:true};
   return null}
+SV.cnnHid=v=>cnnHid(v);SV.cnnBaseProbs=v=>cnnProbs(v,true);SV.cnnBase=()=>{const W=cnnW();return W&&{W:W['f2.weight'],b:W['f2.bias']}};SV.mnistVec=mnistVec;
 SV.recognizeDigit=strokes=>{
   if(isDash(strokes))return {d:'-',sure:true};if(isEq(strokes))return {d:'=',sure:true};
-  if(SV.CNN){const pr=cnnProbs(mnistVec(strokes));let best=0;for(let k=1;k<10;k++)if(pr[k]>pr[best])best=k;return {d:String(best),sure:pr[best]>=(SV.SURE_P||0.75),p:pr[best],pr}}
+  if(SV.CNN){const pr=cnnProbs(mnistVec(strokes));let best=0;for(let k=1;k<10;k++)if(pr[k]>pr[best])best=k;return {d:String(best),sure:pr[best]>=(SV.SURE_P||0.75)&&(!pr.p0||pr.p0[best]>=(SV.PERS_B||0.9)),p:pr[best],pr}}   /* 보정이 고른 숫자를 기본 엔진도 90% 이상 그렇게 볼 때만 '확실'(자동 ○) — 보정만으로 확신이 생기지 않게 */
   const N=netW();if(!N)return {d:'?',sure:false};
   const x=mnistVec(strokes),H=N.h,hid=new Float32Array(H);
   for(let j=0;j<H;j++)hid[j]=SV.NET.b1[j];
@@ -6312,7 +6315,28 @@ function sdPts(L){return (L||[]).slice(0,80).map(s=>{let Q=s.pts;if(Q.length>120
 function sdDb(){if(sdDb.p)return sdDb.p;sdDb.p=new Promise((res,rej)=>{const r=indexedDB.open('njsd',1);r.onupgradeneeded=()=>{r.result.createObjectStore('it',{keyPath:'k'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});return sdDb.p}
 async function sdTx(mode,f){const db=await sdDb();return new Promise((res,rej)=>{const t=db.transaction('it',mode),st=t.objectStore('it');let out;const q=f(st);if(q)q.onsuccess=()=>{out=q.result};t.oncomplete=()=>res(out);t.onerror=()=>rej(t.error)})}
 const sdCnt=async()=>{try{return await sdTx('readonly',st=>st.count())}catch(e){return 0}};
-async function sdRec(x,p,good){if(!P||!p)return;const L=sdInk(p);if(!L.length)return;const mk=ansMark(p,L),A=mk?mk.L:L;
+/* ================= v47.68 학생별 숫자 보정 =================
+   학생이 단답형을 직접 채점해 ○를 누르면 그 글씨가 정답 숫자라는 게 확인된다 → 숫자마다 견본으로 모아(학생 이름별, 이 기기 안)
+   엔진의 마지막 판단 층만 그 학생 글씨에 맞춘다. 기본 엔진에서 조금만 움직이게 묶어 둔다(시뮬레이션: 4명 모두 나빠지지 않음, 원태 83→85~91%) */
+const PERS={k:()=>'nj:pers:'+String((typeof LS!=='undefined'&&LS.get&&LS.get('name',''))||''),t:0};
+function persLoad(){try{const o=JSON.parse(localStorage.getItem(PERS.k())||'null');return o&&Array.isArray(o.s)?o:{s:[]}}catch(e){return {s:[]}}}
+function persFit(){try{if(!window.SV||!SV.cnnBase)return;const o=persLoad(),B=SV.cnnBase();if(!B||o.s.length<5){SV.PERS=null;return}
+  const W=Float32Array.from(B.W),b=Float32Array.from(B.b),N=o.s.length,E=o.s.map(x=>x.h),Y=o.s.map(x=>x.d),gW=new Float32Array(640),gb=new Float32Array(10),z=new Float64Array(10);
+  for(let it=0;it<300;it++){gW.fill(0);gb.fill(0);for(let n=0;n<N;n++){const e=E[n];let mx=-1e9;for(let k=0;k<10;k++){let t=b[k];for(let j=0;j<64;j++)t+=W[k*64+j]*e[j];z[k]=t;if(t>mx)mx=t}let sm=0;for(let k=0;k<10;k++){z[k]=Math.exp(z[k]-mx);sm+=z[k]}
+      for(let k=0;k<10;k++){const d=(z[k]/sm-(k===Y[n]?1:0))/N;gb[k]+=d;if(d)for(let j=0;j<64;j++)gW[k*64+j]+=d*e[j]}}
+    for(let i=0;i<640;i++)W[i]-=0.05*(gW[i]+0.01*(W[i]-B.W[i]));for(let k=0;k<10;k++)b[k]-=0.05*gb[k]}
+  SV.PERS={W,b,n:N};try{if(typeof SUBJ_C!=='undefined')SUBJ_C.clear()}catch(e){}dlog('persFit',N+'개')}catch(e){console.error(e);SV.PERS=null}}
+function persLearn(p,L){try{const k=p&&p.key,lab=String((k&&k.text)||'').trim();if(!k||k.kind!=='number'||!/^\d{1,4}$/.test(lab)||!window.SV||!SV.cnnHid||!L||!L.length)return;
+  let D=L;try{if(typeof subjMark==='function'){const M=subjMark(L);if(M&&M.dig&&M.dig.length)D=M.dig}}catch(e){}
+  D=D.filter(s=>s&&s.b&&s.pts&&!(s.b.w>s.b.h*3&&s.b.w>6));   /* 밑줄·가로줄은 빼고 */
+  const S=D.slice().sort((a,b)=>a.b.x0-b.b.x0),ch=[];for(const s of S){const c=ch[ch.length-1];if(c&&s.b.x0<c.x1-Math.min(s.b.w,c.x1-c.x0)*0.3){c.st.push(s);c.x1=Math.max(c.x1,s.b.x1)}else ch.push({st:[s],x0:s.b.x0,x1:s.b.x1})}
+  if(ch.length!==lab.length){dlog('persSkip',p.q+' 글자 '+ch.length+'/'+lab.length);return}
+  const add=[];for(let i=0;i<ch.length;i++){const v=SV.mnistVec(ch[i].st.map(s=>s.pts.map(q=>({x:q.x,y:-q.y})))),d=+lab[i],pr=SV.cnnBaseProbs(v);if(!(pr[d]>=0.02)){dlog('persOdd',p.q+' '+d+' '+(pr[d]||0).toFixed(3));return}   /* 엔진이 보기에 말이 안 되는 글씨(누가 봐도 다른 숫자)는 배우지 않는다 */
+    add.push({h:Array.from(SV.cnnHid(v),x=>Math.round(x*1000)/1000),d,t:Date.now()})}
+  const o=persLoad(),cnt={};o.s=o.s.concat(add).reverse().filter(x=>(cnt[x.d]=(cnt[x.d]||0)+1)<=30).reverse();   /* 숫자마다 최근 30개까지 */
+  localStorage.setItem(PERS.k(),JSON.stringify(o));dlog('persAdd',p.q+' '+lab+' → '+o.s.length+'개');clearTimeout(PERS.t);PERS.t=setTimeout(persFit,1200)}catch(e){console.error(e)}}
+setTimeout(persFit,2500);
+async function sdRec(x,p,good){if(!P||!p)return;const L=sdInk(p);if(!L.length)return;const mk=ansMark(p,L),A=mk?mk.L:L;if(good)persLearn(p,A);
   let mr=null;if(mk){try{const b=mk.box,r=SV.readAnswer(Object.assign({},p,{x0:b.x0-3,y0:b.y0-3,x1:b.x1+3,y1:b.y1+3,choices:[],ab:null,parts:null}),A);mr=r?{ans:r.ans||'',how:r.how||'',sure:r.sure!==false}:null}catch(e){mr={err:String(e&&e.message||e).slice(0,80)}}}
   const re=x.status!=='check',rd=p._rd||null,k=p.key||{};
   const o={k:Date.now().toString(36)+':'+p.q+':'+Math.random().toString(36).slice(2,6),at:Date.now(),book:P.name,q:p.q,num:QN(p.q),page:p.page,disp:p.disp||null,re:re?1:0,
@@ -6691,7 +6715,7 @@ async function openRecent(name){OPEN_FROM=CURV==='solve'&&VIEW_T&&PREVV&&PREVV!=
   try{await loadPdf(new File([r.bytes],name+'.pdf',{lastModified:r.mod}),vHandle(name),r);if(P)P.orig=!!r.orig;try{localStorage.setItem('njLast',JSON.stringify({n:name,at:Date.now()}))}catch(e){}if(P&&P.name===name&&!$('#start').disabled){if(P.extInk){PEND_START=true;$('#addPick').hidden=true;$('#addStep').hidden=false;$('#pick').parentNode.hidden=true;$('#addStepT').textContent='이미 푼 필기가 있어요';showInfo()}else if(keyAsk(r)){PEND_START=true;$('#addPick').hidden=true;$('#addStep').hidden=false;$('#pick').parentNode.hidden=true;$('#addStepT').textContent='풀기 전에 확인해 주세요';showInfo()}else await start();try{qkUpgrade(P)}catch(e){}}}catch(e){console.error(e);dlog('openErr',String(e&&e.message||e).slice(0,120))}finally{opening(false)}
   {const ok=P&&P.name===name&&(!$('#start').disabled||!$('#vPdf').hidden);const inf=$('#pdfInfo'),tx=((inf&&inf.textContent)||'').trim();
    if(!ok&&(!tx||/시험지를 읽는 중/.test(tx)))openFail(name,'문제 번호와 정답을 읽지 못해서 풀기 화면을 열지 못했어요.');else if(!ok&&inf)inf.scrollIntoView({block:'center',behavior:'smooth'})}}
-window.NJDBG={subjSure:(p,i)=>subjSure(p,i),subjP:v=>{SUBJ_P=v},rotFix:p=>rotFix(p),qkUpgrade:p=>qkUpgrade(p),rotPatch:d=>rotPatch(d),libGet:n=>libGet(n),libPut:o=>libPut(o),setLoading:v=>{LOADING=v},openRecent:n=>openRecent(n),keyParts:(p,doc)=>keyParts(p,doc),fPrinted:(...a)=>fPrinted(...a),lazy:pg=>lazyOne(pg),txa:d=>TXA.read(d),keyPrep:n=>keyPrep(P,n),ebsAll:async()=>{let n=0;for(const p of P.problems)if(ebsNeed(p)){await ebsFill(p);n++}return n},seqApply:()=>seqApply(P)};
+window.NJDBG={pers:{learn:(p,L)=>persLearn(p,L),fit:()=>persFit(),load:()=>persLoad(),clear:()=>{localStorage.removeItem(PERS.k());SV.PERS=null}},subjSure:(p,i)=>subjSure(p,i),subjP:v=>{SUBJ_P=v},rotFix:p=>rotFix(p),qkUpgrade:p=>qkUpgrade(p),rotPatch:d=>rotPatch(d),libGet:n=>libGet(n),libPut:o=>libPut(o),setLoading:v=>{LOADING=v},openRecent:n=>openRecent(n),keyParts:(p,doc)=>keyParts(p,doc),fPrinted:(...a)=>fPrinted(...a),lazy:pg=>lazyOne(pg),txa:d=>TXA.read(d),keyPrep:n=>keyPrep(P,n),ebsAll:async()=>{let n=0;for(const p of P.problems)if(ebsNeed(p)){await ebsFill(p);n++}return n},seqApply:()=>seqApply(P)};
 /* [풀기]를 눌렀는데 열리지 않을 때: 아무 반응 없이 '문제집 추가'만 보이지 않게, 이유와 할 수 있는 일을 바로 보여 준다 */
 function openFail(name,why,busy){dlog('openFail',name.slice(0,40)+' '+why.slice(0,40));const vs=$('#vStart');if(vs)vs.classList.remove('collapsed');const vr=$('#vRecent');if(vr)vr.hidden=false;const inf=$('#pdfInfo');if(!inf)return;
   inf.innerHTML=`<div class="keyAsk" id="openFailBox"><b>⚠ 「${esc(name)}」을(를) 열지 못했어요</b><p style="margin:6px 0">${esc(why)}</p>${busy?'':`<div class="row" style="flex-wrap:wrap;gap:8px"><button class="btn mid" type="button" data-of="again">다시 열기</button><button class="btn quiet" type="button" data-of="fresh">처음부터 다시 읽기</button><button class="btn quiet" type="button" onclick="diagCopy(this)">📋 진단 정보 복사</button></div><p class="muted" style="font-size:13px;margin:6px 0 0">[처음부터 다시 읽기]는 저장된 문항 위치를 지우고 책을 새로 읽어요 (필기는 그대로).</p>`}</div>`;
