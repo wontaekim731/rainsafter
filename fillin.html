@@ -4856,11 +4856,12 @@ function clLinkSheet(){const me=LS.get('clStu',null);
       const old=await CL.get('s','students/'+a.uid);await CL.set('s','students/'+a.uid,{...(old||{}),tid:c.tid,name,code,joined:(old&&old.joined)||Date.now(),last:Date.now()});
       LS.set('clStu',{uid:a.uid,name,code});LS.set('clSyncH',{});await clSync(true);d.hidden=true;pvToast('선생님과 연결했어요')}
     catch(er){msg.textContent=CL.err(er);e.target.disabled=false}}}
-function meFirst(){const n=String(LS.get('name','')||'').trim();return n?[...n][0]:''}
+function meName(){return String(LS.get('name','')||LS.get('stuName','')||'').trim()}
+function meFirst(){const n=meName();return n?[...n][0]:''}
 function meBtnPaint(){const tb=document.getElementById('tchBtn');if(!tb||teacherOn())return;const f=meFirst();tb.classList.add('meBtn');tb.title='나 · 설정';tb.setAttribute('aria-label','나 · 설정');
   tb.innerHTML=`<span class="meAv">${f?esc(f):'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>'}</span>`}
 /* 오른쪽 위 이름 동그라미 → '나' 화면: 내 정보 · 내 글씨 · 화면 · 연결 · 도움, 맨 아래에 앱 정보·선생님 모드(작게) */
-function gearMenu(){if(teacherOn()){toggleTeacher();return}const me=LS.get('clStu',null),nm=String(LS.get('name','')||'').trim();
+function gearMenu(){if(teacherOn()){toggleTeacher();return}const me=LS.get('clStu',null),nm=meName();
   let ps=0;try{ps=persLoad().s.length}catch(e){}
   const ver=((document.getElementById('verTag')||{}).textContent||'').replace(/[↻\s]+/,'').trim();
   const row=(k,t,sub)=>`<button type="button" class="meR" data-${k}><span>${t}</span><span class="sub">${sub}<i aria-hidden="true">›</i></span></button>`;
