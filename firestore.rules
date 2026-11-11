@@ -27,7 +27,7 @@ service cloud.firestore {
       allow create: if request.auth != null && request.resource.data.tid == request.auth.uid;
       allow update, delete: if request.auth != null && resource.data.tid == request.auth.uid;
     }
-    // Q매치: 방(4자리)은 로그인한 사람이 읽고, 방장·도전자만 고친다. 빈 방에는 누구든 도전자로 들어갈 수 있다
+    // 매치: 방(4자리)은 로그인한 사람이 읽고, 방장·도전자만 고친다. 빈 방에는 누구든 도전자로 들어갈 수 있다
     match /rooms/{r} {
       allow read: if request.auth != null;
       allow create: if request.auth != null && request.resource.data.host == request.auth.uid;
