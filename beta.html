@@ -1213,13 +1213,42 @@ main,#app,body{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
 /* v47.98 학습 중 문제집 줄: 글자·표지 크게 (원태 요청) */
 .skRow[data-dk]{gap:18px;padding:16px 20px 16px 16px}.skRow[data-dk] .qcCov{width:54px;height:70px;flex-shrink:0}.skRow[data-dk] .skRT{gap:6px}.skRow[data-dk] .skRT b{font-size:20px;line-height:1.3}.skRow[data-dk] .skRT small{font-size:15.5px}.skRow[data-dk] .skSel{font-size:13.5px;padding:3px 10px}.skRow[data-dk] .skRP{gap:8px}.skRow[data-dk] .skRP b{font-size:18px}.skRow[data-dk] .skRP .qcBar{width:150px;height:7px}.skRow[data-dk] .skRS{font-size:22px}
 @media (max-width:560px){.skRow[data-dk] .skRT b{font-size:17.5px}.skRow[data-dk] .skRT small{font-size:14px}.skRow[data-dk] .qcCov{width:44px;height:58px}.skRow[data-dk] .skRP .qcBar{width:90px}.skRow[data-dk] .skRP b{font-size:15px}}
+
+/* ===== 로그인 화면·Google (가벼운 버전에서 가져옴) ===== */
+.hLogin .hlRole{display:none!important}
+.gBtn{font:inherit;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;border-radius:14px;border:1px solid var(--line,rgba(127,127,127,.35));background:#fff;color:#1f1f1f;font-weight:800;font-size:17px;cursor:pointer;margin-top:8px}
+.gG{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:conic-gradient(#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0);color:#fff;font:900 13px/1 system-ui,sans-serif}
+.gOr{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;margin:6px 0}
+.gOr::before,.gOr::after{content:'';flex:1;height:1px;background:var(--line,rgba(127,127,127,.3))}
+body.noUser .appbar,body.noUser #tabs,body.noUser #vHome>:not(#hHell){display:none!important}
+.hlRole{display:flex;gap:4px;padding:4px;border-radius:14px;background:rgba(127,127,127,.14);width:100%;max-width:360px;margin-bottom:-24px}
+.hlRole button{flex:1;height:44px;border:0;border-radius:10px;background:none;color:var(--muted);font:inherit;font-size:16px;font-weight:800;cursor:pointer}
+.hlRole button.on{background:var(--paper,#fff);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.hLogin{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;padding:24px 20px calc(24px + env(safe-area-inset-bottom));overflow:auto}
+.hlTop{display:flex;flex-direction:column;align-items:center;text-align:center}
+.hlLogo svg{width:76px;height:auto;display:block}
+.hlName{font-size:30px;font-weight:900;letter-spacing:.04em;margin-top:14px}
+.hlTag{margin:10px 0 0;color:var(--muted);font-size:16px;line-height:1.55}
+.hlAct{width:100%;max-width:360px;display:flex;flex-direction:column;gap:10px}
+.hlG{margin:0;height:52px;padding:0 16px;border-radius:12px;font-size:16px;font-weight:700;gap:12px;border:1px solid #dadce0}
+.hlMsg{min-height:0;margin:0;text-align:center;font-size:13px;color:var(--muted)}
+.hlMsg:empty{display:none}
+.hlOr{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;margin:6px 0}
+.hlOr:before,.hlOr:after{content:'';flex:1;height:1px;background:var(--line,rgba(127,127,127,.3))}
+.hlIn{font:inherit;height:52px;padding:0 16px;border-radius:12px;border:1px solid var(--line,rgba(127,127,127,.35));background:transparent;color:inherit;font-size:16px;outline:none}
+.hlIn:focus{border-color:var(--accent,#6ee7a8)}
+.hlGo{font:inherit;height:52px;border:0;border-radius:12px;background:var(--accent,#6ee7a8);color:#0b1a12;font-size:16px;font-weight:800;cursor:pointer}
+.hlGo:disabled{opacity:.35;cursor:default}
+.hlFoot{margin:0;color:var(--muted);font-size:12.5px;text-align:center;max-width:320px}
+.meAcc{cursor:default}
+.meAcc .sb{margin-left:8px;padding:4px 10px;font-size:13px}
 </style>
 </head>
 <body>
 <div id="qlSplash" aria-hidden="true"><div class="qlLogo"><svg class="qlBig" width="120" height="140" viewBox="0 0 120 140" aria-hidden="true"><rect style="--i:1" x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:2" x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:3" x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:4" x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:5" x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:6" x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:7" x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:8" x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:9" x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:10" x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:11" x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:12" x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:13" x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:14" x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:15" x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:16" x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:17" x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:18" x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlInk"/><rect style="--i:19" x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" class="qlAcc"/></svg><div class="qlWord"><em>Q</em>LEAR</div></div><div class="qlSlogan"><em>채점</em>부터가 공부다</div></div>
 <script>window.QL_T0=performance.now();/* 켤 때마다 로고 → '채점부터가 공부다' */try{var qd=new Date().toDateString(),qs=document.getElementById('qlSplash');localStorage.setItem('njSpDay',qd)}catch(e){}</script>
 <div class="wrap">
-  <header class="appbar"><div class="brand" id="brandHome" role="button" tabindex="0" title="처음 화면(오늘)으로" aria-label="QLEAR, 처음 화면으로"><span class="qlMark"><svg class="qlQ" width="26" height="31" viewBox="0 0 26 31" aria-hidden="true"><rect style="--i:1" x="4.80" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:2" x="9.20" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:3" x="13.60" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:4" x="18.00" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:5" x="0.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:6" x="22.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:7" x="0.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:8" x="22.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:9" x="0.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:10" x="22.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:11" x="0.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:12" x="13.60" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:13" x="22.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:14" x="0.40" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:15" x="18.00" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:16" x="4.80" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:17" x="9.20" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:18" x="13.60" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:19" x="22.40" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlAcc"/></svg></span><span>QLEAR</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" role="button" title="눌러서 새로고침" onclick="event.stopPropagation();location.reload()" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px;cursor:pointer;padding:6px 4px">↻ v47.98</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.81)" aria-label="선생님 모드">⚙</button></header>
+  <header class="appbar"><div class="brand" id="brandHome" role="button" tabindex="0" title="처음 화면(오늘)으로" aria-label="QLEAR, 처음 화면으로"><span class="qlMark"><svg class="qlQ" width="26" height="31" viewBox="0 0 26 31" aria-hidden="true"><rect style="--i:1" x="4.80" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:2" x="9.20" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:3" x="13.60" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:4" x="18.00" y="0.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:5" x="0.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:6" x="22.40" y="4.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:7" x="0.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:8" x="22.40" y="9.20" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:9" x="0.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:10" x="22.40" y="13.60" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:11" x="0.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:12" x="13.60" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:13" x="22.40" y="18.00" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:14" x="0.40" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:15" x="18.00" y="22.40" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:16" x="4.80" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:17" x="9.20" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:18" x="13.60" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlInk"/><rect style="--i:19" x="22.40" y="26.80" width="3.61" height="3.61" rx="1.06" class="qlAcc"/></svg></span><span>QLEAR</span><span class="betaTag" hidden> 채점 베타</span><span id="verTag" role="button" title="눌러서 새로고침" onclick="event.stopPropagation();location.reload()" style="font-size:12px;font-weight:500;color:var(--muted);margin-left:6px;cursor:pointer;padding:6px 4px">↻ v47.99</span></div><button class="iconbtn" type="button" id="tchBtn" title="선생님 모드 (v44.81)" aria-label="선생님 모드">⚙</button></header>
 
   <nav class="tabs tabbar" id="tabs" aria-label="메뉴"><button type="button" class="on" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15.5h16V20H4zM6 10h12v4.5H6zM8 4.5h8V9H8z"/></svg><span>오늘</span></button><button type="button" data-v="solve"><svg class="tabQ" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 2.8a8.6 8.6 0 1 0 0 17.2a8.6 8.6 0 1 0 0-17.2zm0 4.1a4.5 4.5 0 1 1 0 9a4.5 4.5 0 1 1 0-9z"/><path d="M13.6 15.9l2.9-2.9 5 5-2.9 2.9z"/></svg><span>문제집</span></button><button type="button" data-v="ana"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l3 3v13H6z"/><path d="M9 11.5l2 2 4-4.5"/></svg><span>다시 풀기</span><span id="dueBadge" hidden></span></button><button type="button" data-v="task" class="tOnly" style="position:relative;display:none"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5h6v2.5H9z"/><path d="M8.5 12h7M8.5 16h5"/></svg><span>확인 문제</span><span id="taskBadge" hidden></span></button><button type="button" data-v="note" class="tOnly"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>선생님</span></button><button type="button" data-v="match"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 2.5L5 13.5h6l-1.5 8 8.5-11h-6z"/></svg><span>매치</span><span id="mtBadge" hidden></span></button></nav>
   <section class="stack" id="vHome" style="display:flex;flex-direction:column;gap:14px">
@@ -5246,12 +5275,45 @@ function meFirst(){const n=meName();return n?[...n][0]:''}
 function meBtnPaint(){const tb=document.getElementById('tchBtn');if(!tb||teacherOn())return;const f=meFirst();tb.classList.add('meBtn');tb.title='나 · 설정';tb.setAttribute('aria-label','나 · 설정');
   tb.innerHTML=`<span class="meAv">${f?esc(f):'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>'}</span>`}
 /* 오른쪽 위 이름 동그라미 → '나' 화면: 내 정보 · 내 글씨 · 화면 · 연결 · 도움, 맨 아래에 앱 정보·선생님 모드(작게) */
+/* ===== Google 로그인 (가벼운 버전에서 가져옴) ===== */
+const HLR={r:'s'};/* 본앱 로그인 화면은 학생만 (선생님은 나 → 선생님 모드) */
+const GA={p:null};
+function gaLoad(){if(GA.p)return GA.p;const s=u=>new Promise((ok,no)=>{const e=document.createElement('script');e.src=u;e.onload=ok;e.onerror=()=>no(new Error('로그인 도구를 불러오지 못했어요 (인터넷 확인)'));document.head.appendChild(e)});
+  GA.p=s('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js').then(()=>s('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js')).then(()=>{const c=CL.cfg();if(!firebase.apps.length)firebase.initializeApp({apiKey:c.apiKey,authDomain:c.projectId+'.firebaseapp.com',projectId:c.projectId});return firebase}).catch(e=>{GA.p=null;throw e});return GA.p}
+/* 선생님 계정도 Google로: 학생 쪽 Google 로그인이 같은 이메일의 비밀번호 로그인을 대신하게 되면(Firebase 규칙) 비밀번호로는 못 들어오므로 */
+async function tGoogleIn(){const fb=await gaLoad();let res;try{const pv=new fb.auth.GoogleAuthProvider();pv.setCustomParameters({prompt:'select_account'});res=await fb.auth().signInWithPopup(pv)}
+  catch(e){const c=e&&e.code||'';throw new Error(c==='auth/popup-closed-by-user'||c==='auth/cancelled-popup-request'?'로그인을 취소했어요':c==='auth/popup-blocked'?'로그인 창이 막혔어요. 한 번 더 눌러 주세요':(e.message||String(e)))}
+  const gid=res.credential&&res.credential.idToken;if(!gid)throw new Error('Google 확인표를 받지 못했어요');const c=CL.cfg();
+  const j=await CL.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${c.apiKey}`,{postBody:`id_token=${gid}&providerId=google.com`,requestUri:location.origin+location.pathname,returnSecureToken:true});if(j.errorMessage)throw new Error(j.errorMessage);
+  const a=CL.keep('t',j,{email:j.email||'',g:1});try{fb.auth().signOut()}catch(e){}
+  let T=await CL.get('t','teachers/'+a.uid);if(!T){const code=clCode();T={email:j.email||'',code,groups:[],at:Date.now()};await CL.set('t','codes/'+code,{tid:a.uid});await CL.set('t','teachers/'+a.uid,T)}return a}
+window.tGoogleIn=tGoogleIn;
+const gaOn=()=>{const a=CL.au('s');return !!(a&&a.g)};
+async function gaSignIn(){if(!CL.on()||CL.mock())throw new Error('지금은 Google 로그인을 쓸 수 없어요');const fb=await gaLoad();let res;
+  try{const pv=new fb.auth.GoogleAuthProvider();pv.setCustomParameters({prompt:'select_account'});res=await fb.auth().signInWithPopup(pv)}
+  catch(e){const c=e&&e.code||'';throw new Error(c==='auth/popup-closed-by-user'||c==='auth/cancelled-popup-request'?'로그인을 취소했어요':c==='auth/popup-blocked'?'로그인 창이 막혔어요. 한 번 더 눌러 주세요':c==='auth/unauthorized-domain'?'이 주소는 아직 로그인이 허용되지 않았어요 (선생님: Firebase 승인된 도메인 추가)':(e.message||String(e)))}
+  const gid=res.credential&&res.credential.idToken;if(!gid)throw new Error('Google 확인표를 받지 못했어요');
+  const c=CL.cfg(),url=`https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${c.apiKey}`,base={postBody:`id_token=${gid}&providerId=google.com`,requestUri:location.origin+location.pathname,returnSecureToken:true,returnIdpCredential:true};
+  const before=CL.au('s'),old=before&&before.uid;let j=null;
+  if(before&&!before.g){try{const t=await CL.tok('s');j=await CL.post(url,{...base,idToken:t.tok});if(j.errorMessage||j.needConfirmation)j=null}catch(e){j=null}}   /* 지금 계정에 Google 연결 */
+  if(!j)j=await CL.post(url,base);   /* 이미 다른 계정에 연결된 Google이면 그 계정으로 */
+  if(j.errorMessage)throw new Error(j.errorMessage);
+  const a=CL.keep('s',j,{g:1,email:j.email||'',gname:j.displayName||''});try{fb.auth().signOut()}catch(e){}
+  if(a.uid!==old){MT.pub=null;MT.fr=[];LS.set('clSyncH',{});try{const sd=await CL.get('s','students/'+a.uid);if(sd&&sd.tid)LS.set('clStu',{uid:a.uid,name:sd.name||'',code:sd.code||''});else LS.set('clStu',null)}catch(e){}
+    try{const pb=await CL.get('s','pubs/'+a.uid);if(pb&&pb.name)LS.set('stuName',pb.name)}catch(e){}}
+  else{const st=LS.get('clStu',null);if(st)LS.set('clStu',{...st,uid:a.uid})}
+  if(!LS.get('stuName','')&&j.displayName)LS.set('stuName',String(j.displayName).slice(0,12));if(!LS.get('name','')&&LS.get('stuName',''))LS.set('name',LS.get('stuName',''));
+  try{clSyncSoon(1500)}catch(e){}return {...a,switched:!!old&&a.uid!==old}}
+function gaSignOut(){const g=gaOn(),cl=!!(CL.au('s')||LS.get('clStu',null));if(!confirm(g?'로그아웃할까요?\n이 기기에서 매치·선생님 연결이 끊겨요. 기록은 Google 계정에 남아 있어서, 다시 Google로 로그인하면 돌아와요.\n(이 기기의 문제집·필기는 그대로예요)':'로그아웃할까요?'+(cl?'\n이름만으로 시작한 계정이라, 로그아웃하면 선생님 연결·매치 친구는 되찾을 수 없어요. 남기려면 먼저 [Google로 로그인]을 해 주세요.':'')+'\n(이 기기의 문제집·필기는 그대로예요)'))return false;
+  CL.setAu('s',null);LS.set('clStu',null);LS.set('clSyncH',{});LS.set('name','');LS.set('stuName','');MT.pub=null;MT.fr=[];MT.inv=[];if(MT.poll){clearInterval(MT.poll);MT.poll=null}try{if(window.firebase&&firebase.apps.length)firebase.auth().signOut()}catch(e){}pvToast('로그아웃했어요');return true}
+window.gaSignIn=gaSignIn;
 function gearMenu(){if(teacherOn()){toggleTeacher();return}const me=LS.get('clStu',null),nm=meName();
   let ps=0;try{ps=persLoad().s.length}catch(e){}
   const ver=((document.getElementById('verTag')||{}).textContent||'').replace(/[↻\s]+/,'').trim();
   const row=(k,t,sub)=>`<button type="button" class="meR" data-${k}><span>${t}</span><span class="sub">${sub}<i aria-hidden="true">›</i></span></button>`;
   const d=dkShell(`<div class="dkSh"><b style="font-size:18px">나</b><button class="sb" type="button" data-x aria-label="닫기">✕</button></div>
     <div class="meHd"><span class="meAvL">${esc(meFirst()||'?')}</span><div class="meNm"><b>${esc(nm||'이름 없음')}</b><small data-mesub>${me?'선생님과 연결됨 · '+esc(me.name):'혼자 공부 중'}</small></div></div>
+    <div class="meG">계정</div><div class="meL">${gaOn()?`<div class="meR meAcc"><span><b class="gG">G</b> Google 계정</span><span class="sub">${esc((CL.au('s')||{}).email||'로그인됨')} <button type="button" class="sb" data-gout>로그아웃</button></span></div>`:`<button type="button" class="meR" data-gin><span><b class="gG">G</b> Google로 로그인</span><span class="sub">기기를 바꿔도 기록 그대로<i aria-hidden="true">›</i></span></button><div class="meR meAcc"><span>${esc(LS.get('name','')||LS.get('stuName','')||'나')}</span><span class="sub">이름으로 시작함 <button type="button" class="sb" data-gout>로그아웃</button></span></div>`}</div><p class="sub" data-gmsg style="margin:4px 4px 0"></p>
     <div class="meG">내 글씨</div><div class="meL">${row('pt','단답형 연습 (네모 답)',ps?`견본 ${ps}개${ps>=5?' · 맞춤 켜짐':''}`:'단답형 인식률 높이기')}</div>
     <div class="meG">화면</div><div class="meL">${row('th','내 색 고르기','<i class="meDot"></i>')}</div>
     <div class="meG">연결</div><div class="meL">${row('l','선생님과 연결',me?'연결됨':'학원 코드로 연결')}</div>
@@ -5262,7 +5324,10 @@ function gearMenu(){if(teacherOn()){toggleTeacher();return}const me=LS.get('clSt
   d.querySelector('[data-th]').onclick=()=>{d.hidden=true;if(window.themeSheet)themeSheet()};
   d.querySelector('[data-v]').onclick=()=>{const v=document.getElementById('verTag');if(v)v.click();else location.reload()};
   d.querySelector('[data-h]').onclick=()=>{d.hidden=true;try{localStorage.setItem('njHowHide','0')}catch(e){}const tb=document.querySelector('#tabs button[data-v="solve"]');if(tb)tb.click();setTimeout(()=>{try{renderRecent()}catch(e){}setTimeout(()=>{const h=document.getElementById('howBox');if(h)h.scrollIntoView({behavior:'smooth',block:'start'})},300)},50)};
-  d.querySelector('[data-t]').onclick=()=>{d.hidden=true;toggleTeacher()}}
+  d.querySelector('[data-t]').onclick=()=>{d.hidden=true;toggleTeacher()};
+  try{if(!gaOn()&&CL.on()&&!CL.mock())gaLoad().catch(()=>{})}catch(e){}   /* 로그인 창이 막히지 않게 미리 불러 둔다 */
+  const gi=d.querySelector('[data-gin]');if(gi)gi.onclick=async()=>{const m=d.querySelector('[data-gmsg]');m.textContent='Google 로그인 창을 여는 중…';try{const a=await gaSignIn();d.hidden=true;pvToast(a.switched?`${a.email} 계정의 기록으로 들어왔어요`:`Google 계정(${a.email})으로 로그인했어요`);try{if(CURV==='match')renderMatch();else view(CURV)}catch(e){}}catch(e){m.textContent=e.message}};
+  const go=d.querySelector('[data-gout]');if(go)go.onclick=()=>{if(gaSignOut()){d.hidden=true;try{view('home')}catch(e){}}}}
 /* ---- 선생님: 학생 목록 · 그룹 · 학생별 이력 ---- */
 const CLT={grp:'all',stu:[],me:null,day:null};
 function clCode(){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<6;i++)s+=A[Math.floor(Math.random()*A.length)];return s}
@@ -7466,8 +7531,19 @@ async function hellPropose(cfg,docs,wr){let R=0,pend=false,dl=cfg.end?dLeft(cfg.
   const N=R&&wl?Math.max(20,Math.ceil(R/wl)):50,M=Math.min(open,Math.max(5,wl?Math.ceil(open/wl):10));return {N,M,pend}}
 /* 홈: 목표·주간 목표 없이 — 이어 풀기(문제집 → 채점) + 학생이 담은 중요 오답을 옆으로 넘겨 보기 */
 async function renderHome(){try{meBtnPaint()}catch(e){}const box=$('#hHell');box.hidden=false;const name=LS.get('name','');
-  if(!name){box.innerHTML=`<div class="cc"><div class="q">이름을 알려 주세요</div><div style="display:flex;gap:8px;margin-top:8px"><input class="txt" id="hName" placeholder="예: 김지후" style="max-width:260px"><button class="sb pri" id="hNameOk">시작하기</button></div></div>`;
-    const go=()=>{const v=$('#hName').value.trim();if(!v)return;LS.set('name',v);renderHome()};$('#hNameOk').onclick=go;$('#hName').onkeydown=e=>{if(e.key==='Enter')go()};return}
+  document.body.classList.toggle('noUser',!name);
+  if(!name){const gOk=CL.on()&&!CL.mock(),lg=document.querySelector('#qlSplash .qlBig');
+    box.innerHTML=`<div class="hLogin"><div class="hlTop"><div class="hlLogo">${lg?lg.outerHTML:''}</div><b class="hlName">QLEAR</b><p class="hlTag">풀기만 하면 채점되고,<br>틀린 문제는 다시 풀게 도와줘요</p></div>
+      <div class="hlRole" role="tablist"><button type="button" role="tab" data-role="s" class="${HLR.r==='s'?'on':''}">학생</button><button type="button" role="tab" data-role="t" class="${HLR.r==='t'?'on':''}">선생님</button></div>
+      ${HLR.r==='t'?hlTeacherHtml(gOk):`<div class="hlAct">${gOk?`<button type="button" class="gBtn hlG" id="hG"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.2C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 2.9-2.2 5.4-4.7 7.1l7.6 5.9c4.4-4.1 6.9-10.1 6.9-17.5z"/><path fill="#FBBC05" d="M10.6 28.5c-.5-1.4-.8-2.9-.8-4.5s.3-3.1.8-4.5l-7.9-6.2C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.2 0-11.5-4.1-13.4-9.8l-7.9 6.2C6.6 42.6 14.6 48 24 48z"/></svg><span>Google로 계속하기</span></button><p class="hlMsg" id="hGm"></p><div class="hlOr"><span>또는</span></div>`:''}
+        <input class="hlIn" id="hName" placeholder="이름만 넣고 시작" maxlength="20" autocomplete="name"><button class="hlGo" type="button" id="hNameOk" disabled>시작하기</button></div>
+      <p class="hlFoot">${gOk?'Google로 로그인하면 기기를 바꿔도 기록이 그대로 이어져요':'기록은 이 기기에 저장돼요'}</p>`}</div>`;
+    box.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>{HLR.r=b.dataset.role;renderHome()});
+    if(HLR.r==='t'){hlTeacherBind(gOk);return}
+    const inp=$('#hName'),ok=$('#hNameOk');inp.oninput=()=>{ok.disabled=!inp.value.trim()};
+    const go=()=>{const v=inp.value.trim();if(!v)return;LS.set('name',v);if(!LS.get('stuName',''))LS.set('stuName',v);renderHome()};ok.onclick=go;inp.onkeydown=e=>{if(e.key==='Enter')go()};
+    if(gOk){try{gaLoad().catch(()=>{})}catch(e){}$('#hG').onclick=async()=>{const m=$('#hGm');m.textContent='Google 로그인 창을 여는 중…';try{const a=await gaSignIn();if(!LS.get('name',''))LS.set('name',LS.get('stuName','')||(a.gname||'').slice(0,12)||'나');pvToast(a.switched?`${a.email} 계정의 기록으로 들어왔어요`:`Google 계정(${a.email})으로 로그인했어요`);renderHome()}catch(e){m.textContent=e.message}}}
+    return}
   await homeSimple();try{await renderHome0()}catch(e){}}
 /* 문제집 = 오늘 (구조 시안): 맨 위 숫자 두 개(오늘 문제 · 다시 볼 문제) + 칸 막대 + [이어 풀기] 하나 → 다시 볼 문제 카드 → 쌓아 둔 문제집 */
 /* 문제집의 쌓아 둔 문제집 한 줄 (구조 시안): 표지 칸 · 이름 · 오늘 범위 / 회독 % · 막대 · ⋯(설정) */
