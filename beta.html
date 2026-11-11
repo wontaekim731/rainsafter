@@ -590,8 +590,8 @@ html body #pvGrade.keyWait,html body .pvRail .rlIn #pvGrade.keyWait,html body #f
 #rpPanel textarea{width:100%;box-sizing:border-box;margin-top:6px}
 
 /* 채점 베타: 문제집 풀기 · 채점 · 신고만 */
-body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;margin-left:4px}body.beta [data-nobeta],body.beta #dGoAna{display:none!important}body.beta #tabs,body.beta #pvHint,body.beta #tchBtn,body.beta #hHell{display:none!important}
-#betaBar{background:var(--warn-soft);border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.6;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+body.beta .betaTag{display:inline!important;color:var(--omr);font-weight:800;margin-left:4px}body.beta [data-nobeta],body.beta #dGoAna{display:none!important}body.beta #tabs,body.beta #pvHint,body.beta #tchBtn,body.beta #hHell{display:none!important}#bGate .hLogin{z-index:150}.hlSub{font:inherit;height:52px;border-radius:12px;border:1px solid var(--line,rgba(127,127,127,.35));background:transparent;color:var(--ink);font-size:16px;font-weight:700;cursor:pointer}.hlBack{align-self:flex-start;border:0;background:none;color:var(--muted);font:inherit;font-size:14px;padding:4px 0;cursor:pointer}.hlH{font-size:20px;font-weight:800;margin:2px 0 6px}.hlAct .linkDel{align-self:center;margin-top:6px}
+#betaBar{background:rgba(245,165,36,.16);color:var(--ink);border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.6;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
 #betaBar b{font-size:15px}
 #addSheet{position:fixed;inset:0;z-index:90;background:rgba(15,23,42,.45);display:flex;align-items:flex-start;justify-content:center;padding:6vh 16px;overflow:auto}#addSheet[hidden]{display:none}.asIn{background:var(--paper);color:var(--ink);border-radius:18px;padding:20px;width:100%;max-width:560px;box-shadow:0 10px 40px rgba(0,0,0,.25)}.asSlots{display:flex;flex-direction:column;gap:8px;margin-top:10px;width:100%}.asSlot{text-align:left;justify-content:flex-start;width:100%}.asSlot.ok{border-color:var(--ok);color:var(--ok)}
 #solPane{position:fixed;right:0;bottom:0;z-index:30;background:var(--paper);border-left:1px solid var(--line);display:flex;flex-direction:column;box-shadow:-6px 0 20px rgba(0,0,0,.12)}#solPane .sh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--line);font-size:14px}#solPane .sb{flex:1;overflow:auto;position:relative;background:#fff}#solPane canvas{display:block;width:100%}#solPane .hl{position:absolute;border:3px solid #f59e0b;border-radius:8px;background:rgba(245,158,11,.08);pointer-events:none}#solPane .msg{padding:24px 16px;color:var(--muted,#6b7280);font-size:15px;line-height:1.6}
@@ -5430,6 +5430,53 @@ async function gaSignIn(){if(!CL.on()||CL.mock())throw new Error('지금은 Goog
 function gaSignOut(){const g=gaOn(),cl=!!(CL.au('s')||LS.get('clStu',null));if(!confirm(g?'로그아웃할까요?\n이 기기에서 매치·선생님 연결이 끊겨요. 기록은 Google 계정에 남아 있어서, 다시 Google로 로그인하면 돌아와요.\n(이 기기의 문제집·필기는 그대로예요)':'로그아웃할까요?'+(cl?'\n이름만으로 시작한 계정이라, 로그아웃하면 선생님 연결·매치 친구는 되찾을 수 없어요. 남기려면 먼저 [Google로 로그인]을 해 주세요.':'')+'\n(이 기기의 문제집·필기는 그대로예요)'))return false;
   CL.setAu('s',null);LS.set('clStu',null);LS.set('clSyncH',{});LS.set('name','');LS.set('stuName','');MT.pub=null;MT.fr=[];MT.inv=[];if(MT.poll){clearInterval(MT.poll);MT.poll=null}try{if(window.firebase&&firebase.apps.length)firebase.auth().signOut()}catch(e){}pvToast('로그아웃했어요');return true}
 window.gaSignIn=gaSignIn;
+
+/* v47.99 베타(NJ_BETA) 처음 화면: 가벼운 버전과 같은 로그인 — [Google로 시작하기] · [이메일로 시작하기] · 이름만 넣고 둘러보기.
+   베타는 채점 화면만 보여 주므로 로그인 화면을 전체 화면 덮개(#bGate)로 띄우고, 로그아웃은 베타 안내 줄에서 */
+const acOn=()=>!!LS.get('acct',0)&&!!CL.au('s');
+async function acGoogleJ(){const fb=await gaLoad();let res;try{const pv=new fb.auth.GoogleAuthProvider();pv.setCustomParameters({prompt:'select_account'});res=await fb.auth().signInWithPopup(pv)}
+  catch(e){const c=e&&e.code||'';throw new Error(c==='auth/popup-closed-by-user'||c==='auth/cancelled-popup-request'?'로그인을 취소했어요':c==='auth/popup-blocked'?'로그인 창이 막혔어요. 한 번 더 눌러 주세요':c==='auth/unauthorized-domain'?'이 주소는 아직 로그인이 허용되지 않았어요 (Firebase 승인된 도메인 추가)':(e.message||String(e)))}
+  const gid=res.credential&&res.credential.idToken;if(!gid)throw new Error('Google 확인표를 받지 못했어요');const c=CL.cfg();
+  const j=await CL.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${c.apiKey}`,{postBody:`id_token=${gid}&providerId=google.com`,requestUri:location.origin+location.pathname,returnSecureToken:true});if(j.errorMessage)throw new Error(j.errorMessage);
+  try{fb.auth().signOut()}catch(e){}return j}
+async function acTeach(a,o){CL.setAu('t',{...a,email:(o&&o.email)||a.email||''});let T=null;try{T=await CL.get('t','teachers/'+a.uid)}catch(e){}
+  if(!T){const code=clCode();T={email:(o&&o.email)||a.email||'',code,groups:[],at:Date.now(),name:(o&&o.name)||''};try{await CL.set('t','codes/'+code,{tid:a.uid});await CL.set('t','teachers/'+a.uid,T)}catch(e){dlog('acTeach',String(e&&e.message||e))}}
+  else if(o&&o.name&&!T.name){try{await CL.patch('t','teachers/'+a.uid,{name:o.name})}catch(e){}}
+  LS.set('acct',1);LS.set('clRelogin',0);return T}
+async function acDone(a,o){const old=LS.get('acctUid','');const T=await acTeach(a,o);
+  if(a.uid!==old){MT.pub=null;MT.fr=[];LS.set('clSyncH',{})}LS.set('acctUid',a.uid);
+  try{const sd=await CL.get('s','students/'+a.uid);LS.set('clStu',sd&&sd.tid?{uid:a.uid,name:sd.name||'',code:sd.code||''}:null)}catch(e){}
+  let nm=(o&&o.name)||'';if(!nm)try{const pb=await CL.get('s','pubs/'+a.uid);if(pb&&pb.name)nm=pb.name}catch(e){}
+  if(!nm)nm=(T&&T.name)||a.gname||String(a.email||(o&&o.email)||'').split('@')[0]||'나';nm=String(nm).slice(0,12);
+  LS.set('stuName',nm);LS.set('name',nm);LS.set('role','s');try{clSyncSoon(1500)}catch(e){}return a}
+function acErr(e){const m=String(e&&e.message||e);if(/INVALID_LOGIN|INVALID_PASSWORD|EMAIL_NOT_FOUND/.test(m))return '이메일이나 비밀번호가 맞지 않아요 (Google로 가입했다면 [Google로 로그인])';if(/INVALID_EMAIL/.test(m))return '이메일 주소를 확인해 주세요';return CL.err(e)}
+const HLA={m:'home',lg:''},GSVG='<svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.2C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 2.9-2.2 5.4-4.7 7.1l7.6 5.9c4.4-4.1 6.9-10.1 6.9-17.5z"/><path fill="#FBBC05" d="M10.6 28.5c-.5-1.4-.8-2.9-.8-4.5s.3-3.1.8-4.5l-7.9-6.2C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.2 0-11.5-4.1-13.4-9.8l-7.9 6.2C6.6 42.6 14.6 48 24 48z"/></svg>';
+function acOut(){CL.setAu('s',null);CL.setAu('t',null);LS.set('clStu',null);LS.set('clSyncH',{});LS.set('name','');LS.set('stuName','');LS.set('role','');LS.set('acct',0);
+  MT.pub=null;MT.fr=[];MT.inv=[];if(MT.poll){clearInterval(MT.poll);MT.poll=null}try{if(window.firebase&&firebase.apps.length)firebase.auth().signOut()}catch(e){}HLA.m='home';pvToast('로그아웃했어요');betaGate()}
+function hlAuthHtml(gOk){const m=HLA.m,back='<button type="button" class="hlBack" data-am="home">‹ 다른 방법</button>';
+  if(m==='in'||m==='up'){const up=m==='up';return `<div class="hlAct">${back}<b class="hlH">${up?'이메일로 가입':'이메일로 로그인'}</b>
+      ${up?'<input class="hlIn" id="hName" placeholder="이름" maxlength="12" autocomplete="name">':''}<input class="hlIn" id="hEm" type="email" placeholder="이메일" autocomplete="${up?'email':'username'}" autocapitalize="off" spellcheck="false">
+      <input class="hlIn" id="hPw" type="password" placeholder="${up?'비밀번호 (6자 이상)':'비밀번호'}" autocomplete="${up?'new-password':'current-password'}"><button class="hlGo" type="button" id="hGo">${up?'가입하기':'로그인'}</button><p class="hlMsg" id="hGm"></p>
+      <button type="button" class="linkDel" data-am="${up?'in':'up'}">${up?'이미 계정이 있어요 · 로그인':'처음이에요 · 가입하기'}</button></div>`}
+  if(m==='nm')return `<div class="hlAct">${back}<b class="hlH">이름만 넣고 둘러보기</b><input class="hlIn" id="hNm0" placeholder="이름" maxlength="20" autocomplete="nickname"><button class="hlGo" type="button" id="hNm0Ok" disabled>시작하기</button><p class="hlMsg">기록은 이 기기에만 남아요</p></div>`;
+  return `<div class="hlAct">${gOk?`<button type="button" class="gBtn hlG" id="hG">${GSVG}<span>Google로 시작하기</span></button>`:''}<button type="button" class="hlSub" data-am="in">이메일로 시작하기</button><p class="hlMsg" id="hGm"></p>
+      <button type="button" class="linkDel" data-am="nm">이름만 넣고 둘러보기</button></div>
+    <p class="hlFoot">로그인하면 기기를 바꿔도 기록이 그대로 이어져요</p>`}
+function betaGate(){if(!window.NJ_BETA)return;let g=$('#bGate');
+  if(LS.get('name','')){if(g)g.remove();try{betaBar()}catch(e){}return}
+  if(!g){g=document.createElement('div');g.id='bGate';document.body.appendChild(g)}
+  const gOk=CL.on()&&!CL.mock(),lg=document.querySelector('#qlSplash .qlBig');HLA.lg=(lg?lg.outerHTML:'')||HLA.lg;
+  if(!CL.on()&&HLA.m!=='nm')HLA.m='nm';
+  g.innerHTML=`<div class="hLogin"><div class="hlTop"><div class="hlLogo">${HLA.lg}</div><b class="hlName">QLEAR</b><p class="hlTag">풀기만 하면 채점되고,<br>틀린 문제는 다시 풀게 도와줘요</p></div>${hlAuthHtml(gOk)}</div>`;
+  const msg=$('#hGm'),fin=async(a,o)=>{await acDone(a,o);HLA.m='home';pvToast(`${LS.get('name','')}님, 반가워요`);betaGate()};
+  g.querySelectorAll('[data-am]').forEach(b=>b.onclick=()=>{HLA.m=b.dataset.am;betaGate()});if(!CL.on())g.querySelectorAll('.hlBack').forEach(b=>b.remove());
+  const gb=$('#hGo');if(gb){const pw=async()=>{const up=HLA.m==='up',nm=up?$('#hName').value.trim():'',em=$('#hEm').value.trim(),p=$('#hPw').value;
+    if(up&&!nm){msg.textContent='이름을 넣어 주세요';return}if(!em||!p){msg.textContent='이메일과 비밀번호를 넣어 주세요';return}if(up&&p.length<6){msg.textContent='비밀번호는 6자 이상이에요';return}
+    msg.textContent=up?'가입하는 중…':'로그인하는 중…';try{const a=await CL.signPw('s',em,p,up);await fin(a,{email:em,name:nm})}catch(e){msg.textContent=acErr(e)}};
+    gb.onclick=pw;$('#hPw').onkeydown=e=>{if(e.key==='Enter')pw()}}
+  const n0=$('#hNm0');if(n0){const ok=$('#hNm0Ok'),go=()=>{const v=n0.value.trim();if(!v)return;LS.set('acct',0);LS.set('name',v);if(!LS.get('stuName',''))LS.set('stuName',v);HLA.m='home';betaGate()};n0.oninput=()=>{ok.disabled=!n0.value.trim()};ok.onclick=go;n0.onkeydown=e=>{if(e.key==='Enter')go()}}
+  const gg=$('#hG');if(gg){try{gaLoad().catch(()=>{})}catch(e){}gg.onclick=async()=>{msg.textContent='Google 로그인 창을 여는 중…';try{const j=await acGoogleJ();const a=CL.keep('s',j,{g:1,email:j.email||'',gname:j.displayName||''});await fin(a,{g:1,email:j.email||''})}catch(e){msg.textContent=acErr(e)}}}}
+function betaOut(){if(!confirm('로그아웃할까요?\n처음 로그인 화면으로 돌아가요. (이 기기의 문제집·필기는 그대로예요)'))return;if(LS.get('acct',0)||CL.au('s'))acOut();else{LS.set('name','');LS.set('stuName','');HLA.m='home';betaGate()}}
 function gearMenu(){if(teacherOn()){toggleTeacher();return}const me=LS.get('clStu',null),nm=meName();
   let ps=0;try{ps=persLoad().s.length}catch(e){}
   const ver=((document.getElementById('verTag')||{}).textContent||'').replace(/[↻\s]+/,'').trim();
@@ -6487,7 +6534,7 @@ async function betaBar(){if(!window.NJ_BETA)return;{const g=$('#again');if(g)g.t
   b.innerHTML=`<div><b>채점 베타 테스트</b><br>문제를 풀고 [채점하기]를 누르세요. 채점이 이상하면 문제 화면의 <b>🚩 채점 신고</b>를 눌러 주세요.</div><div style="display:flex;gap:6px;align-items:center">${n?`<span>신고 <b>${n}</b>건</span><button class="btn quiet" type="button" id="betaExp" style="padding:8px 12px;font-size:14px">신고 파일 보내기</button>`:'<span class="muted">아직 신고 없음</span>'}</div>`;
   {const tn=await tlCnt();const d=document.createElement('div');d.style.cssText='display:flex;gap:6px;align-items:center';d.innerHTML=`<button class="btn mid" type="button" id="tlExp" style="padding:8px 12px;font-size:14px">📦 테스트 기록 보내기${tn?` (${tn})`:''}</button>`;b.appendChild(d);
     $('#tlExp').onclick=async()=>{const bt=$('#tlExp');bt.disabled=true;bt.textContent='파일 만드는 중…';try{const r=await tlExport();bt.textContent=r==='cancel'?'📦 테스트 기록 보내기':'✓ 파일을 만들었어요 — 채점 확인용으로 보내 주세요'}catch(e){console.error(e);bt.textContent='만들지 못했어요. 다시 눌러 주세요'}bt.disabled=false}}
-  const e=$('#betaExp');if(e)e.onclick=()=>rpExport()}
+  if(LS.get('name','')){const u=document.createElement('div');u.style.cssText='display:flex;gap:6px;align-items:center;font-size:13px';u.innerHTML=`<span class="muted">${esc(LS.get('name',''))}${LS.get('acct',0)?' · '+esc((CL.au('s')||{}).email||''):''}</span><button type="button" class="linkDel" id="betaOut">로그아웃</button>`;b.appendChild(u)}const e=$('#betaExp');if(e)e.onclick=()=>rpExport();const bo=$('#betaOut');if(bo)bo.onclick=betaOut;if(!LS.get('name',''))betaGate()}
 /* ================= 채점 신고: 이상한 채점을 그 자리에서 캡처해 둔다 =================
    문제 칸 그림(학생 필기 포함) · 정답 그림 · 앱이 읽은 답과 판정 · 그 칸의 필기 획 좌표까지 저장 → 선생님 모드에서 파일로 내보내기 */
 const RP_WHY=['맞았는데 틀렸다고 함','틀렸는데 맞았다고 함','채점이 안 됨','계속 직접 채점하라고 함','표시 위치가 이상함','기타'];
