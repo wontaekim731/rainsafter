@@ -741,6 +741,12 @@ section.f{padding:56px 0!important}.final{padding:64px 0!important}.teach{margin
 .bq{font-size:18px;font-weight:900;padding:12px 18px;border-radius:14px;background:var(--ink);color:var(--paper)}
 @media (max-width:860px){.ben{grid-template-columns:1fr 1fr}.bn,.bn:nth-child(4){grid-column:auto}.bn:last-child{grid-column:1 / -1}}
 @media (max-width:520px){.ben{grid-template-columns:1fr}}
+
+/* 달라지는 점: 큰 글씨 다섯 줄 */
+.ben2{list-style:none;margin:40px auto 0;padding:0;max-width:720px;display:flex;flex-direction:column;gap:12px}
+.ben2 li{display:flex;align-items:center;gap:20px;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:22px 28px}
+.ben2 span{flex:none;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;font-size:20px;display:grid;place-items:center}
+.ben2 b{font-size:clamp(22px,3vw,32px);font-weight:900;letter-spacing:-.03em;line-height:1.25;text-align:left}
 </style>
 </head>
 <body>
@@ -764,13 +770,8 @@ section.f{padding:56px 0!important}.final{padding:64px 0!important}.teach{margin
 </div>
 
 <section class="f" id="same"><div class="wrap">
-  <div class="center rv"><h2 class="bigq">바꿔야 할 공부 습관은 없어요</h2><p class="sub2">공부는 그대로, 귀찮은 다섯 가지만 사라져요.</p></div>
-  <div class="ben rv">
-    <div class="bn"><div class="bv"><span class="bgo">GO</span><span class="bo">○</span><span class="bo">○</span><span class="bx">✕</span></div><b>펜으로 풀고 GO,<br>채점 끝</b><s>답지 펴고 한 문제씩 채점</s></div>
-    <div class="bn"><div class="bv"><span class="bst">다시 풀기 <em>12</em></span></div><b>틀린 문제는<br>알아서 모여요</b><s>오답노트에 옮겨 적기</s></div>
-    <div class="bn"><div class="bv"><span class="bpg">문제</span><span class="bpg sol">해설</span></div><b>그 문제 해설이<br>바로 옆에</b><s>해설지 넘기며 찾기</s></div>
-    <div class="bn"><div class="bv"><span class="bmk">▶ 18쪽 7번부터</span></div><b>멈춘 곳에서<br>바로 이어서</b><s>어디까지 풀었는지 기억하기</s></div>
-    <div class="bn"><div class="bv"><span class="bq">질문 · 7번</span></div><b>모르는 문제는<br>질문으로 남겨요</b><s>물어볼 문제 까먹기</s></div>
+  <div class="center rv"><h2 class="bigq">바꿔야 할 공부 습관은 없어요</h2><p class="sub2">귀찮은 일만 QLEAR가 해요.</p></div>
+  <ol class="ben2 rv"><li><span>1</span><b>펜으로 풀고 GO, 채점 끝</b></li><li><span>2</span><b>틀린 문제는 알아서 모여요</b></li><li><span>3</span><b>해설은 그 문제 바로 옆에</b></li><li><span>4</span><b>멈춘 곳에서 바로 이어 풀기</b></li><li><span>5</span><b>모르는 문제는 질문으로</b></li></ol>
   </div>
 </div></section>
 
