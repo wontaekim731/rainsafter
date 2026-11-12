@@ -724,6 +724,23 @@ section.f .wrap.fr .pts{display:flex!important;flex-wrap:wrap;justify-content:ce
 /* 빈 화면 없애기: 스크롤 등장 효과 끔, 큰 여백 줄임 */
 .rv{opacity:1!important;transform:none!important;transition:none!important}
 section.f{padding:56px 0!important}.final{padding:64px 0!important}.teach{margin:24px 0!important}
+
+/* 달라지는 점: 카드로 크게 */
+.ben{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;max-width:1060px;margin:40px auto 0}
+.bn{grid-column:span 2;background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:28px 20px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.bn:nth-child(4){grid-column:2 / span 2}
+.bn b{font-size:clamp(22px,2.4vw,28px);font-weight:900;line-height:1.3;letter-spacing:-.02em}
+.bn s{font-size:15px;font-weight:700;color:var(--muted);text-decoration-color:color-mix(in srgb,var(--muted) 60%,transparent)}
+.bn s::before{content:"전에는 ";text-decoration:none;display:inline-block;margin-right:4px}
+.bv{height:64px;display:flex;align-items:center;justify-content:center;gap:8px}
+.bgo{width:52px;height:52px;border-radius:14px;background:var(--acc);color:#fff;font-weight:900;font-size:18px;display:grid;place-items:center}
+.bo,.bx{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:18px;background:color-mix(in srgb,var(--acc) 12%,var(--paper));color:var(--acc)}.bx{background:color-mix(in srgb,var(--bad) 12%,var(--paper));color:var(--bad)}
+.bst{font-size:18px;font-weight:900;padding:12px 18px;border-radius:14px;background:var(--bg)}.bst em{font-style:normal;background:var(--bad);color:#fff;border-radius:999px;padding:2px 9px;margin-left:6px}
+.bpg{width:54px;height:62px;border-radius:8px;border:1.5px solid var(--line);background:#fff;color:#888;font-size:12px;font-weight:800;display:grid;place-items:center}.bpg.sol{border-color:var(--acc);color:var(--acc)}
+.bmk{font-size:17px;font-weight:900;padding:12px 18px;border-radius:14px;background:var(--acc);color:#fff}
+.bq{font-size:18px;font-weight:900;padding:12px 18px;border-radius:14px;background:var(--ink);color:var(--paper)}
+@media (max-width:860px){.ben{grid-template-columns:1fr 1fr}.bn,.bn:nth-child(4){grid-column:auto}.bn:last-child{grid-column:1 / -1}}
+@media (max-width:520px){.ben{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -747,14 +764,13 @@ section.f{padding:56px 0!important}.final{padding:64px 0!important}.teach{margin
 </div>
 
 <section class="f" id="same"><div class="wrap">
-  <div class="center rv"><h2 class="bigq">바꿔야 할 공부 습관은 없어요</h2><p class="sub2">귀찮은 일만 QLEAR가 대신해요.</p></div>
-  <div class="cmp rv" role="table" aria-label="지금까지와 QLEAR 비교">
-    <div class="cmpH" role="row"><span role="columnheader">지금까지</span><span aria-hidden="true"></span><span role="columnheader">QLEAR</span></div>
-    <div class="cmpR" role="row"><s role="cell">답지 보며 채점</s><i aria-hidden="true">→</i><b role="cell">GO 한 번</b></div>
-    <div class="cmpR" role="row"><s role="cell">오답 옮겨 적기</s><i aria-hidden="true">→</i><b role="cell">자동으로 다시 풀기</b></div>
-    <div class="cmpR" role="row"><s role="cell">해설 찾아 뒤적이기</s><i aria-hidden="true">→</i><b role="cell">해설이 바로 옆에</b></div>
-    <div class="cmpR" role="row"><s role="cell">어디까지 했는지 기억</s><i aria-hidden="true">→</i><b role="cell">이어 풀기 한 번</b></div>
-    <div class="cmpR" role="row"><s role="cell">물어볼 문제 잊기</s><i aria-hidden="true">→</i><b role="cell">질문으로 남기기</b></div>
+  <div class="center rv"><h2 class="bigq">바꿔야 할 공부 습관은 없어요</h2><p class="sub2">공부는 그대로, 귀찮은 다섯 가지만 사라져요.</p></div>
+  <div class="ben rv">
+    <div class="bn"><div class="bv"><span class="bgo">GO</span><span class="bo">○</span><span class="bo">○</span><span class="bx">✕</span></div><b>펜으로 풀고 GO,<br>채점 끝</b><s>답지 펴고 한 문제씩 채점</s></div>
+    <div class="bn"><div class="bv"><span class="bst">다시 풀기 <em>12</em></span></div><b>틀린 문제는<br>알아서 모여요</b><s>오답노트에 옮겨 적기</s></div>
+    <div class="bn"><div class="bv"><span class="bpg">문제</span><span class="bpg sol">해설</span></div><b>그 문제 해설이<br>바로 옆에</b><s>해설지 넘기며 찾기</s></div>
+    <div class="bn"><div class="bv"><span class="bmk">▶ 18쪽 7번부터</span></div><b>멈춘 곳에서<br>바로 이어서</b><s>어디까지 풀었는지 기억하기</s></div>
+    <div class="bn"><div class="bv"><span class="bq">질문 · 7번</span></div><b>모르는 문제는<br>질문으로 남겨요</b><s>물어볼 문제 까먹기</s></div>
   </div>
 </div></section>
 
