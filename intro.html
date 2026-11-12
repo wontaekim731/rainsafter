@@ -619,7 +619,39 @@ br.m{display:none}
 .ev .q{font-size:20px;font-weight:900;padding:12px 16px;border-radius:14px}
 .ev .q.o{background:color-mix(in srgb,var(--acc) 14%,var(--paper));color:var(--acc)}
 .ev .q.s{background:var(--ink);color:var(--paper);font-size:24px;padding:14px 22px}
-</style>
+
+.vs3{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px}
+.vk{border-radius:28px;padding:40px 28px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px;background:var(--paper);border:1px solid var(--line)}
+.vk.old{background:color-mix(in srgb,var(--paper) 55%,var(--bg))}
+.vk.ql{border:2px solid var(--acc);box-shadow:0 18px 40px color-mix(in srgb,var(--acc) 22%,transparent)}
+.vh{font-size:clamp(38px,5vw,60px);line-height:1.15;font-weight:900;letter-spacing:-.04em}
+.vk.old .vh{color:var(--bad)}.vk.ql .vh{color:var(--acc)}
+.vk ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.vk li{font-size:clamp(17px,1.9vw,20px);font-weight:800}
+.vk.old li{color:var(--muted);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--bad) 60%,transparent);text-decoration-thickness:2px}
+.vk.ql li::before{content:"✓ ";color:var(--acc)}
+.cs3{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:32px 26px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px}
+.q3{margin:0;font-size:clamp(21px,2.3vw,26px);font-weight:900;letter-spacing:-.02em}
+.cap3{margin:0;font-size:clamp(18px,2vw,21px);font-weight:900;color:var(--acc)}
+.mini-app{width:100%;max-width:380px;background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:16px;text-align:left;display:flex;flex-direction:column;gap:12px}
+.mah{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;color:var(--muted)}
+.mah .qm{width:15px;height:18px;color:var(--ink)}
+.row1{display:flex;align-items:center;gap:10px;font-size:18px}.row1 span{width:34px;height:34px;border-radius:10px;background:#8a8f98;color:#fff;display:grid;place-items:center;font-weight:900}
+.tline{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;font-size:15px;font-weight:800}
+.tline i{height:10px;border-radius:99px;background:linear-gradient(90deg,var(--bad) 12%,var(--line) 12%)}
+.alert{font-size:18px;font-weight:900;color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--paper));border-radius:12px;padding:10px 14px;text-align:center}
+.hit{font-size:18px;font-weight:900;color:var(--acc);text-align:center;padding:6px 0}
+.twin2{background:var(--paper);border:2px solid var(--acc);border-radius:16px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.twin2 b{font-size:19px}
+.tb2{background:var(--acc);color:#082a44;font-weight:900;font-size:17px;padding:10px 16px;border-radius:12px}
+.wk3{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;align-items:end;height:90px}
+.wk3 i{display:block;background:var(--acc);border-radius:4px 4px 1px 1px;min-height:4px}
+.wkl{display:flex;justify-content:space-between;font-size:15px;font-weight:800;color:var(--muted)}
+.kp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.kp span{display:flex;flex-direction:column;gap:2px;font-size:15px;font-weight:800;color:var(--muted);background:var(--paper);border-radius:12px;padding:12px 4px}
+.kp b{font-size:clamp(24px,2.6vw,30px);color:var(--ink)}
+@media (max-width:900px){.vs3{grid-template-columns:1fr}}
+.vk.ql .vt{background:var(--acc)!important;color:#082a44!important}</style>
 </head>
 <body>
 <header class="nav" id="nav"><div class="wrap">
@@ -631,9 +663,8 @@ br.m{display:none}
 <div class="wrap">
   <section class="hero2">
     <div class="htx">
-      <span class="eyebrow"><i></i>선생님, 이런 일 있으시죠</span>
-      <h1><span>"과제 해 와~"</span><br><span>돌아오는 학생은 <em>셋 중 하나</em></span></h1>
-      <p class="lead big">A는 드물어요.<br><b class="qbr">QLEAR</b>가 B와 C를 A로 만들어요.</p>
+      <h1><span>과제 내주면,</span><br><span>제대로 해 오는 건 <em>한 명</em></span></h1>
+      <p class="lead big">나머지는 대충 채점하거나 하다 말아요.<br><b class="qbr">QLEAR</b>가 모두 제대로 해 오게 만들어요.</p>
       <div class="ctas"><a class="btn pri" href="lite.html">무료로 시작하기</a><a class="btn sec" href="#pain">세 학생 비교 보기</a></div>
       <ul class="facts"><li>베타 기간 무료</li><li>문제은행 구독 필요 없음</li><li>설치 없이 브라우저</li></ul>
     </div>
@@ -656,16 +687,15 @@ br.m{display:none}
     <div class="ef rv"><b>모르는 것만 질문으로</b><div class="ev"><span class="q s">질문: 7번</span></div></div>
     <div class="ef rv big"><b>멈추면 선생님이 바로 알아요</b><span class="eb">"C야, 5번부터 마저 하자!"</span></div>
   </div>
-  <div class="center rv" style="margin-top:110px"><h2>채점하다 끊기던 공부, <br class="m">한 번에 이어져요</h2></div>
-  <div class="vs2">
-    <div class="vc old rv"><span class="vt">문제집</span><div class="big"><b>15분</b><span>채점에 쓰는 시간</span></div>
-      <ul><li class="n">답지 찾아 한 문제씩 채점</li><li class="n">풀던 흐름이 끊겨요</li><li class="n">틀린 문제는 다시 안 봐요</li><li class="n">모르는 건 그대로</li></ul></div>
-    <span class="vsx">VS</span>
-    <div class="vc ql rv"><span class="vt">QLEAR</span><div class="big"><b>1초</b><span>GO 한 번</span></div>
-      <ul><li class="y">바로 채점</li><li class="y">틀린 문제 바로 목록 · 오답 분류</li><li class="y">맞히면 확인 문제까지</li><li class="y">모르는 것만 남아요</li></ul></div>
+  <div class="center rv" style="margin-top:110px"><h2>채점도, 오답 확인도 <br class="m">귀찮지 않게</h2></div>
+  <div class="vs3">
+    <div class="vk old rv"><span class="vt">문제집</span><b class="vh">귀찮아서<br>안 해요</b>
+      <ul><li>답지 펴고 한 문제씩 채점</li><li>틀린 문제 다시 찾아보기</li></ul></div>
+    <div class="vk ql rv"><span class="vt">QLEAR</span><b class="vh">앱이<br>대신 해요</b>
+      <ul><li>GO 누르면 채점 끝</li><li>틀린 문제만 모아서 바로 다시</li></ul></div>
   </div>
   <div class="center rv" style="margin-top:88px"><h2>종이로는 <br class="m">절대 안 보이는 것들</h2></div>
-  <div class="cases"><article class="cs2 rv"><p class="q2">"선생님, 다 했어요!"</p><div class="bigv"><b class="num w">4<small>분</small></b><p class="cap ">30문제를 4분 만에 · 평소 40분</p></div></article><article class="cs2 rv"><p class="q2">"이거 저번에 했던 건데…"</p><div class="bigv"><div class="chk2"><span class="c1">원래 문제<i>✓</i></span><span class="pl">+</span><span class="c1">같은 유형<i>✓</i></span></div><p class="cap ">둘 다 맞혀야 해결</p></div></article><article class="cs2 rv"><p class="q2">"이번 주도 열심히 했어요!"</p><div class="bigv"><div class="wk2"><i style="height:3%"><em>월</em></i><i style="height:0%"><em>화</em></i><i style="height:5%"><em>수</em></i><i style="height:0%"><em>목</em></i><i style="height:0%"><em>금</em></i><i style="height:8%"><em>토</em></i><i style="height:100%"><em>일</em></i></div><p class="cap ">평일 0분, 일요일 3시간</p></div></article><article class="cs2 rv"><p class="q2">"우리 애 집에서 공부는 하는 거예요?"</p><div class="bigv"><b class="num a">235<small>분</small></b><p class="cap ">이번 주 공부 시간, 화면 그대로</p></div></article></div>
+  <div class="cases"><article class="cs3 rv"><p class="q3">"선생님, 다 했어요!"</p><div class="mini-app"><div class="mah"><svg class="qm" viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg><span>선생님 화면</span></div><div class="row1"><span>B</span><b>30문제 제출</b></div><div class="tline"><span>21:52 시작</span><i></i><span>21:56 제출</span></div><div class="alert">4분 만에 30문제</div></div><p class="cap3">언제 풀었는지 다 남아요</p></article><article class="cs3 rv"><p class="q3">"이거 저번에 했던 건데…"</p><div class="mini-app"><div class="mah"><svg class="qm" viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg><span>학생 화면</span></div><div class="hit">7번 다시 풀어서 맞혔어요 ✓</div><div class="twin2"><b>비슷한 문제 하나 더!</b><span class="tb2">같은 유형 문제 바로 풀기</span></div></div><p class="cap3">맞히면 비슷한 문제가 바로 나와요</p></article><article class="cs3 rv"><p class="q3">"이번 주도 열심히 했어요!"</p><div class="mini-app"><div class="mah"><svg class="qm" viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg><span>선생님 화면 · 최근 2주</span></div><div class="wk3"><i style="height:3%"></i><i style="height:0%"></i><i style="height:5%"></i><i style="height:0%"></i><i style="height:0%"></i><i style="height:8%"></i><i style="height:100%"></i><i style="height:4%"></i><i style="height:0%"></i><i style="height:2%"></i><i style="height:0%"></i><i style="height:0%"></i><i style="height:6%"></i><i style="height:95%"></i></div><div class="wkl"><span>평일</span><span>일요일</span></div></div><p class="cap3">몰아서 한 날이 보여요</p></article><article class="cs3 rv"><p class="q3">"우리 애 집에서 공부는 하는 거예요?"</p><div class="mini-app"><div class="mah"><svg class="qm" viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg><span>선생님 화면 · 이번 주</span></div><div class="kp"><span><b>235분</b>공부</span><span><b>78%</b>정답률</span><span><b>70%</b>다시 풂</span></div></div><p class="cap3">화면 그대로 보여 드려요</p></article></div>
   
 </div></section>
 
