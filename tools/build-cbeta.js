@@ -12,7 +12,7 @@ const fs=require('fs'),crypto=require('crypto'),{minify}=require('terser'),csso=
   /* 스크립트 */
   let PDFL='';const parts=[];let i=0,out='';const re=/<script(\s[^>]*)?>([\s\S]*?)<\/script>/g;let m;
   while((m=re.exec(h))){out+=h.slice(i,m.index);const at=m[1]||'';if(/\bsrc=/.test(at)||!m[2].trim()){out+=m[0]}else{
-    const r=await minify(m[2],{compress:{passes:1},mangle:true,format:{comments:false,ascii_only:false}});
+    const r=await minify(m[2],{compress:{passes:1,keep_fnames:true},mangle:{keep_fnames:true},keep_fnames:true,format:{comments:false,ascii_only:false}});
     /* 잘 안 바뀌는 큰 덩어리(PDF 라이브러리·글씨 인식 가중치)는 따로 파일로: 앱을 고쳐도 다시 받지 않게 */
     const ext=/pdflibSrc/.test(at)?'pdflib':/^\s*SV\.CNN=/.test(m[2])?'cnn':/^\s*SV\.NET=/.test(m[2])?'net':/^\s*window\.TPL=/.test(m[2])?'tpl':null;
     if(ext){const hs=crypto.createHash('md5').update(r.code).digest('hex').slice(0,8),f=`lib/cb-${ext}-${hs}.js`;/* 오프라인 일꾼(sw.js)이 lib/ 파일을 주소 ? 뒤를 무시하고 저장해 두므로, 내용이 바뀌면 파일 이름이 바뀌게 */for(const o of fs.readdirSync('lib'))if(o.startsWith('cb-'+ext+'-')||o==='cb-'+ext+'.js')if('lib/'+o!==f)fs.unlinkSync('lib/'+o);fs.writeFileSync(f,r.code);if(ext==='pdflib')PDFL=f;out+=`<script src="${f}"></script>`}
