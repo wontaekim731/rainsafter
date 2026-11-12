@@ -4171,18 +4171,20 @@ async function readA(p,ink){let k=null;try{k=raKey(p,ink)}catch(e){}
   if(k&&RA_C.has(k)){const c=RA_C.get(k);for(const f in c.d)p[f]=c.d[f];RA_HIT++;return c.r?Object.assign({},c.r):c.r}
   const b={};for(const f of RA_F)b[f]=p[f];const r=await readA_(p,ink);RA_MISS++;
   if(k){const d={};for(const f of RA_F)if(p[f]!==b[f])d[f]=p[f];RA_C.set(k,{r:r?Object.assign({},r):r,d});if(RA_C.size>400)RA_C.delete(RA_C.keys().next().value)}return r}
-const PF={t:0,down:0,busy:null};
-function pfSoon(ms){clearTimeout(PF.t);PF.t=setTimeout(()=>{PF.t=0;if(PF.down||PF.busy)return;PF.busy=pfRun().catch(e=>{try{dlog('pfErr',String(e).slice(0,80))}catch(_){}}).finally(()=>{PF.busy=null})},ms)}
+const PF={t:0,down:0,busy:null,sc:0};
+/* 쪽을 넘기는 중이거나 선명한 쪽 그림을 아직 그리는 중이면 미리 읽기는 미룬다 (넘긴 쪽이 흐린 채로 오래 남던 것) */
+const pfView=()=>{try{return (PV.rq&&PV.rq.size>0)||!!PV.rbusy||performance.now()-(PV.panT||0)<1200||Date.now()-PF.sc<1200}catch(e){return false}};
+function pfSoon(ms){clearTimeout(PF.t);PF.t=setTimeout(()=>{PF.t=0;if(PF.down)return;if(PF.busy){pfSoon(900);return}if(pfView()){pfSoon(900);return}PF.busy=pfRun().catch(e=>{try{dlog('pfErr',String(e).slice(0,80))}catch(_){}}).finally(()=>{PF.busy=null})},ms)}
 async function pfRun(){if(!S||!S.app||!P||!P.problems||!P.base||typeof PV==='undefined'||PV.busy||!PV.pages||!PV.pages.length||SCANNING)return;try{if(keysPending())return}catch(e){}
   try{if(!ABP)abIndex()}catch(e){}
   const cur0=memInk(),MKS=mkSigs(cur0,P.problems),cur=cur0.filter(s=>!MKS.has(s.sig)),all=cur.filter(s=>!P.base.has(s.sig)&&!(FOC.on&&FOC.retry&&FOC.rt0&&s.t&&s.t<FOC.rt0)),fresh=all.filter(s=>!S.seen.has(s.sig));if(!fresh.length)return;
   const t0=performance.now();let n=0;
-  for(const p of P.problems){if(PF.down||PV.busy)break;if(!fresh.some(s=>inReg(s,p)))continue;
+  for(const p of P.problems){if(PF.down||PV.busy)break;if(pfView()){pfSoon(900);break}if(!fresh.some(s=>inReg(s,p)))continue;
     if(p.key&&p.key.kind==='nparts'&&p._lab===undefined&&(fParts(p)>1||p.key.nums)){try{p._lab=await subLabels(p)}catch(e){p._lab=null}}
-    for(const ink of [fresh,all]){let k=null;try{k=raKey(p,ink)}catch(e){}if(!k||RA_C.has(k))continue;await new Promise(r=>setTimeout(r,0));if(PF.down||PV.busy)break;try{await readA(Object.assign({},p),ink);n++}catch(e){}}}
+    for(const ink of [fresh,all]){let k=null;try{k=raKey(p,ink)}catch(e){}if(!k||RA_C.has(k))continue;await new Promise(r=>setTimeout(r,0));if(PF.down||PV.busy||pfView())break;try{await readA(Object.assign({},p),ink);n++}catch(e){}}}
   if(n)dlog('pf',n+' '+Math.round(performance.now()-t0)+'ms')}
-document.addEventListener('pointerdown',()=>{PF.down=1;clearTimeout(PF.t)},true);
-for(const ev of ['pointerup','pointercancel'])document.addEventListener(ev,()=>{PF.down=0;try{if(S&&S.app&&typeof PV!=='undefined'&&!PV.busy)pfSoon(700)}catch(e){}},true);
+document.addEventListener('pointerdown',()=>{PF.down=1;clearTimeout(PF.t)},true);addEventListener('scroll',()=>{PF.sc=Date.now()},{passive:true,capture:true});
+for(const ev of ['pointerup','pointercancel'])document.addEventListener(ev,e=>{PF.down=0;if(e.pointerType==='touch')return;   /* 손가락(넘기기)은 미리 읽기를 부르지 않음: 펜·마우스로 쓴 뒤에만 */try{if(S&&S.app&&typeof PV!=='undefined'&&!PV.busy)pfSoon(700)}catch(e){}},true);
 /* 답 앞에 쓴 '=' (=4, =1/7): 짧은 가로획 두 개가 위아래로 겹쳐 있고 그 오른쪽에 다른 글씨가 있으면 답이 아니다 (11로 읽혀 틀림/직접 채점이 되던 것) */
 function dropEq(ink){try{const fl=ink.filter(s=>s.b&&s.b.w>=3&&s.b.h<=Math.max(2.5,s.b.w*0.3)),rm=new Set();
   for(const a of fl)for(const b of fl){if(a===b||rm.has(a)||rm.has(b))continue;const ov=Math.min(a.b.x1,b.b.x1)-Math.max(a.b.x0,b.b.x0),dy=Math.abs((a.b.y0+a.b.y1)/2-(b.b.y0+b.b.y1)/2),w=Math.max(a.b.w,b.b.w);if(a.page!==b.page||ov<Math.min(a.b.w,b.b.w)*0.5||dy<1||dy>w*1.2)continue;
