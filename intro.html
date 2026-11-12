@@ -747,12 +747,52 @@ section.f{padding:56px 0!important}.final{padding:64px 0!important}.teach{margin
 .ben2 li{display:flex;align-items:center;gap:20px;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:22px 28px}
 .ben2 span{flex:none;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;font-size:20px;display:grid;place-items:center}
 .ben2 b{font-size:clamp(22px,3vw,32px);font-weight:900;letter-spacing:-.03em;line-height:1.25;text-align:left}
+
+/* 5장면 (실제 화면 중심) */
+section.scn{padding:112px 0}
+section.scn+section.scn{padding-top:24px}
+.scg{display:grid;grid-template-columns:5fr 7fr;gap:72px;align-items:center}
+.scg.rev{grid-template-columns:7fr 5fr}.scg.rev .sct{order:2}
+.sct{text-align:left}
+.sct .kk{margin:0 0 10px;font-size:15px;font-weight:800;color:#2F6FEB;letter-spacing:0}
+.sct h2{margin:0;font-size:clamp(32px,4vw,46px);line-height:1.2;font-weight:850;letter-spacing:-.02em}
+.sct .sd{margin:18px 0 0;font-size:19px;color:var(--muted)}
+.ln{list-style:none;margin:32px 0 0;padding:0;display:grid;gap:22px}
+.ln li{display:grid;gap:3px;padding-left:18px;border-left:3px solid #2F6FEB}
+.ln b{font-size:21px;font-weight:800}.ln span{font-size:16px;color:var(--muted)}
+.sci{margin:0}.sci img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--line);background:#fff}
+.sci.tall{max-width:520px;justify-self:center}
+.pin{position:relative}
+.pin i{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:#1d1b17;color:#fff;font-weight:800;font-size:16px;line-height:34px;font-style:normal;text-align:center;box-shadow:0 0 0 4px rgba(255,255,255,.9)}
+.co{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:20px}
+.co li{display:flex;gap:14px;align-items:flex-start}
+.co i{flex:none;width:30px;height:30px;border-radius:50%;background:#1d1b17;color:#fff;font-style:normal;font-weight:800;font-size:15px;display:grid;place-items:center;margin-top:2px}
+.co span{display:grid;gap:2px;font-size:16px;color:var(--muted)}.co b{font-size:20px;color:var(--ink)}
+.st5{margin:56px 0 40px;padding:56px;border-radius:28px;background:var(--paper);border:1px solid var(--line)}
+.st5 h2{margin:0;font-size:clamp(30px,3.6vw,42px);font-weight:850;letter-spacing:-.02em}
+.g4{list-style:none;counter-reset:g;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.g4 li{counter-increment:g;display:grid;gap:4px;padding-top:14px;border-top:2px solid var(--ink)}
+.g4 li::before{content:counter(g);font-weight:800;font-size:14px;color:#2F6FEB}
+.g4 b{font-size:18px}.g4 span{font-size:15px;color:var(--muted)}
+.pv{margin:28px 0 0;font-size:16px;color:var(--muted)}
+.more{margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
+.more .mh{font-size:14px;font-weight:800;color:var(--muted)}
+.more ul{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.more li{display:grid;gap:2px;font-size:14.5px;color:var(--muted)}.more b{font-size:16px;color:var(--ink)}
+.fqh{margin:0;font-size:28px;font-weight:850}
+@media (max-width:860px){
+  section.scn{padding:64px 0}section.scn+section.scn{padding-top:8px}
+  .scg,.scg.rev{grid-template-columns:1fr;gap:28px}.scg.rev .sct{order:0}
+  .g4,.more ul{grid-template-columns:1fr 1fr}
+  .st5{padding:28px 20px}
+  .pin i{width:26px;height:26px;font-size:13px;line-height:26px}
+}
 </style>
 </head>
 <body>
 <header class="nav" id="nav"><div class="wrap">
   <a class="brand" href="#top" aria-label="QLEAR 처음으로"><svg viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg>QLEAR</a>
-  <nav><a class="l" href="#same">무엇이 달라지나요</a><a class="l" href="#teacher">선생님 화면</a><a class="l" href="#start">시작하기</a><a class="l" href="#faq">자주 묻는 질문</a><a class="btn pri sm" href="lite.html">학생 1명과 시작</a></nav>
+  <nav><a class="l" href="#solve">학생 화면</a><a class="l" href="#retry">다시 풀기</a><a class="l" href="#teacher">선생님 화면</a><a class="l" href="#start">시작하기</a><a class="l" href="#faq">자주 묻는 질문</a><a class="btn pri sm" href="lite.html">학생 1명과 시작</a></nav>
 </div></header>
 
 <main id="top">
@@ -765,112 +805,71 @@ section.f{padding:56px 0!important}.final{padding:64px 0!important}.teach{margin
       <div class="ctas"><a class="btn pri" href="lite.html">학생 1명과 시작하기</a><a class="btn sec" href="cbeta.html">학생 화면 미리 보기</a></div>
       <ul class="facts"><li>베타 무료</li><li>설치 없음</li><li>태블릿 + 전자펜</li></ul>
     </div>
-    <figure class="shot rv"><div class="frame light"><img src="intro/grade.jpg" width="1600" height="875" alt="학생이 원래 문제집 PDF에 펜으로 풀고 채점한 화면: 3번·17번 맞음, 18번 틀림"></div></figure>
+    <figure class="shot rv"><div class="frame light"><img src="intro/viewer.jpg" width="1600" height="1054" alt="QLEAR 학생 풀이 화면: 원래 문제집 PDF가 그대로 열리고 왼쪽에 펜·지우개·GO 버튼"></div></figure>
   </section>
 </div>
 
-<section class="f" id="same"><div class="wrap">
-  <div class="center rv"><h2 class="bigq">바꿔야 할 공부 습관은 없어요</h2><p class="sub2">귀찮은 일만 QLEAR가 해요.</p></div>
-  <ol class="ben2 rv"><li><span>1</span><b>펜으로 풀고 GO, 채점 끝</b></li><li><span>2</span><b>틀린 문제는 알아서 모여요</b></li><li><span>3</span><b>해설은 그 문제 바로 옆에</b></li><li><span>4</span><b>멈춘 곳에서 바로 이어 풀기</b></li><li><span>5</span><b>모르는 문제는 질문으로</b></li></ol>
+<section class="scn" id="solve"><div class="wrap scg">
+  <div class="sct rv">
+    <p class="kk">학생 화면</p>
+    <h2>풀고, GO</h2>
+    <ul class="ln">
+      <li><b>PDF 위에 그대로 풀이</b><span>쓰던 문제집 PDF를 넣고 전자펜으로</span></li>
+      <li><b>GO 한 번으로 채점</b><span>답에 동그라미·네모만 치면 돼요</span></li>
+      <li><b>틀린 문제는 자동 저장</b><span>오답노트에 옮겨 적지 않아요</span></li>
+    </ul>
   </div>
+  <figure class="sci rv"><img src="intro/grade.jpg" width="1600" height="875" alt="GO를 누른 뒤: 3번·17번은 맞음, 18번은 틀림으로 채점된 화면"></figure>
 </div></section>
 
-<section class="f"><div class="wrap">
-  <div class="center rv"><h2>전자펜으로 풀고, GO</h2><p class="sub2">동그라미·네모만 치면 채점이 끝나요.</p></div>
-  <div class="steps3 rv">
-    <div class="zSt"><span class="zSn">1</span><div class="zMk"><div class="zMq"><b>3.</b> 함수 f(x)=−x²+4x+2의 최댓값은?</div><div class="zMch"><span>① 2</span><span>② 4</span><span class="zCir">③ 6</span><span>④ 8</span></div><div class="zMq"><b>17.</b> 두 실근을 갖는 자연수 k의 개수는?</div><div class="zBox">15</div></div><b>펜으로 풀기</b></div>
-    <i class="zSa" aria-hidden="true">→</i>
-    <div class="zSt"><span class="zSn">2</span><div class="zMk zGo"><span class="zGoB">GO</span><small>채점하기</small></div><b>GO 한 번</b></div>
-    <i class="zSa" aria-hidden="true">→</i>
-    <div class="zSt"><span class="zSn">3</span><div class="zMk"><div class="zRes"><span class="o">3번</span><em>○</em></div><div class="zRes"><span class="o">17번</span><em>○</em></div><div class="zRes x"><span>18번</span><em>✕</em></div><small class="zNote">해설지에서 정답을 읽어 자동으로 채점해요</small></div><b>바로 채점</b></div>
+<section class="scn" id="retry"><div class="wrap scg rev">
+  <div class="sct rv">
+    <p class="kk">다시 풀기</p>
+    <h2>틀린 문제를<br>옮겨 적지 않아도 돼요</h2>
+    <p class="sd">채점하면 다시 풀기에 남고, 해결되지 않으면 선생님에게 이어집니다.</p>
+    <ul class="ln">
+      <li><b>18번 틀림 · 바로 다시 풀기</b><span>채점 직후, 틀린 문제부터 한 문제씩</span></li>
+      <li><b>3일 뒤 다시 풀기 · 선생님께 질문</b><span>또 틀리면 며칠 뒤 다시, 그래도 막히면 질문으로</span></li>
+    </ul>
   </div>
+  <figure class="sci tall rv"><img src="intro/retry.jpg" width="1100" height="1251" alt="다시 풀기 화면: 다시 볼 문제 4개, 문제마다 원래 문제집 사진과 상태(다시 풀기 전 · 한 번 더 틀림 · 확인 문제 남음)"></figure>
 </div></section>
 
-<section class="f" id="wrong"><div class="wrap">
-  <div class="center rv"><h2>틀린 문제는 해결될 때까지 이어져요</h2><p class="sub2">오답노트 없이, 맞힐 때까지.</p></div>
-  <div class="flow rv">
-    <div class="zFn"><span class="zFk">채점 직후</span><div class="zPop"><small>틀린 문제 1 / 3</small><b>18번, 바로 다시 풀어 볼까요?</b><span class="zPb">다시 풀기</span></div><p>틀린 문제가 한 문제씩 떠요</p></div>
-    <i class="zFa" aria-hidden="true">↓</i>
-    <div class="zBr">
-      <div class="zFn ok"><span class="zFk ok">맞히면</span><div class="zLv"><span>쉬움</span><span class="on">보통</span><span>어려움</span></div><p>같은 유형 기출로 한 번 더 확인해요</p></div>
-      <div class="zFn no"><span class="zFk no">또 틀리면</span><div class="zRq"><b>18</b><span>다시 풀기에 저장 · 3일 뒤</span></div><p>며칠 뒤 다시 풀기로</p></div>
-    </div>
-    <i class="zFa" aria-hidden="true">↓</i>
-    <div class="zFn"><span class="zFk q">다시 풀기에서도 막히면</span><div class="zQa"><b>질문</b><span>18번 · 등차수열</span></div><p>질문으로 남아요. 여기서 선생님이 도와요</p></div>
+<section class="scn" id="teacher"><div class="wrap scg">
+  <div class="sct rv">
+    <p class="kk">선생님 화면</p>
+    <h2>선생님은<br>필요한 문제만 봐요</h2>
+    <ol class="co">
+      <li><i>1</i><span><b>학생별 오늘 기록</b>맞힌 문제 / 푼 문제, 공부 시간</span></li>
+      <li><i>2</i><span><b>최근 14일 공부 흐름</b>숙제를 했는지 날짜로 확인</span></li>
+      <li><i>3</i><span><b>문제집별 진도 · 정답률</b>언제, 무엇을, 몇 문제</span></li>
+    </ol>
   </div>
-  <div class="center rv" style="margin-top:80px"><h2>학교 부교재라면 더</h2><p class="sub2">시험 범위 문제집을 확실하게.</p></div>
-  <div class="minis">
-    <div class="mini rv"><h3>회독</h3><p>2회독은 틀린 문제부터</p>
-      <div class="vis"><div class="bk"><span class="cv"></span><div><b>부교재 문제집</b><small>1회독 100% ✓</small></div><span class="pill">2회독 시작</span></div></div></div>
-    <div class="mini rv"><h3>오답 실전 테스트</h3><p>자주 틀린 유형 위주, 시간 제한</p>
-      <div class="vis"><div class="zT"><b>12:00</b><span>오답 10문제 · 실전</span></div></div></div>
-    <div class="mini rv"><h3>오답 바로 뽑기</h3><p>틀린 문제만 PDF로</p>
-      <div class="vis"><div class="zT pdf"><b>PDF</b><span>틀린 문제 24개</span></div></div></div>
-  </div>
-</div></section>
-
-<section class="f" id="teacher"><div class="wrap fr">
-  <div class="tx rv">
-    <h2>선생님은<br>도움이 필요한 순간만</h2>
-    <p>이번 주 흐름과 막힌 문제만 한눈에.</p>
-    <ul class="pts"><li>공부 흐름 · 진도</li><li>다시 푼 문제 · 해결 여부</li><li>상담용 리포트</li></ul>
-  </div>
-  <figure class="shot rv"><div class="frame"><img src="intro/teacher.jpg" width="1800" height="1186" alt="선생님 화면: 학생별 최근 공부 흐름과 문제집별 기록"></div></figure>
-</div></section>
-
-<section class="f"><div class="wrap fr rev">
-  <div class="tx rv">
-    <h2>숙제 확인은 가볍게</h2>
-    <p>숫자 세 개로 이번 주 끝.</p>
-    <ul class="pts"><li>주 3일 이상 공부</li><li>7일 안에 다시 푼 비율</li><li>채점을 고친 비율</li></ul>
-  </div>
-  <figure class="shot rv"><div class="frame light"><img src="intro/kpi.jpg" width="1400" height="708" alt="이번 주 지표: 채점을 고친 비율, 7일 안에 다시 푼 비율, 주 3일 이상 공부한 학생"></div></figure>
-</div></section>
-
-<section class="f" id="data"><div class="wrap">
-  <div class="center rv"><h2>학생의 공부는 학생 것</h2></div>
-  <div class="dat rv">
-    <div class="dc"><b>학생 기기에만</b><ul><li>문제집 원본 · 필기</li></ul></div>
-    <div class="dc on"><b>선생님에게</b><ul><li>공부 시간 · 정답률 · 다시 풀기</li></ul></div>
-  </div>
-</div></section>
-
-<section class="f"><div class="wrap">
-  <div class="center rv"><h2 class="small">덤으로</h2></div>
-  <div class="extra rv">
-    <div><b>매치</b><span>친구와 같은 기출 문제로 승부</span></div>
-  </div>
+  <figure class="sci rv"><div class="pin"><img src="intro/teacher.jpg" width="1800" height="1186" alt="선생님 화면: 학생 목록, 최근 14일 공부 시간, 오늘 푼 문제와 문제집별 기록"><i style="left:22%;top:21%">1</i><i style="left:47%;top:27%">2</i><i style="left:30%;top:73%">3</i></div></figure>
 </div></section>
 
 <div class="wrap" id="start">
-  <section class="teach"><div class="fr">
-    <div class="tx rv">
-      <h2>학생 1명과<br>오늘 저녁부터</h2>
-      <ol class="go4">
-        <li><b>선생님 가입</b><span>Google로 10초</span></li>
-        <li><b>학원 코드 확인</b><span>6자리</span></li>
-        <li><b>학생이 코드 입력</b><span>나 → 선생님과 연결</span></li>
-        <li><b>학생은 평소처럼</b><span>원래 문제집 그대로</span></li>
-      </ol>
-      <p style="margin-top:28px"><a class="btn pri" href="lite.html">학생 1명과 시작하기</a></p>
-    </div>
-    <div class="maker rv">
-      <p class="q">"공부는 그대로, 귀찮은 채점과 오답 정리만 없애고 싶었어요."</p>
-      <p>현직 수학 선생님이 만들어요.</p>
-      <div class="beta"><b>베타 선생님 모집 중</b><span>무료 · 학생 수 제한 없음</span></div>
-    </div>
-  </div></section>
+  <section class="st5 rv">
+    <h2>학생 1명과 시작하기</h2>
+    <ol class="g4">
+      <li><b>선생님 가입</b><span>Google로 10초</span></li>
+      <li><b>학원 코드 확인</b><span>6자리</span></li>
+      <li><b>학생이 코드 입력</b><span>나 → 선생님과 연결</span></li>
+      <li><b>학생은 평소처럼</b><span>원래 문제집 그대로</span></li>
+    </ol>
+    <p class="pv">문제집 원본과 필기는 학생 기기에만 남아요. 선생님에게는 공부 시간 · 정답률 · 다시 풀기만 보여요.</p>
+    <div class="more"><span class="mh">이것도 돼요</span><ul><li><b>회독</b>2회독은 틀린 문제부터</li><li><b>오답 테스트</b>틀린 문제를 시간 안에</li><li><b>틀린 문제 PDF</b>바로 뽑아서 인쇄</li><li><b>매치</b>친구와 같은 기출로 승부</li></ul></div>
+  </section>
 </div>
 
-<section class="f" id="faq" style="border:0;padding-top:24px"><div class="wrap">
-  <div class="center rv"><h2>자주 묻는 질문</h2></div>
-  <div class="faq" style="margin-top:24px">
+<section class="f" id="faq" style="border:0;padding-top:8px"><div class="wrap">
+  <h2 class="fqh">자주 묻는 질문</h2>
+  <div class="faq" style="margin-top:20px">
     <details><summary>학생이 새로 배워야 하는 게 있나요?</summary><p>거의 없어요. 펜으로 풀고 GO만 누르면 돼요.</p></details>
     <details><summary>비용이 드나요?</summary><p>베타 기간에는 무료예요.</p></details>
     <details><summary>학생에게 무엇이 필요한가요?</summary><p>태블릿 + 전자펜(아이패드 권장). 설치 없이 브라우저에서.</p></details>
     <details><summary>교재는 어떻게 넣나요?</summary><p>학생 기기에 PDF를 넣어요. 학습지는 과제로 보내요.</p></details>
     <details><summary>채점이 틀리면요?</summary><p>학생이 [고치기]로 바로잡아요.</p></details>
-    <details><summary>선생님은 무엇을 보나요?</summary><p>공부 시간 · 진도 · 정답률 · 다시 풀기. 필기는 학생 기기에만.</p></details>
   </div>
 </div></section>
 
