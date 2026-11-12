@@ -225,40 +225,111 @@ br.m{display:none}
 .beta b{font-size:16px}.beta span{font-size:13.5px;font-weight:600}
 @media (max-width:900px){.hero2{grid-template-columns:1fr;gap:32px;padding-top:32px}.ba{grid-template-columns:1fr 1fr}.hero-shot .float{left:auto;right:-6px;width:52%}}
 @media (max-width:560px){.hero-shot{padding-bottom:96px}.hero-shot .float{bottom:30px}.shot figcaption{right:auto;left:4px;bottom:0}.ba{grid-template-columns:1fr}br.m{display:inline}.hero-shot .float{width:60%}.maker{padding:20px}.facts{font-size:13px}}
+
+/* 공감 먼저 */
+.night{display:grid;gap:14px;position:relative}
+.nc{border-radius:20px;padding:18px 20px;border:1px solid var(--line);box-shadow:var(--shadow)}
+.nc.old{background:color-mix(in srgb,var(--paper) 70%,var(--bg));transform:rotate(-1.5deg);margin-right:56px}
+.nc.new{background:var(--paper);margin-left:56px;margin-top:-26px;position:relative}
+.nh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.nh b{font-size:15px;display:flex;align-items:center;gap:8px}.nh span{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--good)}
+.nb{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.nb li{font-size:14px;padding:8px 10px 8px 34px;border-radius:10px;background:var(--bg);position:relative;color:var(--muted)}
+.nb li::before{content:"";position:absolute;left:10px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:4px;border:1.6px solid color-mix(in srgb,var(--muted) 60%,transparent)}
+.nb li.more{background:none;padding-left:10px}.nb li.more::before{display:none}
+.nl{list-style:none;padding:0;margin:0;display:grid;gap:4px}
+.nl li{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;font-size:14.5px;padding:8px 2px;border-bottom:1px solid var(--line)}
+.nl li span{font-weight:700}.nl em{font-style:normal;font-variant-numeric:tabular-nums;color:var(--muted)}
+.nl i{font-style:normal;font-size:12px;font-weight:800;padding:4px 8px;border-radius:7px}
+.nl i.g{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good)}
+.nl i.w{background:color-mix(in srgb,var(--warm) 14%,transparent);color:var(--warm)}
+.nf{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;font-size:13.5px;color:var(--muted)}
+.nf b{font-size:18px;color:var(--ink)}.nf b.z{font-size:24px;color:var(--good)}
+.scenes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px}
+.sc{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.st{font-size:13px;font-weight:800;color:var(--warm)}
+.bub{align-self:flex-start;max-width:88%;background:var(--bg);border:1px solid var(--line);border-radius:18px 18px 18px 6px;padding:10px 14px;font-size:16.5px;font-weight:700;line-height:1.45}
+.bub.me{align-self:flex-end;border-radius:18px 18px 6px 18px;background:color-mix(in srgb,var(--acc) 16%,var(--paper));border-color:color-mix(in srgb,var(--acc) 30%,transparent)}
+.bub small{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:2px}
+.nar{margin:2px 0 4px;color:var(--muted);font-size:15px}
+.sol{margin-top:auto;border-top:1px dashed var(--line);padding-top:14px}
+.sol>b{font-size:13px;color:var(--good)}
+.sol p{margin:4px 0 10px;font-weight:700;font-size:15.5px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;padding:8px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.chip.g{color:var(--good);background:color-mix(in srgb,var(--good) 10%,var(--paper));border-color:color-mix(in srgb,var(--good) 25%,transparent)}
+.chip.w{color:var(--warm);background:color-mix(in srgb,var(--warm) 10%,var(--paper));border-color:color-mix(in srgb,var(--warm) 25%,transparent)}
+.chip.bars{align-items:flex-end;height:44px;gap:4px}
+.chip.bars i{width:9px;border-radius:3px 3px 0 0;background:var(--acc);min-height:2px}
+.chip.bars span{margin-left:8px;align-self:center}
+@media (max-width:900px){.scenes{grid-template-columns:1fr}}
+@media (max-width:560px){.nc.old{margin-right:20px}.nc.new{margin-left:20px}.bub{font-size:15.5px}}
+
+.trio{display:grid;gap:14px}
+.stu{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+.stu .av{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-weight:900;font-size:18px;color:#fff}
+.s1 .av{background:var(--good)}.s2 .av{background:#e0a100}.s3 .av{background:var(--bad)}
+.s2{margin-left:28px}.s3{margin-left:56px}
+.stu small{font-size:12px;font-weight:700;color:var(--muted)}
+.stu p{margin:2px 0 10px;font-size:17px;font-weight:700;line-height:1.45}
+.stu .aside{display:block;font-size:13.5px;font-weight:500;color:var(--muted)}
+.stu .badge{display:inline-block;font-size:12.5px;font-weight:800;padding:5px 9px;border-radius:8px}
+.badge.g{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good)}
+.badge.w{background:color-mix(in srgb,#e0a100 18%,transparent);color:#a87700}
+.badge.r{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.fl{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:24px;display:flex;flex-direction:column}
+.fn{font-size:13px;font-weight:800;color:var(--warm)}
+.fl>b{font-size:20px;letter-spacing:-.02em;margin:8px 0 6px}
+.fl p{margin:0 0 16px;color:var(--muted);font-size:15.5px}
+.fl .chip{margin-top:auto;align-self:flex-start}
+.scenes.two{margin-top:16px}
+@media (max-width:900px){.flow{grid-template-columns:1fr}}
+@media (max-width:560px){.hero2 h1{font-size:31px}.hero2 h1 span{white-space:normal}.s2{margin-left:14px}.s3{margin-left:28px}.stu p{font-size:16px}}
 </style>
 </head>
 <body>
 <header class="nav" id="nav"><div class="wrap">
   <a class="brand" href="#top" aria-label="QLEAR 처음으로"><svg viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg>QLEAR</a>
-  <nav><a class="l" href="#pain">왜 필요한가요</a><a class="l" href="#screens">원장님 화면</a><a class="l" href="#start">시작하기</a><a class="l" href="#faq">자주 묻는 질문</a><a class="btn pri sm" href="lite.html">무료로 시작</a></nav>
+  <nav><a class="l" href="#pain">어떻게 바뀌나요</a><a class="l" href="#screens">원장님 화면</a><a class="l" href="#start">시작하기</a><a class="l" href="#faq">자주 묻는 질문</a><a class="btn pri sm" href="lite.html">무료로 시작</a></nav>
 </div></header>
 
 <main id="top">
 <div class="wrap">
   <section class="hero2">
     <div class="htx">
-      <span class="eyebrow"><i></i>교습소 · 학원 원장님께 · 베타 무료</span>
-      <h1><span>숙제 검사는 앱이,</span><br><span>원장님은 <em>수업만</em></span></h1>
-      <p class="lead">학생은 쓰던 문제집을 아이패드에 풀고 GO를 누르면 끝. 채점과 오답 정리는 자동이고, 원장님 화면에는 <b>누가 언제 얼마나 풀었고 무엇을 틀렸는지</b>가 남아요.</p>
-      <div class="ctas"><a class="btn pri" href="lite.html">무료로 교습소 시작하기</a><a class="btn sec" href="#screens">실제 화면 보기</a></div>
-      <ul class="facts"><li>문제은행 구독 필요 없음</li><li>설치 없이 브라우저</li><li>학생 수 제한 없음 (베타)</li></ul>
+      <span class="eyebrow"><i></i>원장님, 이런 일 있으시죠</span>
+      <h1><span>"과제 해 와~"</span><br><span>돌아오는 학생은 <em>셋 중 하나</em></span></h1>
+      <p class="lead">스스로 채점하고 모르는 것만 물어보는 학생은 한 명뿐이에요. 나머지는 대충 채점하거나, 하다 말고 채점도 안 해 와요. <b>QLEAR는 모든 학생을 첫 번째 학생으로 만들어요.</b></p>
+      <div class="ctas"><a class="btn pri" href="lite.html">무료로 교습소 시작하기</a><a class="btn sec" href="#pain">어떻게요?</a></div>
+      <ul class="facts"><li>베타 기간 무료</li><li>문제은행 구독 필요 없음</li><li>설치 없이 브라우저</li></ul>
     </div>
-    <figure class="shot hero-shot rv">
-      <div class="frame"><img src="intro/teacher.jpg" width="1800" height="1186" alt="원장님 화면: 학생 목록과 학생별 14일 공부 시간, 오늘 푼 문제와 정답률"></div>
-      <div class="float rv"><img src="intro/grade.jpg" width="1600" height="875" alt="학생 화면: 손글씨 답을 채점한 결과"><span>학생 화면 — GO 누르면 채점</span></div>
-      <figcaption>실제 앱 화면 · 학생 이름은 예시</figcaption>
-    </figure>
+    <div class="trio rv" aria-hidden="true">
+      <div class="stu s1"><span class="av">1</span><div><small>학생 1</small><p>"10문제 중에 8개 맞았고요, 2개는 모르겠어요. 알려 주세요!"</p><span class="badge g">채점 ✓ · 질문 2개</span></div></div>
+      <div class="stu s2"><span class="av">2</span><div><small>학생 2</small><p>"채점했어요…" <span class="aside">(대충 동그라미. 뭘 틀렸는지 모름)</span></p><span class="badge w">채점 △ · 틀린 문제 모름</span></div></div>
+      <div class="stu s3"><span class="av">3</span><div><small>학생 3</small><p>"하다가… 채점은 귀찮아서 못 했어요"</p><span class="badge r">과제 ✕ · 채점 ✕</span></div></div>
+    </div>
   </section>
 </div>
 
 <section class="f" id="pain"><div class="wrap">
-  <div class="center rv"><span class="kick">원장님의 저녁 한 시간</span><h2>종이 숙제로는 <br class="m">알 수 없던 것들</h2></div>
-  <div class="ba">
-    <div class="rv"><span class="t">숙제 검사</span><p class="b">공책을 한 장씩 넘기며 동그라미</p><p class="a">학생이 GO를 누르는 순간 채점 끝</p></div>
-    <div class="rv"><span class="t">했는지, 베꼈는지</span><p class="b">답만 맞으면 알 길이 없음</p><p class="a">언제 시작해 몇 분 풀었는지 기록</p></div>
-    <div class="rv"><span class="t">오답 관리</span><p class="b">오답노트는 학생 마음대로</p><p class="a">틀린 문제는 자동으로 모이고, 같은 유형까지 다시</p></div>
-    <div class="rv"><span class="t">학부모 상담</span><p class="b">"열심히 하고 있어요"</p><p class="a">2주 공부 시간 그래프와 정답률로 설명</p></div>
+  <div class="center rv"><span class="kick">QLEAR를 쓰면</span><h2>세 학생 모두 <br class="m">'학생 1'이 돼요</h2><p class="sub2">학생은 풀기만 하면 돼요. 채점과 정리는 앱이, 원장님은 남은 질문만.</p></div>
+  <div class="flow">
+    <div class="fl rv"><span class="fn">학생 2에게</span><b>채점은 앱이 정확하게</b><p>GO를 누르면 맞은 건 ○, 틀린 건 ✗. 대충 채점할 틈이 없어요.</p><div class="chip">3번 ○ · 17번 ○ · <b style="color:var(--bad)">18번 ✗</b></div></div>
+    <div class="fl rv"><span class="fn">학생 3에게</span><b>하다 만 것도 보여요</b><p>몇 문제에서 멈췄는지, 언제 몇 분 했는지 원장님 화면에 남아요.</p><div class="chip w">10문제 중 4문제 · 12분 · 어제 21:40</div></div>
+    <div class="fl rv"><span class="fn">모두에게</span><b>틀린 건 다시, 모르는 것만 질문</b><p>틀린 문제는 다시 풀기로 모이고, 다시 풀어도 모르는 것만 남아요.</p><div class="chip g">수업 시간엔 질문 2개만</div></div>
   </div>
+  <div class="scenes two">
+    <article class="sc rv"><span class="st">했는지, 베꼈는지</span>
+      <div class="bub"><small>학생</small>"선생님, 숙제 다 했어요!"</div>
+      <p class="nar">30문제 전부 정답. 그런데 수업 시간엔 같은 유형을 못 풀어요.</p>
+      <div class="sol"><b>QLEAR에서는</b><p>언제 시작해서 몇 분 동안 풀었는지 남아요.</p><div class="chip w">30문제 · 4분 12초 · 밤 11:52 시작</div></div></article>
+    <article class="sc rv"><span class="st">학부모 상담</span>
+      <div class="bub"><small>어머님</small>"원장님, 우리 애 집에서 공부는 하는 거예요?"</div>
+      <p class="nar">"열심히 하고 있어요"라고 하기엔 보여 드릴 게 없어요.</p>
+      <div class="sol"><b>QLEAR에서는</b><p>최근 14일 공부 시간과 정답률을 그대로 보여 드려요.</p><div class="chip bars"><i style="height:60%"></i><i style="height:80%"></i><i style="height:20%"></i><i style="height:90%"></i><i style="height:70%"></i><i style="height:0"></i><i style="height:85%"></i><span>최근 7일 235분</span></div></div></article>
+  </div>
+  <p class="center sub2 rv" style="margin:28px auto 0;font-size:14px">대화는 교습소에서 흔히 있는 상황을 예로 든 거예요.</p>
 </div></section>
 
 <section class="f" id="screens"><div class="wrap fr">
