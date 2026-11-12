@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>QLEAR — 풀기만 하면 채점되는 수학 문제집</title>
-<meta name="description" content="쓰던 문제집 PDF를 아이패드에 펜으로 풀면 바로 채점. 틀린 문제는 다시 풀 때까지, 같은 유형 확인 문제까지. 교습소 선생님은 학생의 실제 공부 기록을 한눈에.">
-<meta property="og:title" content="QLEAR — 풀기만 하면 채점되는 수학 문제집">
-<meta property="og:description" content="쓰던 문제집 그대로, 펜으로 풀고 GO. 틀린 문제는 맞힐 때까지.">
-<meta property="og:image" content="https://wontaekim731.github.io/rainsafter/icon-512.png">
+<title>QLEAR — 숙제 검사 없는 교습소</title>
+<meta name="description" content="학생은 쓰던 문제집을 아이패드에 풀고 GO, 채점·오답 정리는 자동. 원장님은 누가 언제 얼마나 풀었는지 한 화면에서.">
+<meta property="og:title" content="QLEAR — 숙제 검사는 앱이, 원장님은 수업만">
+<meta property="og:description" content="채점·오답 정리는 자동, 학생이 실제로 공부한 기록은 원장님 화면에. 베타 무료.">
+<meta property="og:image" content="https://wontaekim731.github.io/rainsafter/intro/teacher.jpg">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
@@ -185,133 +185,166 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .kb b{font-size:20px}
   .mock{padding:14px}
 }
+
+/* v2: 원장님 대상 */
+.hero2{padding:56px 0 24px;display:grid;grid-template-columns:.9fr 1.25fr;gap:48px;align-items:center}
+.hero2 h1{font-size:clamp(34px,4.5vw,56px)}.hero2 h1 span{white-space:nowrap}
+.lead b{color:var(--ink);font-weight:700}
+.facts{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-wrap:wrap;gap:8px 16px;font-size:14px;color:var(--muted);font-weight:600}
+.facts li::before{content:"✓ ";color:var(--good);font-weight:900}
+.shot{margin:0;position:relative}
+.frame{background:#16181d;border-radius:22px;padding:10px;box-shadow:var(--shadow)}
+.frame.light{background:var(--paper);border:1px solid var(--line);padding:8px}
+.frame img{display:block;width:100%;height:auto;border-radius:14px}
+.hero-shot{padding-bottom:56px}
+.hero-shot .float{position:absolute;left:-28px;bottom:0;width:46%;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:6px;box-shadow:var(--shadow)}
+.hero-shot .float img{display:block;width:100%;height:auto;border-radius:11px}
+.hero-shot .float span{display:block;font-size:12.5px;font-weight:700;padding:6px 6px 2px;color:var(--muted)}
+.shot figcaption{position:absolute;right:6px;bottom:18px;font-size:12px;color:var(--muted)}
+.ba{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+.ba>div{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:22px}
+.ba .t{display:block;font-weight:900;font-size:19px;letter-spacing:-.02em;margin-bottom:14px}
+.ba p{margin:0;font-size:15px;line-height:1.5;padding-left:26px;position:relative}
+.ba p::before{position:absolute;left:0;top:0;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:900}
+.ba .b{color:var(--muted);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--muted) 50%,transparent);margin-bottom:10px}
+.ba .b::before{content:"✕";background:var(--line);color:var(--muted)}
+.ba .a{font-weight:700}
+.ba .a::before{content:"✓";background:var(--good);color:#fff}
+br.m{display:none}
+.rc.sm{background:var(--paper);padding:10px 12px;grid-template-columns:auto 1fr auto}
+.rc.sm .num{width:34px;height:34px;font-size:14px}
+.go4{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:14px;counter-reset:g}
+.go4 li{counter-increment:g;display:grid;grid-template-columns:34px 1fr;gap:4px 12px;color:var(--paper)}
+.go4 li::before{content:counter(g);grid-row:span 2;width:30px;height:30px;border-radius:9px;background:var(--acc);color:#082a44;font-weight:900;display:grid;place-items:center;font-size:15px}
+.go4 b{font-size:17px}
+.go4 span{font-size:14.5px;color:color-mix(in srgb,var(--paper) 68%,transparent)}
+.maker{background:color-mix(in srgb,var(--paper) 7%,transparent);border:1px solid color-mix(in srgb,var(--paper) 14%,transparent);border-radius:22px;padding:28px;color:var(--paper)}
+.maker .q{font-size:21px;font-weight:800;line-height:1.45;letter-spacing:-.02em;margin:10px 0 14px}
+.maker p{color:color-mix(in srgb,var(--paper) 72%,transparent);margin:0 0 18px;font-size:15.5px}
+.beta{display:flex;flex-direction:column;gap:2px;background:var(--acc);color:#082a44;border-radius:14px;padding:14px 16px}
+.beta b{font-size:16px}.beta span{font-size:13.5px;font-weight:600}
+@media (max-width:900px){.hero2{grid-template-columns:1fr;gap:32px;padding-top:32px}.ba{grid-template-columns:1fr 1fr}.hero-shot .float{left:auto;right:-6px;width:52%}}
+@media (max-width:560px){.hero-shot{padding-bottom:96px}.hero-shot .float{bottom:30px}.shot figcaption{right:auto;left:4px;bottom:0}.ba{grid-template-columns:1fr}br.m{display:inline}.hero-shot .float{width:60%}.maker{padding:20px}.facts{font-size:13px}}
 </style>
 </head>
 <body>
 <header class="nav" id="nav"><div class="wrap">
   <a class="brand" href="#top" aria-label="QLEAR 처음으로"><svg viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg>QLEAR</a>
-  <nav><a class="l" href="#how">사용법</a><a class="l" href="#features">기능</a><a class="l" href="#teacher">선생님</a><a class="l" href="#faq">자주 묻는 질문</a><a class="btn pri sm" href="lite.html">시작하기</a></nav>
+  <nav><a class="l" href="#pain">왜 필요한가요</a><a class="l" href="#screens">원장님 화면</a><a class="l" href="#start">시작하기</a><a class="l" href="#faq">자주 묻는 질문</a><a class="btn pri sm" href="lite.html">무료로 시작</a></nav>
 </div></header>
 
 <main id="top">
 <div class="wrap">
-  <section class="hero">
-    <div>
-      <span class="eyebrow"><i></i>베타 기간 무료</span>
-      <h1>풀기만 하면<br><em>채점됩니다</em></h1>
-      <p class="lead">가지고 있는 문제집 PDF를 아이패드에 넣고 펜으로 푸세요. GO를 누르면 바로 채점하고, 틀린 문제는 맞힐 때까지 다시 풀게 도와줘요.</p>
-      <div class="ctas"><a class="btn pri" href="lite.html">무료로 시작하기</a><a class="btn sec" href="#teacher">선생님이신가요?</a></div>
-      <p class="note">설치 없이 브라우저에서 바로 · Google 계정으로 10초 가입</p>
+  <section class="hero2">
+    <div class="htx">
+      <span class="eyebrow"><i></i>교습소 · 학원 원장님께 · 베타 무료</span>
+      <h1><span>숙제 검사는 앱이,</span><br><span>원장님은 <em>수업만</em></span></h1>
+      <p class="lead">학생은 쓰던 문제집을 아이패드에 풀고 GO를 누르면 끝. 채점과 오답 정리는 자동이고, 원장님 화면에는 <b>누가 언제 얼마나 풀었고 무엇을 틀렸는지</b>가 남아요.</p>
+      <div class="ctas"><a class="btn pri" href="lite.html">무료로 교습소 시작하기</a><a class="btn sec" href="#screens">실제 화면 보기</a></div>
+      <ul class="facts"><li>문제은행 구독 필요 없음</li><li>설치 없이 브라우저</li><li>학생 수 제한 없음 (베타)</li></ul>
     </div>
-    <div class="device rv">
-      <video src="help/real-demo.mp4" poster="help/real-demo.jpg" autoplay muted loop playsinline preload="metadata" aria-label="실제로 문제를 풀고 채점하는 화면"></video>
-      <span class="cap">실제 화면 — 풀고, GO, 채점</span>
-    </div>
+    <figure class="shot hero-shot rv">
+      <div class="frame"><img src="intro/teacher.jpg" width="1800" height="1186" alt="원장님 화면: 학생 목록과 학생별 14일 공부 시간, 오늘 푼 문제와 정답률"></div>
+      <div class="float rv"><img src="intro/grade.jpg" width="1600" height="875" alt="학생 화면: 손글씨 답을 채점한 결과"><span>학생 화면 — GO 누르면 채점</span></div>
+      <figcaption>실제 앱 화면 · 학생 이름은 예시</figcaption>
+    </figure>
   </section>
-
-  <div class="steps" id="how">
-    <div class="step rv"><span class="n">1</span><b>문제집 넣기</b><p>문제집 PDF와 해설지 PDF를 넣으면 정답을 알아서 찾아 둬요.</p></div>
-    <div class="step rv"><span class="n">2</span><b>펜으로 풀기</b><p>종이에 풀듯이 그대로. 객관식은 번호에 동그라미, 단답형은 답에 네모.</p></div>
-    <div class="step rv"><span class="n">3</span><b><span class="go">GO<small>채점하기</small></span>&nbsp; 누르면 끝</b><p>맞은 건 ○, 틀린 건 ✗. 틀린 문제는 다시 풀기로 바로 모여요.</p></div>
-  </div>
 </div>
 
-<section class="f" id="features"><div class="wrap fr">
+<section class="f" id="pain"><div class="wrap">
+  <div class="center rv"><span class="kick">원장님의 저녁 한 시간</span><h2>종이 숙제로는 <br class="m">알 수 없던 것들</h2></div>
+  <div class="ba">
+    <div class="rv"><span class="t">숙제 검사</span><p class="b">공책을 한 장씩 넘기며 동그라미</p><p class="a">학생이 GO를 누르는 순간 채점 끝</p></div>
+    <div class="rv"><span class="t">했는지, 베꼈는지</span><p class="b">답만 맞으면 알 길이 없음</p><p class="a">언제 시작해 몇 분 풀었는지 기록</p></div>
+    <div class="rv"><span class="t">오답 관리</span><p class="b">오답노트는 학생 마음대로</p><p class="a">틀린 문제는 자동으로 모이고, 같은 유형까지 다시</p></div>
+    <div class="rv"><span class="t">학부모 상담</span><p class="b">"열심히 하고 있어요"</p><p class="a">2주 공부 시간 그래프와 정답률로 설명</p></div>
+  </div>
+</div></section>
+
+<section class="f" id="screens"><div class="wrap fr">
   <div class="tx rv">
-    <span class="kick">자동 채점</span>
-    <h2>쓰던 문제집 그대로,<br>손글씨로 채점</h2>
-    <p>새 문제은행을 살 필요도, 공부 습관을 바꿀 필요도 없어요. 펜으로 쓴 번호와 숫자 답을 읽어 바로 채점해요.</p>
-    <ul class="pts"><li>객관식 동그라미 · 단답형 네모 · 분수까지</li><li>잘못 읽었으면 [고치기] 한 번으로 바로잡기</li><li>쓸수록 내 글씨에 맞춰 더 정확해져요</li></ul>
+    <span class="kick">원장님 화면</span>
+    <h2>학생 한 명을 누르면<br>2주가 보여요</h2>
+    <p>왼쪽에는 지금 공부 중인 학생과 오늘 푼 문제 수. 학생을 누르면 최근 14일 공부 시간, 날짜별로 어떤 문제집을 몇 시부터 몇 분 동안 풀었고 몇 개 맞혔는지 나와요.</p>
+    <ul class="pts"><li>지금 공부 중인 학생은 초록 점</li><li>문제집별 풀이 시간 · 정답률</li><li>실전 모드 시험 결과와 걸린 시간</li></ul>
   </div>
-  <div class="mock rv" aria-hidden="true">
-    <div class="sheet">
-      <div class="rail"><span>✎</span><span class="l">⌫</span><span class="l">↶</span><span class="go">GO<small>채점하기</small></span></div>
-      <div>
-        <div class="q"><span class="qn">3.</span>함수 f(x) = −x² + 4x + 2 의 최댓값은?<div class="ch"><span class="c">① 2</span><span class="c">② 4</span><span class="c sel">③ 6</span><span class="c">④ 8</span><span class="c">⑤ 10</span></div><span class="mk o"></span></div>
-        <div class="q"><span class="qn">17.</span>x² − 8x + k = 0 이 서로 다른 두 실근을 갖도록 하는 자연수 k의 개수는?<div><span class="box">15</span></div><span class="mk o"></span></div>
-        <div class="q"><span class="qn">18.</span>등차수열 {aₙ}에서 a₁ = 3, a₃ = 11 일 때, a₅ 의 값은?<div><span class="box">21</span></div><span class="mk">✕</span><span class="fix">잘못 읽었나요? <b>고치기</b></span></div>
-      </div>
-    </div>
-  </div>
+  <figure class="shot rv"><div class="frame"><img src="intro/teacher.jpg" width="1800" height="1186" alt="학생별 14일 공부 시간과 날짜별 기록" loading="lazy"></div></figure>
 </div></section>
 
 <section class="f"><div class="wrap fr rev">
   <div class="tx rv">
-    <span class="kick">다시 풀기 + 확인 문제</span>
-    <h2>틀린 문제는<br>맞힐 때까지 따라와요</h2>
-    <p>틀린 문제는 다시 풀기 탭에 모여요. 다시 맞히면 끝이 아니라, 같은 유형의 확인 문제까지 맞혀야 진짜 아는 걸로 쳐요.</p>
-    <ul class="pts"><li>원래 문제 ✓ + 확인 문제 ✓ = 해결</li><li>확인 문제는 기출 · 같은 유형에서 골라 줘요</li><li>모르는 문제는 ★로 표시해 두고 나중에</li></ul>
+    <span class="kick">학생 화면</span>
+    <h2>종이처럼 풀고,<br>채점은 바로</h2>
+    <p>학생은 늘 하던 대로 펜으로 풀어요. 객관식은 번호에 동그라미, 단답형은 답에 네모. GO를 누르면 맞은 문제는 ○, 틀린 문제는 ✗.</p>
+    <ul class="pts"><li>해설지 PDF만 넣으면 정답을 알아서 찾아요</li><li>틀린 문제는 [RE 고치기]로 그 자리에서 다시</li><li>잘못 읽었으면 학생이 바로 고치고, 원장님은 그 비율까지 봐요</li></ul>
   </div>
-  <div class="mock rv" aria-hidden="true">
-    <div class="rlist">
-      <div class="rc"><span class="num">18</span><div><b>등차수열 일반항</b><small>예시 문제집 · 2일 전에 틀림</small></div><div class="slots"><i class="ok">✓</i><i></i></div></div>
-      <div class="rc"><span class="num">24</span><div><b>로그함수 그래프</b><small>예시 문제집 · 어제 틀림</small></div><div class="slots"><i class="no">✕</i><i></i></div></div>
-      <div class="rc"><span class="num">9</span><div><b>삼각함수 최대·최소</b><small>모의고사 · 해결</small></div><div class="slots"><i class="ok">✓</i><i class="ok">✓</i></div></div>
-    </div>
-    <div class="twin"><b>18번을 맞혔어요! 확인 문제 하나만 더</b><p>같은 유형을 정말 아는지 한 문제로 확인해요.</p><div class="chips"><span class="on">기출</span><span>같은 유형</span><span>기본</span><span>꼼꼼</span><span>완성</span></div></div>
+  <figure class="shot rv"><div class="frame light"><img src="intro/grade.jpg" width="1600" height="875" alt="손글씨 답을 채점한 화면: 3번·17번 맞음, 18번 틀림" loading="lazy"></div></figure>
+</div></section>
+
+<section class="f"><div class="wrap fr">
+  <div class="tx rv">
+    <span class="kick">주간 지표</span>
+    <h2>이번 주,<br>누가 따라오고 있나요</h2>
+    <p>숫자 세 개면 충분해요. 며칠 공부했는지, 틀린 문제를 일주일 안에 다시 풀었는지, 채점이 얼마나 정확했는지. 처지는 학생은 주황색으로 먼저 보여요.</p>
+    <ul class="pts"><li>주 3일 이상 공부한 학생 수</li><li>틀린 문제 7일 안에 다시 푼 비율</li><li>학생별 표로 상담 전에 한 번에</li></ul>
   </div>
+  <figure class="shot rv"><div class="frame light"><img src="intro/kpi.jpg" width="1400" height="708" alt="주간 지표: 채점을 고친 비율, 7일 안에 다시 푼 비율, 주 3일 이상 공부한 학생" loading="lazy"></div></figure>
 </div></section>
 
 <section class="f"><div class="wrap">
-  <div class="center rv"><span class="kick">계속 풀게 만드는 장치</span><h2>회독 · 실전 · 매치</h2><p class="sub2">한 권을 끝내고, 시험처럼 풀어 보고, 친구와 겨뤄요.</p></div>
+  <div class="center rv"><span class="kick">학생이 계속 켜는 이유</span><h2>다시 풀기 · 회독 · 매치</h2><p class="sub2">숙제 앱은 학생이 안 켜면 끝이에요. 그래서 다시 열게 만드는 장치를 넣었어요.</p></div>
   <div class="minis">
-    <div class="mini rv"><span class="kick">회독</span><h3>한 번 더, 지난번 틀린 것부터</h3><p>다 푼 책은 2회독으로. 지난번에 틀린 문제를 표시해 줘서 약한 곳이 보여요.</p>
-      <div class="vis"><div class="bk"><span class="cv"></span><div><b>예시 문제집</b><small>1회독 100% ✓</small></div><span class="pill">2회독 시작</span></div></div></div>
-    <div class="mini rv"><span class="kick">실전 모드</span><h3>시험처럼 시간 재고</h3><p>모의고사 · 기출 시험지를 정해진 시간 안에. 풀다가 다른 앱으로 나가면 기록에 남아요.</p>
-      <div class="vis"><div class="timer"><div><small>실전 · 30문제 100분</small><span class="t">63:41</span></div><span class="pill">제출</span></div></div></div>
-    <div class="mini rv"><span class="kick">매치</span><h3>친구와 같은 기출로 대결</h3><p>서로 단원을 고르고 같은 기출 5문제를 풀어요. 많이 맞힌 사람이, 같으면 빨리 푼 사람이 이겨요.</p>
+    <div class="mini rv"><span class="kick">다시 풀기 + 확인 문제</span><h3>맞힐 때까지 따라와요</h3><p>틀린 문제를 다시 맞히고, 같은 유형 확인 문제까지 맞혀야 해결.</p>
+      <div class="vis"><div class="rc sm"><span class="num">18</span><div><b>등차수열 일반항</b><small>2일 전에 틀림</small></div><div class="slots"><i class="ok">✓</i><i></i></div></div></div></div>
+    <div class="mini rv"><span class="kick">회독</span><h3>한 번 더, 틀린 것부터</h3><p>다 푼 책은 2회독으로. 지난번 틀린 문제에 표시가 붙어요.</p>
+      <div class="vis"><div class="bk"><span class="cv"></span><div><b>쎈 수학Ⅰ</b><small>1회독 100% ✓</small></div><span class="pill">2회독 시작</span></div></div></div>
+    <div class="mini rv"><span class="kick">매치</span><h3>친구와 같은 기출로 대결</h3><p>같은 모의고사 기출 5문제. 많이 맞힌 사람이, 같으면 빨리 푼 사람이 이겨요.</p>
       <div class="vis"><div class="vs"><div class="r me"><span>나</span><span class="bar"><i style="width:80%"></i></span><span>4/5</span></div><div class="r"><span>친구</span><span class="bar"><i style="width:60%"></i></span><span>3/5</span></div></div></div></div>
   </div>
 </div></section>
 
-<div class="wrap" id="teacher">
+<div class="wrap" id="start">
   <section class="teach"><div class="fr">
     <div class="tx rv">
-      <span class="kick">교습소 · 학원 선생님</span>
-      <h2>학생이 실제로 어떻게<br>공부했는지 보여요</h2>
-      <p>학생은 학원 코드 하나로 연결돼요. 몇 문제를 풀었는지, 무엇을 틀렸는지, 틀린 걸 다시 풀었는지 — 점수가 아니라 공부한 기록이 남아요.</p>
-      <ul class="pts"><li>학원 코드로 학생 연결 · 그룹 관리</li><li>학생별 풀이 기록과 다시 풀기 진행</li><li>과제 배포와 주간 지표</li></ul>
-      <p style="margin-top:24px"><a class="btn pri" href="lite.html">선생님으로 써 보기</a></p>
-      <p class="note" style="color:color-mix(in srgb,var(--paper) 60%,transparent)">로그인 후 나 → 선생님 화면으로 전환</p>
+      <span class="kick">시작은 10분</span>
+      <h2>오늘 저녁 숙제부터<br>바로 써 보세요</h2>
+      <ol class="go4">
+        <li><b>원장님 가입</b><span>Google 계정으로 10초. 로그인 후 나 → 선생님 화면으로 전환</span></li>
+        <li><b>학원 코드 확인</b><span>선생님 화면 맨 위에 6자리 코드가 있어요</span></li>
+        <li><b>학생이 코드 입력</b><span>학생 앱 나 → 선생님과 연결에 코드를 넣으면 끝</span></li>
+        <li><b>평소처럼 숙제</b><span>학생은 자기 문제집 PDF를 넣고 풀어요. 기록은 원장님 화면으로</span></li>
+      </ol>
+      <p style="margin-top:28px"><a class="btn pri" href="lite.html">무료로 교습소 시작하기</a></p>
     </div>
-    <div class="kpi rv" aria-hidden="true">
-      <div class="hd">이번 주 학생 지표<span>최근 7일 · 예시</span></div>
-      <div class="kb"><div><b>3%</b><span>채점을 고친 비율</span></div><div><b>62%</b><span>틀린 문제 7일 안에 다시 풂</span></div><div><b class="w">4<small style="font-size:14px">/5명</small></b><span>주 3일 이상 공부</span></div></div>
-      <table class="kt"><thead><tr><th>학생</th><th>공부한 날</th><th>푼 문항</th><th>다시 풂</th></tr></thead>
-      <tbody><tr><td>학생 A</td><td class="g">5일</td><td>142</td><td class="g">71%</td></tr><tr><td>학생 B</td><td class="g">4일</td><td>98</td><td class="g">58%</td></tr><tr><td>학생 C</td><td class="w">2일</td><td>41</td><td class="w">30%</td></tr></tbody></table>
+    <div class="maker rv">
+      <span class="kick">만든 사람</span>
+      <p class="q">"매일 저녁 숙제 검사에 쓰던 시간을 수업 준비에 쓰고 싶어서 만들었어요."</p>
+      <p>서울 강서구에서 1:1 수학 교습소를 운영하는 원장이 직접 학생들과 매일 쓰면서 만들고 있어요. 써 보시다 불편한 점은 바로 고칩니다.</p>
+      <div class="beta"><b>베타 교습소 모집 중</b><span>무료 · 학생 수 제한 없음 · 불편한 점은 바로 반영</span></div>
     </div>
   </div></section>
 </div>
 
-<section class="f" style="border:0;padding-top:0"><div class="wrap">
-  <div class="center rv"><h2>왜 QLEAR인가요</h2></div>
-  <div class="why" style="margin-top:32px">
-    <div class="rv"><b>교재를 바꾸지 않아요</b><p>지금 풀고 있는 문제집과 모의고사를 그대로 넣어서 써요.</p></div>
-    <div class="rv"><b>채점보다 '다시 풀기'</b><p>틀린 문제를 다시 맞히고, 같은 유형까지 확인해야 끝나요.</p></div>
-    <div class="rv"><b>증거가 남는 공부</b><p>푼 문제, 걸린 시간, 다시 푼 기록이 쌓여서 선생님과 함께 봐요.</p></div>
-  </div>
-</div></section>
-
-<section class="f" id="faq"><div class="wrap">
+<section class="f" id="faq" style="border:0;padding-top:24px"><div class="wrap">
   <div class="center rv"><h2>자주 묻는 질문</h2></div>
   <div class="faq" style="margin-top:24px">
-    <details><summary>무료인가요?</summary><p>지금은 베타 기간이라 모든 기능을 무료로 쓸 수 있어요.</p></details>
-    <details><summary>어떤 기기가 필요해요?</summary><p>아이패드와 애플펜슬을 가장 권장해요. 앱 설치 없이 사파리에서 열고, 공유 → 홈 화면에 추가하면 앱처럼 쓸 수 있어요. 갤럭시 탭 같은 펜 태블릿에서도 열려요.</p></details>
-    <details><summary>어떤 문제집을 쓸 수 있나요?</summary><p>가지고 있는 문제집 · 모의고사 PDF를 넣으면 돼요. 해설지(정답) PDF를 같이 넣으면 정답을 알아서 찾아 자동으로 채점해요.</p></details>
-    <details><summary>채점이 틀리면요?</summary><p>틀리게 읽은 문제는 [고치기]로 바로 바로잡을 수 있어요. 답을 못 읽으면 직접 채점할 수 있게 물어봐요. 쓸수록 내 글씨에 맞춰 정확해져요.</p></details>
-    <details><summary>기록은 어디에 저장되나요?</summary><p>문제집과 필기는 내 기기에 저장돼요. 로그인하면 공부 기록이 계정에 이어져서, 연결한 선생님이 볼 수 있어요.</p></details>
-    <details><summary>선생님은 어떻게 쓰나요?</summary><p>로그인한 뒤 나 → 선생님 화면으로 전환하면 학원 코드가 나와요. 학생이 학생 앱에서 그 코드를 넣으면 연결돼요.</p></details>
+    <details><summary>비용이 드나요?</summary><p>지금은 베타 기간이라 무료예요. 정식 요금이 생기면 미리 알려 드리고, 그 전까지 쓴 기록은 그대로 이어져요.</p></details>
+    <details><summary>학생에게 무엇이 필요한가요?</summary><p>아이패드와 애플펜슬을 가장 권장해요. 앱 설치 없이 사파리에서 열고, 공유 → 홈 화면에 추가하면 앱처럼 써요. 갤럭시 탭 같은 펜 태블릿에서도 열려요.</p></details>
+    <details><summary>교재는 어떻게 넣나요?</summary><p>학생이 가지고 있는 문제집 · 모의고사 PDF를 학생 기기에 넣어요. 해설지 PDF를 같이 넣으면 정답을 알아서 찾아 자동으로 채점해요. 원장님이 직접 만든 학습지는 과제 배포로 보낼 수 있어요.</p></details>
+    <details><summary>채점이 틀리면요?</summary><p>학생이 [고치기]로 바로 바로잡아요. 답을 못 읽으면 학생에게 직접 채점하게 물어봐요. 원장님 화면 주간 지표에서 고친 비율을 볼 수 있어요.</p></details>
+    <details><summary>원장님은 무엇을 볼 수 있나요?</summary><p>학생별 공부 시간, 날짜별로 푼 문제집과 정답률, 실전 모드 결과, 틀린 문제를 다시 풀었는지예요. 학생의 필기 그림과 문제집 파일은 학생 기기에 남고, 공부 기록만 연결된 원장님께 올라가요.</p></details>
+    <details><summary>수업 시간에 시험처럼 쓸 수 있나요?</summary><p>실전 모드로 모의고사를 정해진 시간 안에 풀게 할 수 있어요. 풀다가 다른 앱으로 나가면 기록에 남아요.</p></details>
   </div>
 </div></section>
 
 <section class="final"><div class="wrap rv">
-  <h2>오늘 푼 문제집,<br>지금 채점해 보세요</h2>
-  <p>PDF 하나면 바로 시작해요.</p>
-  <div class="ctas"><a class="btn pri" href="lite.html">무료로 시작하기</a></div>
+  <h2>숙제 검사 없는 저녁,<br>이번 주에 시작해 보세요</h2>
+  <p>원장님 가입 10초, 학생 연결은 코드 하나.</p>
+  <div class="ctas"><a class="btn pri" href="lite.html">무료로 교습소 시작하기</a></div>
 </div></section>
 </main>
 
-<footer><div class="wrap"><span>© QLEAR · 내정수학교습소</span><span><a href="lite.html">앱 열기</a></span></div></footer>
+<footer><div class="wrap"><span>© QLEAR</span><span><a href="lite.html">앱 열기</a></span></div></footer>
 
 <script>
 (()=>{const n=document.getElementById('nav');const f=()=>n.classList.toggle('sc',scrollY>8);addEventListener('scroll',f,{passive:true});f();
