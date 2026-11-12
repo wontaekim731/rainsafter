@@ -682,7 +682,7 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 .dc{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:28px 26px}.dc.on{border:2px solid var(--acc)}
 .dc b{font-size:20px;font-weight:900}.dc ul{margin:12px 0 0;padding-left:20px;font-size:18px;font-weight:700;line-height:1.8}
 h2.small{font-size:clamp(22px,2.4vw,28px)!important;color:var(--muted)}
-.extra{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:20px auto 0}
+.extra{display:grid;grid-template-columns:1fr;max-width:380px!important;gap:14px;max-width:760px;margin:20px auto 0}
 .extra div{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;gap:4px}.extra b{font-size:18px}.extra span{color:var(--muted);font-size:16px;font-weight:600}
 section.f{padding:64px 0!important}
 @media (max-width:900px){.h2s{grid-template-columns:1fr!important}.dat,.extra{grid-template-columns:1fr}.cmp{padding:6px 18px}.cmpH,.cmpR{grid-template-columns:1fr 24px 1fr}}
@@ -696,6 +696,30 @@ section.f{padding:64px 0!important}
 .cmpH span:first-child,.cmpR s{text-align:right}.cmpH span:last-child,.cmpR b{text-align:left}
 section.f .wrap.fr .pts{display:flex!important;flex-wrap:wrap;justify-content:center;gap:10px 22px}
 .teach .go4{display:grid}.dat,.extra{text-align:center}.dc ul{list-style:none;padding:0}
+
+/* intro2: 채점 3단계 · 오답 흐름 */
+.steps3{display:flex;align-items:stretch;justify-content:center;gap:14px;margin-top:40px;flex-wrap:wrap}
+.zSt{display:flex;flex-direction:column;align-items:center;gap:12px;width:280px}.zSt>b{font-size:19px;font-weight:900}
+.zSn{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-weight:900;font-size:15px}
+.zMk{width:100%;min-height:236px;background:#fff;color:#1b1b1b;border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px;text-align:left;box-shadow:0 10px 26px rgba(0,0,0,.06);font-size:14px}
+.zMq{font-size:14px}.zMq b{margin-right:4px}.zMch{display:flex;gap:10px;font-size:14px;color:#444}.zMch .zCir{border:2px solid #2f6feb;border-radius:999px;padding:0 6px;color:#1b1b1b}
+.zBox{align-self:center;border:2px solid #2f6feb;padding:2px 12px;font:600 20px/1.2 serif;color:#2f6feb}
+.zGo{align-items:center;justify-content:center}.zGoB{width:92px;height:92px;border-radius:24px;background:var(--acc);color:#fff;display:grid;place-items:center;font-size:32px;font-weight:900;box-shadow:0 10px 24px color-mix(in srgb,var(--acc) 35%,transparent)}.zGo small{font-weight:800;color:#666}
+.zRes{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:12px;background:color-mix(in srgb,var(--acc) 10%,#fff);font-weight:800;font-size:16px}.zRes em{font-style:normal;color:var(--acc);font-size:20px}
+.zRes.x{background:color-mix(in srgb,var(--bad) 10%,#fff)}.zRes.x em{color:var(--bad)}.zNote{color:#777;text-align:center;font-weight:700}
+.zSa{align-self:center;font-style:normal;font-size:26px;color:var(--acc);font-weight:900}
+.flow{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:40px}
+.zFn{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;width:min(420px,100%)}.zFn p{margin:0;font-size:17px;font-weight:700;color:var(--muted)}
+.zFk{font-size:14px;font-weight:900;padding:5px 12px;border-radius:999px;background:var(--ink);color:var(--paper)}.zFk.ok{background:var(--acc);color:#fff}.zFk.no{background:var(--bad);color:#fff}.zFk.q{background:var(--ink)}
+.zPop{width:100%;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 12px 30px rgba(0,0,0,.08)}.zPop small{color:var(--muted);font-weight:800}.zPop b{font-size:19px}.zPb{background:var(--acc);color:#fff;font-weight:900;padding:9px 18px;border-radius:12px}
+.zFa{font-style:normal;font-size:24px;color:var(--muted);font-weight:900}
+.zBr{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:min(860px,100%)}.zBr .zFn{width:100%}
+.zLv,.zRq,.zQa{width:100%;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;justify-content:center;align-items:center;gap:8px}
+.zLv span{padding:8px 14px;border-radius:10px;font-weight:800;color:var(--muted);background:var(--bg)}.zLv .on{background:var(--acc);color:#fff}
+.zRq b,.zQa b{font-size:18px;padding:6px 12px;border-radius:10px;background:var(--bg)}.zRq span,.zQa span{font-weight:800;color:var(--muted)}.zQa b{background:var(--ink);color:var(--paper)}
+.zT{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:4px}.zT b{font-size:28px;font-weight:900;color:var(--bad)}.zT.pdf b{color:var(--ink)}.zT span{font-weight:800;color:var(--muted)}
+.mini h3{font-size:clamp(20px,2.2vw,24px)!important}.mini p{font-size:17px!important}
+@media (max-width:760px){.zSa{transform:rotate(90deg)}.zBr{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -730,24 +754,37 @@ section.f .wrap.fr .pts{display:flex!important;flex-wrap:wrap;justify-content:ce
   </div>
 </div></section>
 
-<section class="f"><div class="wrap fr rev">
-  <div class="tx rv">
-    <h2>종이처럼 풀고,<br>채점은 바로</h2>
-    <p>펜으로 풀고 GO. 동그라미·네모만 치면 돼요.</p>
-    <ul class="pts"><li>정답은 해설지에서 자동으로</li><li>틀리면 그 자리에서 다시</li><li>잘못 읽으면 한 번에 고치기</li></ul>
+<section class="f"><div class="wrap">
+  <div class="center rv"><h2>전자펜으로 풀고, GO</h2><p class="sub2">동그라미·네모만 치면 채점이 끝나요.</p></div>
+  <div class="steps3 rv">
+    <div class="zSt"><span class="zSn">1</span><div class="zMk"><div class="zMq"><b>3.</b> 함수 f(x)=−x²+4x+2의 최댓값은?</div><div class="zMch"><span>① 2</span><span>② 4</span><span class="zCir">③ 6</span><span>④ 8</span></div><div class="zMq"><b>17.</b> 두 실근을 갖는 자연수 k의 개수는?</div><div class="zBox">15</div></div><b>펜으로 풀기</b></div>
+    <i class="zSa" aria-hidden="true">→</i>
+    <div class="zSt"><span class="zSn">2</span><div class="zMk zGo"><span class="zGoB">GO</span><small>채점하기</small></div><b>GO 한 번</b></div>
+    <i class="zSa" aria-hidden="true">→</i>
+    <div class="zSt"><span class="zSn">3</span><div class="zMk"><div class="zRes"><span class="o">3번</span><em>○</em></div><div class="zRes"><span class="o">17번</span><em>○</em></div><div class="zRes x"><span>18번</span><em>✕</em></div><small class="zNote">정답은 해설지에서 자동으로</small></div><b>바로 채점</b></div>
   </div>
-  <div class="effs one rv"><div class="ef"><b>채점은 1초</b><div class="ev"><span class="gob">GO</span><span class="m o">○</span><span class="m o">○</span><span class="m x">✕</span><span class="m o">○</span></div></div></div>
 </div></section>
 
-<section class="f"><div class="wrap">
-  <div class="center rv"><h2>틀린 문제는<br class="m"> 자연스럽게 다시 풀기로</h2><p class="sub2">오답노트 없이.</p></div>
+<section class="f" id="wrong"><div class="wrap">
+  <div class="center rv"><h2>틀린 문제는 끝까지 따라가요</h2><p class="sub2">오답노트 없이, 맞힐 때까지.</p></div>
+  <div class="flow rv">
+    <div class="zFn"><span class="zFk">채점 직후</span><div class="zPop"><small>틀린 문제 1 / 3</small><b>18번, 바로 다시 풀어 볼까요?</b><span class="zPb">다시 풀기</span></div><p>틀린 문제가 한 문제씩 떠요</p></div>
+    <i class="zFa" aria-hidden="true">↓</i>
+    <div class="zBr">
+      <div class="zFn ok"><span class="zFk ok">맞히면</span><div class="zLv"><span>쉬움</span><span class="on">보통</span><span>어려움</span></div><p>같은 유형을 난이도별로 바로</p></div>
+      <div class="zFn no"><span class="zFk no">또 틀리면</span><div class="zRq"><b>18</b><span>다시 풀기에 저장 · 3일 뒤</span></div><p>며칠 뒤 다시 풀기로</p></div>
+    </div>
+    <i class="zFa" aria-hidden="true">↓</i>
+    <div class="zFn"><span class="zFk q">다시 풀기에서도 막히면</span><div class="zQa"><b>질문</b><span>18번 · 등차수열</span></div><p>질문으로 남아요. 여기서 선생님이 도와요</p></div>
+  </div>
+  <div class="center rv" style="margin-top:80px"><h2>학교 부교재라면 더</h2><p class="sub2">시험 범위 문제집을 확실하게.</p></div>
   <div class="minis">
-    <div class="mini rv"><h3>맞힐 때까지 따라와요</h3><p>같은 유형까지 맞혀야 해결</p>
-      <div class="vis"><div class="rc sm"><span class="rn">18</span><div><b>등차수열 일반항</b><small>2일 전에 틀림</small></div><div class="slots"><i class="ok">✓</i><i></i></div></div></div></div>
-    <div class="mini rv"><h3>틀린 것부터 다시</h3><p>2회독엔 틀린 문제에 표시</p>
-      <div class="vis"><div class="bk"><span class="cv"></span><div><b>공통수학1 문제집</b><small>1회독 100% ✓</small></div><span class="pill">2회독 시작</span></div></div></div>
-    <div class="mini rv"><h3>막힌 문제는 질문으로</h3><p>표시해 두면 수업 때까지 남아요</p>
-      <div class="vis"><div class="ev"><span class="q o">4번 ✓</span><span class="q o">10번 ✓</span><span class="q s">질문: 7번</span></div></div></div>
+    <div class="mini rv"><h3>회독</h3><p>2회독은 틀린 문제부터</p>
+      <div class="vis"><div class="bk"><span class="cv"></span><div><b>부교재 문제집</b><small>1회독 100% ✓</small></div><span class="pill">2회독 시작</span></div></div></div>
+    <div class="mini rv"><h3>오답 실전 테스트</h3><p>자주 틀린 유형 위주, 시간 제한</p>
+      <div class="vis"><div class="zT"><b>12:00</b><span>오답 10문제 · 실전</span></div></div></div>
+    <div class="mini rv"><h3>오답 바로 뽑기</h3><p>틀린 문제만 PDF로</p>
+      <div class="vis"><div class="zT pdf"><b>PDF</b><span>틀린 문제 24개</span></div></div></div>
   </div>
 </div></section>
 
@@ -780,7 +817,6 @@ section.f .wrap.fr .pts{display:flex!important;flex-wrap:wrap;justify-content:ce
 <section class="f"><div class="wrap">
   <div class="center rv"><h2 class="small">덤으로</h2></div>
   <div class="extra rv">
-    <div><b>회독</b><span>다 푼 문제집, 틀린 것부터 한 번 더</span></div>
     <div><b>매치</b><span>친구와 같은 기출 문제로 승부</span></div>
   </div>
 </div></section>
