@@ -20,6 +20,16 @@ service cloud.firestore {
         allow read: if request.auth != null && (request.auth.uid == s || get(/databases/$(db)/documents/students/$(s)).data.tid == request.auth.uid);
         allow write: if request.auth != null && request.auth.uid == s;
       }
+      // 확인할 문제 사진: 학생이 [질문]·[보내기]를 누른 문제만 학생이 올리고, 연결된 선생님이 읽는다
+      match /pics/{p} {
+        allow read: if request.auth != null && (request.auth.uid == s || get(/databases/$(db)/documents/students/$(s)).data.tid == request.auth.uid);
+        allow write: if request.auth != null && request.auth.uid == s;
+      }
+      // 선생님 요청(풀이 보여 줘): 연결된 선생님이 만들고, 학생이 읽고 지운다
+      match /asks/{k} {
+        allow read, delete: if request.auth != null && (request.auth.uid == s || get(/databases/$(db)/documents/students/$(s)).data.tid == request.auth.uid);
+        allow create: if request.auth != null && get(/databases/$(db)/documents/students/$(s)).data.tid == request.auth.uid;
+      }
     }
     // 과제: 선생님이 만들고, 받는 학생(targets)이 읽는다
     match /asg/{a} {

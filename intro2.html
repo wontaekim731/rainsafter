@@ -8,7 +8,7 @@
 <meta name="description" content="학생은 쓰던 문제집을 아이패드에 풀고 GO, 채점·오답 정리는 자동. 선생님은 누가 언제 얼마나 풀었는지 한 화면에서.">
 <meta property="og:title" content="QLEAR — 숙제 검사는 앱이, 선생님은 수업만">
 <meta property="og:description" content="채점·오답 정리는 자동, 학생이 실제로 공부한 기록은 선생님 화면에. 베타 무료.">
-<meta property="og:image" content="https://wontaekim731.github.io/rainsafter/intro/teacher.jpg">
+<meta property="og:image" content="https://wontaekim731.github.io/rainsafter/intro/teacher2.jpg">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap">
@@ -752,7 +752,7 @@ section.f{padding:56px 0!important}.final{padding:64px 0!important}.teach{margin
 section.scn{padding:112px 0}
 section.scn+section.scn{padding-top:24px}
 .scg{display:grid;grid-template-columns:5fr 7fr;gap:72px;align-items:center}
-.scg.rev{grid-template-columns:7fr 5fr}.scg.rev .sct{order:2}
+.scg.rev{grid-template-columns:7fr 5fr}.scg.wide{grid-template-columns:4fr 8fr;gap:56px}.scg.rev .sct{order:2}
 .sct{text-align:left}
 .sct .kk{margin:0 0 10px;font-size:15px;font-weight:800;color:#2F6FEB;letter-spacing:0}
 .sct h2{margin:0;font-size:clamp(32px,4vw,46px);line-height:1.2;font-weight:850;letter-spacing:-.02em}
@@ -835,17 +835,17 @@ section.scn+section.scn{padding-top:24px}
   <figure class="sci tall rv"><img src="intro/retry.jpg" width="1100" height="1251" alt="다시 풀기 화면: 다시 볼 문제 4개, 문제마다 원래 문제집 사진과 상태(다시 풀기 전 · 한 번 더 틀림 · 확인 문제 남음)"></figure>
 </div></section>
 
-<section class="scn" id="teacher"><div class="wrap scg">
+<section class="scn" id="teacher"><div class="wrap scg wide">
   <div class="sct rv">
     <p class="kk">선생님 화면</p>
     <h2>선생님은<br>필요한 문제만 봐요</h2>
     <ol class="co">
-      <li><i>1</i><span><b>학생별 오늘 기록</b>맞힌 문제 / 푼 문제, 공부 시간</span></li>
-      <li><i>2</i><span><b>최근 14일 공부 흐름</b>숙제를 했는지 날짜로 확인</span></li>
-      <li><i>3</i><span><b>문제집별 진도 · 정답률</b>언제, 무엇을, 몇 문제</span></li>
+      <li><i>1</i><span><b>확인할 문제가 있는 학생</b>학생 이름 옆에 바로 표시</span></li>
+      <li><i>2</i><span><b>어디서 막혔는지</b>질문 · △ 애매 · 확인 문제 오답 · 몇 번 틀림</span></li>
+      <li><i>3</i><span><b>풀이 보기 · 학생에게 물어보기</b>사진은 학생이 보내기를 누른 문제만</span></li>
     </ol>
   </div>
-  <figure class="sci rv"><div class="pin"><img src="intro/teacher.jpg" width="1800" height="1186" alt="선생님 화면: 학생 목록, 최근 14일 공부 시간, 오늘 푼 문제와 문제집별 기록"><i style="left:22%;top:21%">1</i><i style="left:47%;top:27%">2</i><i style="left:30%;top:73%">3</i></div></figure>
+  <figure class="sci rv"><div class="pin"><img src="intro/teacher2.jpg" width="1800" height="610" alt="선생님 화면: 학생 목록에 확인 4, 확인할 문제 4개(18번 질문 · 3번 △ 애매 · 5번 확인 문제 오답 · 12번 3번 틀림)와 풀이 보기 · 학생에게 물어보기 버튼"><i style="left:14.8%;top:40%">1</i><i style="left:26.6%;top:40%">2</i><i style="left:96.6%;top:52%">3</i></div></figure>
 </div></section>
 
 <div class="wrap" id="start">
@@ -857,7 +857,7 @@ section.scn+section.scn{padding-top:24px}
       <li><b>학생이 코드 입력</b><span>나 → 선생님과 연결</span></li>
       <li><b>학생은 평소처럼</b><span>원래 문제집 그대로</span></li>
     </ol>
-    <p class="pv">문제집 원본과 필기는 학생 기기에만 남아요. 선생님에게는 공부 시간 · 정답률 · 다시 풀기만 보여요.</p>
+    <p class="pv">문제집 원본과 필기는 학생 기기에 남아요. 선생님에게는 공부 시간 · 정답률 · 다시 풀기 상태가 가고, 문제 사진은 학생이 질문하거나 보내기를 누른 것만 가요.</p>
     <div class="more"><span class="mh">이것도 돼요</span><ul><li><b>회독</b>2회독은 틀린 문제부터</li><li><b>오답 테스트</b>틀린 문제를 시간 안에</li><li><b>틀린 문제 PDF</b>바로 뽑아서 인쇄</li><li><b>매치</b>친구와 같은 기출로 승부</li></ul></div>
   </section>
 </div>
@@ -869,6 +869,7 @@ section.scn+section.scn{padding-top:24px}
     <details><summary>비용이 드나요?</summary><p>베타 기간에는 무료예요.</p></details>
     <details><summary>학생에게 무엇이 필요한가요?</summary><p>태블릿 + 전자펜(아이패드 권장). 설치 없이 브라우저에서.</p></details>
     <details><summary>교재는 어떻게 넣나요?</summary><p>학생 기기에 PDF를 넣어요. 학습지는 과제로 보내요.</p></details>
+    <details><summary>선생님은 학생 풀이를 볼 수 있나요?</summary><p>학생이 [선생님께 질문]을 누르거나, 선생님 요청에 [보내기]를 누른 문제만 볼 수 있어요.</p></details>
     <details><summary>채점이 틀리면요?</summary><p>학생이 [고치기]로 바로잡아요.</p></details>
   </div>
 </div></section>
