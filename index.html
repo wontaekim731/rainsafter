@@ -9274,8 +9274,10 @@ async function twPeekItem(w){try{const h=await qpHdr();if(!h)return null;let ctx
   it.id='tw:'+pks[0].c;it.twinOf='peek:'+w.src+'#'+w.q;it.peek=1;it.twinFrom=`${bookOf(w.src)} ${QN(w.q)}번`;it.twinNeed=1;
   const S2=LS.get('twPeekSeen',{}),k=w.src+'#'+w.q;S2[k]=[...new Set([...(S2[k]||[]),pks[0].c])].slice(-20);LS.set('twPeekSeen',S2);return it}catch(e){console.error(e);return null}}
 let TWPK=null;
+/* v47.141 확인 문제 찾기용 글: 열린 PDF에서 그 문제 칸의 글자(출처 줄 '2016실시(나) 11월 학평 13(고2)' 포함)를 바로 읽는다 — 오답 노트 항목과 달리 문제 그림 PDF가 없어 글이 비어, 출처가 적힌 기출도 '같은 유형을 찾지 못했어요'가 나오던 것 */
+async function twTxt(p){try{if(!p||!P||!P.doc)return null;const pg=await P.doc.getPage(p.page),tc=await pg.getTextContent(),m=8;const s=tc.items.filter(i=>{const x=i.transform[4],y=i.transform[5];return x>=p.x0-m&&x<=p.x1+m&&y>=p.y0-m&&y<=p.y1+24}).map(i=>i.str).join(' ').replace(/\s+/g,' ').trim();dlog('twTxt',p.q+' '+s.length+'자 '+s.slice(0,40));return s.length>=8?s:null}catch(e){return null}}
 async function twPeek(btn){if(!FOC.on||!FOC.p||!P||FOC.retry)return;const q=FOC.p.q,st=S&&S.state&&S.state[q];if(!st||st.status!=='done'){pvToast('먼저 <b>GO</b>로 채점하면, 이 문제와 같은 유형의 확인 문제를 풀어 볼 수 있어요');return}
-  if(btn){btn.disabled=true;btn.classList.add('busy')}let it=null;try{it=await twPeekItem({id:'',src:P.name,q,thumb:st.crop||''})}finally{if(btn){btn.disabled=false;btn.classList.remove('busy')}}
+  if(btn){btn.disabled=true;btn.classList.add('busy')}let it=null;try{it=await twPeekItem({id:'',src:P.name,q,thumb:st.crop||'',ocr:await twTxt(FOC.p)})}finally{if(btn){btn.disabled=false;btn.classList.remove('busy')}}
   if(!it){pvToast('이 문제는 같은 유형의 확인 문제를 찾지 못했어요');return}
   TWPK={q,i:FOC.i};$('#vPdf').hidden=true;await startQuizOld([it]);if(QZ)QZ.peek=TWPK}
 function twPeekBack(){const T=TWPK;TWPK=null;QZ=null;$('#vQuiz').classList.remove('end');$('#vQuiz').hidden=true;{const qq=$('#qzQuit');if(!qq.classList.contains('qzOut'))qq.textContent='그만하기'};$('#vPdf').hidden=false;document.querySelector('.wrap').style.maxWidth='1000px';$('#tabs').hidden=true;
