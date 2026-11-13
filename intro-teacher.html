@@ -888,6 +888,24 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 .vflow .vshot.wide{max-width:none!important}
 
 @media (max-width:900px){.vflow .vshot.wide{margin-top:66px!important}}
+
+/* v22: 숙제하는 일주일 */
+.hwk{max-width:760px;margin:56px auto 0;text-align:center}
+.hwk-h{font-size:clamp(24px,3vw,34px);font-weight:900;letter-spacing:-.03em;line-height:1.35;margin:0 0 28px;color:var(--ink);text-wrap:balance;word-break:keep-all}
+.hwk-h em{font-style:normal;color:#D9483B}
+.hwk-f{font-size:clamp(24px,3vw,34px);font-weight:900;letter-spacing:-.03em;line-height:1.35;margin:28px 0 0;color:var(--ink);word-break:keep-all}
+.hwr{display:grid;grid-template-columns:120px 1fr;align-items:center;gap:16px;margin:12px 0}
+.hwl{font-size:clamp(17px,1.8vw,20px);font-weight:900;text-align:right;color:var(--ink)}
+.hwr.hwQ .hwl{color:var(--acc)}
+.hwd{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.hwd i{font-style:normal;display:grid;place-items:center;height:clamp(44px,5vw,56px);border-radius:12px;font-weight:900;font-size:clamp(15px,1.7vw,19px)}
+.hwr.hwT .hwd i.x{border:2px dashed #CFC8BB;color:#B9B1A3;background:transparent}
+.hwr.hwT .hwd i.on{background:var(--ink);color:#fff}
+.hwr.hwQ .hwd i{background:var(--acc);color:#fff}
+.hwr.hwQ .hwd i.on{background:#1F56C9}
+@media (max-width:600px){.hwr{grid-template-columns:1fr;gap:6px;margin:14px 0}.hwl{text-align:center}.hwd{gap:5px}.hwd i{border-radius:9px}}
+
+.hwk{display:block!important;grid-template-columns:none!important}
 </style>
 </head><body><header class="nav" id="nav"><div class="wrap"><a class="brand" href="#top" aria-label="QLEAR 처음으로"><svg viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg>QLEAR</a>
 <nav><a class="btn pri sm" href="cbeta.html" target="_blank" rel="noopener">학생 1명으로 시작하기</a></nav></div></header>
@@ -921,15 +939,20 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 <article class="pc no"><span class="av">B</span><p class="pq">"채점했어요!"</p><ul class="pl no"><li>애매한 것도 맞다고 넘김</li></ul></article>
 <article class="pc no"><span class="av">C</span><p class="pq">"채점 아직이요…"</p><ul class="pl no"><li>채점도 못 함</li></ul></article>
 </div>
-<p class="sub-c">B는 모르는 걸 모르고, C는 뭘 틀렸는지도 몰라요.</p>
+<div class="hwk">
+<p class="hwk-h">선생님은 <em>숙제하는 일주일</em>을 볼 수 없어요</p>
+<div class="hwr hwT"><span class="hwl">선생님</span><div class="hwd"><i class="x">?</i><i class="x">?</i><i class="x">?</i><i class="x">?</i><i class="x">?</i><i class="x">?</i><i class="on">검사</i></div></div>
+<div class="hwr hwQ"><span class="hwl">QLEAR</span><div class="hwd"><i>월</i><i>화</i><i>수</i><i>목</i><i>금</i><i>토</i><i class="on">검사</i></div></div>
+<p class="hwk-f"><span class="qb">QLEAR</span>는 그 일주일을 다 봐요</p>
+</div>
 
-<div class="center" style="margin-top:100px"><h2 class="effh"><span class="qb">QLEAR</span>를 쓰면<br>B도 C도 <em>놓치는 문제</em>가 없어요</h2></div>
+<div class="center" style="margin-top:100px"><h2 class="effh">B와 C가 놓친 문제도<br><span class="qb">QLEAR</span>에는 <em>남아요</em></h2></div>
 <div class="steps">
 <div><b><em>GO</em> 한 번에 채점</b><span>객관식·단답형 즉시</span></div>
 <div><b>애매하면 <em>△</em></b><span>맞아도 따로 남아요</span></div>
 <div><b>맞혀도 <em>확인 문제</em></b><span>그것까지 맞혀야 해결</span></div>
 </div>
-<div class="mission" id="teacher"><h2>반복 작업은 <span class="qb">QLEAR</span>가<br>풀이 교정은 선생님이</h2><p><b class="qbr">QLEAR</b>는 선생님을 대신하지 않아요.<br>선생님이 필요한 순간을 골라 드려요.</p></div>
+<div class="mission" id="teacher"><h2>반복 작업은 <span class="qb">QLEAR</span><br>풀이 교정은 선생님</h2><p><b class="qbr">QLEAR</b>는 선생님을 대신하지 않아요.<br>선생님의 확인이 필요한 문제만 골라 드려요.</p></div>
 <div class="vflow">
 <div class="vr"><div class="vn "><span class="who">학생</span><b>원래 하던 대로 풀어요</b></div><div class="vx"><div class="vh"><strong>쓰던 문제집에 풀고 <em>GO</em></strong><span>누르면 바로 채점 · 애매하면 △ · 막히면 <b class="qk">✋ 선생님께 질문</b></span></div>
 <figure class="vshot"><div class="iw"><img src="intro/grade.jpg" width="1600" height="875" alt="학생 화면: 문제집에 손글씨로 답을 쓰고 GO를 누르자 3번·17번은 맞음, 18번은 틀림으로 채점됨. 18번에 '선생님께 질문' 표시" loading="lazy"><i class="ring g18"></i><span class="pin g18p">✋ 18번 막힘 → 선생님께 질문</span></div><figcaption>학생 화면 · GO 누른 직후</figcaption></figure></div></div>
@@ -942,7 +965,7 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 </div></section>
 
 <section class="final"><div class="wrap">
-<h2><span class="a">채점과 기록은 앱이 빠르게</span><br><span class="b">교정은 선생님이 정확하게</span></h2>
+<h2><span class="a">채점과 기록은 앱이 빠르게,</span><br><span class="b">교정은 선생님이 정확하게</span></h2>
 <p>베타 기간 무료 · 설치 없이 브라우저</p>
 <div class="ctas"><a class="btn pri" href="cbeta.html" target="_blank" rel="noopener">학생 1명으로 시작하기</a></div>
 </div></section>
