@@ -3,11 +3,11 @@
 const fs=require('fs'),crypto=require('crypto'),{minify}=require('terser'),csso=require('csso');
 (async()=>{let h=fs.readFileSync('lite.html','utf8');const n0=Buffer.byteLength(h);
   const R=(a,b)=>{if(!h.includes(a))throw new Error('못 찾음: '+a.slice(0,60));h=h.replace(a,b)};
-  R(/<title>[^<]*<\/title>/.exec(h)[0],'<title>QLEAR Closed Beta</title>');
+  R(/<title>[^<]*<\/title>/.exec(h)[0],'<title>QLEAR 무료 베타</title>');
   R('<head>','<head><script>window.NJ_CB=1</script>');
-  R('<b class="hlName">QLEAR</b>','<b class="hlName">QLEAR</b><span class="hlCb">CLOSED BETA</span>');
-  R('.hlTag{',' .hlCb{margin-top:8px;padding:4px 10px;border-radius:999px;border:1px solid var(--accent,#6ee7a8);color:var(--accent,#6ee7a8);font-size:11px;font-weight:800;letter-spacing:.18em}.hlTag{');
-  R(/v47\.\d+ · 가벼운 버전/.exec(h)[0],/v47\.\d+/.exec(/v47\.\d+ · 가벼운 버전/.exec(h)[0])[0]+' · Closed Beta');
+  R('<b class="hlName">QLEAR</b>','<b class="hlName">QLEAR</b><span class="hlCb">무료 베타</span>');
+  R('.hlTag{',' .hlCb{margin-top:8px;padding:4px 10px;border-radius:999px;border:1px solid var(--accent,#6ee7a8);color:var(--accent,#6ee7a8);font-size:12px;font-weight:800;letter-spacing:.04em}.hlTag{');
+  R(/v47\.\d+ · 가벼운 버전/.exec(h)[0],/v47\.\d+/.exec(/v47\.\d+ · 가벼운 버전/.exec(h)[0])[0]+' · 무료 베타');
   R("const lib=document.getElementById('pdflibSrc').textContent;","const lib='importScripts('+JSON.stringify(new URL('__PDFL__',location.href).href)+');';");
   /* 스크립트 */
   let PDFL='';const parts=[];let i=0,out='';const re=/<script(\s[^>]*)?>([\s\S]*?)<\/script>/g;let m;
