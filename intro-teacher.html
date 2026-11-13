@@ -700,18 +700,29 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 .dtx p{margin:0;color:var(--muted);font-size:clamp(17px,1.8vw,19px)}
 .dtx .eb{font-size:clamp(20px,2.2vw,26px);margin-top:6px}
 @media (max-width:820px){.duo{grid-template-columns:1fr;gap:24px}.duo.rev .dtx{order:0}}
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:36px}
+.steps div{background:var(--paper);border:2px solid var(--acc);border-radius:20px;padding:22px;display:grid;gap:6px;text-align:center;min-width:0}
+.steps b{font-size:21px;font-weight:900;letter-spacing:-.02em}.steps span{font-size:15px;color:var(--muted)}
+.shot figcaption{font-size:12.5px;color:var(--muted);text-align:right;padding:6px 6px 0}
+.mission{text-align:center}
+.feats{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}
+.feats article{display:grid;gap:8px;justify-items:center;text-align:center;align-content:start;min-width:0}
+.feats .shot{width:100%;margin-bottom:10px}
+.feats b{font-size:22px;font-weight:900;letter-spacing:-.02em}.feats span{color:var(--muted);font-size:16px}
+@media (max-width:820px){.steps,.feats{grid-template-columns:1fr}}
 @media (max-width:820px){.pcs3{grid-template-columns:1fr}}
 </style>
 </head><body><header class="nav" id="nav"><div class="wrap"><a class="brand" href="#top" aria-label="QLEAR 처음으로"><svg viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg>QLEAR</a>
-<nav><a class="btn pri sm" href="cbeta.html" target="_blank" rel="noopener">무료로 시작</a></nav></div></header>
+<nav><a class="btn pri sm" href="cbeta.html" target="_blank" rel="noopener">학생 1명으로 시작하기</a></nav></div></header>
 <main id="top">
 <div class="wrap"><section class="hero2"><div class="htx">
 <p class="tgt">과외 · 1인 교습소 선생님께</p>
 <h1><span>다 맞은 숙제에도,</span><br><span>다시 물어볼 문제는 <em>남아요</em></span></h1>
 <p class="lead big">학생은 쓰던 문제집 PDF에 그대로 풀어요.<br><b class="qbr">QLEAR</b>가 GO 한 번에 채점하고, 틀린 문제와 △ 표시 문제는 따로 모아 다시 풀게 해요.</p>
-<div class="ctas"><a class="btn pri" href="cbeta.html" target="_blank" rel="noopener">학생 1명으로 시작하기</a><a class="btn sec" href="#pain">세 학생 비교 보기</a></div>
+<div class="ctas"><a class="btn pri" href="cbeta.html" target="_blank" rel="noopener">학생 1명으로 시작하기</a><a class="btn sec" href="#teacher">선생님 화면 보기</a></div>
 <ul class="facts"><li>베타 기간 무료</li><li>쓰던 문제집 PDF 그대로</li></ul>
-</div><figure class="shot hshot"><img src="intro/grade.jpg" alt="QLEAR 학생 화면: 문제집 PDF에 풀고 GO로 채점"></figure></section></div>
+</div><figure class="shot hshot"><img src="intro/viewer.jpg" alt="QLEAR 학생 화면: 실제 문제집 PDF를 펜으로 푸는 화면"></figure></section></div>
 
 <section class="f" id="pain"><div class="wrap">
 <div class="center"><h2>숙제 검사해 보면</h2></div>
@@ -723,20 +734,21 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 <p class="sub-c">B는 모르는 걸 모르고, C는 뭘 틀렸는지도 몰라요.</p>
 
 <div class="center" style="margin-top:100px"><h2 class="effh"><span class="qb">QLEAR</span>를 쓰면<br>B와 C가 놓친 문제도 <em>남아요</em></h2></div>
-<div class="duo">
-<div class="dtx"><h3>틀린 문제는 맞힐 때까지</h3><p>틀린 문제와 △ 표시 문제는 '다시 볼 문제'로 모여요. 다시 맞혀도 같은 유형 확인 문제까지 풀어야 해결이에요.</p></div>
-<figure class="shot"><img src="intro/retry.jpg" alt="QLEAR 학생 화면: 다시 볼 문제 4개, 한 번 더 틀림, 확인 문제 남음" loading="lazy"></figure>
+<div class="steps">
+<div><b>GO 한 번에 채점</b><span>객관식·단답형은 바로 채점, 인식이 어려운 답은 직접 확인하도록 표시</span></div>
+<div><b>애매하면 △</b><span>맞아도 △ 표시한 문제는 따로 남아요</span></div>
+<div><b>맞혀도 확인 문제</b><span>같은 유형 확인 문제까지 맞혀야 해결</span></div>
 </div>
-<div class="duo wide">
-<div class="dtx"><h3>선생님은 한 화면에서 확인</h3><p>누가 언제, 몇 문제를 풀고 몇 개 맞혔는지 바로 보여요. 수업에서는 막힌 문제만 물어보면 돼요.</p><span class="eb">"B야, 3번 어떻게 풀었어?"</span></div>
-<figure class="shot"><img src="intro/teacher.jpg" alt="QLEAR 선생님 화면: 학생별 최근 14일 공부 시간과 오늘 푼 문제·맞힌 문제" loading="lazy"></figure>
-</div>
-
-<div class="mission"><h2>반복 작업은 앱이,<br>판단과 교정은 선생님이</h2><p>QLEAR는 선생님을 대신하지 않아요.</p>
-<div class="feat"><div><b>GO 한 번에 채점</b><span>해설지 PDF로 정답을 읽어요</span></div><div><b>틀리면 바로 다시</b><span>그 자리에서 다시 풀어요</span></div><div><b>같은 유형 확인 문제</b><span>맞혀야 해결로 쳐요</span></div><div><b>회독 · 공부 기록</b><span>언제, 얼마나 풀었는지 남아요</span></div></div>
+<div class="duo wide" id="teacher">
+<div class="dtx"><h3>선생님은 한 화면에서 확인</h3><p>누가 언제, 몇 문제를 풀고 몇 개 맞혔는지 바로 보여요.<br>수업에서는 막힌 문제만 물어보면 돼요.</p></div>
+<figure class="shot"><img src="intro/teacher.jpg" alt="QLEAR 선생님 화면: 학생별 최근 14일 공부 시간과 오늘 푼 문제·맞힌 문제" loading="lazy"><figcaption>예시 화면 · 이름은 가명입니다</figcaption></figure>
 </div>
 
-
+<div class="mission"><h2>반복 작업은 앱이,<br>판단과 교정은 선생님이</h2><p>QLEAR는 선생님을 대신하지 않아요.</p></div>
+<div class="feats">
+<article><figure class="shot"><img src="intro/retry.jpg" alt="다시 볼 문제 화면: 한 번 더 틀림, 확인 문제 남음" loading="lazy"></figure><b>틀린 문제는 맞힐 때까지</b><span>다시 볼 문제로 모이고, 확인 문제까지 따라와요</span></article>
+<article><figure class="shot"><img src="intro/kpi.jpg" alt="주간 지표 화면: 채점 고친 비율, 7일 안에 다시 푼 비율, 주 3일 이상 공부" loading="lazy"><figcaption>예시 화면 · 이름은 가명입니다</figcaption></figure><b>이번 주, 누가 따라오는지</b><span>주 3일 공부·다시 풀기 비율을 학생별 표로</span></article>
+</div>
 </div></section>
 
 <section class="final"><div class="wrap">
