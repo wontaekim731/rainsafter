@@ -835,6 +835,29 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 .vflow .vh>span{letter-spacing:-.01em;word-spacing:normal}
 .vflow .vx .down{margin-top:-18px}
 @media (max-width:700px){.vflow .vr{grid-template-columns:1fr!important;gap:6px!important;padding-bottom:70px!important}.vflow .vx .down{margin-top:6px}.vflow .vx{justify-items:center;text-align:center}}
+
+/* v3: big role labels, 18번 link */
+.vflow{max-width:1040px!important}
+.vflow .vr{grid-template-columns:320px 1fr!important;column-gap:52px!important;row-gap:56px!important}
+.vflow .vn{min-height:190px!important;gap:14px!important;justify-items:center!important;align-content:center!important;text-align:center}
+.vflow .vn .who{font-size:30px!important;font-weight:900!important;padding:8px 30px!important;letter-spacing:-.02em;line-height:1.2}
+.vflow .vn b{font-size:24px!important}
+.vflow .vh{min-height:190px}
+.vflow .vr:not(:last-child)::after{left:160px!important;top:202px!important}
+.vflow .vr:not(:last-child)::before{left:160px!important}
+.vflow .qk{color:#2F6FEB;font-weight:900}
+.vflow .vshot.wide{grid-column:1/-1;max-width:none;margin-top:0;position:relative}
+.vflow .vshot.wide::before{content:"";position:absolute;left:160px;top:-54px;height:40px;width:3px;background:var(--ink);transform:translateX(-50%)}
+.vflow .vshot.wide::after{content:"";position:absolute;left:160px;top:-16px;transform:translateX(-50%);border:9px solid transparent;border-top:11px solid var(--ink);border-bottom:0}
+.iw{position:relative}
+.iw .ring{position:absolute;border:4px solid #2F6FEB;border-radius:14px;box-shadow:0 0 0 6px rgba(47,111,235,.2);pointer-events:none}
+.iw .pin{position:absolute;background:#2F6FEB;color:#fff;font-weight:900;font-size:clamp(12px,1.5vw,17px);padding:.45em .9em;border-radius:999px;white-space:nowrap;box-shadow:0 6px 16px rgba(47,111,235,.35);letter-spacing:-.02em}
+.ring.g18{left:20.3%;top:67.5%;width:5.6%;height:9.6%;border-radius:999px}
+.pin.g18p{left:59%;top:79%}
+.ring.t18{left:35.9%;top:44.3%;width:56.6%;height:13%}
+.pin.t18p{left:49%;top:36.6%}
+.vflow .vx .down{display:none}
+@media (max-width:700px){.vflow .vr{grid-template-columns:1fr!important;row-gap:8px!important}.vflow .vn{min-height:0!important}.vflow .vh{min-height:0}.vflow .vn .who{font-size:26px!important}.vflow .vn b{font-size:21px!important}.vflow .vr:not(:last-child)::after{left:50%!important;top:auto!important}.vflow .vr:not(:last-child)::before{left:50%!important}.vflow .vshot.wide{margin-top:44px}.vflow .vshot.wide::before,.vflow .vshot.wide::after{left:50%}.pin.g18p{left:44%;top:66%}.pin.t18p{left:47%;top:34%}}
 </style>
 </head><body><header class="nav" id="nav"><div class="wrap"><a class="brand" href="#top" aria-label="QLEAR 처음으로"><svg viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg>QLEAR</a>
 <nav><a class="btn pri sm" href="cbeta.html" target="_blank" rel="noopener">학생 1명으로 시작하기</a></nav></div></header>
@@ -878,13 +901,13 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 </div>
 <div class="mission" id="teacher"><h2>반복 작업은 QLEAR가,<br>풀이 교정은 선생님이</h2><p>QLEAR는 선생님을 대신하지 않아요.<br>선생님이 필요한 순간을 골라 드려요.</p></div>
 <div class="vflow">
-<div class="vr"><div class="vn "><span class="who">학생</span><b>원래 하던 대로 풀어요</b></div><div class="vx"><div class="vh"><strong>쓰던 문제집에 풀고 <em>GO</em></strong><span>누르면 바로 채점 · 애매하면 △ · 막히면 [선생님께 질문]</span></div>
-<figure class="vshot"><img src="intro/grade.jpg" width="1600" height="875" alt="학생 화면: 문제집에 손글씨로 답을 쓰고 GO를 누르자 3번·17번은 맞음(빨간 동그라미), 18번은 틀림(빗금)으로 채점됨" loading="lazy"><figcaption>학생 화면 · GO 누른 직후</figcaption></figure></div></div>
+<div class="vr"><div class="vn "><span class="who">학생</span><b>원래 하던 대로 풀어요</b></div><div class="vx"><div class="vh"><strong>쓰던 문제집에 풀고 <em>GO</em></strong><span>누르면 바로 채점 · 애매하면 △ · 막히면 <b class="qk">✋ 선생님께 질문</b></span></div>
+<figure class="vshot"><div class="iw"><img src="intro/grade.jpg" width="1600" height="875" alt="학생 화면: 문제집에 손글씨로 답을 쓰고 GO를 누르자 3번·17번은 맞음, 18번은 틀림으로 채점됨. 18번에 '선생님께 질문' 표시" loading="lazy"><i class="ring g18"></i><span class="pin g18p">✋ 18번 막힘 → 선생님께 질문</span></div><figcaption>학생 화면 · GO 누른 직후</figcaption></figure></div></div>
 <div class="vr"><div class="vn q"><span class="who">QLEAR</span><b>틀린 문제를 모아요</b></div><div class="vx"><div class="vh"><strong>틀린 문제는 <em>한 페이지</em>에 모여요</strong><span>다시 맞힐 때까지 남아요 · 맞혀도 확인 문제 한 번 더</span></div>
 <figure class="vshot tall"><img src="intro/retry-top.jpg" width="1100" height="1140" alt="다시 풀기 화면: 다시 볼 문제 4개. 문제집 원본 사진과 함께 '다시 풀기 전', '2번 틀림 · 한 번 더 틀림', '확인 문제 남음' 상태가 표시됨" loading="lazy"><figcaption>학생 화면 · 다시 볼 문제</figcaption></figure></div></div>
-<div class="vr"><div class="vn t"><span class="who">선생님</span><b>확인할 문제만 봐요</b></div><div class="vx"><div class="vh"><strong>"3번, 어떻게 풀었어?"</strong><span>질문 · △ 애매 · 확인 문제 오답 · 여러 번 틀림</span></div><span class="down">아래가 실제 선생님 화면이에요 ↓</span></div></div>
+<div class="vr r3"><div class="vn t"><span class="who">선생님</span><b>확인할 문제만 봐요</b></div><div class="vx"><div class="vh"><strong>"<em>18번</em>, 어떻게 풀었어?"</strong><span>학생이 질문한 18번이 맨 위에 · △ 애매 · 확인 문제 오답 · 여러 번 틀림</span></div></div>
+<figure class="vshot wide"><div class="iw"><img src="intro/teacher3.jpg" width="1800" height="738" alt="QLEAR 선생님 화면: 확인할 문제 4개 중 맨 위가 18번 학생 질문(풀이 보기), 이어서 3번 △ 애매 · 5번 확인 문제 오답 · 12번 3번 틀림" loading="lazy"><i class="ring t18"></i><span class="pin t18p">✋ 그 18번 질문</span></div><figcaption>실제 선생님 화면 · 이름은 가명입니다</figcaption></figure></div>
 </div>
-<figure class="shot big"><img src="intro/teacher3.jpg" alt="QLEAR 선생님 화면: 확인할 문제 4개(18번 학생 질문 · 3번 △ 애매 · 5번 확인 문제 오답 · 12번 3번 틀림)와 풀이 보기 · 학생에게 물어보기 버튼" loading="lazy"><figcaption>실제 선생님 화면 · 이름은 가명입니다</figcaption></figure>
 <div class="askq"><p>선생님은 풀이를 듣고 사고를 바로잡아요.</p></div>
 </div></section>
 
