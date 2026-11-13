@@ -858,6 +858,16 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 .pin.t18p{left:49%;top:36.6%}
 .vflow .vx .down{display:none}
 @media (max-width:700px){.vflow .vr{grid-template-columns:1fr!important;row-gap:8px!important}.vflow .vn{min-height:0!important}.vflow .vh{min-height:0}.vflow .vn .who{font-size:26px!important}.vflow .vn b{font-size:21px!important}.vflow .vr:not(:last-child)::after{left:50%!important;top:auto!important}.vflow .vr:not(:last-child)::before{left:50%!important}.vflow .vshot.wide{margin-top:44px}.vflow .vshot.wide::before,.vflow .vshot.wide::after{left:50%}.pin.g18p{left:44%;top:66%}.pin.t18p{left:47%;top:34%}}
+
+/* steps: big, minimal */
+.steps{gap:18px!important;margin-top:40px!important}
+.steps div{padding:34px 20px!important;gap:12px!important;border-radius:24px!important}
+.steps b{font-size:clamp(26px,2.8vw,34px)!important;letter-spacing:-.03em!important;line-height:1.2}
+.steps b em{font-style:normal;color:var(--acc)}
+.steps span{font-size:clamp(17px,1.7vw,20px)!important;font-weight:700;color:var(--muted)}
+/* QLEAR always brand blue */
+.qb,.qbr{color:var(--acc)!important}
+.vflow .vn.q .who{color:#fff!important}
 </style>
 </head><body><header class="nav" id="nav"><div class="wrap"><a class="brand" href="#top" aria-label="QLEAR 처음으로"><svg viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg>QLEAR</a>
 <nav><a class="btn pri sm" href="cbeta.html" target="_blank" rel="noopener">학생 1명으로 시작하기</a></nav></div></header>
@@ -895,11 +905,11 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 
 <div class="center" style="margin-top:100px"><h2 class="effh"><span class="qb">QLEAR</span>를 쓰면<br>B와 C가 놓친 문제도 <em>남아요</em></h2></div>
 <div class="steps">
-<div><b>GO 한 번에 채점</b><span>객관식·단답형은 바로 채점, 인식이 어려운 답은 직접 확인하도록 표시</span></div>
-<div><b>애매하면 △</b><span>맞아도 △ 표시한 문제는 따로 남아요</span></div>
-<div><b>맞혀도 확인 문제</b><span>같은 유형 확인 문제까지 맞혀야 해결</span></div>
+<div><b><em>GO</em> 한 번에 채점</b><span>객관식·단답형 즉시</span></div>
+<div><b>애매하면 <em>△</em></b><span>맞아도 따로 남아요</span></div>
+<div><b>맞혀도 <em>확인 문제</em></b><span>그것까지 맞혀야 해결</span></div>
 </div>
-<div class="mission" id="teacher"><h2>반복 작업은 QLEAR가,<br>풀이 교정은 선생님이</h2><p>QLEAR는 선생님을 대신하지 않아요.<br>선생님이 필요한 순간을 골라 드려요.</p></div>
+<div class="mission" id="teacher"><h2>반복 작업은 <span class="qb">QLEAR</span>가,<br>풀이 교정은 선생님이</h2><p><b class="qbr">QLEAR</b>는 선생님을 대신하지 않아요.<br>선생님이 필요한 순간을 골라 드려요.</p></div>
 <div class="vflow">
 <div class="vr"><div class="vn "><span class="who">학생</span><b>원래 하던 대로 풀어요</b></div><div class="vx"><div class="vh"><strong>쓰던 문제집에 풀고 <em>GO</em></strong><span>누르면 바로 채점 · 애매하면 △ · 막히면 <b class="qk">✋ 선생님께 질문</b></span></div>
 <figure class="vshot"><div class="iw"><img src="intro/grade.jpg" width="1600" height="875" alt="학생 화면: 문제집에 손글씨로 답을 쓰고 GO를 누르자 3번·17번은 맞음, 18번은 틀림으로 채점됨. 18번에 '선생님께 질문' 표시" loading="lazy"><i class="ring g18"></i><span class="pin g18p">✋ 18번 막힘 → 선생님께 질문</span></div><figcaption>학생 화면 · GO 누른 직후</figcaption></figure></div></div>
