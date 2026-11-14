@@ -1,25 +1,20 @@
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>QLEAR — 원래 풀던 문제집 그대로</title>
-<meta name="description" content="학생은 쓰던 문제집을 아이패드에 풀고 GO, 채점·오답 정리는 자동. 선생님은 누가 언제 얼마나 풀었는지 한 화면에서.">
-<meta property="og:title" content="QLEAR — 숙제 검사는 앱이, 선생님은 수업만">
-<meta property="og:description" content="채점·오답 정리는 자동, 학생이 실제로 공부한 기록은 선생님 화면에. 베타 무료.">
-<meta property="og:image" content="https://wontaekim731.github.io/rainsafter/intro/teacher2.jpg">
+<meta name="description" content="다 맞은 숙제에도, 다시 물어볼 문제는 남아요. 반복 작업은 QLEAR가, 풀이 교정은 선생님이.">
+<meta property="og:title" content="QLEAR — 반복 작업은 QLEAR가, 풀이 교정은 선생님이">
+<meta property="og:description" content="선생님이 필요한 순간을 골라 드려요. 베타 기간 무료.">
+<meta property="og:image" content="https://wontaekim731.github.io/rainsafter/intro/teacher3.jpg">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><title>QLEAR 선생님 안내</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;700;900&display=swap">
 <style>
 :root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#1d1b17;--muted:#6f6a60;--line:rgba(29,27,23,.12);--acc:#4fb2ff;--acc-ink:#0b3a5c;--bad:#e5484d;--good:#1c7ed6;--warm:#e5484d;--shadow:0 24px 60px rgba(40,32,18,.12),0 2px 8px rgba(40,32,18,.06)}
 @media (prefers-color-scheme:dark){:root[data-theme="never"]{--bg:#13151a;--paper:#1c1f26;--ink:#ecebe7;--muted:#a19d94;--line:rgba(255,255,255,.1);--acc-ink:#cfeaff;--shadow:0 24px 60px rgba(0,0,0,.4)}}
 :root[data-theme="never-dark"]{--bg:#13151a;--paper:#1c1f26;--ink:#ecebe7;--muted:#a19d94;--line:rgba(255,255,255,.1);--acc-ink:#cfeaff;--shadow:0 24px 60px rgba(0,0,0,.4)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",-apple-system,system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-x:hidden}
 a{color:inherit}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 /* nav */
@@ -664,229 +659,293 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 .teach .go4{display:inline-grid;text-align:left}
 .teach .maker{max-width:640px}
 .mini{text-align:center;align-items:center}.mini h3{font-size:24px}.mini p{font-size:18px!important}.mini .vis{width:100%}.sub2{font-size:19px}.tgt{display:inline-block;margin:0 0 6px;font-size:clamp(20px,2.2vw,26px);font-weight:900;color:var(--acc);letter-spacing:-.02em}
-/* intro2 */
-.h2s h1 span{white-space:normal!important}.h2s h1 em{background:none!important}.h2s .shot{margin:0;min-width:0}
-.h2s{grid-template-columns:1.15fr 1fr!important}.h2s h1{font-size:clamp(30px,3.5vw,48px)!important;line-height:1.2!important}.h2s h1 span:last-child{color:var(--muted)}.h2s h1 em{color:var(--acc);font-style:normal}
-.tgt.sm{font-size:clamp(15px,1.6vw,18px)!important;color:var(--muted)!important;font-weight:800}
-.bigq{font-size:clamp(34px,4.4vw,54px)!important}
-.cmp{max-width:860px;margin:40px auto 0;background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:10px 28px}
-.cmpH,.cmpR{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;gap:8px;padding:18px 0}
-.cmpH{font-size:14px;font-weight:900;color:var(--muted);letter-spacing:.04em;border-bottom:1px solid var(--line);padding:14px 0}
-.cmpH span:last-child{color:var(--acc)}
-.cmpR+.cmpR{border-top:1px solid var(--line)}
-.cmpR s{font-size:clamp(16px,1.8vw,19px);font-weight:700;color:var(--muted);text-decoration-color:color-mix(in srgb,var(--muted) 55%,transparent)}
-.cmpR i{font-style:normal;color:var(--acc);font-weight:900;text-align:center}
-.cmpR b{font-size:clamp(17px,1.9vw,20px);font-weight:900}
-.effs.one{grid-template-columns:1fr!important;max-width:520px;margin:0 auto}
-.dat{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:760px;margin:36px auto 0}
-.dc{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:28px 26px}.dc.on{border:2px solid var(--acc)}
-.dc b{font-size:20px;font-weight:900}.dc ul{margin:12px 0 0;padding-left:20px;font-size:18px;font-weight:700;line-height:1.8}
-h2.small{font-size:clamp(22px,2.4vw,28px)!important;color:var(--muted)}
-.extra{display:grid;grid-template-columns:1fr;max-width:380px!important;gap:14px;max-width:760px;margin:20px auto 0}
-.extra div{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;gap:4px}.extra b{font-size:18px}.extra span{color:var(--muted);font-size:16px;font-weight:600}
-section.f{padding:64px 0!important}
-@media (max-width:900px){.h2s{grid-template-columns:1fr!important}.dat,.extra{grid-template-columns:1fr}.cmp{padding:6px 18px}.cmpH,.cmpR{grid-template-columns:1fr 24px 1fr}}
+.pcs3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.pcs3 .pc{margin:0;max-width:none;padding:32px 18px}
+.pcs3 .pq{font-size:clamp(22px,2.4vw,28px);margin:16px 0 18px}
+.pl.ok li::before{content:"✓ "}
+.ev .q.t{background:color-mix(in srgb,#e08e00 14%,var(--paper));color:#b86e00}
+#pain{padding-top:110px}
+.sub-c{text-align:center;color:var(--muted);font-size:clamp(18px,2vw,21px);font-weight:700;margin-top:28px}
+.final h2 .a{color:var(--acc)} .final h2 .b{color:var(--bad)}
+.vk.old li{text-decoration:none!important}
+.vk ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 
-/* intro2: 모두 가운데 */
-.h2s{grid-template-columns:1fr!important;text-align:center;justify-items:center;gap:36px!important}
-.h2s .htx{display:flex;flex-direction:column;align-items:center}.h2s .ctas,.h2s .facts{justify-content:center}
-.h2s .shot{max-width:900px;width:100%}
-.h2s h1{font-size:clamp(32px,4.4vw,56px)!important}
-.cmp{text-align:center}.cmpH,.cmpR{grid-template-columns:1fr 48px 1fr!important}
-.cmpH span:first-child,.cmpR s{text-align:right}.cmpH span:last-child,.cmpR b{text-align:left}
-section.f .wrap.fr .pts{display:flex!important;flex-wrap:wrap;justify-content:center;gap:10px 22px}
-.teach .go4{display:grid}.dat,.extra{text-align:center}.dc ul{list-style:none;padding:0}
+.tmock{background:var(--paper);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:22px;display:grid;gap:12px;max-width:440px;justify-self:end;width:100%}
+.tm-h{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:800;color:var(--muted)}
+.tm-tag{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--line)}
+.tm-st{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:4px}
+.tm-st b{font-size:26px;font-weight:900;letter-spacing:-.02em}
+.tm-n{font-size:16px;font-weight:900;color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--paper));padding:6px 12px;border-radius:12px}
+.tm-sub{font-size:14px;color:var(--muted);margin-top:-4px}
+.tm-r{display:grid;grid-template-columns:44px 36px 1fr;align-items:center;gap:8px;padding:14px;border-radius:16px;background:var(--bg);font-weight:800;font-size:17px}
+.tm-no{font-variant-numeric:tabular-nums}
+.tm-mk{font-family:"Nanum Pen Script",cursive;font-size:30px;line-height:1;text-align:center}
+.tm-mk.t{color:#c27a00}.tm-mk.x{color:var(--bad)}.tm-mk.o{color:var(--acc);font-size:24px;margin-right:6px}
+.tm-why{min-width:0}
+.tm-f{display:flex;align-items:center;font-size:15px;color:var(--muted);font-weight:700;padding:0 6px}
+.tm-ask{background:var(--acc);color:#082a44;font-weight:900;font-size:17px;text-align:center;padding:14px;border-radius:16px 16px 4px 16px}
+.mission{margin-top:110px}
+.mission h2{font-size:clamp(30px,4vw,46px)}
+.mission p{margin-top:10px;font-size:clamp(18px,2vw,22px);color:var(--muted);font-weight:700}
+.feat{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:32px}
+.feat div{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:22px 20px;display:grid;gap:6px;min-width:0}
+.feat b{font-size:19px;font-weight:900;letter-spacing:-.02em}
+.feat span{font-size:15px;color:var(--muted)}
+@media (max-width:820px){.feat{grid-template-columns:1fr 1fr}.tmock{justify-self:stretch;max-width:none}}
+@media (max-width:480px){.feat{grid-template-columns:1fr}}
 
-/* intro2: 채점 3단계 · 오답 흐름 */
-.steps3{display:flex;align-items:stretch;justify-content:center;gap:14px;margin-top:40px;flex-wrap:wrap}
-.zSt{display:flex;flex-direction:column;align-items:center;gap:12px;width:280px}.zSt>b{font-size:19px;font-weight:900}
-.zSn{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-weight:900;font-size:15px}
-.zMk{width:100%;min-height:236px;background:#fff;color:#1b1b1b;border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px;text-align:left;box-shadow:0 10px 26px rgba(0,0,0,.06);font-size:14px}
-.zMq{font-size:14px}.zMq b{margin-right:4px}.zMch{display:flex;gap:10px;font-size:14px;color:#444}.zMch .zCir{border:2px solid #2f6feb;border-radius:999px;padding:0 6px;color:#1b1b1b}
-.zBox{align-self:center;border:2px solid #2f6feb;padding:2px 12px;font:600 20px/1.2 serif;color:#2f6feb}
-.zGo{align-items:center;justify-content:center}.zGoB{width:92px;height:92px;border-radius:24px;background:var(--acc);color:#fff;display:grid;place-items:center;font-size:32px;font-weight:900;box-shadow:0 10px 24px color-mix(in srgb,var(--acc) 35%,transparent)}.zGo small{font-weight:800;color:#666}
-.zRes{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:12px;background:color-mix(in srgb,var(--acc) 10%,#fff);font-weight:800;font-size:16px}.zRes em{font-style:normal;color:var(--acc);font-size:20px}
-.zRes.x{background:color-mix(in srgb,var(--bad) 10%,#fff)}.zRes.x em{color:var(--bad)}.zNote{color:#777;text-align:center;font-weight:700}
-.zSa{align-self:center;font-style:normal;font-size:26px;color:var(--acc);font-weight:900}
-.flow{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:40px}
-.zFn{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;width:min(420px,100%)}.zFn p{margin:0;font-size:17px;font-weight:700;color:var(--muted)}
-.zFk{font-size:14px;font-weight:900;padding:5px 12px;border-radius:999px;background:var(--ink);color:var(--paper)}.zFk.ok{background:var(--acc);color:#fff}.zFk.no{background:var(--bad);color:#fff}.zFk.q{background:var(--ink)}
-.zPop{width:100%;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 12px 30px rgba(0,0,0,.08)}.zPop small{color:var(--muted);font-weight:800}.zPop b{font-size:19px}.zPb{background:var(--acc);color:#fff;font-weight:900;padding:9px 18px;border-radius:12px}
-.zFa{font-style:normal;font-size:24px;color:var(--muted);font-weight:900}
-.zBr{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:min(860px,100%)}.zBr .zFn{width:100%}
-.zLv,.zRq,.zQa{width:100%;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;justify-content:center;align-items:center;gap:8px}
-.zLv span{padding:8px 14px;border-radius:10px;font-weight:800;color:var(--muted);background:var(--bg)}.zLv .on{background:var(--acc);color:#fff}
-.zRq b,.zQa b{font-size:18px;padding:6px 12px;border-radius:10px;background:var(--bg)}.zRq span,.zQa span{font-weight:800;color:var(--muted)}.zQa b{background:var(--ink);color:var(--paper)}
-.zT{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:4px}.zT b{font-size:28px;font-weight:900;color:var(--bad)}.zT.pdf b{color:var(--ink)}.zT span{font-weight:800;color:var(--muted)}
-.mini h3{font-size:clamp(20px,2.2vw,24px)!important}.mini p{font-size:17px!important}
-@media (max-width:760px){.zSa{transform:rotate(90deg)}.zBr{grid-template-columns:1fr}}
+.shot{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:8px;box-shadow:var(--shadow);min-width:0}
+.shot img{display:block;width:100%;height:auto;border-radius:16px}
+@media (min-width:821px){.hero2{grid-template-columns:minmax(0,.95fr) minmax(0,1.1fr)!important}.hero2 h1{font-size:clamp(32px,3.6vw,48px)!important}}
+.hshot{align-self:center;width:100%;min-width:0}
+.duo.wide{grid-template-columns:1fr;gap:28px}
+.duo.wide .dtx{justify-items:center;text-align:center}
+.duo.wide .shot{max-width:1060px;justify-self:center;width:100%}
+.duo{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:center;margin-top:56px}
+.duo.rev .dtx{order:2}
+.dtx{display:grid;gap:14px;justify-items:start;min-width:0}
+.dtx h3{font-size:clamp(26px,3vw,36px);font-weight:900;letter-spacing:-.03em;line-height:1.25}
+.dtx p{margin:0;color:var(--muted);font-size:clamp(17px,1.8vw,19px)}
+.dtx .eb{font-size:clamp(20px,2.2vw,26px);margin-top:6px}
+@media (max-width:820px){.duo{grid-template-columns:1fr;gap:24px}.duo.rev .dtx{order:0}}
 
-/* 빈 화면 없애기: 스크롤 등장 효과 끔, 큰 여백 줄임 */
-.rv{opacity:1!important;transform:none!important;transition:none!important}
-section.f{padding:56px 0!important}.final{padding:64px 0!important}.teach{margin:24px 0!important}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:36px}
+.steps div{background:var(--paper);border:2px solid var(--acc);border-radius:20px;padding:22px;display:grid;gap:6px;text-align:center;min-width:0}
+.steps b{font-size:21px;font-weight:900;letter-spacing:-.02em}.steps span{font-size:15px;color:var(--muted)}
+.duo .note{text-align:center;color:var(--muted);font-size:15px;margin:0}
+.shot figcaption{font-size:12.5px;color:var(--muted);text-align:right;padding:6px 6px 0}
+.mission{text-align:center}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
+.feats article{display:grid;gap:8px;justify-items:center;text-align:center;align-content:start;min-width:0}
+.feats .shot{width:100%;margin-bottom:10px}
+.feats b{font-size:22px;font-weight:900;letter-spacing:-.02em}.feats span{color:var(--muted);font-size:16px}
+@media (max-width:820px){.steps,.feats{grid-template-columns:1fr}}
 
-/* 달라지는 점: 카드로 크게 */
-.ben{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;max-width:1060px;margin:40px auto 0}
-.bn{grid-column:span 2;background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:28px 20px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
-.bn:nth-child(4){grid-column:2 / span 2}
-.bn b{font-size:clamp(22px,2.4vw,28px);font-weight:900;line-height:1.3;letter-spacing:-.02em}
-.bn s{font-size:15px;font-weight:700;color:var(--muted);text-decoration-color:color-mix(in srgb,var(--muted) 60%,transparent)}
-.bn s::before{content:"전에는 ";text-decoration:none;display:inline-block;margin-right:4px}
-.bv{height:64px;display:flex;align-items:center;justify-content:center;gap:8px}
-.bgo{width:52px;height:52px;border-radius:14px;background:var(--acc);color:#fff;font-weight:900;font-size:18px;display:grid;place-items:center}
-.bo,.bx{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:18px;background:color-mix(in srgb,var(--acc) 12%,var(--paper));color:var(--acc)}.bx{background:color-mix(in srgb,var(--bad) 12%,var(--paper));color:var(--bad)}
-.bst{font-size:18px;font-weight:900;padding:12px 18px;border-radius:14px;background:var(--bg)}.bst em{font-style:normal;background:var(--bad);color:#fff;border-radius:999px;padding:2px 9px;margin-left:6px}
-.bpg{width:54px;height:62px;border-radius:8px;border:1.5px solid var(--line);background:#fff;color:#888;font-size:12px;font-weight:800;display:grid;place-items:center}.bpg.sol{border-color:var(--acc);color:var(--acc)}
-.bmk{font-size:17px;font-weight:900;padding:12px 18px;border-radius:14px;background:var(--acc);color:#fff}
-.bq{font-size:18px;font-weight:900;padding:12px 18px;border-radius:14px;background:var(--ink);color:var(--paper)}
-@media (max-width:860px){.ben{grid-template-columns:1fr 1fr}.bn,.bn:nth-child(4){grid-column:auto}.bn:last-child{grid-column:1 / -1}}
-@media (max-width:520px){.ben{grid-template-columns:1fr}}
-
-/* 달라지는 점: 큰 글씨 다섯 줄 */
-.ben2{list-style:none;margin:40px auto 0;padding:0;max-width:720px;display:flex;flex-direction:column;gap:12px}
-.ben2 li{display:flex;align-items:center;gap:20px;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:22px 28px}
-.ben2 span{flex:none;width:44px;height:44px;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;font-size:20px;display:grid;place-items:center}
-.ben2 b{font-size:clamp(22px,3vw,32px);font-weight:900;letter-spacing:-.03em;line-height:1.25;text-align:left}
-
-/* 5장면 (실제 화면 중심) */
-section.scn{padding:112px 0}
-section.scn+section.scn{padding-top:24px}
-.scg{display:grid;grid-template-columns:5fr 7fr;gap:72px;align-items:center}
-.scg.rev{grid-template-columns:7fr 5fr}.scg.wide{grid-template-columns:4fr 8fr;gap:56px}.scg.rev .sct{order:2}
-.sct{text-align:left}
-.sct .kk{margin:0 0 10px;font-size:15px;font-weight:800;color:#2F6FEB;letter-spacing:0}
-.sct h2{margin:0;font-size:clamp(32px,4vw,46px);line-height:1.2;font-weight:850;letter-spacing:-.02em}
-.sct .sd{margin:18px 0 0;font-size:19px;color:var(--muted)}
-.ln{list-style:none;margin:32px 0 0;padding:0;display:grid;gap:22px}
-.ln li{display:grid;gap:3px;padding-left:18px;border-left:3px solid #2F6FEB}
-.ln b{font-size:21px;font-weight:800}.ln span{font-size:16px;color:var(--muted)}
-.sci{margin:0}.sci img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--line);background:#fff}
-.sci.tall{max-width:520px;justify-self:center}
-.pin{position:relative}
-.pin i{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:#1d1b17;color:#fff;font-weight:800;font-size:16px;line-height:34px;font-style:normal;text-align:center;box-shadow:0 0 0 4px rgba(255,255,255,.9)}
-.co{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:20px}
-.co li{display:flex;gap:14px;align-items:flex-start}
-.co i{flex:none;width:30px;height:30px;border-radius:50%;background:#1d1b17;color:#fff;font-style:normal;font-weight:800;font-size:15px;display:grid;place-items:center;margin-top:2px}
-.co span{display:grid;gap:2px;font-size:16px;color:var(--muted)}.co b{font-size:20px;color:var(--ink)}
-.st5{margin:56px 0 40px;padding:56px;border-radius:28px;background:var(--paper);border:1px solid var(--line)}
-.st5 h2{margin:0;font-size:clamp(30px,3.6vw,42px);font-weight:850;letter-spacing:-.02em}
-.g4{list-style:none;counter-reset:g;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.g4 li{counter-increment:g;display:grid;gap:4px;padding-top:14px;border-top:2px solid var(--ink)}
-.g4 li::before{content:counter(g);font-weight:800;font-size:14px;color:#2F6FEB}
-.g4 b{font-size:18px}.g4 span{font-size:15px;color:var(--muted)}
-.pv{margin:28px 0 0;font-size:16px;color:var(--muted)}
-.more{margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
-.more .mh{font-size:14px;font-weight:800;color:var(--muted)}
-.more ul{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.more li{display:grid;gap:2px;font-size:14.5px;color:var(--muted)}.more b{font-size:16px;color:var(--ink)}
-.fqh{margin:0;font-size:28px;font-weight:850}
-@media (max-width:860px){
-  section.scn{padding:64px 0}section.scn+section.scn{padding-top:8px}
-  .scg,.scg.rev{grid-template-columns:1fr;gap:28px}.scg.rev .sct{order:0}
-  .g4,.more ul{grid-template-columns:1fr 1fr}
-  .st5{padding:28px 20px}
-  .pin i{width:26px;height:26px;font-size:13px;line-height:26px}
+.anim{position:relative;border-radius:16px;overflow:hidden}
+.anim img{display:block;width:100%;height:auto}
+.anim svg{position:absolute;inset:0;width:100%;height:100%}
+.anim .w,.anim .m{stroke-dasharray:1;stroke-dashoffset:1}
+.anim .tap{opacity:0;transform-origin:40px 693px;transform-box:view-box}
+.anim .toast{position:absolute;left:50%;bottom:6%;transform:translate(-50%,12px);opacity:0;background:#17202e;color:#fff;font-weight:800;font-size:clamp(12px,1.25vw,16px);padding:10px 16px;border-radius:14px;text-align:center;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.anim .toast small{display:block;font-weight:600;font-size:.82em;opacity:.8;margin-top:2px}
+@media (prefers-reduced-motion:no-preference){
+.anim .w1{animation:wr1 10s infinite}.anim .w2{animation:wr2 10s infinite}.anim .w3{animation:wr3 10s infinite}
+.anim .m1{animation:mk1 10s infinite}.anim .m2{animation:mk2 10s infinite}
+.anim .tap{animation:tap 10s infinite}.anim .toast{animation:toast 10s infinite}
 }
+@media (prefers-reduced-motion:reduce){.anim .w,.anim .m{stroke-dashoffset:0}.anim .toast{opacity:1;transform:translate(-50%,0)}}
+@keyframes wr1{0%,6%{stroke-dashoffset:1}18%,90%{stroke-dashoffset:0}96%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes wr2{0%,19%{stroke-dashoffset:1}28%,90%{stroke-dashoffset:0;opacity:1}96%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes wr3{0%,31%{stroke-dashoffset:1}42%,90%{stroke-dashoffset:0;opacity:1}96%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes tap{0%,47%{opacity:0;transform:scale(.4)}49%{opacity:1;transform:scale(.8)}55%{opacity:0;transform:scale(1.6)}100%{opacity:0}}
+@keyframes mk1{0%,56%{stroke-dashoffset:1;opacity:1}60%,90%{stroke-dashoffset:0;opacity:1}96%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes mk2{0%,58%{stroke-dashoffset:1;opacity:1}64%,90%{stroke-dashoffset:0;opacity:1}96%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes toast{0%,64%{opacity:0;transform:translate(-50%,12px)}68%,90%{opacity:1;transform:translate(-50%,0)}95%,100%{opacity:0;transform:translate(-50%,0)}}
+
+.chores{max-width:820px;margin:36px auto 0;background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:10px 26px 14px}
+.chh{font-size:14px;font-weight:800;color:var(--muted);padding:14px 0 6px;text-align:left}
+.ch{display:grid;grid-template-columns:110px 1fr 28px 1fr;align-items:center;gap:10px;padding:14px 0;border-top:1px solid var(--line);text-align:left}
+.ch b{font-size:18px;font-weight:900}
+.ch .old{color:var(--muted);font-size:16px}
+.ch .ar{color:var(--acc);font-weight:900;text-align:center}
+.ch .new{font-weight:800;font-size:17px;color:var(--ink)}
+.ch.tch{grid-template-columns:110px 1fr;border-top:2px solid var(--ink);margin-top:4px}
+.ch.tch b{color:var(--bad)}.ch .new2{font-weight:800;font-size:17px}
+.shot figcaption{position:static!important}
+@media (max-width:600px){.chores{padding:6px 18px 10px}.ch,.ch.tch{grid-template-columns:1fr;gap:2px}.ch .ar{display:none}.ch .new::before{content:'→ ';color:var(--acc)}}
+.ch>*{min-width:0;white-space:normal}
+
+.flow{display:grid;grid-template-columns:1fr 32px 1fr 32px 1fr;align-items:stretch;gap:10px;margin-top:36px}
+.fs{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:22px 18px;display:grid;gap:6px;text-align:center;align-content:start;min-width:0}
+.fs .who{justify-self:center;font-size:13px;font-weight:900;padding:4px 12px;border-radius:999px;background:var(--line);color:var(--muted)}
+.fs.q .who{background:var(--acc);color:#082a44}.fs.t .who{background:var(--ink);color:var(--paper)}
+.fs.t{border:2px solid var(--ink)}
+.fs b{font-size:20px;font-weight:900;letter-spacing:-.02em}.fs>span:last-child{font-size:15px;color:var(--muted)}
+.fa{display:grid;place-items:center;color:var(--acc);font-weight:900;font-size:22px}
+.shot.big{margin-top:28px}
+.askq{display:grid;justify-items:center;gap:10px;margin-top:28px;text-align:center}
+.askq p{margin:0;color:var(--muted);font-weight:700;font-size:clamp(17px,1.8vw,20px)}
+@media (max-width:820px){.flow{grid-template-columns:1fr}.fa{transform:rotate(90deg);height:20px}}
+
+.vflow{max-width:900px;margin:40px auto 0;display:grid;gap:0}
+.vr{display:grid;grid-template-columns:280px 1fr;gap:36px;align-items:center;position:relative;padding-bottom:44px}
+.vr:last-child{padding-bottom:0}
+.vr:not(:last-child)::after{content:"";position:absolute;left:140px;top:100%;margin-top:-44px;height:44px;width:3px;background:var(--acc);transform:translateX(-50%)}
+.vr:not(:last-child)::before{content:"";position:absolute;left:140px;bottom:2px;transform:translateX(-50%);border:9px solid transparent;border-top:11px solid var(--acc);border-bottom:0}
+.vn{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:20px 16px;display:grid;gap:8px;justify-items:center;text-align:center}
+.vn .who{font-size:13px;font-weight:900;padding:4px 12px;border-radius:999px;background:var(--line);color:var(--muted)}
+.vn.q{border:2px solid var(--acc)}.vn.q .who{background:var(--acc);color:#082a44}
+.vn.t{border:2px solid var(--ink)}.vn.t .who{background:var(--ink);color:var(--paper)}
+.vn b{font-size:20px;font-weight:900;letter-spacing:-.02em}
+.vx{text-align:left;display:grid;gap:6px;min-width:0}
+.vx p{margin:0;font-size:clamp(16px,1.7vw,19px);color:var(--muted);line-height:1.55}
+.vx em{font-style:normal;font-weight:800;color:var(--ink)}
+@media (max-width:700px){.vr{grid-template-columns:1fr;gap:12px;padding-bottom:60px}.vr:not(:last-child)::after{margin-top:-52px;height:40px}.vr:not(:last-child)::after,.vr:not(:last-child)::before{left:50%}.vx{text-align:center}}
+
+.vflow{max-width:880px!important}
+.vr{grid-template-columns:300px 1fr!important;gap:44px!important;padding-bottom:52px!important}
+.vr:not(:last-child)::after{left:150px!important;margin-top:-52px!important;height:52px!important}
+.vr:not(:last-child)::before{left:150px!important}
+.vn{padding:24px 18px!important}.vn b{font-size:22px!important}.vn .who{font-size:14px!important}
+.vx{gap:8px!important}
+.vx strong{font-size:clamp(22px,2.4vw,28px);font-weight:900;letter-spacing:-.03em;line-height:1.3;color:var(--ink)}
+.vx strong em{font-style:normal;color:var(--acc)}
+.vx>span{font-size:clamp(16px,1.6vw,18px);color:var(--muted);font-weight:600}
+@media (max-width:700px){.vr{grid-template-columns:1fr!important;gap:14px!important;padding-bottom:64px!important}.vr:not(:last-child)::after,.vr:not(:last-child)::before{left:50%!important}.vr:not(:last-child)::after{margin-top:-56px!important;height:42px!important}.vx{text-align:center;justify-items:center}}
+@media (max-width:820px){.pcs3{grid-template-columns:1fr}}
+
+/* flow with real screens */
+.vflow{max-width:1000px!important}
+.vr{grid-template-columns:260px 1fr!important;gap:40px!important;align-items:start!important;padding-bottom:64px!important}
+.vn{min-height:128px;align-content:center;box-sizing:border-box}
+.vr:not(:last-child)::after{left:130px!important;top:140px!important;bottom:14px!important;margin-top:0!important;height:auto!important}
+.vr:not(:last-child)::before{left:130px!important;bottom:4px!important}
+.vn b{white-space:nowrap}
+.vx{padding-top:14px}
+.vshot{margin:14px 0 0;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:6px;box-shadow:var(--shadow);max-width:720px}
+.vshot img{display:block;width:100%;height:auto;border-radius:13px}
+.vshot.tall{max-width:540px}
+.vshot figcaption{font-size:12.5px;color:var(--muted);padding:6px 6px 0;text-align:right}
+.vx .down{margin-top:6px;font-size:15px;font-weight:800;color:var(--acc)}
+@media (max-width:700px){.vr{grid-template-columns:1fr!important;gap:6px!important;padding-bottom:70px!important}.vn{min-height:0}.vx{padding-top:8px}.vr:not(:last-child)::after{left:50%!important;top:auto!important;bottom:14px!important;height:40px!important}.vr:not(:last-child)::before{left:50%!important}.vshot,.vshot.tall{max-width:100%;width:100%}}
+
+/* boxes: bigger, tinted, aligned with headline */
+.vr{grid-template-columns:300px 1fr!important;gap:48px!important}
+.vn{min-height:160px!important;padding:24px 20px!important;gap:12px!important;border-radius:24px!important;background:#fff!important;border:2px solid #DCD6CA!important;box-shadow:0 6px 18px rgba(40,30,10,.06)}
+.vn b{font-size:25px!important;letter-spacing:-.03em}
+.vn .who{font-size:15px!important;padding:5px 16px!important;background:#EFEBE3!important;color:#5d564b!important}
+.vn.q{background:#EAF4FF!important;border-color:var(--acc)!important}
+.vn.q .who{background:var(--acc)!important;color:#082a44!important}
+.vn.t{background:var(--ink)!important;border-color:var(--ink)!important}
+.vn.t b{color:var(--paper)}
+.vn.t .who{background:var(--paper)!important;color:var(--ink)!important}
+.vx{padding-top:0!important}
+.vh{min-height:160px;display:grid;align-content:center;gap:10px}
+.vr:not(:last-child)::after{left:150px!important;top:172px!important}
+.vr:not(:last-child)::before{left:150px!important}
+@media (max-width:700px){.vn{min-height:0!important}.vh{min-height:0;padding-top:10px}.vn b{font-size:22px!important}.vr:not(:last-child)::after{left:50%!important;top:auto!important}.vr:not(:last-child)::before{left:50%!important}}
+
+.vflow .vh strong{font-size:clamp(24px,2.6vw,30px);font-weight:900;letter-spacing:-.03em;line-height:1.3;color:var(--ink)}
+.vflow .vh strong em{font-style:normal;color:var(--acc)}
+.vflow .vh>span{font-size:clamp(16px,1.6vw,18px);color:var(--muted);font-weight:600;line-height:1.5}
+.vflow .vn b{font-size:26px!important;font-weight:900}
+.vflow .vn.t b{color:var(--paper)}
+@media (max-width:700px){.vflow .vn b{font-size:22px!important}.vh{justify-items:center;text-align:center}}
+
+.vflow .vh>span{letter-spacing:-.01em;word-spacing:normal}
+.vflow .vx .down{margin-top:-18px}
+@media (max-width:700px){.vflow .vr{grid-template-columns:1fr!important;gap:6px!important;padding-bottom:70px!important}.vflow .vx .down{margin-top:6px}.vflow .vx{justify-items:center;text-align:center}}
+
+/* v3: big role labels, 18번 link */
+.vflow{max-width:1040px!important}
+.vflow .vr{grid-template-columns:320px 1fr!important;column-gap:52px!important;row-gap:56px!important}
+.vflow .vn{min-height:190px!important;gap:14px!important;justify-items:center!important;align-content:center!important;text-align:center}
+.vflow .vn .who{font-size:30px!important;font-weight:900!important;padding:8px 30px!important;letter-spacing:-.02em;line-height:1.2}
+.vflow .vn b{font-size:24px!important}
+.vflow .vh{min-height:190px}
+.vflow .vr:not(:last-child)::after{left:160px!important;top:202px!important}
+.vflow .vr:not(:last-child)::before{left:160px!important}
+.vflow .qk{color:#2F6FEB;font-weight:900}
+.vflow .vshot.wide{grid-column:1/-1;max-width:none;margin-top:0;position:relative}
+.vflow .vshot.wide::before{content:"";position:absolute;left:160px;top:-54px;height:40px;width:3px;background:var(--ink);transform:translateX(-50%)}
+.vflow .vshot.wide::after{content:"";position:absolute;left:160px;top:-16px;transform:translateX(-50%);border:9px solid transparent;border-top:11px solid var(--ink);border-bottom:0}
+.iw{position:relative}
+.iw .ring{position:absolute;border:4px solid #2F6FEB;border-radius:14px;box-shadow:0 0 0 6px rgba(47,111,235,.2);pointer-events:none}
+.iw .pin{position:absolute;background:#2F6FEB;color:#fff;font-weight:900;font-size:clamp(12px,1.5vw,17px);padding:.45em .9em;border-radius:999px;white-space:nowrap;box-shadow:0 6px 16px rgba(47,111,235,.35);letter-spacing:-.02em}
+.ring.g18{left:20.3%;top:67.5%;width:5.6%;height:9.6%;border-radius:999px}
+.pin.g18p{left:59%;top:79%}
+.ring.t18{left:35.9%;top:44.3%;width:56.6%;height:13%}
+.pin.t18p{left:49%;top:36.6%}
+.vflow .vx .down{display:none}
+@media (max-width:700px){.vflow .vr{grid-template-columns:1fr!important;row-gap:8px!important}.vflow .vn{min-height:0!important}.vflow .vh{min-height:0}.vflow .vn .who{font-size:26px!important}.vflow .vn b{font-size:21px!important}.vflow .vr:not(:last-child)::after{left:50%!important;top:auto!important}.vflow .vr:not(:last-child)::before{left:50%!important}.vflow .vshot.wide{margin-top:44px}.vflow .vshot.wide::before,.vflow .vshot.wide::after{left:50%}.pin.g18p{left:44%;top:66%}.pin.t18p{left:47%;top:34%}}
+
+/* steps: big, minimal */
+.steps{gap:18px!important;margin-top:40px!important}
+.steps div{padding:34px 20px!important;gap:12px!important;border-radius:24px!important}
+.steps b{font-size:clamp(26px,2.8vw,34px)!important;letter-spacing:-.03em!important;line-height:1.2}
+.steps b em{font-style:normal;color:var(--acc)}
+.steps span{font-size:clamp(17px,1.7vw,20px)!important;font-weight:700;color:var(--muted)}
+/* QLEAR always brand blue */
+.qb,.qbr{color:var(--acc)!important}
+.vflow .vn.q .who{color:#fff!important}
+
+/* role pill: kill inherited .who grid */
+.vflow .vn .who{display:inline-block!important;grid-template-columns:none!important;justify-self:center;text-align:center;white-space:nowrap}
+.vflow .vh strong,.vflow .vh>span{word-break:keep-all}
+@media (max-width:1100px){.vflow .vr{grid-template-columns:260px 1fr!important;column-gap:36px!important}.vflow .vr:not(:last-child)::after,.vflow .vr:not(:last-child)::before,.vflow .vshot.wide::before,.vflow .vshot.wide::after{left:130px!important}}
+@media (max-width:900px){.vflow .vr{grid-template-columns:1fr!important;row-gap:8px!important;padding-bottom:70px!important}.vflow .vn{min-height:0!important;max-width:440px;width:100%;justify-self:center}.vflow .vh{min-height:0;padding-top:10px;justify-items:center;text-align:center}.vflow .vx{justify-items:center;text-align:center}.vflow .vr:not(:last-child)::after{left:50%!important;top:auto!important;bottom:14px!important;height:40px!important}.vflow .vr:not(:last-child)::before{left:50%!important}.vflow .vshot,.vflow .vshot.tall{max-width:100%;width:100%}.vflow .vshot.wide{margin-top:44px}.vflow .vshot.wide::before,.vflow .vshot.wide::after{left:50%!important}}
+
+.vflow .vh strong,.vflow .vh>span,.steps span,h1 span,h2{text-wrap:balance}
+@media (max-width:900px){.vflow .vshot.tall{max-width:520px!important;justify-self:center}}
+
+/* v21: 제목·설명을 아래 화면과 같은 가운데 축에 */
+.vflow .vx{display:block!important;text-align:center}
+.vflow .vh{justify-items:center!important;text-align:center!important}
+.vflow .vh strong,.vflow .vh>span{max-width:100%}
+.vflow .vshot{margin-left:auto!important;margin-right:auto!important;max-width:760px!important;width:100%}
+.vflow .vshot.tall{max-width:520px!important}
+.vflow .vshot figcaption{text-align:center!important}
+.vflow .vshot.wide{max-width:none!important}
+
+@media (max-width:900px){.vflow .vshot.wide{margin-top:66px!important}}
 </style>
-</head>
-<body>
-<header class="nav" id="nav"><div class="wrap">
-  <a class="brand" href="#top" aria-label="QLEAR 처음으로"><svg viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg>QLEAR</a>
-  <nav><a class="l" href="#solve">학생 화면</a><a class="l" href="#retry">다시 풀기</a><a class="l" href="#teacher">선생님 화면</a><a class="l" href="#start">시작하기</a><a class="l" href="#faq">자주 묻는 질문</a><a class="btn pri sm" href="lite.html">학생 1명과 시작</a></nav>
-</div></header>
-
+</head><body><header class="nav" id="nav"><div class="wrap"><a class="brand" href="#top" aria-label="QLEAR 처음으로"><svg viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg>QLEAR</a>
+<nav><a class="btn pri sm" href="cbeta.html" target="_blank" rel="noopener">학생 1명으로 시작하기</a></nav></div></header>
 <main id="top">
-<div class="wrap">
-  <section class="hero2 h2s">
-    <div class="htx">
-      <p class="tgt sm">과외 · 1인 교습소 선생님께</p>
-      <h1><span>원래 풀던 문제집 그대로.</span><br><span>채점부터 다시 풀기까지, <em>QLEAR</em></span></h1>
-      <p class="lead big">학생은 PDF 문제집 위에 전자펜으로 풀고, 선생님은 필요한 문제만 봐요.</p>
-      <div class="ctas"><a class="btn pri" href="cbeta.html?from=t">학생 1명과 시작하기</a><a class="btn sec" href="cbeta.html">학생 화면 미리 보기</a></div>
-      <ul class="facts"><li>베타 무료</li><li>설치 없음</li><li>태블릿 + 전자펜</li></ul>
-    </div>
-    <figure class="shot rv"><div class="frame light"><img src="intro/viewer.jpg" width="1600" height="1054" alt="QLEAR 학생 풀이 화면: 원래 문제집 PDF가 그대로 열리고 왼쪽에 펜·지우개·GO 버튼"></div></figure>
-  </section>
+<div class="wrap"><section class="hero2"><div class="htx">
+<p class="tgt">과외 · 1인 교습소 선생님께</p>
+<h1><span>다 맞은 숙제에도</span><br><span>다시 물어볼 문제는 <em>남아요</em></span></h1>
+<p class="lead big">학생은 쓰던 문제집 PDF에 그대로 풀어요.<br><b class="qbr">QLEAR</b>가 GO 한 번에 채점하고, 틀린 문제와 △ 표시 문제는 따로 모아 다시 풀게 해요.</p>
+<div class="ctas"><a class="btn pri" href="cbeta.html" target="_blank" rel="noopener">학생 1명으로 시작하기</a><a class="btn sec" href="#teacher">선생님 화면 보기</a></div>
+<ul class="facts"><li>베타 기간 무료</li><li>쓰던 문제집 PDF 그대로</li></ul>
+</div><figure class="shot hshot"><div class="anim"><img src="intro/viewer.jpg" alt="QLEAR 학생 화면: 문제집 PDF에 답을 쓰고 GO를 누르면 바로 채점되는 장면">
+<svg viewBox="0 0 1600 1054" aria-hidden="true">
+<g fill="none" stroke="#1d4ed8" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+<path class="w w1" pathLength="1" d="M408 336 q30 -14 42 6 q6 20 -24 28 q36 2 32 30 q-6 28 -52 14"/>
+<path class="w w2" pathLength="1" d="M384 312 L478 315 L480 412 L383 409 L386 308"/>
+<path class="w w3" pathLength="1" d="M1300 512 C1270 494 1205 500 1202 528 C1200 556 1270 562 1312 546 C1340 532 1326 506 1288 503"/>
+</g>
+<g fill="none" stroke="#e03131" stroke-width="8" stroke-linecap="round">
+<path class="m m1" pathLength="1" d="M100 156 L170 96"/>
+<path class="m m2" pathLength="1" d="M856 100 C832 84 796 92 794 120 C792 150 828 160 852 148 C872 136 870 106 846 96"/>
+</g>
+<circle class="tap" cx="40" cy="693" r="44" fill="none" stroke="#4fb2ff" stroke-width="8"/>
+</svg>
+<div class="toast">채점 끝 · 2문제 중 1개 맞음<small>틀린 19번은 다시 볼 문제로</small></div>
+</div></figure></section></div>
+
+<section class="f" id="pain"><div class="wrap">
+<div class="center"><h2>숙제 검사해 보면</h2></div>
+<div class="pcs3">
+<article class="pc ok"><span class="av">A</span><p class="pq">"다 맞았어요!"</p><ul class="pl ok"><li>알고 맞힘</li></ul></article>
+<article class="pc no"><span class="av">B</span><p class="pq">"채점했어요!"</p><ul class="pl no"><li>애매한 것도 맞다고 넘김</li></ul></article>
+<article class="pc no"><span class="av">C</span><p class="pq">"채점 아직이요…"</p><ul class="pl no"><li>채점도 못 함</li></ul></article>
 </div>
+<p class="sub-c">B는 모르는 걸 모르고, C는 뭘 틀렸는지도 몰라요.</p>
 
-<section class="scn" id="solve"><div class="wrap scg">
-  <div class="sct rv">
-    <p class="kk">학생 화면</p>
-    <h2>풀고, GO</h2>
-    <ul class="ln">
-      <li><b>PDF 위에 그대로 풀이</b><span>쓰던 문제집 PDF를 넣고 전자펜으로</span></li>
-      <li><b>GO 한 번으로 채점</b><span>답에 동그라미·네모만 치면 돼요</span></li>
-      <li><b>틀린 문제는 자동 저장</b><span>오답노트에 옮겨 적지 않아요</span></li>
-    </ul>
-  </div>
-  <figure class="sci rv"><img src="intro/grade.jpg" width="1600" height="875" alt="GO를 누른 뒤: 3번·17번은 맞음, 18번은 틀림으로 채점된 화면"></figure>
-</div></section>
-
-<section class="scn" id="retry"><div class="wrap scg rev">
-  <div class="sct rv">
-    <p class="kk">다시 풀기</p>
-    <h2>틀린 문제를<br>옮겨 적지 않아도 돼요</h2>
-    <p class="sd">채점하면 다시 풀기에 남고, 해결되지 않으면 선생님에게 이어집니다.</p>
-    <ul class="ln">
-      <li><b>18번 틀림 · 바로 다시 풀기</b><span>채점 직후, 틀린 문제부터 한 문제씩</span></li>
-      <li><b>3일 뒤 다시 풀기 · 선생님께 질문</b><span>또 틀리면 며칠 뒤 다시, 그래도 막히면 질문으로</span></li>
-    </ul>
-  </div>
-  <figure class="sci tall rv"><img src="intro/retry.jpg" width="1100" height="1251" alt="다시 풀기 화면: 다시 볼 문제 4개, 문제마다 원래 문제집 사진과 상태(다시 풀기 전 · 한 번 더 틀림 · 확인 문제 남음)"></figure>
-</div></section>
-
-<section class="scn" id="teacher"><div class="wrap scg wide">
-  <div class="sct rv">
-    <p class="kk">선생님 화면</p>
-    <h2>선생님은<br>필요한 문제만 봐요</h2>
-    <ol class="co">
-      <li><i>1</i><span><b>확인할 문제가 있는 학생</b>학생 이름 옆에 바로 표시</span></li>
-      <li><i>2</i><span><b>어디서 막혔는지</b>질문 · △ 애매 · 확인 문제 오답 · 몇 번 틀림</span></li>
-      <li><i>3</i><span><b>풀이 보기 · 학생에게 물어보기</b>사진은 학생이 보내기를 누른 문제만</span></li>
-    </ol>
-  </div>
-  <figure class="sci rv"><div class="pin"><img src="intro/teacher2.jpg" width="1800" height="610" alt="선생님 화면: 학생 목록에 확인 4, 확인할 문제 4개(18번 질문 · 3번 △ 애매 · 5번 확인 문제 오답 · 12번 3번 틀림)와 풀이 보기 · 학생에게 물어보기 버튼"><i style="left:14.8%;top:40%">1</i><i style="left:26.6%;top:40%">2</i><i style="left:96.6%;top:52%">3</i></div></figure>
-</div></section>
-
-<div class="wrap" id="start">
-  <section class="st5 rv">
-    <h2>학생 1명과 시작하기</h2>
-    <ol class="g4">
-      <li><b>선생님 가입</b><span>Google로 10초</span></li>
-      <li><b>학원 코드 확인</b><span>6자리</span></li>
-      <li><b>학생이 코드 입력</b><span>나 → 선생님과 연결</span></li>
-      <li><b>학생은 평소처럼</b><span>원래 문제집 그대로</span></li>
-    </ol>
-    <p class="pv">문제집 원본과 필기는 학생 기기에 남아요. 선생님에게는 공부 시간 · 정답률 · 다시 풀기 상태가 가고, 문제 사진은 학생이 질문하거나 보내기를 누른 것만 가요.</p>
-    <div class="more"><span class="mh">이것도 돼요</span><ul><li><b>회독</b>2회독은 틀린 문제부터</li><li><b>오답 테스트</b>틀린 문제를 시간 안에</li><li><b>틀린 문제 PDF</b>바로 뽑아서 인쇄</li><li><b>매치</b>친구와 같은 기출로 승부</li></ul></div>
-  </section>
+<div class="center" style="margin-top:100px"><h2 class="effh"><span class="qb">QLEAR</span>를 쓰면<br>B도 C도 <em>놓치는 문제</em>가 없어요</h2></div>
+<div class="steps">
+<div><b><em>GO</em> 한 번에 채점</b><span>객관식·단답형 즉시</span></div>
+<div><b>애매하면 <em>△</em></b><span>맞아도 따로 남아요</span></div>
+<div><b>맞혀도 <em>확인 문제</em></b><span>그것까지 맞혀야 해결</span></div>
 </div>
-
-<section class="f" id="faq" style="border:0;padding-top:8px"><div class="wrap">
-  <h2 class="fqh">자주 묻는 질문</h2>
-  <div class="faq" style="margin-top:20px">
-    <details><summary>학생이 새로 배워야 하는 게 있나요?</summary><p>거의 없어요. 펜으로 풀고 GO만 누르면 돼요.</p></details>
-    <details><summary>비용이 드나요?</summary><p>베타 기간에는 무료예요.</p></details>
-    <details><summary>학생에게 무엇이 필요한가요?</summary><p>태블릿 + 전자펜(아이패드 권장). 설치 없이 브라우저에서.</p></details>
-    <details><summary>교재는 어떻게 넣나요?</summary><p>학생 기기에 PDF를 넣어요. 학습지는 과제로 보내요.</p></details>
-    <details><summary>선생님은 학생 풀이를 볼 수 있나요?</summary><p>학생이 [선생님께 질문]을 누르거나, 선생님 요청에 [보내기]를 누른 문제만 볼 수 있어요.</p></details>
-    <details><summary>채점이 틀리면요?</summary><p>학생이 [고치기]로 바로잡아요.</p></details>
-  </div>
+<div class="mission" id="teacher"><h2>반복 작업은 <span class="qb">QLEAR</span>가<br>풀이 교정은 선생님이</h2><p><b class="qbr">QLEAR</b>는 선생님을 대신하지 않아요.<br>선생님이 필요한 순간을 골라 드려요.</p></div>
+<div class="vflow">
+<div class="vr"><div class="vn "><span class="who">학생</span><b>원래 하던 대로 풀어요</b></div><div class="vx"><div class="vh"><strong>쓰던 문제집에 풀고 <em>GO</em></strong><span>누르면 바로 채점 · 애매하면 △ · 막히면 <b class="qk">✋ 선생님께 질문</b></span></div>
+<figure class="vshot"><div class="iw"><img src="intro/grade.jpg" width="1600" height="875" alt="학생 화면: 문제집에 손글씨로 답을 쓰고 GO를 누르자 3번·17번은 맞음, 18번은 틀림으로 채점됨. 18번에 '선생님께 질문' 표시" loading="lazy"><i class="ring g18"></i><span class="pin g18p">✋ 18번 막힘 → 선생님께 질문</span></div><figcaption>학생 화면 · GO 누른 직후</figcaption></figure></div></div>
+<div class="vr"><div class="vn q"><span class="who">QLEAR</span><b>틀린 문제를 모아요</b></div><div class="vx"><div class="vh"><strong>틀린 문제는 <em>한 페이지</em>에 모여요</strong><span>다시 맞힐 때까지 남아요 · 맞혀도 확인 문제 한 번 더</span></div>
+<figure class="vshot tall"><img src="intro/retry-top.jpg" width="1100" height="1140" alt="다시 풀기 화면: 다시 볼 문제 4개. 문제집 원본 사진과 함께 '다시 풀기 전', '2번 틀림 · 한 번 더 틀림', '확인 문제 남음' 상태가 표시됨" loading="lazy"><figcaption>학생 화면 · 다시 볼 문제</figcaption></figure></div></div>
+<div class="vr r3"><div class="vn t"><span class="who">선생님</span><b>확인할 문제만 봐요</b></div><div class="vx"><div class="vh"><strong>"<em>18번</em>, 어떻게 풀었어?"</strong><span>학생이 질문한 18번이 맨 위에 · △ 애매 · 확인 문제 오답 · 여러 번 틀림</span></div></div>
+<figure class="vshot wide"><div class="iw"><img src="intro/teacher3.jpg" width="1800" height="738" alt="QLEAR 선생님 화면: 확인할 문제 4개 중 맨 위가 18번 학생 질문(풀이 보기), 이어서 3번 △ 애매 · 5번 확인 문제 오답 · 12번 3번 틀림" loading="lazy"><i class="ring t18"></i><span class="pin t18p">✋ 그 18번 질문</span></div><figcaption>실제 선생님 화면 · 이름은 가명입니다</figcaption></figure></div>
+</div>
+<div class="askq"><p>선생님은 풀이를 듣고 사고를 바로잡아요.</p></div>
 </div></section>
 
-<section class="final"><div class="wrap rv">
-  <h2>학생의 공부는 그대로.<br>선생님의 채점과 확인은 가볍게.</h2>
-  <p>가입 10초, 연결은 코드 하나.</p>
-  <div class="ctas"><a class="btn pri" href="cbeta.html?from=t">학생 1명과 시작하기</a><a class="btn sec" href="cbeta.html">학생 화면 미리 보기</a></div>
+<section class="final"><div class="wrap">
+<h2><span class="a">채점과 기록은 앱이 빠르게</span><br><span class="b">교정은 선생님이 정확하게</span></h2>
+<p>베타 기간 무료 · 설치 없이 브라우저</p>
+<div class="ctas"><a class="btn pri" href="cbeta.html" target="_blank" rel="noopener">학생 1명으로 시작하기</a></div>
 </div></section>
 </main>
-
-<footer><div class="wrap"><span>© QLEAR</span><span><a href="lite.html">앱 열기</a></span></div></footer>
-
-<script>
-(()=>{const n=document.getElementById('nav');const f=()=>n.classList.toggle('sc',scrollY>8);addEventListener('scroll',f,{passive:true});f();
-const els=document.querySelectorAll('.rv');if(!('IntersectionObserver' in window)){els.forEach(e=>e.classList.add('in'));return}
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});els.forEach(e=>io.observe(e))})();
-</script>
-</body>
-</html>
+<footer><div class="wrap"><span>© QLEAR</span></div></footer>
+<script>(()=>{const n=document.getElementById('nav');const f=()=>n.classList.toggle('sc',scrollY>8);addEventListener('scroll',f,{passive:true});f()})();</script></body></html>
