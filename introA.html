@@ -906,6 +906,24 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 @media (max-width:600px){.hwr{grid-template-columns:1fr;gap:6px;margin:14px 0}.hwl{text-align:center}.hwd{gap:5px}.hwd i{border-radius:9px}}
 
 .hwk{display:block!important;grid-template-columns:none!important}
+
+/* 시작 방법 · FAQ (B안에서 가져옴) */
+.iaS{padding:96px 0 24px}
+.iaH{text-align:center;font-size:clamp(26px,3.4vw,38px);font-weight:850;letter-spacing:-.02em;margin:0 0 28px}
+.iaH#faq{margin-top:88px}
+.iaSteps{list-style:none;margin:0 auto;padding:0;max-width:1000px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.iaSteps li{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px 20px;display:flex;flex-direction:column;gap:6px}
+.iaSteps i{font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-weight:800;font-size:15px;margin-bottom:6px}
+.iaSteps b{font-size:19px}.iaSteps span{font-size:15px;color:var(--muted);line-height:1.5;word-break:keep-all}
+.iaFaq{max-width:760px;margin:0 auto;border-top:1px solid var(--line)}
+.iaFaq details{border-bottom:1px solid var(--line);padding:4px 0}
+.iaFaq summary{cursor:pointer;list-style:none;padding:18px 4px;font-size:18px;font-weight:750;display:flex;justify-content:space-between;gap:12px}
+.iaFaq summary::-webkit-details-marker{display:none}
+.iaFaq summary::after{content:"+";font-weight:400;color:var(--muted);font-size:22px;line-height:1}
+.iaFaq details[open] summary::after{content:"−"}
+.iaFaq p{margin:0 4px 18px;color:var(--muted);font-size:16px;line-height:1.7}
+@media (max-width:900px){.iaSteps{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.iaSteps{grid-template-columns:1fr}.iaS{padding-top:64px}}
 </style>
 </head><body><header class="nav" id="nav"><div class="wrap"><a class="brand" href="#top" aria-label="QLEAR 처음으로"><svg viewBox="0 0 120 140" aria-hidden="true"><rect x="21.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="1.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="21.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="41.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="61.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="81.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="1.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="81.80" y="101.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="21.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="41.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="61.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="currentColor"/><rect x="101.80" y="121.80" width="16.40" height="16.40" rx="4.80" fill="var(--acc)"/></svg>QLEAR</a>
 <nav><a class="btn pri sm" href="cbeta.html?from=t" target="_blank" rel="noopener">학생 1명으로 시작하기</a></nav></div></header>
@@ -962,6 +980,23 @@ section.f .wrap.fr .tx p{font-size:clamp(18px,2vw,21px)}
 <figure class="vshot wide"><div class="iw"><img src="intro/teacher3.jpg" width="1800" height="738" alt="QLEAR 선생님 화면: 확인할 문제 4개 중 맨 위가 18번 학생 질문(풀이 보기), 이어서 3번 △ 애매 · 5번 확인 문제 오답 · 12번 3번 틀림" loading="lazy"><i class="ring t18"></i><span class="pin t18p">✋ 그 18번 질문</span></div><figcaption>실제 선생님 화면 · 이름은 가명입니다</figcaption></figure></div>
 </div>
 
+</div></section>
+
+<section class="iaS" id="start"><div class="wrap">
+<h2 class="iaH">시작은 이렇게</h2>
+<ol class="iaSteps">
+<li><i>1</i><b>선생님 가입</b><span>Google 또는 이메일 · 베타 기간 무료</span></li>
+<li><i>2</i><b>학원 코드 확인</b><span>선생님 화면 맨 위 6자리</span></li>
+<li><i>3</i><b>학생 연결</b><span>학생 앱 나 → 선생님과 연결에 코드 입력</span></li>
+<li><i>4</i><b>평소처럼 숙제</b><span>학생은 쓰던 문제집에 풀고 GO</span></li>
+</ol>
+<h2 class="iaH" id="faq">자주 묻는 질문</h2>
+<div class="iaFaq">
+<details><summary>비용이 드나요?</summary><p>베타 기간에는 무료예요. 유료로 바뀌면 미리 알리고 동의를 받아요.</p></details>
+<details><summary>학생에게 어떤 기기가 필요한가요?</summary><p>태블릿과 펜이 필요해요. 아이패드와 애플펜슬을 권장하고, 설치 없이 브라우저에서 열어요. 다른 터치펜은 [손가락으로 쓰기]를 켜면 돼요.</p></details>
+<details><summary>교재는 어떻게 등록하나요?</summary><p>학생이 가진 문제집 PDF를 학생 기기에 넣어요. 선생님은 문제집 · 범위 · 마감을 과제로 보낼 수 있어요.</p></details>
+<details><summary>채점이 틀리면 어떻게 하나요?</summary><p>학생이 그 자리에서 [RE 고치기]로 바로잡아요. 손글씨를 못 읽은 문제는 직접 확인하도록 표시돼요.</p></details>
+</div>
 </div></section>
 
 <section class="final"><div class="wrap">
