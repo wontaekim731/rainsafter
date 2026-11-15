@@ -5662,7 +5662,7 @@ function gearMenu(){if(teacherOn()){toggleTeacher();return}const me=LS.get('clSt
     <div class="meFt"><button type="button" data-v>${esc(ver||'앱 정보')} · 새로고침</button><button type="button" data-t>선생님 모드</button></div>`);
   try{sesAll().then(ses=>{const k=streak(ses),el=d.querySelector('[data-mesub]');if(el&&k&&k.n)el.textContent=`연속 ${k.n}일 · `+el.textContent}).catch(()=>{})}catch(e){}
   d.querySelector('[data-x]').onclick=()=>{d.hidden=true};d.querySelector('[data-l]').onclick=()=>clLinkSheet();d.querySelector('[data-pt]').onclick=()=>penTestSheet();
-  d.querySelector('[data-th]').onclick=()=>{d.hidden=true;if(window.themeSheet)themeSheet()};
+  d.querySelector('[data-th]').onclick=()=>{if(window.themeSheet)themeSheet()};   /* 원태 11.15: 내 색을 골라도 '나' 메뉴는 그대로 (색 고르기 창이 위에 떴다 닫히면 메뉴로 돌아옴) */
   d.querySelector('[data-v]').onclick=()=>{const v=document.getElementById('verTag');if(v)v.click();else location.reload()};
   d.querySelector('[data-h]').onclick=()=>{d.hidden=true;try{localStorage.setItem('njHowHide','0')}catch(e){}const tb=document.querySelector('#tabs button[data-v="solve"]');if(tb)tb.click();setTimeout(()=>{try{renderRecent()}catch(e){}setTimeout(()=>{const h=document.getElementById('howBox');if(h)h.scrollIntoView({behavior:'smooth',block:'start'})},300)},50)};
   d.querySelector('[data-t]').onclick=()=>{d.hidden=true;toggleTeacher()};
