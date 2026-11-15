@@ -3464,9 +3464,7 @@ async function quickFind0(file,handle,bytes,doc,textPdf,pages,replace){if(SCANNI
   if($('#scSkip'))$('#scSkip').onclick=()=>{if(SCANNING)SCANNING.stop=true;$('#scSkip').disabled=true;$('#scSkip').textContent='건너뛰는 중…'};
   let A=null,err=null;const t0=Date.now();let QL={msg:'준비 중',nk:0,pct:1};
   const qRender=()=>{const pr=$('#scProg');const el=Math.round((Date.now()-t0)/1000),pct=QL.pct;try{if(BGQ)BGQ.q={pct:Math.round(pct),nk:QL.nk,msg:String(QL.msg||'').replace(/\(.*\)|…/g,'').trim(),rem:pct>=8&&el>=3?(r=>r>=60?Math.round(r/60)+'분':r+'초')(Math.max(1,Math.round(el*(100-pct)/pct))):''}}catch(e){}   /* 뒤에서 읽는 동안 GO 아래·알림에 진행률을 보여 준다 (무엇을 기다리는지 모르면 답답하다) */if(pr)pr.innerHTML=progHTML(pct,'정답 읽는 중',`${QL.nk?`정답 ${QL.nk}개`:esc(QL.msg.replace(/\(.*\)|…/g,''))}${pct>=8&&el>=3?` · 약 ${(r=>r>=60?Math.round(r/60)+'분':r+'초')(Math.max(1,Math.round(el*(100-pct)/pct)))} 남음`:''}`)};const qT=setInterval(qRender,1000);
-  const FOOT_NAME=/마플\s*교과서/;   /* 이름으로 바로 아는 책: 마플교과서는 책 뒤 빠른 정답이 없고 문제마다 아래에 정답 → 찾기 없이 바로 */
-  if(!pages&&!replace&&FOOT_NAME.test(file.name||'')){SCANNING=null;clearInterval(qT);dlog('footAns','name');{const T=await scanLazyInit(file,handle,bytes,doc,{});T.footAns=1;if(P===T)showInfo();await recentSave(T);bgDeliver(T)}return}
-  if(!pages&&!replace){let fp=false;try{fp=await footProbe(doc,(i,n)=>{QL={msg:'쪽 아래 정답 확인',nk:0,pct:Math.round(2+i/n*6)};qRender()},()=>SCANNING&&SCANNING.stop)}catch(e){console.error(e)}
+  /* 원태 11.15: 책 이름으로 바로 정하던 것(마플교과서 → 쪽 아래 정답) 없앰 — 아래 footProbe가 실제로 쪽 아래 정답이 있는지 보고 정한다 */   if(!pages&&!replace){let fp=false;try{fp=await footProbe(doc,(i,n)=>{QL={msg:'쪽 아래 정답 확인',nk:0,pct:Math.round(2+i/n*6)};qRender()},()=>SCANNING&&SCANNING.stop)}catch(e){console.error(e)}
     if(fp){SCANNING=null;clearInterval(qT);dlog('footAns',fp+'');{const T=await scanLazyInit(file,handle,bytes,doc,{});T.footAns=1;if(P===T)showInfo();await recentSave(T);bgDeliver(T)}return}}   /* 쪽마다 아래에 정답이 있는 책: 그 쪽을 풀 때 같이 읽으면 되니 미리 읽을 것이 없다 */
   if(!pages&&!replace){let th=0;const TH=[];try{const N0=doc.numPages,L=[];for(let k=0;k<24;k++)L.push(Math.round(N0*(0.5+0.5*k/23)));   /* 표가 몇 쪽 걸러 하나씩인 책(시냅스)도 걸리게 24쪽을 본다 */for(const p of [...new Set(L)]){if(SCANNING&&SCANNING.stop)break;QL={msg:'정답 표 확인',nk:0,pct:9};if(await TBLQ.probe(doc,Math.min(N0,Math.max(1,p)))){th++;TH.push(Math.min(N0,Math.max(1,p)))}}
       /* 표가 5쪽에 하나꼴로 드문 책(시발점 워크북: Theme 묶음마다 표 하나)은 24쪽 표본에 1~2개만 걸린다 → 하나라도 걸렸으면 뒤쪽 절반을 한 쪽씩 더 본다 */
@@ -3708,7 +3706,7 @@ async function scanLazyInit(file,handle,bytes,doc,solKeys,solRange,replace,colr)
    근거: 정답(답지)을 못 찾음 · 정답 읽은 비율 · 스캔 해상도 · 학생이 쓴 쪽에서 문제 번호를 못 찾은 비율. 책(원본 이름)마다 localStorage 'njgd:' */
 const GD={get:n=>{try{return JSON.parse(localStorage.getItem('njgd:'+bookOf(n))||'null')}catch(e){return null}},set:(n,o)=>{try{localStorage.setItem('njgd:'+bookOf(n),JSON.stringify(o))}catch(e){}}};
 const GD_LV=['','일부는 직접 채점해야 할 수 있어요','자동 채점이 어려운 PDF예요'];
-const GD_EBS={re:/올림포스|수능\s*특강|수능\s*완성|EBS|ebs/,test(t){return this.re.test(String(t||'').normalize('NFC'))}}   /* v47.66 아이패드에서 넣은 파일 이름은 한글이 자모로 나뉘어(NFD) '올림포스'와 안 맞았다 → 맞춰서 비교 */;   /* EBS 책: 빠른 정답이 단원마다 1번부터 다시 시작해서 '정답 읽은 비율·답지 못 찾음'으로 판단하면 틀린다 (정답은 채점할 때 '본문 ○쪽' 구역별로 찾음) */
+/* 원태 11.15: GD_EBS(파일 이름으로 EBS 판정) 없앰 → kindOf가 정답 쪽 '본문 N쪽' 구역으로 판정 */   /* v47.66 아이패드에서 넣은 파일 이름은 한글이 자모로 나뉘어(NFD) '올림포스'와 안 맞았다 → 맞춰서 비교 */;   /* EBS 책: 빠른 정답이 단원마다 1번부터 다시 시작해서 '정답 읽은 비율·답지 못 찾음'으로 판단하면 틀린다 (정답은 채점할 때 '본문 ○쪽' 구역별로 찾음) */
 /* 원태 11.15: 책 종류는 파일 이름이 아니라 '보이는 것'으로 정한다 — ① 정답 쪽(빠른 정답)을 찾고 ② 그 쪽에 '본문 N쪽' 구역 표시가 3개 이상이면 '쪽 번호로 구역 찾기'(EBS 방식), 없으면 '번호로 바로'. 번호가 A01처럼 단원 글자와 붙은 책은 따로 '머리 글자 구역'(자이 방식). 판정과 이유는 진단 기록·진단 복사에 남긴다 */
 const KINDV=1;function kindLoad(n){try{const o=JSON.parse(localStorage.getItem('njkind:'+bookOf(n))||'null');if(o&&o.v===KINDV)return o}catch(e){}return null}
 const kindPageN=n=>{const o=kindLoad(n);return !!(o&&o.zone==='page')};
