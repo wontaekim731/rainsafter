@@ -1,0 +1,45 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>글자 인식 속도 재기</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--sub:#6b6b70;--line:#e3e1dc;--acc:#2f6fdb}
+@media (prefers-color-scheme:dark){:root{--bg:#17181a;--card:#222326;--ink:#ececee;--sub:#9b9ba1;--line:#36373b;--acc:#6b9cf0}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,"Apple SD Gothic Neo",sans-serif}.w{max-width:760px;margin:0 auto;padding:20px 16px 80px}
+h1{font-size:22px;margin:0 0 6px}.sub{color:var(--sub);font-size:14px}button{font:inherit;font-weight:700;padding:12px 18px;border-radius:12px;border:0;background:var(--acc);color:#fff;margin:12px 8px 0 0}button:disabled{opacity:.5}
+table{width:100%;border-collapse:collapse;margin-top:14px;background:var(--card);border-radius:12px;overflow:hidden}td,th{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}th{color:var(--sub);font-weight:600}
+td.n{text-align:right;font-variant-numeric:tabular-nums}#log{white-space:pre-wrap;font-size:12px;color:var(--sub);margin-top:12px}#pv{max-width:100%;border:1px solid var(--line);border-radius:8px;margin-top:10px;background:#fff}
+</style></head><body><div class="w">
+<h1>글자 인식 속도 재기</h1>
+<div class="sub">이 기기에서 PaddleOCR과 Tesseract(본앱이 쓰는 한글·영어)를 똑같은 문제로 재요. 처음엔 모델을 받느라 오래 걸려요(약 20MB). 다 끝나면 [결과 복사]를 눌러 대화창에 붙여 주세요. 재는 동안 화면을 만지지 마세요.</div>
+<button id="go">재기 시작</button><button id="cp" disabled>결과 복사</button>
+<table id="T"><tr><th>항목</th><th class="n">시간</th><th>메모</th></tr></table>
+<canvas id="pv"></canvas><div id="log"></div></div>
+<script>
+const $=s=>document.querySelector(s),R=[],L=m=>{$('#log').textContent+=m+'\n'};
+const row=(k,ms,memo)=>{R.push([k,ms,memo||'']);$('#T').insertAdjacentHTML('beforeend',`<tr><td>${k}</td><td class="n">${ms==null?'-':ms>=1000?(ms/1000).toFixed(1)+'초':Math.round(ms)+'ms'}</td><td>${memo||''}</td></tr>`)};
+/* 화면 멈춤: 16ms마다 시계를 보고 가장 긴 틈을 잰다 */
+let gap=0,last=0,iv=null;const gapStart=()=>{gap=0;last=performance.now();iv=setInterval(()=>{const n=performance.now();gap=Math.max(gap,n-last);last=n},16)},gapEnd=()=>{clearInterval(iv);return Math.round(gap)};
+const loadScript=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>no(new Error(src));document.head.appendChild(s)});
+/* 시험 그림: 본앱 기출 팩(이미 공개된 기출 문제)에서 문제 몇 개를 꺼내 '문제 하나'와 '쪽 하나(6문제)'를 만든다 */
+async function samples(){const b=new Uint8Array(await (await fetch('lib/pack/qlear-pack-v3-0.bin')).arrayBuffer());const n=b[6]|b[7]<<8|b[8]<<16|b[9]<<24;const H=JSON.parse(new TextDecoder().decode(b.slice(10,10+n))),BASE=10+n;
+  const ok=H.items.filter(i=>BASE+i.o+i.l<=b.length&&i.l>15000&&i.l<60000);const pick=[ok[3],ok[40],ok[120],ok[260],ok[400],ok[520]].filter(Boolean);
+  const imgs=await Promise.all(pick.map(i=>createImageBitmap(new Blob([b.slice(BASE+i.o,BASE+i.o+i.l)]))));
+  const one=document.createElement('canvas');one.width=imgs[0].width;one.height=imgs[0].height;one.getContext('2d').drawImage(imgs[0],0,0);
+  const pg=document.createElement('canvas');pg.width=1240;pg.height=1754;const g=pg.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,1240,1754);let y=[60,60];
+  imgs.forEach((im,k)=>{const c=k%2,w=560,h=Math.round(im.height*w/im.width);if(y[c]+h<1700){g.drawImage(im,40+c*620,y[c],w,h);y[c]+=h+40}});
+  const pv=$('#pv');pv.width=620;pv.height=877;pv.getContext('2d').drawImage(pg,0,0,620,877);return {one,pg}}
+$('#go').onclick=async()=>{$('#go').disabled=true;R.length=0;$('#log').textContent='';
+  row('기기',null,`${navigator.userAgent.match(/\(([^)]+)\)/)?.[1]||''} · 코어 ${navigator.hardwareConcurrency||'?'} · 메모리 ${navigator.deviceMemory||'?'}GB · 화면 ${innerWidth}x${innerHeight}`);
+  let S;try{S=await samples();row('시험 그림',null,`문제 ${S.one.width}x${S.one.height} · 쪽 1240x1754`)}catch(e){row('시험 그림 실패',null,e.message);return}
+  /* PaddleOCR */
+  try{L('PaddleOCR 모델 받는 중…');let t=performance.now();gapStart();await loadScript('lib/pocr/pocr.js');await POCR.load();row('Paddle · 처음 준비 (모델 받기+만들기)',performance.now()-t,`화면 멈춤 최대 ${gapEnd()}ms · 일꾼 ${ort.env.wasm.proxy?'켜짐':'꺼짐'}`);
+    for(let i=1;i<=3;i++){gapStart();t=performance.now();const o=await POCR.read(S.one);row(`Paddle · 문제 하나 (${i}회)`,performance.now()-t,`줄 ${o.lines.length} · 멈춤 최대 ${gapEnd()}ms${i===1?' · "'+o.text.slice(0,24).replace(/\n/g,' ')+'…"':''}`)}
+    gapStart();t=performance.now();const o=await POCR.read(S.pg);row('Paddle · 쪽 하나 (6문제)',performance.now()-t,`줄 ${o.lines.length} · 멈춤 최대 ${gapEnd()}ms`)}catch(e){row('Paddle 실패',null,String(e.message||e))}
+  /* Tesseract (본앱과 같은 설정) */
+  try{L('Tesseract 받는 중…');const TESS=new URL('lib/tess/',location.href).href;await loadScript(TESS+'tesseract.min.js');
+    for(const lang of ['kor','eng']){let t=performance.now();gapStart();const wk=await Tesseract.createWorker(lang,1,{workerPath:TESS+'worker.min.js',corePath:TESS+'core',langPath:TESS+lang,workerBlobURL:false});row(`Tesseract ${lang==='kor'?'한글':'영어'} · 처음 준비`,performance.now()-t,`멈춤 최대 ${gapEnd()}ms`);
+      for(let i=1;i<=2;i++){gapStart();t=performance.now();const r=await wk.recognize(S.one);row(`Tesseract ${lang==='kor'?'한글':'영어'} · 문제 하나 (${i}회)`,performance.now()-t,`멈춤 최대 ${gapEnd()}ms${i===1?' · "'+r.data.text.slice(0,24).replace(/\n/g,' ')+'…"':''}`)}
+      if(lang==='kor'){gapStart();t=performance.now();await wk.recognize(S.pg);row('Tesseract 한글 · 쪽 하나 (6문제)',performance.now()-t,`멈춤 최대 ${gapEnd()}ms`)}
+      await wk.terminate()}}catch(e){row('Tesseract 실패',null,String(e.message||e))}
+  L('끝');$('#cp').disabled=false;$('#go').disabled=false};
+$('#cp').onclick=async()=>{const t='OCR-BENCH v1\n'+R.map(r=>`${r[0]} | ${r[1]==null?'-':Math.round(r[1])+'ms'} | ${r[2]}`).join('\n');try{await navigator.clipboard.writeText(t);alert('복사했어요. 대화창에 붙여 주세요.')}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();alert('복사했어요.')}};
+</script></body></html>
