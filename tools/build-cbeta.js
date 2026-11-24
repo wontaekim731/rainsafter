@@ -1,4 +1,4 @@
-/* 클로즈드 베타(cbeta.html) 만들기: lite.html → 이름표 붙이고 JS·CSS·HTML 줄이기
+/* 클로즈드 베타(cbeta.html)·문제 은행(bank.html) 만들기: lite.html → 이름표 붙이고 JS·CSS·HTML 줄이기
    실행: npm i terser csso  →  node tools/build-cbeta.js  (저장소 루트에서) */
 const fs=require('fs'),crypto=require('crypto'),{minify}=require('terser'),csso=require('csso');
 (async()=>{let h=fs.readFileSync('lite.html','utf8');const n0=Buffer.byteLength(h);
@@ -22,4 +22,7 @@ const fs=require('fs'),crypto=require('crypto'),{minify}=require('terser'),csso=
   h=h.replace(/<style([^>]*)>([\s\S]*?)<\/style>/g,(_,a,c)=>`<style${a}>${csso.minify(c,{restructure:false}).css}</style>`);
   /* 태그 사이 공백 (스크립트·스타일 밖) */
   h=h.split(/(<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>)/).map((s,k)=>k%2?s:s.replace(/<!--(?!\[)[\s\S]*?-->/g,'').replace(/>\s+</g,'><').replace(/\n\s*/g,'\n')).join('');
-  fs.writeFileSync('cbeta.html',h);console.log('lite',n0,'→ cbeta',Buffer.byteLength(h))})().catch(e=>{console.error(e);process.exit(1)});
+  fs.writeFileSync('cbeta.html',h);console.log('lite',n0,'→ cbeta',Buffer.byteLength(h));
+  /* 문제 은행(bank.html): 같은 앱을 문제 은행 화면으로 연다 (window.QL_BANK) */
+  let k=h.replace(/<script>window\.NJ_CB=1;?<\/script>/,'<script>window.NJ_CB=1;window.QL_BANK=1</script>').replace(/<title>[^<]*<\/title>/,'<title>QLEAR 문제 은행</title>');
+  if(!k.includes('window.QL_BANK=1'))throw new Error('bank 표시를 못 넣음');fs.writeFileSync('bank.html',k);console.log('→ bank',Buffer.byteLength(k))})().catch(e=>{console.error(e);process.exit(1)});
