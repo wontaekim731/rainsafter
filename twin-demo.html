@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex"><title>QLEAR 확인 문제 미리보기</title><link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{color-scheme:dark;--bg:#0E1014;--card:#161920;--line:#232733;--btn:#1A1D24;--ink:#F2F4F7;--mute:#8A93A3;--acc:#B9A2FF;--acc-ink:#15121f;--ok:#4cc38a;--warn:#e3b04b;--paper:#fff}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;--bg:#F5F6F8;--card:#fff;--line:#E3E6EC;--btn:#EEF0F4;--ink:#14171F;--mute:#5E6675;--acc:#7B5CF0;--acc-ink:#fff;--ok:#1f8f5a;--warn:#a86c00}}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo",system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;align-items:center;gap:10px;margin-bottom:6px}.logo{font-weight:900;letter-spacing:.04em;font-size:20px}.tag{font-size:12px;font-weight:800;color:var(--acc-ink);background:var(--acc);border-radius:999px;padding:3px 10px}
+h1{font-size:clamp(22px,3.2vw,30px);margin:14px 0 4px;letter-spacing:-.02em}.lead{color:var(--mute);margin:0 0 18px;font-size:15px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;font:inherit;font-size:14px;font-weight:700;border:1px solid var(--line);background:var(--btn);color:var(--ink);border-radius:12px;padding:9px 14px;cursor:pointer;text-align:left}
+.tab small{display:block;font-size:11px;font-weight:600;color:var(--mute)}.tab[aria-selected="true"]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}.tab[aria-selected="true"] small{color:inherit;opacity:.75}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:16px;align-items:start}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+.ph{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:10px}.ph h2{font-size:16px;margin:0}.src{font-size:13px;color:var(--mute)}
+.sheet{background:var(--paper);border-radius:10px;padding:10px;overflow:hidden}.sheet img{display:block;width:100%;height:auto}
+.eng{margin-top:12px;border-top:1px dashed var(--line);padding-top:12px;font-size:14px}
+.eng .k{font-size:12px;color:var(--mute);font-weight:700;margin-bottom:6px}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 46px;gap:8px;align-items:center;margin:5px 0}.bar span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar i{grid-column:1/-1;height:6px;border-radius:99px;background:var(--btn);overflow:hidden;margin-top:-2px}.bar i b{display:block;height:100%;background:var(--acc);border-radius:99px}.bar em{font-style:normal;text-align:right;color:var(--mute);font-variant-numeric:tabular-nums}
+.bar.top span{font-weight:800}.ok{color:var(--ok);font-weight:800;font-size:13px;margin-top:8px}
+.tw{display:flex;flex-direction:column;gap:14px}
+.tq{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--bg)}
+.tqh{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}.num{font-weight:900;font-size:13px;color:var(--acc)}.tqh .src{flex:1;min-width:0}
+.ans{font:inherit;font-size:12px;font-weight:800;border:0;border-radius:999px;padding:6px 12px;background:var(--acc);color:var(--acc-ink);cursor:pointer;white-space:nowrap;min-height:32px}
+.ans[aria-pressed="true"]{background:var(--btn);color:var(--ink);outline:1px solid var(--line)}
+.foot{color:var(--mute);font-size:12px;margin-top:22px}
+</style></head><body><div class="wrap">
+<header><span class="logo">QLEAR</span><span class="tag">확인 문제 미리보기</span></header>
+<h1>틀린 문제 하나, 같은 유형 세 문제</h1>
+<p class="lead">원래 문제를 고르면 유형 엔진이 그 문제 그림을 읽고 고른 확인 문제가 바로 보여요. 모두 평가원·교육청 기출이에요.</p>
+<div class="tabs" role="tablist" id="tabs"></div>
+<div class="grid">
+ <section class="panel" aria-labelledby="oh"><div class="ph"><h2 id="oh">원래 문제</h2><span class="src" id="osrc"></span></div><div class="sheet"><img id="oimg" alt=""></div>
+  <div class="eng"><div class="k">유형 엔진이 읽은 유형</div><div id="bars"></div><div class="ok" id="same"></div></div></section>
+ <section class="panel" aria-labelledby="th"><div class="ph"><h2 id="th">확인 문제</h2><span class="src" id="tsub"></span></div><div class="tw" id="tw"></div></section>
+</div>
+<p class="foot">유형 엔진: QLEAR 시험판(PaddleOCR + 유형 분류), 기기 안에서 실행해 미리 저장한 결과예요. 문제 출처: 평가원·교육청 공개 기출.</p>
+</div>
+<script>
+const D=[{"c": "C1-F112", "img": "lib/twdemo/C1-F112.png", "w": 770, "h": 357, "src": "2023년 11월 학평 17번", "ans": "①", "type": "이차함수의 최대·최소", "subj": "공통수학1", "eng": [{"name": "이차함수의 최대·최소", "p": 0.855}, {"name": "이차함수와 직선", "p": 0.125}, {"name": "이차방정식과 이차함수", "p": 0.006}], "same": true, "sec": 25, "tw": [{"c": "C1-F100", "img": "lib/twdemo/C1-F100.png", "w": 645, "h": 103, "src": "2021년 9월 학평 23번", "ans": "11", "type": "이차함수의 최대·최소"}, {"c": "C1-F101", "img": "lib/twdemo/C1-F101.png", "w": 769, "h": 103, "src": "2020년 9월 학평 23번", "ans": "13", "type": "이차함수의 최대·최소"}, {"c": "C1-F102", "img": "lib/twdemo/C1-F102.png", "w": 764, "h": 163, "src": "2018년 11월 학평 6번", "ans": "①", "type": "이차함수의 최대·최소"}]}, {"c": "C2-C38", "img": "lib/twdemo/C2-C38.png", "w": 803, "h": 419, "src": "2023년 9월 학평 11번", "ans": "②", "type": "원의 방정식", "subj": "공통수학2", "eng": [{"name": "원의 방정식", "p": 0.648}, {"name": "원과 직선·원의 접선", "p": 0.104}, {"name": "유리식·유리함수", "p": 0.04}], "same": true, "sec": 13, "tw": [{"c": "C2-C36", "img": "lib/twdemo/C2-C36.png", "w": 800, "h": 227, "src": "2019년 9월 학평 24번", "ans": "4", "type": "원의 방정식"}, {"c": "C2-C37", "img": "lib/twdemo/C2-C37.png", "w": 801, "h": 227, "src": "2020년 3월 학평 24번", "ans": "25", "type": "원의 방정식"}, {"c": "C2-C39", "img": "lib/twdemo/C2-C39.png", "w": 682, "h": 249, "src": "2020년 11월 학평 8번", "ans": "④", "type": "원의 방정식"}]}, {"c": "G127", "img": "lib/twdemo/G127.png", "w": 882, "h": 308, "src": "2023학년도 수능 3번", "ans": "①", "type": "등비수열", "subj": "수학Ⅰ", "eng": [{"name": "등비수열", "p": 0.91}, {"name": "등차수열", "p": 0.027}, {"name": "등비수열의 합", "p": 0.014}], "same": true, "sec": 13, "tw": [{"c": "G96", "img": "lib/twdemo/G96.png", "w": 882, "h": 239, "src": "2022학년도 9월 모평 3번", "ans": "⑤", "type": "등비수열"}, {"c": "G97", "img": "lib/twdemo/G97.png", "w": 930, "h": 272, "src": "2021학년도 6월 모평(가) 3번", "ans": "④", "type": "등비수열"}, {"c": "G98", "img": "lib/twdemo/G98.png", "w": 930, "h": 223, "src": "2020년 4월 학평(나) 3번", "ans": "②", "type": "등비수열"}]}, {"c": "M2-B08", "img": "lib/twdemo/M2-B08.png", "w": 908, "h": 271, "src": "2026학년도 수능 4번", "ans": "③", "type": "식으로 주어진 함수", "subj": "수학Ⅱ", "eng": [{"name": "식으로 주어진 함수", "p": 0.949}, {"name": "정적분 계산", "p": 0.007}, {"name": "기본 극한 연산", "p": 0.006}], "same": true, "sec": 12, "tw": [{"c": "M2-A07", "img": "lib/twdemo/M2-A07.png", "w": 956, "h": 389, "src": "2018학년도 9월 모평(나) 12번", "ans": "②", "type": "다항함수"}, {"c": "M2-A123", "img": "lib/twdemo/M2-A123.png", "w": 956, "h": 261, "src": "2012학년도 6월 모평(나) 5번", "ans": "①", "type": "식으로 주어진 함수"}, {"c": "M2-A127", "img": "lib/twdemo/M2-A127.png", "w": 908, "h": 359, "src": "2017학년도 수능(나) 18번", "ans": "④", "type": "다항함수"}]}, {"c": "PS-C09", "img": "lib/twdemo/PS-C09.png", "w": 956, "h": 176, "src": "2025학년도 6월 모평(확통) 25번", "ans": "④", "type": "이항정리", "subj": "확률과 통계", "eng": [{"name": "이항정리", "p": 0.998}, {"name": "중복순열·같은 것이 있는 순열", "p": 0}, {"name": "중복조합과 정수해", "p": 0}], "same": true, "sec": 8, "tw": [{"c": "PS-C01", "img": "lib/twdemo/PS-C01.png", "w": 908, "h": 62, "src": "2016년 7월 학평(나) 23번", "ans": "40", "type": "이항정리"}, {"c": "PS-C02", "img": "lib/twdemo/PS-C02.png", "w": 908, "h": 224, "src": "2017년 4월 학평(나) 9번", "ans": "①", "type": "이항정리"}, {"c": "PS-C03", "img": "lib/twdemo/PS-C03.png", "w": 908, "h": 272, "src": "2017학년도 6월 모평(나) 6번", "ans": "④", "type": "이항정리"}]}, {"c": "PS-H66", "img": "lib/twdemo/PS-H66.png", "w": 956, "h": 517, "src": "2024학년도 9월 모평 26번", "ans": "②", "type": "정규분포와 표준화", "subj": "확률과 통계", "eng": [{"name": "정규분포와 표준화", "p": 0.803}, {"name": "통계적 추정", "p": 0.088}, {"name": "조건부확률", "p": 0.038}], "same": true, "sec": 24, "tw": [{"c": "PS-H37", "img": "lib/twdemo/PS-H37.png", "w": 908, "h": 449, "src": "2028학년도 4월 예시 13번", "ans": "②", "type": "정규분포와 표준화"}, {"c": "PS-H38", "img": "lib/twdemo/PS-H38.png", "w": 908, "h": 468, "src": "2020년 10월 학평(가) 13번", "ans": "⑤", "type": "정규분포와 표준화"}, {"c": "PS-H39", "img": "lib/twdemo/PS-H39.png", "w": 956, "h": 421, "src": "2019년 10월 학평(나) 11번", "ans": "④", "type": "정규분포와 표준화"}]}];
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tabs=$('#tabs');tabs.innerHTML=D.map((o,i)=>`<button class="tab" role="tab" data-i="${i}" aria-selected="false">${esc(o.subj)}<small>${esc(o.type)}</small></button>`).join('');
+function show(i){const o=D[i];tabs.querySelectorAll('.tab').forEach((t,j)=>t.setAttribute('aria-selected',j===i));
+ $('#osrc').textContent=o.src;const im=$('#oimg');im.src=o.img;im.style.width=Math.min(100,o.w/9.56)+'%';im.alt=o.src+' 원래 문제';
+ $('#bars').innerHTML=o.eng.map((e,j)=>`<div class="bar${j?'':' top'}"><span>${j+1}. ${esc(e.name)}</span><em>${Math.round(e.p*100)}%</em><i><b style="width:${Math.max(2,e.p*100)}%"></b></i></div>`).join('');
+ $('#same').textContent=o.same?'✓ 기출 표시 유형과 같음':'';
+ $('#tsub').textContent=o.eng[0].name;
+ $('#tw').innerHTML=o.tw.map((t,j)=>`<div class="tq"><div class="tqh"><span class="num">확인 ${j+1}</span><span class="src">${esc(t.src)}</span><button class="ans" type="button" aria-pressed="false" data-a="${esc(t.ans)}">정답 보기</button></div><div class="sheet"><img src="${t.img}" alt="${esc(t.src)}" loading="lazy" style="width:${Math.min(100,t.w/9.56)}%"></div></div>`).join('');
+ try{localStorage.setItem('twdemo-i',i)}catch(e){}}
+tabs.addEventListener('click',e=>{const b=e.target.closest('.tab');if(b)show(+b.dataset.i)});
+$('#tw').addEventListener('click',e=>{const b=e.target.closest('.ans');if(!b)return;const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);b.textContent=on?'정답 '+b.dataset.a:'정답 보기'});
+let i0=0;try{i0=Math.min(D.length-1,+localStorage.getItem('twdemo-i')||0)}catch(e){}show(i0);
+</script></body></html>
